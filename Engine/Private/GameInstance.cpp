@@ -12,7 +12,7 @@ HRESULT CGameInstance::Initialize_Engine(const GRAPHICDESC& GraphicDesc, ID3D11D
 {
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
-
+	int a = 0;
 	if (FAILED(Ready_Graphic_Device(GraphicDesc.hWnd, GraphicDesc.eWinMode, GraphicDesc.iViewportSizeX, GraphicDesc.iViewportSizeY, ppDevice, ppDeviceContext)))
 		return E_FAIL;
 
