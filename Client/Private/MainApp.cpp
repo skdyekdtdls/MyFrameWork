@@ -1,9 +1,11 @@
 #include "MainApp.h"
 #include "GameInstance.h"
-
+#include "Level.h"
+#include "Level_Loading.h"
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::GetInstance())
 {
+	Safe_AddRef(m_pGameInstance);
 }
 
 HRESULT CMainApp::Initialize()
@@ -17,11 +19,18 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(m_pGameInstance->Initialize_Engine(GraphicDesc, &m_pDevice, &m_pDeviceContext)))
 		return E_FAIL;
 
+	if(FAILED(Open_Level(LEVEL_LOGO)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
 void CMainApp::Tick(_double TimeDelta)
 {
+	if (nullptr == m_pGameInstance)
+		return;
+
+	m_pGameInstance->Tick_Engine(TimeDelta);
 }
 
 HRESULT CMainApp::Render()
@@ -33,10 +42,19 @@ HRESULT CMainApp::Render()
 	m_pGameInstance->Clear_DepthStencil_View();
 
 	// TODO
-
 	m_pGameInstance->Present();
 
 	return S_OK;
+}
+
+HRESULT CMainApp::Open_Level(LEVELID eLevelIndex)
+{
+	if (nullptr == m_pGameInstance)
+		return E_FAIL;
+
+	CLevel_Loading* pLoading = CLevel_Loading::Create(m_pDevice, m_pDeviceContext, eLevelIndex);
+	
+	return m_pGameInstance->Open_Level(pLoading);
 }
 
 
@@ -57,5 +75,6 @@ void CMainApp::Free()
 {
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pDeviceContext);
+	Safe_Release(m_pGameInstance);
 	CGameInstance::Release_Engine();
 }

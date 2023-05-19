@@ -17,9 +17,10 @@ void CLevel_GamePlay::Tick(_double TimeDelta)
 	__super::Tick(TimeDelta);
 }
 
-void CLevel_GamePlay::LateTick(_double TimeDelta)
+void CLevel_GamePlay::Late_Tick(_double TimeDelta)
 {
-	__super::LateTick(TimeDelta);
+	__super::Late_Tick(TimeDelta);
+	SetWindowText(g_hWnd, TEXT("게임 레벨입니다."));
 }
 
 HRESULT CLevel_GamePlay::Render()

@@ -1,6 +1,6 @@
 #include "Level_Logo.h"
-
-
+#include "GameInstance.h"
+#include "Level_GamePlay.h"
 
 CLevel_Logo::CLevel_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
@@ -9,6 +9,9 @@ CLevel_Logo::CLevel_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 HRESULT CLevel_Logo::Initialize()
 {
+	if (FAILED(__super::Initialize()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -17,13 +20,34 @@ void CLevel_Logo::Tick(_double TimeDelta)
 	__super::Tick(TimeDelta);
 }
 
-void CLevel_Logo::LateTick(_double TimeDelta)
+void CLevel_Logo::Late_Tick(_double TimeDelta)
 {
-	__super::LateTick(TimeDelta);
+	__super::Late_Tick(TimeDelta);
+
+	if (GetKeyState(VK_SPACE) & 0x8000)
+	{
+		CGameInstance* pGameInstance = CGameInstance::GetInstance();
+		Safe_AddRef(pGameInstance);
+
+		CLevel* pLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
+
+		if (FAILED(pGameInstance->Open_Level(pLevel)))
+		{
+			Safe_Release(pGameInstance);
+			return;
+		}
+
+		Safe_Release(pGameInstance);
+	}
+
+	SetWindowText(g_hWnd, TEXT("로고레벨입니다."));
 }
 
 HRESULT CLevel_Logo::Render()
 {
+	if (FAILED(__super::Render()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -33,7 +57,7 @@ CLevel_Logo* CLevel_Logo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pCo
 
 	if (FAILED(pInstance->Initialize()))
 	{
-		MSG_BOX("Failed to Create CLevel_Logo");
+		MSG_BOX("Failed to Created CLevel_Logo");
 		Safe_Release(pInstance);
 	}
 	return pInstance;

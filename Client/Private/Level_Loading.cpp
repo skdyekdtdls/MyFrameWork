@@ -1,39 +1,84 @@
-#include "Level_Loading.h"
-
-
+#include "..\Public\Level_Loading.h"
+#include "GameInstance.h"
+#include "Level_GamePlay.h"
+#include "Level_Logo.h"
+#include "Loader.h"
 
 CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
 }
 
-HRESULT CLevel_Loading::Initialize()
+HRESULT CLevel_Loading::Initialize(LEVELID eNextLevelID)
 {
+	if (FAILED(__super::Initialize()))
+		return E_FAIL;
+
+	m_eNextLevelID = eNextLevelID;
+
+	m_pLoader = CLoader::Create(m_pDevice, m_pContext, m_eNextLevelID);
+
+	if (nullptr == m_pLoader)
+		return E_FAIL;
+
 	return S_OK;
 }
 
 void CLevel_Loading::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
+
+	if (GetAsyncKeyState(VK_RETURN) & 0x8000)
+	{
+		if (false == m_pLoader->Get_Finished())
+			return;
+
+		CLevel* pLevel = { nullptr };
+
+		switch (m_eNextLevelID)
+		{
+		case LEVEL_LOGO:
+			pLevel = CLevel_Logo::Create(m_pDevice, m_pContext);
+			break;
+		case LEVEL_GAMEPLAY:
+			pLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
+			break;
+		}
+
+		CGameInstance* pGameInstance = CGameInstance::GetInstance();
+		Safe_AddRef(pGameInstance);
+
+		if (FAILED(pGameInstance->Open_Level(pLevel)))
+		{
+			Safe_Release(pGameInstance);
+			return;
+		}
+
+		Safe_Release(pGameInstance);
+	}
+	SetWindowText(g_hWnd, m_pLoader->Get_LoadingText());
 }
 
-void CLevel_Loading::LateTick(_double TimeDelta)
+void CLevel_Loading::Late_Tick(_double TimeDelta)
 {
-	__super::LateTick(TimeDelta);
+	__super::Late_Tick(TimeDelta);
 }
 
 HRESULT CLevel_Loading::Render()
 {
+	if (FAILED(__super::Render()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
-CLevel_Loading* CLevel_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CLevel_Loading* CLevel_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVELID eNextLevelID)
 {
 	CLevel_Loading* pInstance = new CLevel_Loading(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize()))
+	if (FAILED(pInstance->Initialize(eNextLevelID)))
 	{
-		MSG_BOX("Failed to Create CLevel_Loading");
+		MSG_BOX("Failed to Created CLevel_Loading");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
@@ -42,4 +87,5 @@ CLevel_Loading* CLevel_Loading::Create(ID3D11Device* pDevice, ID3D11DeviceContex
 void CLevel_Loading::Free()
 {
 	__super::Free();
+	Safe_Release(m_pLoader);
 }

@@ -75,7 +75,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
 
         // TODO
-
+        pMainApp->Tick(0.016);
+        pMainApp->Render();
     }
 
     Safe_Release(pMainApp);

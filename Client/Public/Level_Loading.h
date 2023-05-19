@@ -1,4 +1,3 @@
-#pragma once
 
 #include "Client_Defines.h"
 #include "Level.h"
@@ -11,13 +10,17 @@ private:
 	virtual ~CLevel_Loading() = default;
 
 public:
-	virtual HRESULT Initialize() override;
-	virtual void Tick(_double TimeDelta) override;
-	virtual void LateTick(_double TimeDelta) override;
-	virtual HRESULT Render() override;
+	HRESULT Initialize(LEVELID eNextLevelID);
+	void Tick(_double TimeDelta) override;
+	void Late_Tick(_double TimeDelta) override;
+	HRESULT Render() override;
+
+private:
+	class CLoader* m_pLoader = { nullptr };
+	LEVELID	m_eNextLevelID = { LEVEL_END };
 
 public:
-	static CLevel_Loading* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);
+	static CLevel_Loading* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, LEVELID eNextLevelID);
 	void Free() override;
 };
 

@@ -17,7 +17,7 @@ void CLevel::Tick(_double TimeDelta)
 {
 }
 
-void CLevel::LateTick(_double TimeDelta)
+void CLevel::Late_Tick(_double TimeDelta)
 {
 }
 
