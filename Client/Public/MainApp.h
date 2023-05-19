@@ -18,6 +18,7 @@ public:
 	HRESULT Initialize();
 	void Tick(_double TimeDelta);
 	HRESULT Render();
+	HRESULT Open_Level(LEVELID eLevelIndex);
 
 private:
 	CGameInstance* m_pGameInstance = { nullptr };

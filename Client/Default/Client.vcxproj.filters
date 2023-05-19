@@ -22,6 +22,9 @@
     <Filter Include="01. Levels\99. Loading">
       <UniqueIdentifier>{1f3ff082-3df7-46f2-bc3f-9a6cb80e1940}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Levels\99. Loading\Loader">
+      <UniqueIdentifier>{f09b8893-2231-43e6-a92f-76f4e9bd1408}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -51,6 +54,9 @@
     <ClInclude Include="..\public\Level_Loading.h">
       <Filter>01. Levels\99. Loading</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Loader.h">
+      <Filter>01. Levels\99. Loading\Loader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -75,6 +81,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Level_Loading.cpp">
       <Filter>01. Levels\99. Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Loader.cpp">
+      <Filter>01. Levels\99. Loading\Loader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

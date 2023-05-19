@@ -8,7 +8,8 @@ class CGraphic_Device;
 class CInput_Device;
 class CObject_Manager;
 class CComponent_Manager;
-
+class CLevel_Manager;
+class CLevel;
 class ENGINE_DLL CGameInstance final : public CBase
 {
 	DECLARE_SINGLETON(CGameInstance)
@@ -27,10 +28,14 @@ public: /* For Graphic_Device*/
 	HRESULT Clear_DepthStencil_View();
 	HRESULT Present();
 
+public: /* For Level_Manager */
+	HRESULT Open_Level(CLevel * pNewLevel);
+
 public:
 	static void Release_Engine();
 private:
 	CGraphic_Device* m_pGraphic_Device = { nullptr };
+	CLevel_Manager* m_pLevel_Manager = { nullptr };
 
 private:
 	void Free() override;

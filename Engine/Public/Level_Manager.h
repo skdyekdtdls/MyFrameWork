@@ -13,6 +13,8 @@ public:
 
 public:
 	HRESULT Open_Level(CLevel* pNewLevel);
+	void Tick(_double TimeDelta);
+	void Late_Tick(_double TimeDelta);
 
 private:
 	CLevel* m_pCurrentLevel = { nullptr };
