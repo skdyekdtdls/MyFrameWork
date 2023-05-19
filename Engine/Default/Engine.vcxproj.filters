@@ -1,32 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="98. Default">
-      <UniqueIdentifier>{0357ce09-d538-47e2-bda9-5599c3663d23}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="99. Headers">
-      <UniqueIdentifier>{7680aae5-8196-4cfa-950a-68d6d606b8bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. System">
-      <UniqueIdentifier>{dea48ce9-1743-49f5-8e20-cc854a51242b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility">
-      <UniqueIdentifier>{17147c68-2e4d-4ed6-a765-2086f7434635}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\99. SuperClass">
-      <UniqueIdentifier>{57d6b285-b21f-46f1-bfea-bd8568b4710f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. System\00. Device">
-      <UniqueIdentifier>{2891ca59-3587-4579-97ba-a021f50959ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. System\00. Device\Graphic">
-      <UniqueIdentifier>{d0d5be59-7911-460a-a172-fb03524bc8fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\01. GameInstance">
-      <UniqueIdentifier>{379ebb2a-92f5-47dd-b437-d737b3ef62b1}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="..\Private\Base.cpp">
+      <Filter>00. System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Graphic_Device.cpp">
+      <Filter>00. System\00. Device\GraphicDev</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GameInstance.cpp">
+      <Filter>01. Utility\00. GameInstace</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\Base.h">
+      <Filter>00. System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Graphic_Device.h">
+      <Filter>00. System\00. Device\GraphicDev</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GameInstance.h">
+      <Filter>01. Utility\00. GameInstace</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Engine_Defines.h">
       <Filter>99. Headers</Filter>
     </ClInclude>
@@ -36,30 +30,31 @@
     <ClInclude Include="..\Public\Engine_Macro.h">
       <Filter>99. Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Engine_Struct.h">
-      <Filter>99. Headers</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Engine_Typedef.h">
       <Filter>99. Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Graphic_Device.h">
-      <Filter>00. System\00. Device\Graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\GameInstance.h">
-      <Filter>01. Utility\01. GameInstance</Filter>
-    <ClInclude Include="..\Public\Base.h">
-      <Filter>01. Utility\99. SuperClass</Filter>
+    <ClInclude Include="..\Public\Engine_Struct.h">
+      <Filter>99. Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Private\Base.cpp">
-      <Filter>01. Utility\99. SuperClass</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Graphic_Device.cpp">
-      <Filter>00. System\00. Device\Graphic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\GameInstance.cpp">
-      <Filter>01. Utility\01. GameInstance</Filter>
-    </ClCompile>
+    <Filter Include="00. System">
+      <UniqueIdentifier>{949075ff-2834-4973-b47b-0122964d5995}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. System\00. Device">
+      <UniqueIdentifier>{2fbcb108-8504-49e6-8a15-6f70a2501e9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. System\00. Device\GraphicDev">
+      <UniqueIdentifier>{c513b509-0fc9-41a3-b320-a40d72d556b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility">
+      <UniqueIdentifier>{2170b703-cea9-4531-874f-483401556824}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\00. GameInstace">
+      <UniqueIdentifier>{a4a972fc-018f-4248-8f41-91db36e41883}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Headers">
+      <UniqueIdentifier>{4f947f70-d680-43ba-af14-1c181bfae0f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
