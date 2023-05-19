@@ -6,7 +6,7 @@ unsigned long Safe_AddRef(T& pointer)
 	unsigned long dwRefCnt = { 0 };
 	if (nullptr != pointer)
 	{
-		dwRefCnt = pointer->Add_Ref();
+		dwRefCnt = pointer->AddRef();
 	}
 
 	return dwRefCnt;

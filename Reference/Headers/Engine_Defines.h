@@ -1,9 +1,13 @@
 #pragma once
+
+#pragma warning (disable : 4005)
+
 #include <windows.h>
 #include <iostream>
 #include <tchar.h>
 #include <d3d11.h>
 #include <DirectXMath.h>
+#include <d3dcompiler.h>
 
 using namespace std;
 using namespace DirectX;

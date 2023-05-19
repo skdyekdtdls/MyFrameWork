@@ -57,7 +57,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
     
-    //CMainApp* pMainApp = CMainApp::Create();
+    CMainApp* pMainApp = CMainApp::Create();
 
     // 기본 메시지 루프입니다:
     while (true)
@@ -78,7 +78,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     }
 
-    //Safe_Release(pMainApp);
+    Safe_Release(pMainApp);
     return (int) msg.wParam;
 }
 
