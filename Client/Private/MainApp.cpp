@@ -57,5 +57,5 @@ void CMainApp::Free()
 {
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pDeviceContext);
-	CGameInstance::DestroyInstance();
+	CGameInstance::Release_Engine();
 }

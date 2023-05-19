@@ -27,6 +27,8 @@ public: /* For Graphic_Device*/
 	HRESULT Clear_DepthStencil_View();
 	HRESULT Present();
 
+public:
+	static void Release_Engine();
 private:
 	CGraphic_Device* m_pGraphic_Device = { nullptr };
 

@@ -53,6 +53,12 @@ HRESULT CGameInstance::Present()
 	return m_pGraphic_Device->Present();
 }
 
+void CGameInstance::Release_Engine()
+{
+	CGraphic_Device::DestroyInstance();
+	CGameInstance::DestroyInstance();
+}
+
 void CGameInstance::Free()
 {
 	Safe_Release(m_pGraphic_Device);

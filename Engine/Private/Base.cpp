@@ -1,7 +1,7 @@
 #include "Base.h"
 
 
-_ulong CBase::Add_Ref()
+_ulong CBase::AddRef()
 {
 	return ++m_dwRefCnt;
 }
