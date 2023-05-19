@@ -11,7 +11,7 @@ protected:
 	virtual ~CBase() = default;
 
 public:
-	_ulong Add_Ref();
+	_ulong AddRef();
 	_ulong Release();
 
 private:
