@@ -39,6 +39,8 @@ HRESULT CMainApp::Render()
 	return S_OK;
 }
 
+
+
 CMainApp* CMainApp::Create()
 {
 	CMainApp* pInstance = new CMainApp();
