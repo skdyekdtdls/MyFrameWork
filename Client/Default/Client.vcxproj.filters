@@ -25,6 +25,12 @@
     <Filter Include="01. Levels\99. Loading\Loader">
       <UniqueIdentifier>{f09b8893-2231-43e6-a92f-76f4e9bd1408}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject">
+      <UniqueIdentifier>{7123b0cd-05a0-4042-bebc-7400b94a1f9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\BackGround">
+      <UniqueIdentifier>{39d68aa7-c375-4c3b-9af5-70e0105c19f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -57,6 +63,9 @@
     <ClInclude Include="..\public\Loader.h">
       <Filter>01. Levels\99. Loading\Loader</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\BackGround.h">
+      <Filter>02. GameObject\BackGround</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -84,6 +93,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Loader.cpp">
       <Filter>01. Levels\99. Loading\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BackGround.cpp">
+      <Filter>02. GameObject\BackGround</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

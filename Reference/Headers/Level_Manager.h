@@ -12,12 +12,13 @@ public:
 	~CLevel_Manager() = default;
 
 public:
-	HRESULT Open_Level(CLevel* pNewLevel);
+	HRESULT Open_Level(_uint iLevelindex, CLevel* pNewLevel);
 	void Tick(_double TimeDelta);
 	void Late_Tick(_double TimeDelta);
 
 private:
 	CLevel* m_pCurrentLevel = { nullptr };
+	_uint	m_iLevelindex = { 0 };
 
 public:
 	void Free() override;

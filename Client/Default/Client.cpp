@@ -58,6 +58,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MSG msg;
     
     CMainApp* pMainApp = CMainApp::Create();
+    if (nullptr == pMainApp)
+        return FALSE;
+
 
     // 기본 메시지 루프입니다:
     while (true)
