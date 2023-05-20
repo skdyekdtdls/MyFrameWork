@@ -36,6 +36,9 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHICDESC& Gr
 	if (FAILED(m_pObject_Manager->Reserve_Containers(iNumLevels)))
 		return E_FAIL;
 
+	if (FAILED(m_pComponent_Manager->Reserve_Container(iNumLevels)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

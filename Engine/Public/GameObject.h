@@ -3,7 +3,7 @@
 #include "Base.h"
 
 BEGIN(Engine)
-
+class CComponent;
 class ENGINE_DLL CGameObject : public CBase
 {
 protected:
@@ -18,7 +18,9 @@ public:
 	virtual void Late_Tick(_double TimeDelta);
 	virtual HRESULT Render();
 
+	HRESULT Add_Component(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pComponentTag, _Inout_ CComponent** ppOut, void* pArg = nullptr);
 protected:
+	unordered_map<const _tchar*, CComponent*> m_Components;
 	ID3D11Device* m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
 
