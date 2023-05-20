@@ -1,5 +1,5 @@
 #include "..\Public\BackGround.h"
-
+#include "GameInstance.h"
 CBackGround::CBackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
@@ -8,6 +8,7 @@ CBackGround::CBackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 CBackGround::CBackGround(const CBackGround& rhs)
 	: CGameObject(rhs)
 {
+	
 }
 
 HRESULT CBackGround::Initialize_Prototype()
@@ -40,6 +41,13 @@ HRESULT CBackGround::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CBackGround::Add_Components()
+{
+
 
 	return S_OK;
 }

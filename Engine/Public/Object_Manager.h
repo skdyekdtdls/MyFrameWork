@@ -18,6 +18,9 @@ public:
 	HRESULT Add_GameObject(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pLayerTag, void* pArg);
 	void Clear_LevelResources(_uint iLevelIndex);
 
+	void Tick(_double TimeDelta);
+	void Late_Tick(_double TimeDelta);
+
 private:
 	unordered_map<const _tchar*, CGameObject*> m_Prototypes;
 

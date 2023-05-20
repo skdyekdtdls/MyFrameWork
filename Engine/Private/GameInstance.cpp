@@ -3,15 +3,22 @@
 #include "Level_Manager.h"
 #include "GameObject.h"
 #include "Object_Manager.h"
+#include "Timer_Manager.h"
+#include "Component_Manager.h"
+
 IMPLEMENT_SINGLETON(CGameInstance)
 
 CGameInstance::CGameInstance()
 	: m_pGraphic_Device(CGraphic_Device::GetInstance())
 	, m_pLevel_Manager(CLevel_Manager::GetInstance())
 	, m_pObject_Manager(CObject_Manager::GetInstance())
+	, m_pTimer_Manager(CTimer_Manager::GetInstance())
+	, m_pComponent_Manager(CComponent_Manager::GetInstance())
 {
 	Safe_AddRef(m_pGraphic_Device);
 	Safe_AddRef(m_pLevel_Manager);
+	Safe_AddRef(m_pObject_Manager);
+	Safe_AddRef(m_pTimer_Manager);
 	Safe_AddRef(m_pObject_Manager);
 }
 
@@ -34,8 +41,12 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHICDESC& Gr
 
 void CGameInstance::Tick_Engine(_double TimeDelta)
 {
-	if (nullptr == m_pLevel_Manager)
+	if (nullptr == m_pLevel_Manager
+		|| nullptr == m_pObject_Manager)
 		return;
+
+	m_pObject_Manager->Tick(TimeDelta);
+	m_pObject_Manager->Late_Tick(TimeDelta);
 
 	m_pLevel_Manager->Tick(TimeDelta);
 	m_pLevel_Manager->Late_Tick(TimeDelta);
@@ -101,8 +112,50 @@ void CGameInstance::Clear_LevelResources(_uint iLevelIndex)
 	m_pObject_Manager->Clear_LevelResources(iLevelIndex);
 }
 
+_double CGameInstance::Get_Timer(const _tchar* pTimerTag)
+{
+	if (nullptr == m_pTimer_Manager)
+		return 0.0;
+
+	return m_pTimer_Manager->Get_Timer(pTimerTag);
+}
+
+void CGameInstance::Set_Timer(const _tchar* pTimerTag)
+{
+	if (nullptr == m_pTimer_Manager)
+		return;
+
+	m_pTimer_Manager->Set_Timer(pTimerTag);
+}
+
+HRESULT CGameInstance::Ready_Timer(const _tchar* pTimerTag)
+{
+	if (nullptr == m_pTimer_Manager)
+		return E_FAIL;
+
+	return m_pTimer_Manager->Ready_Timer(pTimerTag);
+}
+
+HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const _tchar* pPrototypeTag, CComponent* pPrototype)
+{
+	if (nullptr == m_pComponent_Manager)
+		return E_FAIL;
+
+	return m_pComponent_Manager->Add_Prototype(iLevelIndex, pPrototypeTag, pPrototype);
+}
+
+CComponent* CGameInstance::Clone_Component(_uint iLevelIndex, const _tchar* pPrototypeTag, void* pArg)
+{
+	if (nullptr == m_pComponent_Manager)
+		return nullptr;
+
+	return m_pComponent_Manager->Clone_Component(iLevelIndex, pPrototypeTag, pArg);
+}
+
 void CGameInstance::Release_Engine()
 {
+	CTimer_Manager::DestroyInstance();
+	CComponent_Manager::DestroyInstance();
 	CObject_Manager::DestroyInstance();
 	CLevel_Manager::DestroyInstance();
 	CGraphic_Device::DestroyInstance();
@@ -111,6 +164,8 @@ void CGameInstance::Release_Engine()
 
 void CGameInstance::Free()
 {
+	Safe_Release(m_pTimer_Manager);
+	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pGraphic_Device);
