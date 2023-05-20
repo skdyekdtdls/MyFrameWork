@@ -10,6 +10,7 @@ class CObject_Manager;
 class CComponent_Manager;
 class CLevel_Manager;
 class CLevel;
+class CGameObject;
 class ENGINE_DLL CGameInstance final : public CBase
 {
 	DECLARE_SINGLETON(CGameInstance)
@@ -17,27 +18,29 @@ public:
 	CGameInstance();
 	~CGameInstance() = default;
 public:
-	HRESULT Initialize_Engine(const GRAPHICDESC & GraphicDesc, ID3D11Device** ppDevice, ID3D11DeviceContext** ppDeviceContext);
+	HRESULT Initialize_Engine(_uint iNumLevels, const GRAPHICDESC & GraphicDesc, ID3D11Device** ppDevice, ID3D11DeviceContext** ppDeviceContext);
 	void Tick_Engine(_double TimeDelta);
 
 public: /* For Graphic_Device*/
-	HRESULT	Ready_Graphic_Device(HWND hWnd, GRAPHICDESC::WINMODE eWinMode
-		, _uint iWinCX, _uint iWinCY
-		, _Inout_ ID3D11Device * *ppDeviceOut, _Inout_ ID3D11DeviceContext * *ppDeviceContextOut);
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
 	HRESULT Clear_DepthStencil_View();
 	HRESULT Present();
 
 public: /* For Level_Manager */
-	HRESULT Open_Level(CLevel * pNewLevel);
+	HRESULT Open_Level(_uint iLevelIndex, CLevel * pNewLevel);
 
-public:
-	static void Release_Engine();
+public: /* For Object_Manager*/
+	HRESULT Add_Prototype(const _tchar * pPrototypeTag, CGameObject * pPrototype);
+	HRESULT Add_GameObject(_uint iLevelIndex, const _tchar * pPrototypeTag, const _tchar * pLayerTag, void* pArg = nullptr);
+	void Clear_LevelResources(_uint iLevelIndex);
+
 private:
 	CGraphic_Device* m_pGraphic_Device = { nullptr };
 	CLevel_Manager* m_pLevel_Manager = { nullptr };
+	CObject_Manager* m_pObject_Manager = { nullptr };
 
-private:
+public:
+	static void Release_Engine();
 	void Free() override;
 };
 

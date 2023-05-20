@@ -16,7 +16,7 @@ HRESULT CMainApp::Initialize()
 	GraphicDesc.iViewportSizeX = g_iWinSizeX;
 	GraphicDesc.iViewportSizeY = g_iWinSizeY;
 
-	if (FAILED(m_pGameInstance->Initialize_Engine(GraphicDesc, &m_pDevice, &m_pDeviceContext)))
+	if (FAILED(m_pGameInstance->Initialize_Engine(LEVEL_END, GraphicDesc, &m_pDevice, &m_pDeviceContext)))
 		return E_FAIL;
 
 	if(FAILED(Open_Level(LEVEL_LOGO)))
@@ -54,7 +54,7 @@ HRESULT CMainApp::Open_Level(LEVELID eLevelIndex)
 
 	CLevel_Loading* pLoading = CLevel_Loading::Create(m_pDevice, m_pDeviceContext, eLevelIndex);
 	
-	return m_pGameInstance->Open_Level(pLoading);
+	return m_pGameInstance->Open_Level(eLevelIndex, pLoading);
 }
 
 
@@ -65,7 +65,7 @@ CMainApp* CMainApp::Create()
 
 	if (FAILED(pInstance->Initialize()))
 	{
-		CONSOLE_MSG("콘솔 메시지 테스트");
+		MSG_BOX("Failed to Created CMainApp");
 		Safe_Release(pInstance);
 	}
 	return pInstance;

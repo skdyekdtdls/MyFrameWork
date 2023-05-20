@@ -12,6 +12,9 @@ HRESULT CLevel_Logo::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
+	if(FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -31,7 +34,7 @@ void CLevel_Logo::Late_Tick(_double TimeDelta)
 
 		CLevel* pLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
 
-		if (FAILED(pGameInstance->Open_Level(pLevel)))
+		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, pLevel)))
 		{
 			Safe_Release(pGameInstance);
 			return;
@@ -48,6 +51,18 @@ HRESULT CLevel_Logo::Render()
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
+	return S_OK;
+}
+
+HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar* pLayerTag)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"), pLayerTag)))
+		return E_FAIL;
+
+	Safe_Release(pGameInstance);
 	return S_OK;
 }
 

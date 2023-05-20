@@ -1,6 +1,6 @@
 #include "Level_Manager.h"
 #include "Level.h"
-
+#include "GameInstance.h"
 IMPLEMENT_SINGLETON(CLevel_Manager)
 
 CLevel_Manager::CLevel_Manager()
@@ -8,11 +8,20 @@ CLevel_Manager::CLevel_Manager()
 
 }
 
-HRESULT CLevel_Manager::Open_Level(CLevel* pNewLevel)
+HRESULT CLevel_Manager::Open_Level(_uint iLevelindex, CLevel* pNewLevel)
 {
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	pGameInstance->Clear_LevelResources(m_iLevelindex);
+
+	Safe_Release(pGameInstance);
+
 	Safe_Release(m_pCurrentLevel);
 
 	m_pCurrentLevel = pNewLevel;
+
+	m_iLevelindex = iLevelindex;
 
 	return S_OK;
 }

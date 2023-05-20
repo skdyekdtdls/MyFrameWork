@@ -1,6 +1,7 @@
 #include "..\Public\Loader.h"
 #include "GameInstance.h"
 #include <process.h>
+#include "BackGround.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext)
 	: m_pDevice(pDevice)
@@ -84,6 +85,10 @@ HRESULT CLoader::Loading_For_Logo()
 	{
 		int a = 0;
 	}
+	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"),
+		CBackGround::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	Set_LoadingText(L"로딩 완료");
 
 	m_isFinished = true;

@@ -48,7 +48,7 @@ void CLevel_Loading::Tick(_double TimeDelta)
 		CGameInstance* pGameInstance = CGameInstance::GetInstance();
 		Safe_AddRef(pGameInstance);
 
-		if (FAILED(pGameInstance->Open_Level(pLevel)))
+		if (FAILED(pGameInstance->Open_Level(m_eNextLevelID, pLevel)))
 		{
 			Safe_Release(pGameInstance);
 			return;
@@ -56,7 +56,8 @@ void CLevel_Loading::Tick(_double TimeDelta)
 
 		Safe_Release(pGameInstance);
 	}
-	SetWindowText(g_hWnd, m_pLoader->Get_LoadingText());
+	SetWindowText(g_hWnd, m_pLoader->Get_LoadingText()
+);
 }
 
 void CLevel_Loading::Late_Tick(_double TimeDelta)
