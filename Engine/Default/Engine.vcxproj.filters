@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\private\Graphic_Device.cpp">
-      <Filter>00. System\00. Device\GraphicDev</Filter>
+      <Filter>00. System\00.Device\GraphicDev</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\GameInstance.cpp">
       <Filter>01. Utility\00. GameInstace</Filter>
@@ -25,10 +25,25 @@
     <ClCompile Include="..\private\Object_Manager.cpp">
       <Filter>01. Utility\02. GameObjects\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Timer.cpp">
+      <Filter>00. System\01.Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Timer_Manager.cpp">
+      <Filter>00. System\01.Timer\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Component.cpp">
+      <Filter>01. Utility\03. Component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Renderer.cpp">
+      <Filter>01. Utility\03. Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Component_Manager.cpp">
+      <Filter>01. Utility\03. Component\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Graphic_Device.h">
-      <Filter>00. System\00. Device\GraphicDev</Filter>
+      <Filter>00. System\00.Device\GraphicDev</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\GameInstance.h">
       <Filter>01. Utility\00. GameInstace</Filter>
@@ -66,16 +81,25 @@
     <ClInclude Include="..\public\Object_Manager.h">
       <Filter>01. Utility\02. GameObjects\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Timer.h">
+      <Filter>00. System\01.Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Timer_Manager.h">
+      <Filter>00. System\01.Timer\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Component.h">
+      <Filter>01. Utility\03. Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Renderer.h">
+      <Filter>01. Utility\03. Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Component_Manager.h">
+      <Filter>01. Utility\03. Component\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
       <UniqueIdentifier>{949075ff-2834-4973-b47b-0122964d5995}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. System\00. Device">
-      <UniqueIdentifier>{2fbcb108-8504-49e6-8a15-6f70a2501e9f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00. System\00. Device\GraphicDev">
-      <UniqueIdentifier>{c513b509-0fc9-41a3-b320-a40d72d556b8}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Utility">
       <UniqueIdentifier>{2170b703-cea9-4531-874f-483401556824}</UniqueIdentifier>
@@ -103,6 +127,27 @@
     </Filter>
     <Filter Include="01. Utility\02. GameObjects\Manager\Layer">
       <UniqueIdentifier>{f7d508c0-8f82-4a6e-a12d-e04847dfc2fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. System\01.Timer">
+      <UniqueIdentifier>{dca17925-ae22-42d9-868a-33bf1a511e35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. System\00.Device">
+      <UniqueIdentifier>{2fbcb108-8504-49e6-8a15-6f70a2501e9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. System\00.Device\GraphicDev">
+      <UniqueIdentifier>{c513b509-0fc9-41a3-b320-a40d72d556b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. System\01.Timer\Manager">
+      <UniqueIdentifier>{d3d03336-27c7-45db-b5ae-1809582a1b10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Component">
+      <UniqueIdentifier>{89f072ca-a8be-4c4e-b263-fa2155cd0d26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Component\Renderer">
+      <UniqueIdentifier>{d17a080d-a0cc-46e6-a132-b97bee000daa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Component\Manager">
+      <UniqueIdentifier>{d69d0958-b2df-41ba-a992-c48d40d2ca07}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

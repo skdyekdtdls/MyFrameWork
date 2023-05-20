@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "Level.h"
 #include "Level_Loading.h"
+
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::GetInstance())
 {
@@ -16,7 +17,7 @@ HRESULT CMainApp::Initialize()
 	GraphicDesc.iViewportSizeX = g_iWinSizeX;
 	GraphicDesc.iViewportSizeY = g_iWinSizeY;
 
-	if (FAILED(m_pGameInstance->Initialize_Engine(LEVEL_END, GraphicDesc, &m_pDevice, &m_pDeviceContext)))
+	if (FAILED(m_pGameInstance->Initialize_Engine(LEVEL_END, GraphicDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
 
 	if(FAILED(Open_Level(LEVEL_LOGO)))
@@ -52,12 +53,22 @@ HRESULT CMainApp::Open_Level(LEVELID eLevelIndex)
 	if (nullptr == m_pGameInstance)
 		return E_FAIL;
 
-	CLevel_Loading* pLoading = CLevel_Loading::Create(m_pDevice, m_pDeviceContext, eLevelIndex);
+	CLevel_Loading* pLoading = CLevel_Loading::Create(m_pDevice, m_pContext, eLevelIndex);
 	
 	return m_pGameInstance->Open_Level(eLevelIndex, pLoading);
 }
 
+HRESULT CMainApp::Ready_Prototype_Component_For_Static()
+{
+	if (nullptr == m_pGameInstance)
+		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"),
+		CRenderer::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	return S_OK;
+}
 
 CMainApp* CMainApp::Create()
 {
@@ -74,7 +85,7 @@ CMainApp* CMainApp::Create()
 void CMainApp::Free()
 {
 	Safe_Release(m_pDevice);
-	Safe_Release(m_pDeviceContext);
+	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
 	CGameInstance::Release_Engine();
 }
