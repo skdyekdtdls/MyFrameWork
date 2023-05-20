@@ -24,7 +24,7 @@ HRESULT CComponent_Manager::Reserve_Container(_uint iLevelIndex)
 
 HRESULT CComponent_Manager::Add_Prototype(_uint iLevelIndex, const _tchar* pPrototypeTag, CComponent* pCompoent)
 {
-	if (nullptr != pCompoent)
+	if (nullptr == pCompoent)
 		return E_FAIL;
 
 	CComponent* pPrototype = Find_Component(iLevelIndex, pPrototypeTag);
@@ -51,7 +51,7 @@ CComponent* CComponent_Manager::Clone_Component(_uint iLevelIndex, const _tchar*
 		Safe_Release(pComponent);
 		return nullptr;
 	}
-		
+	
 	return pComponent;
 }
 

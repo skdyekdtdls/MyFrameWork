@@ -47,7 +47,9 @@ HRESULT CBackGround::Render()
 
 HRESULT CBackGround::Add_Components()
 {
-
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer")
+		, TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom, nullptr)))
+		return E_FAIL;
 
 	return S_OK;
 }

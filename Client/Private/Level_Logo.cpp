@@ -1,7 +1,6 @@
 #include "Level_Logo.h"
 #include "GameInstance.h"
-#include "Level_GamePlay.h"
-
+#include "Level_Loading.h"
 CLevel_Logo::CLevel_Logo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -32,7 +31,7 @@ void CLevel_Logo::Late_Tick(_double TimeDelta)
 		CGameInstance* pGameInstance = CGameInstance::GetInstance();
 		Safe_AddRef(pGameInstance);
 
-		CLevel* pLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
+		CLevel* pLevel = CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY);
 
 		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, pLevel)))
 		{

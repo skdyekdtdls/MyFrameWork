@@ -10,4 +10,9 @@ namespace Engine
 		WINMODE		eWinMode;
 	}GRAPHICDESC;
 
+	typedef struct tagVertex_Position_TexCoord
+	{
+		XMFLOAT3	vPostion;
+		XMFLOAT2	vTexCoord;
+	}VTXPOSTEX;
 }

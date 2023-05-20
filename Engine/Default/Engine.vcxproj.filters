@@ -40,6 +40,12 @@
     <ClCompile Include="..\private\Component_Manager.cpp">
       <Filter>01. Utility\03. Component\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\VIBuffer.cpp">
+      <Filter>01. Utility\03. Component\VIBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="VIBuffer_Rect.cpp">
+      <Filter>01. Utility\03. Component\VIBuffer\Rect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Graphic_Device.h">
@@ -96,6 +102,12 @@
     <ClInclude Include="..\public\Component_Manager.h">
       <Filter>01. Utility\03. Component\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VIBuffer.h">
+      <Filter>01. Utility\03. Component\VIBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Rect.h">
+      <Filter>01. Utility\03. Component\VIBuffer\Rect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -148,6 +160,12 @@
     </Filter>
     <Filter Include="01. Utility\03. Component\Manager">
       <UniqueIdentifier>{d69d0958-b2df-41ba-a992-c48d40d2ca07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Component\VIBuffer">
+      <UniqueIdentifier>{e908f139-92df-480c-be3c-2c9ce6a0db6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Component\VIBuffer\Rect">
+      <UniqueIdentifier>{a274c2be-b5ae-43a8-9ef5-541055e2941e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

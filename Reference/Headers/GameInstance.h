@@ -41,7 +41,7 @@ public: /* For Timer Manager */
 
 public: /* For Component Manager */
 	HRESULT Add_Prototype(_uint iLevelIndex, const _tchar * pPrototypeTag, CComponent * pPrototype);
-	CComponent* Clone_Component(_uint iLevelIndex, const _tchar * pPrototypeTag, void* pArg);
+	CComponent* Clone_Component(_uint iLevelIndex, const _tchar * pPrototypeTag, void* pArg = nullptr);
 
 private:
 	CGraphic_Device* m_pGraphic_Device = { nullptr };
