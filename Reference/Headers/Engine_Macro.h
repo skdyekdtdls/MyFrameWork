@@ -86,3 +86,5 @@ private:														\
 		}												\
 		return dwRefCnt;								\
 	}
+
+#define ZeroStruct(Desc) ZeroMemory((&Desc), (sizeof(Desc)));

@@ -6,6 +6,7 @@
 BEGIN(Engine)
 class CGameInstance;
 class CRenderer;
+
 END
 
 BEGIN(Client) 
@@ -23,7 +24,7 @@ public:
 
 	HRESULT Ready_Prototype_Component_For_Static();
 
-private: /* For Component */
+private: /* For Prototype */
 	CRenderer* m_pRenderer = { nullptr };
 
 private:

@@ -50,9 +50,9 @@ HRESULT CGameObject::Add_Component(_uint iLevelIndex, const _tchar* pPrototypeTa
 
 	m_Components.emplace(pComponentTag, pComponent);
 
-	Safe_AddRef(pComponent);
-
 	*ppOut = pComponent;
+
+	Safe_AddRef(pComponent);
 
 	Safe_Release(pGameInstance);
 
@@ -61,6 +61,10 @@ HRESULT CGameObject::Add_Component(_uint iLevelIndex, const _tchar* pPrototypeTa
 
 void CGameObject::Free()
 {
-	Safe_Release(m_pDevice);
+	for (auto& Pair : m_Components)
+		Safe_Release(Pair.second);
+	m_Components.clear();
+
 	Safe_Release(m_pContext);
+	Safe_Release(m_pDevice);
 }

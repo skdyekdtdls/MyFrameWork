@@ -4,7 +4,9 @@
 #include "GameObject.h"
 
 BEGIN(Engine)
+class CShader;
 class CRenderer;
+class CVIBuffer_Rect;
 END
 
 BEGIN(Client)
@@ -22,9 +24,12 @@ public:
 	void Late_Tick(_double TimeDelta) override;
 	HRESULT Render() override;
 
+	HRESULT SetUp_ShaderResources();
+
 private:
-	CRenderer* m_pRendererCom = { nullptr };
-	
+	CShader*		m_pShaderCom = { nullptr };
+	CRenderer*		m_pRendererCom = { nullptr };
+	CVIBuffer_Rect* m_pViBufferCom = { nullptr };
 private:
 	HRESULT Add_Components();
 

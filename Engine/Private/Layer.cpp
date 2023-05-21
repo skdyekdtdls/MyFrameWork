@@ -38,9 +38,8 @@ CLayer* CLayer::Create()
 
 void CLayer::Free()
 {
-	for (auto& GameObject : m_pGameObjects)
-	{
-		Safe_Release(GameObject);
-	}
+	for (auto& pGameObject : m_pGameObjects)
+		Safe_Release(pGameObject);
+
 	m_pGameObjects.clear();
 }

@@ -45,6 +45,9 @@ void CLevel_Loading::Tick(_double TimeDelta)
 			break;
 		}
 
+		if (nullptr == pLevel)
+			return;
+
 		CGameInstance* pGameInstance = CGameInstance::GetInstance();
 		Safe_AddRef(pGameInstance);
 
@@ -55,9 +58,11 @@ void CLevel_Loading::Tick(_double TimeDelta)
 		}
 
 		Safe_Release(pGameInstance);
+
+		return;
 	}
 	SetWindowText(g_hWnd, m_pLoader->Get_LoadingText()
-);
+	);
 }
 
 void CLevel_Loading::Late_Tick(_double TimeDelta)

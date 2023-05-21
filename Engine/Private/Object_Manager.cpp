@@ -110,7 +110,11 @@ void CObject_Manager::Free()
 {
 	for (_uint i = 0; i < m_iNumLevels; ++i)
 	{
-		Clear_LevelResources(i);
+		for (auto& Pair : m_pLayers[i])
+		{
+			Safe_Release(Pair.second);
+		}
+		m_pLayers[i].clear();
 	}
 	Safe_Delete_Array(m_pLayers);
 	
