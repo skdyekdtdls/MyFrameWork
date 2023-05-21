@@ -69,19 +69,19 @@ HRESULT CLoader::Loading_For_Logo()
 		return E_FAIL;
 
 	Set_LoadingText(L"텍스처 로딩 중");
-	for (int i = 0; i < 999999999; ++i)
+	for (int i = 0; i < 99999999; ++i)
 	{
 		int a = 0;
 	}
 
 	Set_LoadingText(L"컴포넌트 로딩 중");
-	for (int i = 0; i < 999999999; ++i)
+	for (int i = 0; i < 99999999; ++i)
 	{
 		int a = 0;
 	}
 
 	Set_LoadingText(L"쉐이더 로딩 중");
-	for (int i = 0; i < 999999999; ++i)
+	for (int i = 0; i < 99999999; ++i)
 	{
 		int a = 0;
 	}
@@ -103,19 +103,19 @@ HRESULT CLoader::Loading_For_GamePlay()
 
 
 	Set_LoadingText(L"텍스처 로딩 중");
-	for (int i = 0; i < 999999999; ++i)
+	for (int i = 0; i < 99999999; ++i)
 	{
 		int a = 0;
 	}
 
 	Set_LoadingText(L"컴포넌트 로딩 중");
-	for (int i = 0; i < 999999999; ++i)
+	for (int i = 0; i < 99999999; ++i)
 	{
 		int a = 0;
 	}
 
 	Set_LoadingText(L"쉐이더 로딩 중");
-	for (int i = 0; i < 999999999; ++i)
+	for (int i = 0; i < 99999999; ++i)
 	{
 		int a = 0;
 	}

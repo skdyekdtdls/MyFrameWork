@@ -12,8 +12,13 @@ CVIBuffer_Rect::CVIBuffer_Rect(const CVIBuffer_Rect& rhs)
 
 HRESULT CVIBuffer_Rect::Initialize_Prototype()
 {
-	m_iNumVertices = { 4 };
+	m_iNumVertexBuffers = { 1 };
 	m_iStride = { sizeof(VTXPOSTEX) };
+	m_iNumVertices = { 4 };
+	m_iIndexStride = { sizeof _ushort };
+	m_iNumIndices = { 6 };
+	m_eFormat = { DXGI_FORMAT_R16_UINT };
+	m_eTopology = { D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST };
 
 	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
 	m_BufferDesc.ByteWidth = { m_iStride * m_iNumVertices };
@@ -44,7 +49,34 @@ HRESULT CVIBuffer_Rect::Initialize_Prototype()
 	if (FAILED(__super::Create_Buffer(&m_pVB)))
 		return E_FAIL;
 
-	//Safe_Delete_Array(pVertices);
+	Safe_Delete_Array(pVertices);
+
+	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
+	m_BufferDesc.ByteWidth = { m_iIndexStride * m_iNumIndices };
+	m_BufferDesc.Usage = { D3D11_USAGE_DEFAULT };
+	m_BufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	m_BufferDesc.StructureByteStride = { 0 };
+	m_BufferDesc.CPUAccessFlags = { 0 };
+	m_BufferDesc.MiscFlags = { 0 };
+
+	_ushort* pIndices = new _ushort[m_iNumIndices];
+	ZeroMemory(pIndices, sizeof(_ushort) * m_iNumIndices);
+
+	pIndices[0] = 0;
+	pIndices[1] = 1;
+	pIndices[2] = 2;
+
+	pIndices[3] = 0;
+	pIndices[4] = 2;
+	pIndices[5] = 3;
+
+	ZeroMemory(&m_SubResourceData, sizeof D3D11_SUBRESOURCE_DATA);
+	m_SubResourceData.pSysMem = pIndices;
+
+	if (FAILED(__super::Create_Buffer(&m_pIB)))
+		return E_FAIL;
+
+	Safe_Delete_Array(pIndices);
 
 	return S_OK;
 }
