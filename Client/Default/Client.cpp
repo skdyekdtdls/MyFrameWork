@@ -17,9 +17,11 @@
 #endif
 
 #define MAX_LOADSTRING 100
+
+// 전역 변수:
 HWND        g_hWnd = { nullptr };
 HINSTANCE   g_hInst = { nullptr };
-// 전역 변수:
+static UINT g_ResizeWidth = 0, g_ResizeHeight = 0;
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
@@ -98,6 +100,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
         if (dwAccelTime >= 1 / 60.0)
         {
+            if (g_ResizeWidth != 0 && g_ResizeHeight != 0)
+            {
+                pGameInstance->ResizeBuffer(g_ResizeWidth, g_ResizeHeight);
+            }
+
             pGameInstance->Set_Timer(TEXT("Timer_60fps"));
 
             // TODO
@@ -183,6 +190,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+    case WM_SIZE:
+        if (wParam == SIZE_MINIMIZED)
+            return 0;
+        g_ResizeWidth = (UINT)LOWORD(lParam); // Queue resize
+        g_ResizeHeight = (UINT)HIWORD(lParam);
+        return 0;
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
