@@ -10,10 +10,10 @@ private:
 	virtual ~CLevel_Loading() = default;
 
 public:
-	HRESULT Initialize(LEVELID eNextLevelID);
-	void Tick(_double TimeDelta) override;
-	void Late_Tick(_double TimeDelta) override;
-	HRESULT Render() override;
+	virtual HRESULT Initialize(LEVELID eNextLevelID);
+	virtual void Tick(_double TimeDelta) override;
+	virtual void Late_Tick(_double TimeDelta) override;
+	virtual HRESULT Render() override;
 
 private:
 	class CLoader* m_pLoader = { nullptr };

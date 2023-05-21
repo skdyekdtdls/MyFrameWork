@@ -12,10 +12,12 @@ CMainApp::CMainApp()
 HRESULT CMainApp::Initialize()
 {
 	GRAPHICDESC GraphicDesc;
+	ZeroStruct(GraphicDesc);
+
 	GraphicDesc.hWnd = g_hWnd;
-	GraphicDesc.eWinMode = GraphicDesc.WM_WIN;
 	GraphicDesc.iViewportSizeX = g_iWinSizeX;
 	GraphicDesc.iViewportSizeY = g_iWinSizeY;
+	GraphicDesc.eWinMode = GraphicDesc.WM_WIN;
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(LEVEL_END, GraphicDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
@@ -39,10 +41,10 @@ void CMainApp::Tick(_double TimeDelta)
 
 HRESULT CMainApp::Render()
 {
-	if (nullptr == m_pGameInstance
-		|| nullptr == m_pRenderer)
+	if (nullptr == m_pGameInstance ||
+		nullptr == m_pRenderer)
 	{
-		//assert(false);
+		assert(false);
 		return E_FAIL;
 	}
 
@@ -57,16 +59,6 @@ HRESULT CMainApp::Render()
 	return S_OK;
 }
 
-HRESULT CMainApp::Open_Level(LEVELID eLevelIndex)
-{
-	if (nullptr == m_pGameInstance)
-		return E_FAIL;
-
-	CLevel_Loading* pLoading = CLevel_Loading::Create(m_pDevice, m_pContext, eLevelIndex);
-	
-	return m_pGameInstance->Open_Level(eLevelIndex, pLoading);
-}
-
 HRESULT CMainApp::Ready_Prototype_Component_For_Static()
 {
 	if (nullptr == m_pGameInstance)
@@ -74,11 +66,37 @@ HRESULT CMainApp::Ready_Prototype_Component_For_Static()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"),
 		m_pRenderer = CRenderer::Create(m_pDevice, m_pContext))))
+	{
+		assert(false);
 		return E_FAIL;
-	
+	}
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Vtxtex"),
+		CShader::Create(m_pDevice, m_pContext, L"../Bin/ShaderFiles/Shader_Vtxtex.hlsl"
+			, VTXPOSTEX_DECL::Elements, VTXPOSTEX_DECL::iNumElements))))
+	{
+		assert(false);
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
+		CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
+	{
+		assert(false);
+		return E_FAIL;
+	}
+
 	Safe_AddRef(m_pRenderer);
 
 	return S_OK;
+}
+
+HRESULT CMainApp::Open_Level(LEVELID eLevelIndex)
+{
+	if (nullptr == m_pGameInstance)
+		return E_FAIL;
+
+	return m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, eLevelIndex));
 }
 
 CMainApp* CMainApp::Create()

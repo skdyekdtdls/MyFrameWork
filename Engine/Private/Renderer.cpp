@@ -39,87 +39,106 @@ void CRenderer::Add_RenderGroup(RENDERGROUP eRenderGroup, CGameObject* pGameObej
 HRESULT CRenderer::Draw_RenderGroup()
 {
 	if (FAILED(Render_Priority()))
+	{
+		CONSOLE_MSG("CRenderer::Draw_RenderGroup : \t 줄 번호 : " << __LINE__);
 		return E_FAIL;
+	}
 
 	if (FAILED(Render_NonBlend()))
+	{
+		CONSOLE_MSG("CRenderer::Draw_RenderGroup : \t 줄 번호 : " << __LINE__);
 		return E_FAIL;
+	}
 
 	if (FAILED(Render_NonLight()))
+	{
+		CONSOLE_MSG("CRenderer::Draw_RenderGroup : \t 줄 번호 : " << __LINE__);
 		return E_FAIL;
+	}
 
 	if (FAILED(Render_Blend()))
+	{
+		CONSOLE_MSG("CRenderer::Draw_RenderGroup : \t 줄 번호 : " << __LINE__);
 		return E_FAIL;
+	}
 
 	if (FAILED(Render_UI()))
+	{
+		CONSOLE_MSG("CRenderer::Draw_RenderGroup : \t 줄 번호 : " << __LINE__);
 		return E_FAIL;
+	}
 
 	return S_OK;
 }
 
 HRESULT CRenderer::Render_Priority()
 {
-	for (auto& GameObject : m_RenderObjects[RENDER_PRIORITY])
+	HRESULT hr = S_OK;
+	for (auto& pGameObject : m_RenderObjects[RENDER_PRIORITY])
 	{
-		if (FAILED(GameObject->Render()))
-			return E_FAIL;
+		hr= pGameObject->Render();
 
-		Safe_Release(GameObject);
+		Safe_Release(pGameObject);
 	}
 	m_RenderObjects[RENDER_PRIORITY].clear();
 		
-	return S_OK;
+	return hr;
 }
 
 HRESULT CRenderer::Render_NonBlend()
 {
-	for (auto& GameObject : m_RenderObjects[RENDER_NONBLEND])
+	HRESULT hr = S_OK;
+	for (auto& pGameObject : m_RenderObjects[RENDER_NONBLEND])
 	{
-		if (FAILED(GameObject->Render()))
-			return E_FAIL;
+		hr = pGameObject->Render();
 
-		Safe_Release(GameObject);
+		Safe_Release(pGameObject);
 	}
 	m_RenderObjects[RENDER_NONBLEND].clear();
-	return S_OK;
+
+	return hr;
 }
 
 HRESULT CRenderer::Render_NonLight()
 {
-	for (auto& GameObject : m_RenderObjects[RENDER_NONLIGHT])
+	HRESULT hr = S_OK;
+	for (auto& pGameObject : m_RenderObjects[RENDER_NONLIGHT])
 	{
-		if (FAILED(GameObject->Render()))
-			return E_FAIL;
+		hr = pGameObject->Render();
 
-		Safe_Release(GameObject);
+		Safe_Release(pGameObject);
 	}
 	m_RenderObjects[RENDER_NONLIGHT].clear();
-	return S_OK;
+
+	return hr;
 }
 
 HRESULT CRenderer::Render_Blend()
 {
-	for (auto& GameObject : m_RenderObjects[RENDER_BLEND])
+	HRESULT hr = S_OK;
+	for (auto& pGameObject : m_RenderObjects[RENDER_BLEND])
 	{
-		if (FAILED(GameObject->Render()))
-			return E_FAIL;
+		hr = pGameObject->Render();
 
-		Safe_Release(GameObject);
+		Safe_Release(pGameObject);
 	}
 	m_RenderObjects[RENDER_BLEND].clear();
-	return S_OK;
+
+	return hr;
 }
 
 HRESULT CRenderer::Render_UI()
 {
-	for (auto& GameObject : m_RenderObjects[RENDER_UI])
+	HRESULT hr = S_OK;
+	for (auto& pGameObject : m_RenderObjects[RENDER_UI])
 	{
-		if (FAILED(GameObject->Render()))
-			return E_FAIL;
+		hr = pGameObject->Render();
 
-		Safe_Release(GameObject);
+		Safe_Release(pGameObject);
 	}
 	m_RenderObjects[RENDER_UI].clear();
-	return S_OK;
+
+	return hr;
 }
 
 

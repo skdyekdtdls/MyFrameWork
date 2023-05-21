@@ -19,15 +19,12 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pLevel_Manager);
 	Safe_AddRef(m_pObject_Manager);
 	Safe_AddRef(m_pTimer_Manager);
-	Safe_AddRef(m_pObject_Manager);
+	Safe_AddRef(m_pComponent_Manager);
 }
 
 HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDevice, ID3D11DeviceContext** ppDeviceContext)
 {
 	if (nullptr == m_pGraphic_Device)
-		return E_FAIL;
-
-	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
 
 	if (FAILED(m_pGraphic_Device->Ready_Graphic_Device(GraphicDesc.hWnd, GraphicDesc.eWinMode, GraphicDesc.iViewportSizeX, GraphicDesc.iViewportSizeY, ppDevice, ppDeviceContext)))
@@ -36,7 +33,7 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHICDESC& Gr
 	if (FAILED(m_pObject_Manager->Reserve_Containers(iNumLevels)))
 		return E_FAIL;
 
-	if (FAILED(m_pComponent_Manager->Reserve_Container(iNumLevels)))
+	if (FAILED(m_pComponent_Manager->Reserve_Containers(iNumLevels)))
 		return E_FAIL;
 
 	return S_OK;
@@ -53,6 +50,16 @@ void CGameInstance::Tick_Engine(_double TimeDelta)
 
 	m_pLevel_Manager->Tick(TimeDelta);
 	m_pLevel_Manager->Late_Tick(TimeDelta);
+}
+
+void CGameInstance::Clear_LevelResources(_uint iLevelIndex)
+{
+	if (nullptr == m_pObject_Manager ||
+		nullptr == m_pComponent_Manager)
+		return;
+
+	m_pObject_Manager->Clear_LevelResources(iLevelIndex);
+	m_pComponent_Manager->Clear_LevelResources(iLevelIndex);
 }
 
 HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)
@@ -107,13 +114,7 @@ HRESULT CGameInstance::Add_GameObject(_uint iLevelIndex, const _tchar* pPrototyp
 	return S_OK;
 }
 
-void CGameInstance::Clear_LevelResources(_uint iLevelIndex)
-{
-	if (nullptr == m_pObject_Manager)
-		return;
 
-	m_pObject_Manager->Clear_LevelResources(iLevelIndex);
-}
 
 _double CGameInstance::Get_Timer(const _tchar* pTimerTag)
 {
@@ -168,7 +169,7 @@ void CGameInstance::Release_Engine()
 void CGameInstance::Free()
 {
 	Safe_Release(m_pTimer_Manager);
-	Safe_Release(m_pObject_Manager);
+	Safe_Release(m_pComponent_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pGraphic_Device);

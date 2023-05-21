@@ -19,6 +19,8 @@ CVIBuffer::CVIBuffer(const CVIBuffer& rhs)
 	, m_eFormat(rhs.m_eFormat)
 	, m_eTopology(rhs.m_eTopology)
 {
+	Safe_AddRef(m_pVB);
+	Safe_AddRef(m_pIB);
 }
 
 HRESULT CVIBuffer::Initialize_Prototype()
@@ -51,9 +53,6 @@ HRESULT CVIBuffer::Render()
 	m_pContext->IASetVertexBuffers(0, m_iNumVertexBuffers, pBuffers, iStrides, iOffset);
 	m_pContext->IASetIndexBuffer(m_pIB, m_eFormat, 0);
 	m_pContext->IASetPrimitiveTopology(m_eTopology);
-
-	assert(false); // ÀÎÇ² ·¹ÀÌ¾Æ¿ô ¼³Á¤ÇØÁÖ¼À.
-
 	m_pContext->DrawIndexed(m_iNumIndices, 0, 0);
 
 	return S_OK;
@@ -66,5 +65,7 @@ HRESULT CVIBuffer::Create_Buffer(ID3D11Buffer** ppOut)
 
 void CVIBuffer::Free()
 {
+	Safe_Release(m_pVB);
+	Safe_Release(m_pIB);
 	__super::Free();
 }

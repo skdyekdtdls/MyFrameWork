@@ -87,10 +87,11 @@ HRESULT CShader::Begin(_uint iPassIndex)
 		return E_FAIL;
 	}
 
-	ID3DX11EffectPass* pPass = pTechnique->GetPassByIndex(iPassIndex);
-	pPass->Apply(0, m_pContext);
+	pTechnique->GetPassByIndex(iPassIndex)->Apply(0, m_pContext);
 
 	m_pContext->IASetInputLayout(m_InputLayouts[iPassIndex]);
+
+	return S_OK;
 }
 
 CShader* CShader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pShaderFilePath, const D3D11_INPUT_ELEMENT_DESC* pElements, _uint iNumElements)

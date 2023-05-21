@@ -57,6 +57,7 @@
     <ClCompile Include="..\private\Renderer.cpp" />
     <ClCompile Include="..\private\Timer.cpp" />
     <ClCompile Include="..\private\Timer_Manager.cpp" />
+    <ClCompile Include="..\Public\Engine_Struct.cpp" />
     <ClCompile Include="VIBuffer_Rect.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

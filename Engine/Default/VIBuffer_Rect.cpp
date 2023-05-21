@@ -29,19 +29,19 @@ HRESULT CVIBuffer_Rect::Initialize_Prototype()
 	m_BufferDesc.MiscFlags = { 0 };
 	
 	VTXPOSTEX* pVertices = new VTXPOSTEX[m_iNumVertices];
-	ZeroMemory(&pVertices, sizeof(pVertices) * m_iNumVertices);
+	ZeroMemory(pVertices, sizeof(VTXPOSTEX) * 4);
 
-	pVertices->vPostion = { _float3(-0.5f, 0.5f, 0.f) };
-	pVertices->vTexCoord = { _float2(0.f, 0.f)};
+	pVertices[0].vPosition = { _float3(-0.5f, 0.5f, 0.f) };
+	pVertices[0].vTexCoord = { _float2(0.f, 0.f)};
 
-	pVertices->vPostion = { _float3(_float3(0.5f, 0.5f, 0.f)) };
-	pVertices->vTexCoord = { _float2(1.f, 0.f) };
+	pVertices[1].vPosition = { _float3(0.5f, 0.5f, 0.f) };
+	pVertices[1].vTexCoord = { _float2(1.f, 0.f) };
 
-	pVertices->vPostion = { _float3(_float3(0.5f, -0.5f, 0.f)) };
-	pVertices->vTexCoord = { _float2(1.f, 1.f) };
+	pVertices[2].vPosition = { _float3(0.5f, -0.5f, 0.f) };
+	pVertices[2].vTexCoord = { _float2(1.f, 1.f) };
 
-	pVertices->vPostion = { _float3(_float3(-0.5f, -0.5f, 0.f)) };
-	pVertices->vTexCoord = { _float2(0.f, 1.f) };
+	pVertices[3].vPosition = { _float3(-0.5f, -0.5f, 0.f) };
+	pVertices[3].vTexCoord = { _float2(0.f, 1.f) };
 
 	ZeroMemory(&m_SubResourceData, sizeof m_SubResourceData);
 	m_SubResourceData.pSysMem = { pVertices };
