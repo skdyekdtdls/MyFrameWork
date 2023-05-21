@@ -22,6 +22,7 @@ public:
 	void Tick_Engine(_double TimeDelta);
 
 public: /* For Graphic_Device*/
+	void ResizeBuffer(_uint & g_ResizeWidth, _uint & g_ResizeHeight);
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
 	HRESULT Clear_DepthStencil_View();
 	HRESULT Present();

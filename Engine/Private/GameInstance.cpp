@@ -62,6 +62,14 @@ void CGameInstance::Clear_LevelResources(_uint iLevelIndex)
 	m_pComponent_Manager->Clear_LevelResources(iLevelIndex);
 }
 
+void CGameInstance::ResizeBuffer(_uint& g_ResizeWidth, _uint& g_ResizeHeight)
+{
+	if (nullptr == m_pGraphic_Device)
+		return;
+
+	m_pGraphic_Device->ResizeBuffer(g_ResizeWidth, g_ResizeHeight);
+}
+
 HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)
 {
 	if (nullptr == m_pGraphic_Device)

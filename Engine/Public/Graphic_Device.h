@@ -15,6 +15,7 @@ public:
 		, _uint iWinCX, _uint iWinCY
 		, _Inout_ ID3D11Device** ppDeviceOut, _Inout_ ID3D11DeviceContext** ppDeviceContextOut);
 
+	void ResizeBuffer(_uint& g_ResizeWidth, _uint& g_ResizeHeight);
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
 	HRESULT Clear_DepthStencil_View();
 	HRESULT Present();

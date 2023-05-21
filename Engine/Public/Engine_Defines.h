@@ -32,9 +32,15 @@ using namespace Engine;
 #include <stdlib.h>
 #include <crtdbg.h>
 
-#ifndef DBG_NEW
-#define DBG_NEW new ( _NORMAL_BLOCK, __FILE__, __LINE__ )
-#define new DBG_NEW
-#endif
+#ifndef DBG_NEW 
 
-#endif // !_DEBUG
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ ) 
+
+#ifndef _USE_IMGUI
+#define new DBG_NEW 
+#else
+#define New DBG_NEW
+#endif // _USE_IMGUI
+
+#endif // _DEBUG
+#endif // _DEBUG

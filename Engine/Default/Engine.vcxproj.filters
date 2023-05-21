@@ -5,7 +5,7 @@
       <Filter>00. System\00.Device\GraphicDev</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\GameInstance.cpp">
-      <Filter>01. Utility\00. GameInstace</Filter>
+      <Filter>01. Utility\00. GameInstance</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Base.cpp">
       <Filter>01. Utility\99. SuperClass</Filter>
@@ -58,7 +58,7 @@
       <Filter>00. System\00.Device\GraphicDev</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\GameInstance.h">
-      <Filter>01. Utility\00. GameInstace</Filter>
+      <Filter>01. Utility\00. GameInstance</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Engine_Defines.h">
       <Filter>99. Headers</Filter>
@@ -125,9 +125,6 @@
     <Filter Include="01. Utility">
       <UniqueIdentifier>{2170b703-cea9-4531-874f-483401556824}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Utility\00. GameInstace">
-      <UniqueIdentifier>{a4a972fc-018f-4248-8f41-91db36e41883}</UniqueIdentifier>
-    </Filter>
     <Filter Include="99. Headers">
       <UniqueIdentifier>{4f947f70-d680-43ba-af14-1c181bfae0f9}</UniqueIdentifier>
     </Filter>
@@ -178,6 +175,9 @@
     </Filter>
     <Filter Include="01. Utility\03. Component\Shader">
       <UniqueIdentifier>{329ec160-39f1-4451-8a5a-5cb6c96ce870}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\00. GameInstance">
+      <UniqueIdentifier>{a4a972fc-018f-4248-8f41-91db36e41883}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
