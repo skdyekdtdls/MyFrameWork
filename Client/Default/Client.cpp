@@ -5,7 +5,7 @@
 #include "Client.h"
 #include "MainApp.h"
 #include "Client_Defines.h"
-
+#include "GameInstance.h"
 #ifdef _DEBUG
 
 #ifdef UNICODE
@@ -56,10 +56,27 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
 
     MSG msg;
+    CGameInstance* pGameInstance = CGameInstance::GetInstance();
+    Safe_AddRef(pGameInstance);
     
     CMainApp* pMainApp = CMainApp::Create();
     if (nullptr == pMainApp)
         return FALSE;
+
+    if (FAILED(pGameInstance->Ready_Timer(TEXT("Timer_Default"))))
+    {
+        MSG_BOX("Failed to Ready Timer_Default");
+        return FALSE;
+    }
+
+    if (FAILED(pGameInstance->Ready_Timer(TEXT("Timer_60fps"))))
+    {
+        MSG_BOX("Failed to Ready Timer_60fps");
+           return FALSE;
+    }
+
+
+    _double dwAccelTime = 0.0;
 
     // 기본 메시지 루프입니다:
     while (true)
@@ -76,11 +93,22 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             }
         }
 
-        // TODO
-        pMainApp->Tick(0.016);
-        pMainApp->Render();
+        pGameInstance->Set_Timer(TEXT("Timer_Default"));
+        dwAccelTime += pGameInstance->Get_Timer(TEXT("Timer_Default"));
+
+        if (dwAccelTime >= 1 / 60.0)
+        {
+            pGameInstance->Set_Timer(TEXT("Timer_60fps"));
+
+            // TODO
+            pMainApp->Tick(pGameInstance->Get_Timer(TEXT("Timer_60fps")));
+            pMainApp->Render();
+
+            dwAccelTime = { 0.0 };
+        }
     }
 
+    Safe_Release(pGameInstance);
     Safe_Release(pMainApp);
     return (int) msg.wParam;
 }

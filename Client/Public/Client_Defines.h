@@ -13,3 +13,4 @@ extern HINSTANCE g_hInstance;
 extern HWND g_hWnd;
 
 using namespace Client;
+
