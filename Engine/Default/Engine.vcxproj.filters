@@ -43,14 +43,17 @@
     <ClCompile Include="..\private\VIBuffer.cpp">
       <Filter>01. Utility\03. Component\VIBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="VIBuffer_Rect.cpp">
-      <Filter>01. Utility\03. Component\VIBuffer\Rect</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Shader.cpp">
       <Filter>01. Utility\03. Component\Shader</Filter>
     </ClCompile>
     <ClCompile Include="..\Public\Engine_Struct.cpp">
       <Filter>99. Headers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Grid.cpp">
+      <Filter>01. Utility\03. Component\VIBuffer\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Rect.cpp">
+      <Filter>01. Utility\03. Component\VIBuffer\Rect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +120,9 @@
     <ClInclude Include="..\public\Shader.h">
       <Filter>01. Utility\03. Component\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Grid.h">
+      <Filter>01. Utility\03. Component\VIBuffer\Grid</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -178,6 +184,9 @@
     </Filter>
     <Filter Include="01. Utility\00. GameInstance">
       <UniqueIdentifier>{a4a972fc-018f-4248-8f41-91db36e41883}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Component\VIBuffer\Grid">
+      <UniqueIdentifier>{b4064382-a54b-48f8-93cc-9a788dcfbe99}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

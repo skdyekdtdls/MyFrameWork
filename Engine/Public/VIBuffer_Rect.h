@@ -12,7 +12,7 @@ protected:
 	virtual ~CVIBuffer_Rect() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype() override;
+	HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 
 public:

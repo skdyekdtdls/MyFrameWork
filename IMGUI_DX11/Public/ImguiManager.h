@@ -16,13 +16,18 @@ public:
 	ImguiManager();
 	~ImguiManager() = default;
 
-	HRESULT Tick();
+	HRESULT Add_ImWindow(const _tchar* tag, ImWindow* pImWindow);
+	HRESULT Tick(_double TimeDelta);
 
 public:
 	_float4 clear_color = _float4(0.45f, 0.55f, 0.60f, 1.00f);
 private:
-	map<string, int> a;
+	unordered_map<const _tchar*, ImWindow*> m_ImWindows;
 	CGameInstance* m_pGameInstance = { nullptr };
+
+private:
+	ImWindow* Find_ImWindow(const _tchar* tag);
+
 public:
 	virtual void Free() override;
 };
