@@ -19,6 +19,9 @@ public:
 public:
 	HRESULT Begin(_uint iPassIndex);
 
+	HRESULT Bind_ShaderResource(const _char * pConstantName, ID3D11ShaderResourceView * pSRV);
+	HRESULT Bind_ShaderResources(const _char * pConstantName, ID3D11ShaderResourceView * *ppSRVArray, _uint iNumTexture);
+
 private:
 	_uint	m_iNumPasses = { 0 };
 	vector<ID3D11InputLayout*>	m_InputLayouts;

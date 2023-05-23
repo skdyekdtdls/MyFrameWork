@@ -94,6 +94,39 @@ HRESULT CShader::Begin(_uint iPassIndex)
 	return S_OK;
 }
 
+HRESULT CShader::Bind_ShaderResource(const _char* pConstantName, ID3D11ShaderResourceView* pSRV)
+{
+	if (nullptr == m_pEffect)
+		return E_FAIL;
+	
+	//g_Texture
+	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
+	if (nullptr == pVariable)
+		return E_FAIL;
+	//(SR)g_Texture
+	ID3DX11EffectShaderResourceVariable* pVarialbeShaderResource = pVariable->AsShaderResource();
+	if (nullptr == pVarialbeShaderResource)
+		return E_FAIL;
+
+	return pVarialbeShaderResource->SetResource(pSRV);
+}
+
+HRESULT CShader::Bind_ShaderResources(const _char* pConstantName, ID3D11ShaderResourceView** ppSRVArray, _uint iNumTexture)
+{
+	if (nullptr == m_pEffect)
+		return E_FAIL;
+
+	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
+	if (nullptr == pVariable)
+		return E_FAIL;
+
+	ID3DX11EffectShaderResourceVariable* pShaderResourceVariable = pVariable->AsShaderResource();
+	if (nullptr == pShaderResourceVariable)
+		return E_FAIL;
+
+	return pShaderResourceVariable->SetResourceArray(ppSRVArray, 0, iNumTexture);
+}
+
 CShader* CShader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pShaderFilePath, const D3D11_INPUT_ELEMENT_DESC* pElements, _uint iNumElements)
 {
 	CShader* pInstance = new CShader(pDevice, pContext);

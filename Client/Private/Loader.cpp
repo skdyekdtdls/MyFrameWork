@@ -69,22 +69,15 @@ HRESULT CLoader::Loading_For_Logo()
 		return E_FAIL;
 
 	Set_LoadingText(L"텍스처 로딩 중");
-	for (int i = 0; i < 99999999; ++i)
-	{
-		int a = 0;
-	}
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
+		return E_FAIL;
 
 	Set_LoadingText(L"컴포넌트 로딩 중");
-	for (int i = 0; i < 99999999; ++i)
-	{
-		int a = 0;
-	}
+
 
 	Set_LoadingText(L"쉐이더 로딩 중");
-	for (int i = 0; i < 99999999; ++i)
-	{
-		int a = 0;
-	}
+
 	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"),
 		CBackGround::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
@@ -103,22 +96,13 @@ HRESULT CLoader::Loading_For_GamePlay()
 
 
 	Set_LoadingText(L"텍스처 로딩 중");
-	for (int i = 0; i < 99999999; ++i)
-	{
-		int a = 0;
-	}
+
 
 	Set_LoadingText(L"컴포넌트 로딩 중");
-	for (int i = 0; i < 99999999; ++i)
-	{
-		int a = 0;
-	}
+
 
 	Set_LoadingText(L"쉐이더 로딩 중");
-	for (int i = 0; i < 99999999; ++i)
-	{
-		int a = 0;
-	}
+
 	Set_LoadingText(L"로딩 완료");
 
 	m_isFinished = true;

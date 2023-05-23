@@ -25,6 +25,8 @@ using namespace Engine;
 #include "Engine_Macro.h"
 #include "Engine_Struct.h"
 #include "Engine_Function.h"
+#include "DirectXTK/DDSTextureLoader.h"
+#include "DirectXTK/WICTextureLoader.h"
 
 #ifdef _DEBUG
 

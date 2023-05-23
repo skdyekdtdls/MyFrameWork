@@ -1,7 +1,6 @@
 #include "..\Public\BackGround.h"
 #include "GameInstance.h"
-#include "Shader.h"
-#include "VIBuffer_Rect.h"
+
 CBackGround::CBackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
@@ -71,6 +70,9 @@ HRESULT CBackGround::Render()
 
 HRESULT CBackGround::SetUp_ShaderResources()
 {
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -95,6 +97,14 @@ HRESULT CBackGround::Add_Components()
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Vtxtex")
 		, TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+	{
+		assert(false);
+		return E_FAIL;
+	}
+
+	/* For.Com_Shader */
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Logo")
+		, TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
 	{
 		assert(false);
 		return E_FAIL;
@@ -132,6 +142,7 @@ void CBackGround::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pViBufferCom);
 	Safe_Release(m_pRendererCom); 

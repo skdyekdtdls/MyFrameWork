@@ -26,7 +26,7 @@ void CTerrain::Tick(_double TimeDelta)
 
 void CTerrain::Late_Tick(_double TimeDelta)
 {
-	pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 }
 
 HRESULT CTerrain::Render()
@@ -36,7 +36,7 @@ HRESULT CTerrain::Render()
 
 HRESULT CTerrain::Add_Components()
 {
-	if(FAILED(__super::Add_Component())
+	//if(FAILED(__super::Add_Component())
 
 	return S_OK;
 }
@@ -53,7 +53,7 @@ CGameObject* CTerrain::Clone(void* pArg)
 
 void CTerrain::Free(void)
 {
-	Safe_Release(pRendererCom);
-	Safe_Release(pVIBufferCom);
-	Safe_Release(pShaderCom);
+	Safe_Release(m_pRendererCom);
+	Safe_Release(m_pVIBufferCom);
+	Safe_Release(m_pShaderCom);
 }
