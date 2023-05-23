@@ -9,7 +9,6 @@ CTexture::CTexture(const CTexture& rhs)
 	: CComponent(rhs)
 	, m_iNumTextures(rhs.m_iNumTextures)
 	, m_ppTextures(rhs.m_ppTextures)
-	, m_IsClone(true)
 {
 	for (_uint i = 0; i < m_iNumTextures; ++i)
 	{
@@ -103,11 +102,13 @@ CComponent* CTexture::Clone(void* pArg)
 void CTexture::Free(void)
 {
 	__super::Free();
+	
+	_long dwRefCnt = 0;
 	for (_uint i = 0; i < m_iNumTextures; ++i)
 	{
-		Safe_Release(m_ppTextures[i]);
+		dwRefCnt = Safe_Release(m_ppTextures[i]);
 	}
 
-	if (!m_IsClone)
+	if(0 == dwRefCnt)
 		Safe_Delete_Array(m_ppTextures);
 }
