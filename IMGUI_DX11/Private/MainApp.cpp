@@ -31,6 +31,8 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Ready_Prototype_Component_For_Static()))
 		return E_FAIL;
 
+
+
 	return S_OK;
 }
 
@@ -47,15 +49,13 @@ HRESULT CMainApp::Render()
 	if (nullptr == m_pGameInstance ||
 		nullptr == m_pRenderer)
 		return E_FAIL;
-	_float4 clear_color = ImguiManager::GetInstance()->clear_color;
-	const _float clear_color_with_alpha[4] = { clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w };
 	
-	m_pGameInstance->Clear_BackBuffer_View(_float4(clear_color_with_alpha));
+	m_pGameInstance->Clear_BackBuffer_View(_float4(0.5f, 0.5f, 0.5f, 1.f));
 	m_pGameInstance->Clear_DepthStencil_View();
 
 	m_pRenderer->Draw_RenderGroup();
 
-	m_pImguiMgr->Tick();
+	m_pImguiMgr->Tick(0.016);
 
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());

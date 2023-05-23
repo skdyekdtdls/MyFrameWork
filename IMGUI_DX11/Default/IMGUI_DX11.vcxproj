@@ -147,9 +147,14 @@
   <ItemGroup>
     <ClInclude Include="..\Public\backends\imgui_impl_dx11.h" />
     <ClInclude Include="..\Public\backends\imgui_impl_win32.h" />
+    <ClInclude Include="..\Public\BackGround.h" />
     <ClInclude Include="..\Public\ImguiManager.h" />
     <ClInclude Include="..\Public\Imgui_Defines.h" />
     <ClInclude Include="..\Public\ImWindow.h" />
+    <ClInclude Include="..\Public\Level_GamePlay.h" />
+    <ClInclude Include="..\Public\Level_Loading.h" />
+    <ClInclude Include="..\Public\Level_Logo.h" />
+    <ClInclude Include="..\Public\Loader.h" />
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\Public\sources\imconfig.h" />
     <ClInclude Include="..\Public\sources\imgui.h" />
@@ -157,18 +162,25 @@
     <ClInclude Include="..\Public\sources\imstb_rectpack.h" />
     <ClInclude Include="..\Public\sources\imstb_textedit.h" />
     <ClInclude Include="..\Public\sources\imstb_truetype.h" />
+    <ClInclude Include="..\public\Terrain.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="..\Private\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\Private\BackGround.cpp" />
     <ClCompile Include="..\Private\ImguiManager.cpp" />
     <ClCompile Include="..\Private\ImWindow.cpp" />
+    <ClCompile Include="..\Private\Level_GamePlay.cpp" />
+    <ClCompile Include="..\Private\Level_Loading.cpp" />
+    <ClCompile Include="..\Private\Level_Logo.cpp" />
+    <ClCompile Include="..\Private\Loader.cpp" />
     <ClCompile Include="..\Private\MainApp.cpp" />
     <ClCompile Include="..\Private\sources\imgui.cpp" />
     <ClCompile Include="..\Private\sources\imgui_demo.cpp" />
     <ClCompile Include="..\Private\sources\imgui_draw.cpp" />
     <ClCompile Include="..\Private\sources\imgui_tables.cpp" />
     <ClCompile Include="..\Private\sources\imgui_widgets.cpp" />
+    <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
