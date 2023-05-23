@@ -3,6 +3,7 @@
 #include "Shader.h"
 #include "Renderer.h"
 #include "VIBuffer_Rect.h"
+#include "Texture.h"
 
 BEGIN(Engine)
 class CComponent_Manager final : public CBase

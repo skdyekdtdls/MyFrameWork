@@ -26,9 +26,9 @@ public:
 private:
 	HRESULT Add_Components();
 
-	CRenderer* pRendererCom = { nullptr };
-	CVIBuffer_Grid* pVIBufferCom = { nullptr };
-	CShader* pShaderCom = { nullptr };
+	CRenderer* m_pRendererCom = { nullptr };
+	CVIBuffer_Grid* m_pVIBufferCom = { nullptr };
+	CShader* m_pShaderCom = { nullptr };
 public:
 	static CTerrain* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg);

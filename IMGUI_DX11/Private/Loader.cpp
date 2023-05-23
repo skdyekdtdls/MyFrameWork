@@ -96,7 +96,7 @@ HRESULT CLoader::Loading_For_GamePlay()
 
 
 	Set_LoadingText(L"컴포넌트 로딩 중");
-	m_pGameInstance->Add_Prototype()
+	
 
 	Set_LoadingText(L"쉐이더 로딩 중");
 
