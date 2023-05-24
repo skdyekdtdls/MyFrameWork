@@ -15,7 +15,7 @@ HRESULT CVIBuffer_Grid::Initialize_Prototype(_float fWidth, _float fDepth, _uint
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
 
-	_float halfWidth = 0.5f * fWidth;
+	_float halfWidth = 0.5f * fWidth; 
 	_float halfDepth = 0.5f * fDepth;
 	_float dx = fWidth / (iXNum - 1);
 	_float dz = fDepth / (iZNum - 1);
