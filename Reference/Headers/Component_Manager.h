@@ -3,10 +3,11 @@
 #include "Shader.h"
 #include "Renderer.h"
 #include "VIBuffer_Rect.h"
+#include "VIBuffer_Grid.h"
 #include "Texture.h"
 
 BEGIN(Engine)
-class CComponent_Manager final : public CBase
+class ENGINE_DLL CComponent_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CComponent_Manager)
 public:

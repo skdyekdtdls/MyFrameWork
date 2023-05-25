@@ -22,37 +22,37 @@
 #endif // ENGINE_EXPORTS
 
 #define NULL_CHECK(_ptr) \
-	{if(0 == _ptr) {__asm {int 3}; return;}}
+	{if(0 == _ptr) {__debugbreak(); return;}}
 
 #define NULL_CHECK_RETURN( _ptr, _return) \
-	{if(0 == _ptr) {__asm {int 3}; return _return;}
+	{if(0 == _ptr) {__debugbreak(); return _return;}}
 
 #define NULL_CHECK_MSG(_ptr, _message) \
-	{if(0 == _ptr) {MSG_BOX(_message); __asm{int 3};}}
+	{if(0 == _ptr) {MSG_BOX(_message);__debugbreak();}}
 
 #define NULL_CHECK_CONSOLE_MSG(_ptr, _message) \
-	{if(0 == _ptr) {CONSOLE_MSG(_message); __asm{int 3};}}
+	{if(0 == _ptr) {CONSOLE_MSG(_message);__debugbreak();}}
 
 #define NULL_CHECK_RETURN_MSG( _ptr, _return, _message ) \
-	{if (0 == _ptr) {MSG_BOX(_message); __asm{ int 3 }; return _return;}}
+	{if (0 == _ptr) {MSG_BOX(_message); __debugbreak(); return _return;}}
 
 #define NULL_CHECK_RETURN_CONSOLE_MSG( _ptr, _return, _message ) \
-	{if (0 == _ptr) {CONSOLE_MSG(_message); __asm{ int 3 }; return _return;}}
+	{if (0 == _ptr) {CONSOLE_MSG(_message); __debugbreak(); return _return;}}
 
 #define FAILED_CHECK(_hr) \
-	{if ((HRESULT)_hr < 0) { __asm {int 3}; return; }}
+	{if ((HRESULT)_hr < 0) { __debugbreak(); return; }}
 
 #define FAILED_CHECK_RETURN(_hr, _return) \
-	{if ((HRESULT)_hr < 0) { __asm {int 3}; return _return; }}
+	{if ((HRESULT)_hr < 0) { __debugbreak(); return _return; }}
 
 #define FAILED_CHECK_MSG(_hr, _message) \
-	{if ((HRESULT)_hr < 0) { MSG_BOX(_message); __asm {int 3}; return; }}
+	{if ((HRESULT)_hr < 0) { MSG_BOX(_message); __debugbreak(); return; }}
 
 #define FAILED_CHECK_RETURN_MSG(_hr, _return, _message) \
-	{if ((HRESULT)_hr < 0) { MSG_BOX(_message); __asm {int 3}; return _return; }}
+	{if ((HRESULT)_hr < 0) { MSG_BOX(_message); __debugbreak(); return _return; }}
 
 #define FAILED_CHECK_RETURN_CONSOLE_MSG(_hr, _return, _message) \
-	{if ((HRESULT)_hr < 0) { CONSOLE_MSG(_message); __asm {int 3}; return _return; }}
+	{if ((HRESULT)_hr < 0) { CONSOLE_MSG(_message); __debugbreak(); return _return; }}
 
 #define NO_COPY(CLASSNAME)										\
 private:														\
