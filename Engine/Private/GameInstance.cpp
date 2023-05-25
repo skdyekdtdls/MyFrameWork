@@ -167,8 +167,8 @@ CComponent* CGameInstance::Clone_Component(_uint iLevelIndex, const _tchar* pPro
 void CGameInstance::Release_Engine()
 {
 	CTimer_Manager::DestroyInstance();
-	CComponent_Manager::DestroyInstance();
 	CObject_Manager::DestroyInstance();
+	CComponent_Manager::DestroyInstance();
 	CLevel_Manager::DestroyInstance();
 	CGraphic_Device::DestroyInstance();
 	CGameInstance::DestroyInstance();
@@ -177,8 +177,8 @@ void CGameInstance::Release_Engine()
 void CGameInstance::Free()
 {
 	Safe_Release(m_pTimer_Manager);
-	Safe_Release(m_pComponent_Manager);
 	Safe_Release(m_pObject_Manager);
+	Safe_Release(m_pComponent_Manager);
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pGraphic_Device);
 }

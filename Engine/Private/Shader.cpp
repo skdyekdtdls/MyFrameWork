@@ -108,12 +108,6 @@ HRESULT CShader::Bind_ShaderResource(const _char* pConstantName, ID3D11ShaderRes
 	if (nullptr == pVarialbeShaderResource)
 		return E_FAIL;
 
-	_ulong ref0;
-	ref0 = pSRV->AddRef();
-	ref0 = pSRV->Release();
-	pVarialbeShaderResource->SetResource(pSRV);
-		ref0 = pSRV->AddRef();
-	ref0 = pSRV->Release();
 	return pVarialbeShaderResource->SetResource(pSRV);
 }
 

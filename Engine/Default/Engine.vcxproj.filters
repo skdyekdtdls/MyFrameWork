@@ -58,6 +58,9 @@
     <ClCompile Include="..\private\Texture.cpp">
       <Filter>01. Utility\03. Component\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Transform.cpp">
+      <Filter>01. Utility\03. Component\Transform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Graphic_Device.h">
@@ -129,6 +132,9 @@
     <ClInclude Include="..\public\Texture.h">
       <Filter>01. Utility\03. Component\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Transform.h">
+      <Filter>01. Utility\03. Component\Transform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -196,6 +202,9 @@
     </Filter>
     <Filter Include="01. Utility\03. Component\Texture">
       <UniqueIdentifier>{ff7c84ee-c852-420b-81a1-fcded4d587e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Component\Transform">
+      <UniqueIdentifier>{ca54fbff-4671-4017-898e-46e1db064c7c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

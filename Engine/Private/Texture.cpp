@@ -10,9 +10,10 @@ CTexture::CTexture(const CTexture& rhs)
 	, m_iNumTextures(rhs.m_iNumTextures)
 	, m_ppTextures(rhs.m_ppTextures)
 {
+	_ulong dwRefCnt;
 	for (_uint i = 0; i < m_iNumTextures; ++i)
 	{
-		Safe_AddRef(m_ppTextures[i]);
+		dwRefCnt = Safe_AddRef(m_ppTextures[i]);
 	}
 }
 
@@ -103,12 +104,11 @@ void CTexture::Free(void)
 {
 	__super::Free();
 	
-	_long dwRefCnt = 0;
 	for (_uint i = 0; i < m_iNumTextures; ++i)
 	{
-		dwRefCnt = Safe_Release(m_ppTextures[i]);
+		Safe_Release(m_ppTextures[i]);
 	}
 
-	if(0 == dwRefCnt)
+	if (false == m_IsCloned)
 		Safe_Delete_Array(m_ppTextures);
 }

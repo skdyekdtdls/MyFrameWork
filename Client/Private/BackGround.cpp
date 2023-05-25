@@ -110,6 +110,13 @@ HRESULT CBackGround::Add_Components()
 		return E_FAIL;
 	}
 
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform")
+		, TEXT("Com_Transform"), (CComponent**)&m_pTransformCom)))
+	{
+		assert(false);
+		return E_FAIL;
+	}
+
 	return S_OK;
 }
 
@@ -142,6 +149,7 @@ void CBackGround::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pViBufferCom);
