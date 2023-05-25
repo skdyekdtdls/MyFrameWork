@@ -5,7 +5,7 @@
 #include "VIBuffer_Rect.h"
 #include "VIBuffer_Grid.h"
 #include "Texture.h"
-
+#include "Transform.h"
 BEGIN(Engine)
 class ENGINE_DLL CComponent_Manager final : public CBase
 {

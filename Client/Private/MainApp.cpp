@@ -86,6 +86,13 @@ HRESULT CMainApp::Ready_Prototype_Component_For_Static()
 		return E_FAIL;
 	}
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
+		CTransform::Create(m_pDevice, m_pContext))))
+	{
+		assert(false);
+		return E_FAIL;
+	}
+
 	Safe_AddRef(m_pRenderer);
 
 	return S_OK;
