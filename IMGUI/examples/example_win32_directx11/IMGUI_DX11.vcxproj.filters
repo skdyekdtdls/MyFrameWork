@@ -43,6 +43,7 @@
     <ClCompile Include="private\ImWindow_Manager.cpp">
       <Filter>01. ImWindow\00. Manager</Filter>
     </ClCompile>
+    <ClCompile Include="private\CEditObject_Manager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\imconfig.h">
@@ -90,6 +91,7 @@
     <ClInclude Include="public\ImWindow_Manager.h">
       <Filter>01. ImWindow\00. Manager</Filter>
     </ClInclude>
+    <ClInclude Include="public\EditObject_Manager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.txt" />

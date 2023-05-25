@@ -156,6 +156,7 @@
     <ClInclude Include="..\..\backends\imgui_impl_win32.h" />
     <ClInclude Include="Public\Base.h" />
     <ClInclude Include="public\EditObject.h" />
+    <ClInclude Include="public\EditObject_Manager.h" />
     <ClInclude Include="Public\Imgui_Defines.h" />
     <ClInclude Include="Public\Imgui_Function.h" />
     <ClInclude Include="Public\Imgui_Macro.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="..\..\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="0main.cpp" />
     <ClCompile Include="Private\Base.cpp" />
+    <ClCompile Include="private\CEditObject_Manager.cpp" />
     <ClCompile Include="private\EditObject.cpp" />
     <ClCompile Include="private\ImWindow.cpp" />
     <ClCompile Include="private\ImWindow_Manager.cpp" />
