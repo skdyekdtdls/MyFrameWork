@@ -113,7 +113,7 @@ HRESULT CShader::Bind_ShaderResource(const _char* pConstantName, ID3D11ShaderRes
 
 HRESULT CShader::Bind_ShaderResources(const _char* pConstantName, ID3D11ShaderResourceView** ppSRVArray, _uint iNumTexture)
 {
-	if (nullptr == m_pEffect)
+ 	if (nullptr == m_pEffect)
 		return E_FAIL;
 
 	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
@@ -125,6 +125,24 @@ HRESULT CShader::Bind_ShaderResources(const _char* pConstantName, ID3D11ShaderRe
 		return E_FAIL;
 
 	return pShaderResourceVariable->SetResourceArray(ppSRVArray, 0, iNumTexture);
+}
+
+HRESULT CShader::Bind_Matrix(const _char* pConstantName, const _float4x4* pMatrix)
+{
+	if (nullptr == m_pEffect)
+		return E_FAIL;
+
+	/* 해당하는 이름의 전역변수에 해당하는 컴객체를 얻어오낟. */
+	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
+	if (nullptr == pVariable)
+		return E_FAIL;
+
+	ID3DX11EffectMatrixVariable* pVariableMatrix = pVariable->AsMatrix();
+	if (nullptr == pVariableMatrix)
+		return E_FAIL;
+
+	/* 해당 컴객체로 변수에 값을 던진다. */
+	return pVariableMatrix->SetMatrix((_float*)pMatrix);
 }
 
 CShader* CShader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pShaderFilePath, const D3D11_INPUT_ELEMENT_DESC* pElements, _uint iNumElements)
