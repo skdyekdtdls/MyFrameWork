@@ -21,7 +21,8 @@ public:
 
 	HRESULT Bind_ShaderResource(const _char * pConstantName, ID3D11ShaderResourceView * pSRV);
 	HRESULT Bind_ShaderResources(const _char * pConstantName, ID3D11ShaderResourceView * *ppSRVArray, _uint iNumTexture);
-
+	HRESULT Bind_Matrix(const _char * pConstantName, const _float4x4 * pMatrix);
+	
 private:
 	_uint	m_iNumPasses = { 0 };
 	vector<ID3D11InputLayout*>	m_InputLayouts;

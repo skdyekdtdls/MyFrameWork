@@ -39,10 +39,10 @@
     <ClInclude Include="..\public\Texture.h" />
     <ClInclude Include="..\public\Timer.h" />
     <ClInclude Include="..\public\Timer_Manager.h" />
-    <ClInclude Include="..\public\Transform.h" />
+    <ClInclude Include="..\Public\Transform.h" />
     <ClInclude Include="..\public\VIBuffer.h" />
-    <ClInclude Include="..\public\VIBuffer_Grid.h" />
     <ClInclude Include="..\public\VIBuffer_Rect.h" />
+    <ClInclude Include="..\public\VIBuffer_Terrain.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp" />
@@ -50,7 +50,7 @@
     <ClCompile Include="..\private\Component_Manager.cpp" />
     <ClCompile Include="..\private\Shader.cpp" />
     <ClCompile Include="..\private\Texture.cpp" />
-    <ClCompile Include="..\private\Transform.cpp" />
+    <ClCompile Include="..\Private\Transform.cpp" />
     <ClCompile Include="..\private\VIBuffer.cpp" />
     <ClCompile Include="..\Private\GameInstance.cpp" />
     <ClCompile Include="..\private\GameObject.cpp" />
@@ -62,8 +62,8 @@
     <ClCompile Include="..\private\Renderer.cpp" />
     <ClCompile Include="..\private\Timer.cpp" />
     <ClCompile Include="..\private\Timer_Manager.cpp" />
-    <ClCompile Include="..\private\VIBuffer_Grid.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Rect.cpp" />
+    <ClCompile Include="..\private\VIBuffer_Terrain.cpp" />
     <ClCompile Include="..\Public\Engine_Struct.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

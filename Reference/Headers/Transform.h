@@ -2,6 +2,9 @@
 
 #include "Component.h"
 
+/* 객체의 월드 변환 상태를 가진다.(월드행렬을 보관한다.) */
+/* 월드에서의 변환 기능을 가진다.(Go_Straight(), Go_Backword(), Turn() )*/
+
 BEGIN(Engine)
 
 class ENGINE_DLL CTransform final : public CComponent
@@ -11,13 +14,17 @@ public:
 public:
 	typedef struct tagTransformDesc
 	{
-		tagTransformDesc(_double _SpeedPerSecond, _double _RotationPerSecond)
-			: SpeedPerSecond{ _SpeedPerSecond }
-			, RotationPerSecond{ _RotationPerSecond }
-		{}
-		_double SpeedPerSecond = { 0.0 };
-		_double RotationPerSecond = { 0.0 };
+		tagTransformDesc(_double _SpeedPerSec, _double _RoationPerSec)
+		: SpeedPerSec { _SpeedPerSec }
+		, RotationPerSec { _RoationPerSec }
+		{
+
+		}
+
+		_double		SpeedPerSec = { 0.0 };
+		_double		RotationPerSec = { 0.0 };
 	}TRANSFORMDESC;
+
 
 private:
 	CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -25,32 +32,42 @@ private:
 	virtual ~CTransform() = default;
 
 public:
-	_vector Get_State(STATE _eState)
-	{
+	_vector Get_State(STATE _eState) {
 		return XMLoadFloat4x4(&m_WorldMatrix).r[_eState];
 	}
-	void Set_State(STATE _eState, _fvector _vState)
-	{
-		_float4 vState;
-		XMStoreFloat4(&vState, _vState);
-		memcpy(&m_WorldMatrix.m[_eState][0], &vState, sizeof vState);
+	_float3 Get_Scaled();
+	_float4x4* Get_WorldFloat4x4() {
+		return &m_WorldMatrix;
 	}
-public:
-	HRESULT Initialize_Prototype();
-	virtual HRESULT Initialize(void* pArg) override;
+	void Set_State(STATE _eState, _fvector _vState);
 
+
+public:
+	virtual HRESULT Initialize_Prototype();
+	virtual HRESULT Initialize(void* pArg);
 public:
 	void Go_Straight(_double TimeDelta);
+	void Go_Backward(_double TimeDelta);
+	void Go_Left(_double TimeDelta);
+	void Go_Right(_double TimeDelta);
+	void Chase(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance = 0.1f);
+	void LookAt(_fvector vTargetPosition);
+	void Rotation(_fvector vAxis, _float fRadian);
+	void Turn(_fvector vAxis, _double TimeDelta);
+
+	void Scaled(const _float3 & vScale);
+
 
 private:
-	TRANSFORMDESC m_TransformDesc;
+	TRANSFORMDESC			m_TransformDesc;
 
 private:
-	_float4x4 m_WorldMatrix;
+	_float4x4				m_WorldMatrix;
 
 public:
 	static CTransform* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);
 	virtual CComponent* Clone(void* pArg) override;
-	virtual void Free(void) override;
+	virtual void Free() override;
 };
+
 END

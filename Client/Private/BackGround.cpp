@@ -28,6 +28,18 @@ HRESULT CBackGround::Initialize(void* pArg)
 	if (FAILED(Add_Components()))
 		return E_FAIL;
 
+	m_fSizeX = g_iWinSizeX;
+	m_fSizeY = g_iWinSizeY;
+	m_fX = 0.5f * g_iWinSizeX;
+	m_fY = 0.5f * g_iWinSizeY;
+
+	m_pTransformCom->Scaled(_float3(m_fSizeX, m_fSizeY, 1.f));
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(m_fX - 0.5f * g_iWinSizeX
+		, m_fY - 0.5f * g_iWinSizeY, 0.f, 1.f));
+
+	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(g_iWinSizeX, g_iWinSizeY, 0.f, 1.f));
+
 	return S_OK;
 }
 
@@ -59,7 +71,7 @@ HRESULT CBackGround::Render()
 		return E_FAIL;
 	}
 
-	if (FAILED(m_pViBufferCom->Render()))
+	if (FAILED(m_pVIBufferCom->Render()))
 	{
 		assert(false);
 		return E_FAIL;
@@ -70,7 +82,16 @@ HRESULT CBackGround::Render()
 
 HRESULT CBackGround::SetUp_ShaderResources()
 {
-	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_WorldFloat4x4())))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+		return E_FAIL;
+
+	if (FAILED(m_pTextureCom->Bind_ShaderResources(m_pShaderCom, "g_Texture")))
 		return E_FAIL;
 
 	return S_OK;
@@ -88,7 +109,7 @@ HRESULT CBackGround::Add_Components()
 
 	/* For.Com_VIBuffer_Rect */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect")
-		, TEXT("Com_VIBuffer"), (CComponent**)&m_pViBufferCom)))
+		, TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
 	{
 		assert(false);
 		return E_FAIL;
@@ -152,6 +173,6 @@ void CBackGround::Free()
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pShaderCom);
-	Safe_Release(m_pViBufferCom);
+	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pRendererCom); 
 }
