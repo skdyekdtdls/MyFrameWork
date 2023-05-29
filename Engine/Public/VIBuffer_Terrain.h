@@ -20,6 +20,7 @@ private:
 	_uint			m_iNumVerticesZ = { 0 };
 
 public:
+	static const _tchar* ProtoTag() { return L"Prototype_Component_VIBuffer_Terrain"; }
 	static CVIBuffer_Terrain* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const _tchar * pHeightMap);
 	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free() override;

@@ -82,7 +82,8 @@ HRESULT CBackGround::Render()
 
 HRESULT CBackGround::SetUp_ShaderResources()
 {
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_WorldFloat4x4())))
+	_float4x4 worldMatrix = m_pTransformCom->Get_WorldFloat4x4();
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &worldMatrix)))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
@@ -124,7 +125,7 @@ HRESULT CBackGround::Add_Components()
 	}
 
 	/* For.Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Logo")
+	if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo")
 		, TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
 	{
 		assert(false);

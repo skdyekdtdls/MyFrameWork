@@ -24,7 +24,7 @@ HRESULT CComponent_Manager::Add_Prototype(_uint iLevelIndex, const _tchar* pProt
 	if (nullptr != Find_Prototype(iLevelIndex, pPrototypeTag))
 		return E_FAIL;
 
-	m_pPrototypes->emplace(pPrototypeTag, pCompoent);
+	m_pPrototypes[iLevelIndex].emplace(pPrototypeTag, pCompoent);
 
 	return S_OK;
 }
@@ -33,9 +33,9 @@ CComponent* CComponent_Manager::Clone_Component(_uint iLevelIndex, const _tchar*
 {
 	CComponent* pPrototype = Find_Prototype(iLevelIndex, pPrototypeTag);
 
-	CComponent* pComponent = pPrototype->Clone(pArg);
 	if (nullptr == pPrototype)
 		return nullptr;
+	CComponent* pComponent = pPrototype->Clone(pArg);
 
 	if (nullptr == pComponent)
 	{

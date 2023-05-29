@@ -14,7 +14,9 @@ CGameInstance::CGameInstance()
 	, m_pObject_Manager(CObject_Manager::GetInstance())
 	, m_pTimer_Manager(CTimer_Manager::GetInstance())
 	, m_pComponent_Manager(CComponent_Manager::GetInstance())
+	, m_pPipeLine(CPipeLine::GetInstance())
 {
+	Safe_AddRef(m_pPipeLine);
 	Safe_AddRef(m_pGraphic_Device);
 	Safe_AddRef(m_pLevel_Manager);
 	Safe_AddRef(m_pObject_Manager);
@@ -46,6 +48,7 @@ void CGameInstance::Tick_Engine(_double TimeDelta)
 		return;
 
 	m_pObject_Manager->Tick(TimeDelta);
+	m_pPipeLine->Tick();
 	m_pObject_Manager->Late_Tick(TimeDelta);
 
 	m_pLevel_Manager->Tick(TimeDelta);
@@ -96,9 +99,7 @@ HRESULT CGameInstance::Open_Level(_uint iLevelIndex, CLevel* pNewLevel)
 	if (nullptr == m_pLevel_Manager)
 		return E_FAIL;
 
-	m_pLevel_Manager->Open_Level(iLevelIndex, pNewLevel);
-
-	return S_OK;
+	return m_pLevel_Manager->Open_Level(iLevelIndex, pNewLevel);;
 }
 
 HRESULT CGameInstance::Add_Prototype(const _tchar* pPrototypeTag, CGameObject* pPrototype)
@@ -106,9 +107,7 @@ HRESULT CGameInstance::Add_Prototype(const _tchar* pPrototypeTag, CGameObject* p
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
 
-	m_pObject_Manager->Add_Prototype(pPrototypeTag, pPrototype);
-
-	return S_OK;
+	return m_pObject_Manager->Add_Prototype(pPrototypeTag, pPrototype);
 }
 
 HRESULT CGameInstance::Add_GameObject(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pLayerTag, void* pArg)
@@ -116,10 +115,7 @@ HRESULT CGameInstance::Add_GameObject(_uint iLevelIndex, const _tchar* pPrototyp
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
 
-	if (FAILED(m_pObject_Manager->Add_GameObject(iLevelIndex, pPrototypeTag, pLayerTag, pArg)))
-		return E_FAIL;
-
-	return S_OK;
+	return m_pObject_Manager->Add_GameObject(iLevelIndex, pPrototypeTag, pLayerTag, pArg);
 }
 
 
@@ -164,6 +160,46 @@ CComponent* CGameInstance::Clone_Component(_uint iLevelIndex, const _tchar* pPro
 	return m_pComponent_Manager->Clone_Component(iLevelIndex, pPrototypeTag, pArg);
 }
 
+void CGameInstance::Set_Transform(CPipeLine::D3DTRANSFORMSTATE eTransformState, _fmatrix TransformStateMatrix)
+{
+	if (nullptr == m_pPipeLine)
+		return;
+
+	m_pPipeLine->Set_Transform(eTransformState, TransformStateMatrix);
+}
+
+_matrix CGameInstance::Get_TransformMatrix(CPipeLine::D3DTRANSFORMSTATE eTransformState)
+{
+	if (nullptr == m_pPipeLine)
+		return _matrix();
+
+	return m_pPipeLine->Get_TransformMatrix(eTransformState);
+}
+
+_float4x4 CGameInstance::Get_TransformFloat4x4(CPipeLine::D3DTRANSFORMSTATE eTransformState)
+{
+	if (nullptr == m_pPipeLine)
+		return _float4x4();
+
+	return m_pPipeLine->Get_TransformFloat4x4(eTransformState);
+}
+
+_matrix CGameInstance::Get_TransformMatrix_Inverse(CPipeLine::D3DTRANSFORMSTATE eTransformState)
+{
+	if (nullptr == m_pPipeLine)
+		return _matrix();
+
+	return m_pPipeLine->Get_TransformMatrix_Inverse(eTransformState);
+}
+
+_float4x4 CGameInstance::Get_TransformFloat4x4_Inverse(CPipeLine::D3DTRANSFORMSTATE eTransformState)
+{
+	if (nullptr == m_pPipeLine)
+		return _float4x4();
+
+	return m_pPipeLine->Get_TransformFloat4x4_Inverse(eTransformState);
+}
+
 void CGameInstance::Release_Engine()
 {
 	CTimer_Manager::DestroyInstance();
@@ -171,11 +207,13 @@ void CGameInstance::Release_Engine()
 	CComponent_Manager::DestroyInstance();
 	CLevel_Manager::DestroyInstance();
 	CGraphic_Device::DestroyInstance();
+	CPipeLine::DestroyInstance();
 	CGameInstance::DestroyInstance();
 }
 
 void CGameInstance::Free()
 {
+	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pComponent_Manager);

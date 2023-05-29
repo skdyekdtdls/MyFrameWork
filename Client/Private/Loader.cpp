@@ -2,6 +2,8 @@
 #include "GameInstance.h"
 #include <process.h>
 #include "BackGround.h"
+#include "Camera_Free.h"
+#include "Terrain.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext)
 	: m_pDevice(pDevice)
@@ -69,18 +71,19 @@ HRESULT CLoader::Loading_For_Logo()
 		return E_FAIL;
 
 	Set_LoadingText(L"텍스처 로딩 중");
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
-		return E_FAIL;
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2)), E_FAIL);
 
-	Set_LoadingText(L"컴포넌트 로딩 중");
+	Set_LoadingText(L"모델 로딩 중");
 
 
 	Set_LoadingText(L"쉐이더 로딩 중");
 
-	if (FAILED(m_pGameInstance->Add_Prototype(TEXT("Prototype_GameObject_BackGround"),
-		CBackGround::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+
+	Set_LoadingText(L"객체 로딩 중");
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CBackGround::ProtoTag(),
+		CBackGround::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	Set_LoadingText(L"로딩 완료");
 
@@ -96,12 +99,20 @@ HRESULT CLoader::Loading_For_GamePlay()
 
 
 	Set_LoadingText(L"텍스처 로딩 중");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Tile%d.dds", 2))), E_FAIL);
 
-
-	Set_LoadingText(L"컴포넌트 로딩 중");
-
+	Set_LoadingText(L"모델 로딩 중");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, CVIBuffer_Terrain::ProtoTag(),
+		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp"))), E_FAIL);
 
 	Set_LoadingText(L"쉐이더 로딩 중");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXPOSNORTEX_DECL::Elements, VTXPOSNORTEX_DECL::iNumElements)), E_FAIL);
+
+	Set_LoadingText(L"객체 로딩 중");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CTerrain::ProtoTag(), CTerrain::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CCamera_Free::ProtoTag(), CCamera_Free::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	Set_LoadingText(L"로딩 완료");
 
