@@ -14,7 +14,12 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap)
 {
 	_ulong			dwByte = { 0 };
 	HANDLE			hFile = CreateFile(pHeightMap, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-
+	if (0 == INVALID_HANDLE_VALUE)
+	{
+		CloseHandle(hFile);
+		return E_FAIL;
+	}
+		
 	BITMAPFILEHEADER	fh;
 	BITMAPINFOHEADER	ih;
 
@@ -81,6 +86,7 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap)
 
 	if (FAILED(__super::Create_Buffer(&m_pVB)))
 		return E_FAIL;
+	Safe_Delete_Array(pPixel);
 	Safe_Delete_Array(pVertices);
 
 #pragma endregion
@@ -92,20 +98,37 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap)
 	m_BufferDesc.ByteWidth = { m_iIndexStride * m_iNumIndices };
 	m_BufferDesc.Usage = { D3D11_USAGE_DEFAULT };
 	m_BufferDesc.BindFlags = { D3D11_BIND_INDEX_BUFFER };
-	m_BufferDesc.StructureByteStride = { 0 };
+	m_BufferDesc.StructureByteStride = { sizeof _ulong };
 	m_BufferDesc.CPUAccessFlags = { 0 };
 	m_BufferDesc.MiscFlags = { 0 };
 
-	_ushort* pIndices = new _ushort[m_iNumIndices];
-	ZeroMemory(pIndices, sizeof(_ushort) * m_iNumIndices);
+	_ulong* pIndices = new _ulong[m_iNumIndices];
+	//ZeroMemory(pIndices, sizeof(_ulong) * m_iNumIndices);
 
-	pIndices[0] = 0;
-	pIndices[1] = 1;
-	pIndices[2] = 2;
+	_uint iCurIndex = { 0 };
 
-	pIndices[3] = 0;
-	pIndices[4] = 2;
-	pIndices[5] = 3;
+	for (_uint i = 0; i < m_iNumVerticesZ - 1; ++i)
+	{
+		for (_uint j = 0; j < m_iNumVerticesX - 1; ++j)
+		{
+			_uint iIndex = i * m_iNumVerticesX + j;
+
+			_uint iIndices[4] = {
+				iIndex + m_iNumVerticesX,
+				iIndex + m_iNumVerticesX + 1,
+				iIndex + 1,
+				iIndex
+			};
+
+			pIndices[iCurIndex++] = iIndices[0];
+			pIndices[iCurIndex++] = iIndices[1];
+			pIndices[iCurIndex++] = iIndices[2];
+
+			pIndices[iCurIndex++] = iIndices[0];
+			pIndices[iCurIndex++] = iIndices[2];
+			pIndices[iCurIndex++] = iIndices[3];
+		}
+	}
 
 	ZeroMemory(&m_SubResourceData, sizeof m_SubResourceData);
 	m_SubResourceData.pSysMem = pIndices;

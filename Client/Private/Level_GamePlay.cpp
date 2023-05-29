@@ -1,7 +1,7 @@
 #include "Level_GamePlay.h"
-
-
-
+#include "GameInstance.h"
+#include "Camera_Free.h"
+#include "Terrain.h"
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -9,6 +9,15 @@ CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pCo
 
 HRESULT CLevel_GamePlay::Initialize()
 {
+	if (FAILED(__super::Initialize()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -25,6 +34,43 @@ void CLevel_GamePlay::Late_Tick(_double TimeDelta)
 
 HRESULT CLevel_GamePlay::Render()
 {
+	return S_OK;
+}
+HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, CTerrain::ProtoTag(), pLayerTag)))
+		return E_FAIL;
+
+	Safe_Release(pGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	CCamera_Free::CAMERAFREEDESC		CameraFreeDesc;
+
+	CameraFreeDesc.iData = { 0 };
+	CameraFreeDesc.CameraDesc.vEye = _float4(0.f, 20.f, -15.f, 1.f);
+	CameraFreeDesc.CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
+	CameraFreeDesc.CameraDesc.vUp = _float4(0.f, 1.f, 0.f, 0.f);
+	CameraFreeDesc.CameraDesc.fFovy = XMConvertToRadians(60.0f);
+	CameraFreeDesc.CameraDesc.fAspect = (_float)g_iWinSizeX / g_iWinSizeY;
+	CameraFreeDesc.CameraDesc.fNear = 0.2f;
+	CameraFreeDesc.CameraDesc.fFar = 300.f;
+	CameraFreeDesc.CameraDesc.TransformDesc.SpeedPerSec = 10.f;
+	CameraFreeDesc.CameraDesc.TransformDesc.RotationPerSec = XMConvertToRadians(90.0f);
+
+	FAILED_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, CCamera_Free::ProtoTag(), pLayerTag, &CameraFreeDesc), E_FAIL);
+
+	Safe_Release(pGameInstance);
+
 	return S_OK;
 }
 

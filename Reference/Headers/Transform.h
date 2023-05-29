@@ -14,6 +14,7 @@ public:
 public:
 	typedef struct tagTransformDesc
 	{
+		tagTransformDesc() = default;
 		tagTransformDesc(_double _SpeedPerSec, _double _RoationPerSec)
 		: SpeedPerSec { _SpeedPerSec }
 		, RotationPerSec { _RoationPerSec }
@@ -36,12 +37,17 @@ public:
 		return XMLoadFloat4x4(&m_WorldMatrix).r[_eState];
 	}
 	_float3 Get_Scaled();
-	_float4x4* Get_WorldFloat4x4() {
-		return &m_WorldMatrix;
+	_float4x4 Get_WorldFloat4x4() {
+		return m_WorldMatrix;
 	}
 	void Set_State(STATE _eState, _fvector _vState);
+	_matrix Get_WorldMatrix_Inverse() const {
+		return XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_WorldMatrix));
+	}
 
-
+	void Set_Desc(const TRANSFORMDESC& TransformDesc) {
+		m_TransformDesc = TransformDesc;
+	}
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
@@ -65,6 +71,7 @@ private:
 	_float4x4				m_WorldMatrix;
 
 public:
+	static const _tchar* ProtoTag() { return L"Prototype_Component_Transform"; }
 	static CTransform* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);
 	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free() override;

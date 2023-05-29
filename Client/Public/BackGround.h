@@ -46,6 +46,7 @@ public:
 
 
 public:
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_BackGround"; }
 	/* 원형을 생성한다. */
 	static CBackGround* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	/* 사본(실제 사용할 객체)을 생성한다. */

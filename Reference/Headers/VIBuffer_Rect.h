@@ -16,6 +16,7 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 
 public:
+	static const _tchar* ProtoTag() { return L"Prototype_Component_VIBuffer_Rect"; }
 	static CVIBuffer_Rect* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);
 	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free(void) override;

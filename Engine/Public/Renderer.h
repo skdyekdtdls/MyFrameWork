@@ -30,6 +30,7 @@ private:
 	HRESULT Render_UI();
 
 public:
+	static const _tchar* ProtoTag() { return L"Prototype_Component_Renderer"; }
 	static CRenderer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free(void) override;
