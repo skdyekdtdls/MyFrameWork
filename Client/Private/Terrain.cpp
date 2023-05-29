@@ -17,6 +17,7 @@ HRESULT CTerrain::Initialize_Prototype()
 	return S_OK;
 }
 
+
 HRESULT CTerrain::Initialize(void* pArg)
 {
 	FAILED_CHECK_RETURN(__super::Initialize(pArg), E_FAIL);
