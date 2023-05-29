@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="01. ImWindow">
+      <UniqueIdentifier>{0e4e06bc-72c5-4a9e-8565-013e2df1cd5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Default">
+      <UniqueIdentifier>{9b6cfb9b-26c8-4692-8a35-594f6bad9914}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Headers">
+      <UniqueIdentifier>{3f81e211-8c7e-4ba4-b58e-ec2ec242c55f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. MainTool">
+      <UniqueIdentifier>{3d509cfa-fa97-49c4-b5a4-e8859da58f7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Default\sources">
+      <UniqueIdentifier>{08e36723-ce4f-4cff-9662-c40801cf1acf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Default\imgui">
+      <UniqueIdentifier>{0587d7a3-f2ce-4d56-b84f-a0005d3bfce6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Level">
+      <UniqueIdentifier>{0863460a-5ac6-44c3-9a8e-d12cb5ddab34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. EditObejct">
+      <UniqueIdentifier>{69858522-2021-4d06-a60e-cc8b0e9281d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. ImWindow\Manager">
+      <UniqueIdentifier>{885d66ec-ebb6-463a-9901-b72653474adf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. ImWindow\ImWindow_Demo">
+      <UniqueIdentifier>{0a41a8d7-222d-461e-a7cb-08729a5b1f84}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\imconfig.h">
+      <Filter>98. Default\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui.h">
+      <Filter>98. Default\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\imgui_internal.h">
+      <Filter>98. Default\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\backends\imgui_impl_win32.h">
+      <Filter>98. Default\sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\backends\imgui_impl_dx11.h">
+      <Filter>98. Default\sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MainTool.h">
+      <Filter>00. MainTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Imgui_Defines.h">
+      <Filter>99. Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Level_Tool.h">
+      <Filter>02. Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Edit_Terrain.h">
+      <Filter>03. EditObejct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ImWindow.h">
+      <Filter>01. ImWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ImWindow_Manager.h">
+      <Filter>01. ImWindow\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ImWindow_Demo.h">
+      <Filter>01. ImWindow\ImWindow_Demo</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\imgui.cpp">
+      <Filter>98. Default\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui_demo.cpp">
+      <Filter>98. Default\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui_draw.cpp">
+      <Filter>98. Default\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui_widgets.cpp">
+      <Filter>98. Default\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\backends\imgui_impl_win32.cpp">
+      <Filter>98. Default\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\backends\imgui_impl_dx11.cpp">
+      <Filter>98. Default\sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\imgui_tables.cpp">
+      <Filter>98. Default\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MainTool.cpp">
+      <Filter>00. MainTool</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>98. Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Tool.cpp">
+      <Filter>02. Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Edit_Terrain.cpp">
+      <Filter>03. EditObejct</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ImWindow.cpp">
+      <Filter>01. ImWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ImWindow_Manager.cpp">
+      <Filter>01. ImWindow\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ImWindow_Demo.cpp">
+      <Filter>01. ImWindow\ImWindow_Demo</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.txt" />
+    <None Include="..\..\misc\debuggers\imgui.natvis">
+      <Filter>98. Default\imgui</Filter>
+    </None>
+    <None Include="..\..\misc\debuggers\imgui.natstepfilter">
+      <Filter>98. Default\imgui</Filter>
+    </None>
+  </ItemGroup>
+</Project>
