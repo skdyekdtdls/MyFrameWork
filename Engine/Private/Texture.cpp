@@ -19,6 +19,8 @@ CTexture::CTexture(const CTexture& rhs)
 
 HRESULT CTexture::Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNumTextures)
 {
+	CoInitializeEx(nullptr, 0);
+
 	_tchar szTextureFilePath[MAX_PATH] = TEXT("");
 	m_iNumTextures = iNumTextures;
 	m_Textures.reserve(m_iNumTextures);

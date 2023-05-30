@@ -70,6 +70,9 @@
     <ClCompile Include="..\private\Composite.cpp">
       <Filter>01. Utility\03. Components\00. Composite</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Input_Device.cpp">
+      <Filter>00. System\00.Device\Input\Input_Device</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Graphic_Device.h">
@@ -153,6 +156,9 @@
     <ClInclude Include="..\public\Composite.h">
       <Filter>01. Utility\03. Components\00. Composite</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Input_Device.h">
+      <Filter>00. System\00.Device\Input\Input_Device</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -232,6 +238,12 @@
     </Filter>
     <Filter Include="01. Utility\03. Components\00. Composite">
       <UniqueIdentifier>{631de7ee-d6e8-46f1-9715-a58796393202}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. System\00.Device\Input">
+      <UniqueIdentifier>{588c78fa-b52f-4a90-a91b-dd6d0538dd65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00. System\00.Device\Input\Input_Device">
+      <UniqueIdentifier>{3dba5a6e-1e4e-43a1-91e9-747acd4eb64c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

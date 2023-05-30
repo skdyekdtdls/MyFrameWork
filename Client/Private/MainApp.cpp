@@ -15,6 +15,7 @@ HRESULT CMainApp::Initialize()
 	ZeroStruct(GraphicDesc);
 
 	GraphicDesc.hWnd = g_hWnd;
+	GraphicDesc.hInst = g_hInst;
 	GraphicDesc.iViewportSizeX = g_iWinSizeX;
 	GraphicDesc.iViewportSizeY = g_iWinSizeY;
 	GraphicDesc.eWinMode = GraphicDesc.WM_WIN;

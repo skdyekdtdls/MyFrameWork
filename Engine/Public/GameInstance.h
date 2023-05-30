@@ -2,6 +2,8 @@
 
 #include "Component_Manager.h"
 #include "PipeLine.h"
+#include "Input_Device.h"
+
 BEGIN(Engine)
 class CGraphic_Device;
 class CInput_Device;
@@ -26,6 +28,11 @@ public: /* For Graphic_Device*/
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
 	HRESULT Clear_DepthStencil_View();
 	HRESULT Present();
+
+public: /* For Input_Device*/
+	_byte Get_DIKeyState(_ubyte ubyKeyID);
+	_byte Get_DIMouseState(CInput_Device::MOUSEKEYSTATE eMouseID);
+	_long Get_DIMouseMove(CInput_Device::MOUSEMOVESTATE eMouseMoveID);
 
 public: /* For Level_Manager */
 	HRESULT Open_Level(_uint iLevelIndex, CLevel * pNewLevel);
@@ -53,6 +60,7 @@ public: /* For PipeLine */
 
 private:
 	CGraphic_Device* m_pGraphic_Device = { nullptr };
+	CInput_Device* m_pInput_Device = { nullptr };
 	CLevel_Manager* m_pLevel_Manager = { nullptr };
 	CObject_Manager* m_pObject_Manager = { nullptr };
 	CTimer_Manager* m_pTimer_Manager = { nullptr };

@@ -9,7 +9,7 @@ namespace Client
 	enum LEVELID { LEVEL_STATIC, LEVEL_LOGO, LEVEL_GAMEPLAY, LEVEL_LOADING, LEVEL_END};
 }
 
-extern HINSTANCE g_hInstance;
+extern HINSTANCE g_hInst;
 extern HWND g_hWnd;
 
 using namespace Client;
