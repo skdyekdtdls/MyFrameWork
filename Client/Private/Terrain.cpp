@@ -74,7 +74,7 @@ HRESULT CTerrain::SetUp_ShaderResources()
 	_float4x4 tmp;
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
-	FAILED_CHECK_RETURN_CONSOLE_MSG(m_pTextureCom->Bind_ShaderResources(m_pShaderCom, "g_Texture"), E_FAIL, "Error! CTerrain::SetUp_ShaderResources : " << __LINE__);
+	FAILED_CHECK_RETURN_CONSOLE_MSG(m_pTextureCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture"), E_FAIL, "Error! CTerrain::SetUp_ShaderResources : " << __LINE__);
 
 	tmp = m_pTransformCom->Get_WorldFloat4x4();
 	FAILED_CHECK_RETURN_CONSOLE_MSG(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &tmp), E_FAIL, "Error! CTerrain::SetUp_ShaderResources : " << __LINE__);

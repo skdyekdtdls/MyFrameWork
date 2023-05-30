@@ -15,7 +15,9 @@ CGameInstance::CGameInstance()
 	, m_pTimer_Manager(CTimer_Manager::GetInstance())
 	, m_pComponent_Manager(CComponent_Manager::GetInstance())
 	, m_pPipeLine(CPipeLine::GetInstance())
+	, m_pInput_Device(CInput_Device::GetInstance())
 {
+	Safe_AddRef(m_pInput_Device);
 	Safe_AddRef(m_pPipeLine);
 	Safe_AddRef(m_pGraphic_Device);
 	Safe_AddRef(m_pLevel_Manager);
@@ -26,10 +28,16 @@ CGameInstance::CGameInstance()
 
 HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDevice, ID3D11DeviceContext** ppDeviceContext)
 {
-	if (nullptr == m_pGraphic_Device)
+	if (nullptr == m_pGraphic_Device ||
+		nullptr == m_pInput_Device ||
+		nullptr == m_pObject_Manager ||
+		nullptr == m_pComponent_Manager)
 		return E_FAIL;
 
 	if (FAILED(m_pGraphic_Device->Ready_Graphic_Device(GraphicDesc.hWnd, GraphicDesc.eWinMode, GraphicDesc.iViewportSizeX, GraphicDesc.iViewportSizeY, ppDevice, ppDeviceContext)))
+		return E_FAIL;
+
+	if (FAILED(m_pInput_Device->Ready_DInput(GraphicDesc.hInst, GraphicDesc.hWnd)))
 		return E_FAIL;
 
 	if (FAILED(m_pObject_Manager->Reserve_Containers(iNumLevels)))
@@ -43,10 +51,13 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHICDESC& Gr
 
 void CGameInstance::Tick_Engine(_double TimeDelta)
 {
-	if (nullptr == m_pLevel_Manager
-		|| nullptr == m_pObject_Manager)
+	if (nullptr == m_pLevel_Manager ||
+		nullptr == m_pObject_Manager ||
+		nullptr == m_pPipeLine ||
+		nullptr == m_pInput_Device)
 		return;
 
+	m_pInput_Device->Update_DInput();
 	m_pObject_Manager->Tick(TimeDelta);
 	m_pPipeLine->Tick();
 	m_pObject_Manager->Late_Tick(TimeDelta);
@@ -92,6 +103,31 @@ HRESULT CGameInstance::Present()
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
 	return m_pGraphic_Device->Present();
+}
+
+_byte CGameInstance::Get_DIKeyState(_ubyte ubyKeyID)
+{
+	if (nullptr == m_pInput_Device)
+		return 0;
+
+	return m_pInput_Device->Get_DIKeyState(ubyKeyID);
+}
+
+_byte CGameInstance::Get_DIMouseState(CInput_Device::MOUSEKEYSTATE eMouseID)
+{
+	if (nullptr == m_pInput_Device)
+		return 0;
+
+	return m_pInput_Device->Get_DIMouseState(eMouseID);
+}
+
+_long CGameInstance::Get_DIMouseMove(CInput_Device::MOUSEMOVESTATE eMouseMoveID)
+{
+
+	if (nullptr == m_pInput_Device)
+		return 0;
+
+	return m_pInput_Device->Get_DIMouseMove(eMouseMoveID);
 }
 
 HRESULT CGameInstance::Open_Level(_uint iLevelIndex, CLevel* pNewLevel)
@@ -203,6 +239,7 @@ _float4x4 CGameInstance::Get_TransformFloat4x4_Inverse(CPipeLine::D3DTRANSFORMST
 void CGameInstance::Release_Engine()
 {
 	CTimer_Manager::DestroyInstance();
+	CInput_Device::DestroyInstance();
 	CObject_Manager::DestroyInstance();
 	CComponent_Manager::DestroyInstance();
 	CLevel_Manager::DestroyInstance();
@@ -213,6 +250,7 @@ void CGameInstance::Release_Engine()
 
 void CGameInstance::Free()
 {
+	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pObject_Manager);

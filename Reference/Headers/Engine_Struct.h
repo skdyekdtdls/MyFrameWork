@@ -6,6 +6,7 @@ namespace Engine
 	{
 		enum WINMODE { WM_FULL, WM_WIN, WM_END };
 		HWND	hWnd;
+		HINSTANCE hInst;
 		unsigned int	iViewportSizeX, iViewportSizeY;
 		WINMODE		eWinMode;
 	}GRAPHICDESC;
