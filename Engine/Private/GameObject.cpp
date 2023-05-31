@@ -24,6 +24,14 @@ HRESULT CGameObject::Initialize(void* pArg)
 	return S_OK;
 }
 
+void CGameObject::Tick(_double TimeDelta)
+{
+}
+
+void CGameObject::Late_Tick(_double TimeDelta)
+{
+}
+
 void CGameObject::Free()
 {
 	__super::Free();

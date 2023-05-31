@@ -12,8 +12,10 @@ protected:
 	virtual ~CGameObject() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype();
-	virtual HRESULT Initialize(void* pArg);
+	virtual HRESULT Initialize_Prototype() override;
+	virtual HRESULT Initialize(void* pArg) override;
+	virtual void Tick(_double TimeDelta);
+	virtual void Late_Tick(_double TimeDelta);
 
 public:
 	virtual CGameObject* Clone(void* pArg) override = 0;

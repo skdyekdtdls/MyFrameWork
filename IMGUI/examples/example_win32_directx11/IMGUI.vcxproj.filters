@@ -31,6 +31,18 @@
     <Filter Include="01. ImWindow\ImWindow_Demo">
       <UniqueIdentifier>{0a41a8d7-222d-461e-a7cb-08729a5b1f84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Design">
+      <UniqueIdentifier>{ff11c81b-39ec-4b6a-be9d-ad2b6169de25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Design\ToolInstance">
+      <UniqueIdentifier>{7b1e0e9e-a531-4b48-98c6-ebac84bb57c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Design\EditObj_Mgr">
+      <UniqueIdentifier>{d51e6fa2-210b-48d3-b031-23314a87ad09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. EditObejct\Edit_Terrain">
+      <UniqueIdentifier>{c730fa03-e178-49fb-8256-bd1284b16425}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\imconfig.h">
@@ -57,9 +69,6 @@
     <ClInclude Include="..\public\Level_Tool.h">
       <Filter>02. Level</Filter>
     </ClInclude>
-    <ClInclude Include="Edit_Terrain.h">
-      <Filter>03. EditObejct</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\ImWindow.h">
       <Filter>01. ImWindow</Filter>
     </ClInclude>
@@ -68,6 +77,18 @@
     </ClInclude>
     <ClInclude Include="..\public\ImWindow_Demo.h">
       <Filter>01. ImWindow\ImWindow_Demo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ToolInstance.h">
+      <Filter>04. Design\ToolInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EditObj_Mgr.h">
+      <Filter>04. Design\EditObj_Mgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EditObject.h">
+      <Filter>03. EditObejct</Filter>
+    </ClInclude>
+    <ClInclude Include="Edit_Terrain.h">
+      <Filter>03. EditObejct\Edit_Terrain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -101,9 +122,6 @@
     <ClCompile Include="..\Private\Level_Tool.cpp">
       <Filter>02. Level</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Edit_Terrain.cpp">
-      <Filter>03. EditObejct</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\ImWindow.cpp">
       <Filter>01. ImWindow</Filter>
     </ClCompile>
@@ -112,6 +130,18 @@
     </ClCompile>
     <ClCompile Include="..\private\ImWindow_Demo.cpp">
       <Filter>01. ImWindow\ImWindow_Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ToolInstance.cpp">
+      <Filter>04. Design\ToolInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EditObj_Mgr.cpp">
+      <Filter>04. Design\EditObj_Mgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EditObject.cpp">
+      <Filter>03. EditObejct</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Edit_Terrain.cpp">
+      <Filter>03. EditObejct\Edit_Terrain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

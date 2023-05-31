@@ -7,7 +7,8 @@
 #include <d3d11.h>
 #include <tchar.h>
 #include <windows.h>
-
+#include <map>
+#include <string>
 namespace Imgui
 {
     const unsigned int g_iWinSizeX = 1280;
