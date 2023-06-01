@@ -47,7 +47,7 @@ HRESULT CTerrain::Render()
 	if (FAILED(SetUp_ShaderResources()))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(0);
+	m_pShaderCom->Begin(2);
 
 
 
@@ -57,11 +57,9 @@ HRESULT CTerrain::Render()
 HRESULT CTerrain::Add_Components()
 {	
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom), E_FAIL);
-
 	CTransform::TRANSFORMDESC TransformDesc{7.0, XMConvertToRadians(90.f)};
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
-
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, CVIBuffer_Terrain::ProtoTag(), L"Com_VIBuffer_Terrain", (CComponent**)&m_pVIBufferCom), E_FAIL);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, L"Prototype_Component_Shader_VtxNorTex", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_GAMEPLAY, L"Prototype_Component_Texture_Terrain", L"Com_Texture", (CComponent**)&m_pTextureCom), E_FAIL);
@@ -69,22 +67,60 @@ HRESULT CTerrain::Add_Components()
 	return S_OK;
 }
 
+//HRESULT CTerrain::SetUp_ShaderResources()
+//{
+//	_float4x4 tmp;
+//	_float4 tmpFloat4;
+//	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+//	Safe_AddRef(pGameInstance);
+//
+//	tmp = m_pTransformCom->Get_WorldFloat4x4();
+//	FAILED_CHECK_RETURN_CONSOLE_MSG(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &tmp), E_FAIL, "Error! CTerrain::SetUp_ShaderResources : " << __LINE__);
+//
+//	tmp = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
+//	FAILED_CHECK_RETURN_CONSOLE_MSG(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &tmp), E_FAIL, "Error! CTerrain::SetUp_ShaderResources : " << __LINE__);
+//
+//	tmp = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
+//	FAILED_CHECK_RETURN_CONSOLE_MSG(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &tmp), E_FAIL, "Error! CTerrain::SetUp_ShaderResources : " << __LINE__);
+//
+//	tmpFloat4 = pGameInstance->Get_CamPosition();
+//	FAILED_CHECK_RETURN_CONSOLE_MSG(m_pShaderCom->Bind_RawValue("g_vCamPosition", &tmpFloat4, sizeof _float4), E_FAIL, "Error! CTerrain::SetUp_ShaderResources : " << __LINE__);
+//
+//	FAILED_CHECK_RETURN_CONSOLE_MSG(m_pTextureCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture"), E_FAIL, "Error! CTerrain::SetUp_ShaderResources : " << __LINE__);
+//   
+//	Safe_Release(pGameInstance);
+//	return S_OK;
+//}
+
 HRESULT CTerrain::SetUp_ShaderResources()
 {
-	_float4x4 tmp;
+	_float4x4 tmp = m_pTransformCom->Get_WorldFloat4x4();
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &tmp)))
+		return E_FAIL;
+
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
-	FAILED_CHECK_RETURN_CONSOLE_MSG(m_pTextureCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture"), E_FAIL, "Error! CTerrain::SetUp_ShaderResources : " << __LINE__);
-
-	tmp = m_pTransformCom->Get_WorldFloat4x4();
-	FAILED_CHECK_RETURN_CONSOLE_MSG(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &tmp), E_FAIL, "Error! CTerrain::SetUp_ShaderResources : " << __LINE__);
 
 	tmp = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
-	FAILED_CHECK_RETURN_CONSOLE_MSG(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &tmp), E_FAIL, "Error! CTerrain::SetUp_ShaderResources : " << __LINE__);
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix",
+		&tmp)))
+		return E_FAIL;
 
 	tmp = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
-	FAILED_CHECK_RETURN_CONSOLE_MSG(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &tmp), E_FAIL, "Error! CTerrain::SetUp_ShaderResources : " << __LINE__);
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix",
+		&tmp)))
+		return E_FAIL;
+
+	_float4 tmp2 = pGameInstance->Get_CamPosition();
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition",
+		&tmp2, sizeof(_float4))))
+		return E_FAIL;
+
 	Safe_Release(pGameInstance);
+
+	if (FAILED(m_pTextureCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture")))
+		return E_FAIL;
+
 	return S_OK;
 }
 

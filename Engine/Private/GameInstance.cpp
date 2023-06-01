@@ -16,7 +16,9 @@ CGameInstance::CGameInstance()
 	, m_pComponent_Manager(CComponent_Manager::GetInstance())
 	, m_pPipeLine(CPipeLine::GetInstance())
 	, m_pInput_Device(CInput_Device::GetInstance())
+	, m_pLight_Manager(CLight_Manager::GetInstance())
 {
+	Safe_AddRef(m_pLight_Manager);
 	Safe_AddRef(m_pInput_Device);
 	Safe_AddRef(m_pPipeLine);
 	Safe_AddRef(m_pGraphic_Device);
@@ -32,7 +34,7 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHICDESC& Gr
 		nullptr == m_pInput_Device ||
 		nullptr == m_pObject_Manager ||
 		nullptr == m_pComponent_Manager)
-		return E_FAIL;
+		return E_FAIL; 
 
 	if (FAILED(m_pGraphic_Device->Ready_Graphic_Device(GraphicDesc.hWnd, GraphicDesc.eWinMode, GraphicDesc.iViewportSizeX, GraphicDesc.iViewportSizeY, ppDevice, ppDeviceContext)))
 		return E_FAIL;
@@ -45,6 +47,8 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHICDESC& Gr
 
 	if (FAILED(m_pComponent_Manager->Reserve_Containers(iNumLevels)))
 		return E_FAIL;
+
+	m_pLight_Manager->Initialize(*ppDevice, *ppDeviceContext);
 
 	return S_OK;
 }
@@ -196,6 +200,11 @@ CComponent* CGameInstance::Clone_Component(_uint iLevelIndex, const _tchar* pPro
 	return m_pComponent_Manager->Clone_Component(iLevelIndex, pPrototypeTag, pArg);
 }
 
+_float4 CGameInstance::Get_CamPosition() const
+{
+	return m_pPipeLine->Get_CamPosition();
+}
+
 void CGameInstance::Set_Transform(CPipeLine::D3DTRANSFORMSTATE eTransformState, _fmatrix TransformStateMatrix)
 {
 	if (nullptr == m_pPipeLine)
@@ -236,12 +245,29 @@ _float4x4 CGameInstance::Get_TransformFloat4x4_Inverse(CPipeLine::D3DTRANSFORMST
 	return m_pPipeLine->Get_TransformFloat4x4_Inverse(eTransformState);
 }
 
+const CLight::LIGHTDESC* CGameInstance::Get_Light(_uint iIndex)
+{
+	if(nullptr == m_pLight_Manager)
+		return nullptr;
+
+	m_pLight_Manager->Get_Light(iIndex);
+}
+
+HRESULT CGameInstance::Add_Lights(const CLight::LIGHTDESC& LightDesc)
+{
+	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	return m_pLight_Manager->Add_Lights(LightDesc);
+}
+
 void CGameInstance::Release_Engine()
 {
 	CTimer_Manager::DestroyInstance();
 	CInput_Device::DestroyInstance();
 	CObject_Manager::DestroyInstance();
 	CComponent_Manager::DestroyInstance();
+	CLight_Manager::DestroyInstance();
 	CLevel_Manager::DestroyInstance();
 	CGraphic_Device::DestroyInstance();
 	CPipeLine::DestroyInstance();
@@ -250,6 +276,7 @@ void CGameInstance::Release_Engine()
 
 void CGameInstance::Free()
 {
+	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pTimer_Manager);

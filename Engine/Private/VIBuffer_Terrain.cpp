@@ -14,12 +14,7 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap)
 {
 	_ulong			dwByte = { 0 };
 	HANDLE			hFile = CreateFile(pHeightMap, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-	if (0 == INVALID_HANDLE_VALUE)
-	{
-		CloseHandle(hFile);
-		return E_FAIL;
-	}
-		
+
 	BITMAPFILEHEADER	fh;
 	BITMAPINFOHEADER	ih;
 
@@ -47,15 +42,6 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap)
 
 
 #pragma region VERTEX_BUFFER
-	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
-
-	m_BufferDesc.ByteWidth = { m_iStride * m_iNumVertices };
-	m_BufferDesc.Usage = { D3D11_USAGE_DEFAULT };
-	m_BufferDesc.BindFlags = { D3D11_BIND_VERTEX_BUFFER };
-	m_BufferDesc.StructureByteStride = { m_iStride };
-	m_BufferDesc.CPUAccessFlags = { 0 };
-	m_BufferDesc.MiscFlags = { 0 };
-
 
 	//	11111111 01011101 01011101 01011101
 	//&	00000000 00000000 00000000 11111111]
@@ -81,61 +67,111 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap)
 		}
 	}
 
-	ZeroMemory(&m_SubResourceData, sizeof m_SubResourceData);
-	m_SubResourceData.pSysMem = pVertices;
 
-	if (FAILED(__super::Create_Buffer(&m_pVB)))
-		return E_FAIL;
+
 	Safe_Delete_Array(pPixel);
-	Safe_Delete_Array(pVertices);
 
 #pragma endregion
 
 
 #pragma region INDEX_BUFFER
-	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
-
-	m_BufferDesc.ByteWidth = { m_iIndexStride * m_iNumIndices };
-	m_BufferDesc.Usage = { D3D11_USAGE_DEFAULT };
-	m_BufferDesc.BindFlags = { D3D11_BIND_INDEX_BUFFER };
-	m_BufferDesc.StructureByteStride = { sizeof _ulong };
-	m_BufferDesc.CPUAccessFlags = { 0 };
-	m_BufferDesc.MiscFlags = { 0 };
 
 	_ulong* pIndices = new _ulong[m_iNumIndices];
-	//ZeroMemory(pIndices, sizeof(_ulong) * m_iNumIndices);
+	ZeroMemory(pIndices, sizeof(_ulong) * m_iNumIndices);
 
-	_uint iCurIndex = { 0 };
+	_uint		iNumIndices = { 0 };
 
 	for (_uint i = 0; i < m_iNumVerticesZ - 1; ++i)
 	{
-		for (_uint j = 0; j < m_iNumVerticesX - 1; ++j)
+		for (_uint j = 0; j < m_iNumVerticesX - 1; j++)
 		{
-			_uint iIndex = i * m_iNumVerticesX + j;
+			_uint		iIndex = i * m_iNumVerticesX + j;
 
-			_uint iIndices[4] = {
+			_uint		iIndices[4] = {
 				iIndex + m_iNumVerticesX,
 				iIndex + m_iNumVerticesX + 1,
 				iIndex + 1,
 				iIndex
 			};
 
-			pIndices[iCurIndex++] = iIndices[0];
-			pIndices[iCurIndex++] = iIndices[1];
-			pIndices[iCurIndex++] = iIndices[2];
+			_vector		vSour, vDest, vNormal;
 
-			pIndices[iCurIndex++] = iIndices[0];
-			pIndices[iCurIndex++] = iIndices[2];
-			pIndices[iCurIndex++] = iIndices[3];
+			pIndices[iNumIndices++] = iIndices[0];
+			pIndices[iNumIndices++] = iIndices[1];
+			pIndices[iNumIndices++] = iIndices[2];
+
+			vSour = XMLoadFloat3(&pVertices[iIndices[1]].vPosition) -
+				XMLoadFloat3(&pVertices[iIndices[0]].vPosition);
+			vDest = XMLoadFloat3(&pVertices[iIndices[2]].vPosition) -
+				XMLoadFloat3(&pVertices[iIndices[1]].vPosition);
+			vNormal = XMVector3Normalize(XMVector3Cross(vSour, vDest));
+
+
+			XMStoreFloat3(&pVertices[iIndices[0]].vNormal,
+				XMLoadFloat3(&pVertices[iIndices[0]].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[iIndices[1]].vNormal,
+				XMLoadFloat3(&pVertices[iIndices[1]].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[iIndices[2]].vNormal,
+				XMLoadFloat3(&pVertices[iIndices[2]].vNormal) + vNormal);
+
+			pIndices[iNumIndices++] = iIndices[0];
+			pIndices[iNumIndices++] = iIndices[2];
+			pIndices[iNumIndices++] = iIndices[3];
+
+			vSour = XMLoadFloat3(&pVertices[iIndices[2]].vPosition) -
+				XMLoadFloat3(&pVertices[iIndices[0]].vPosition);
+			vDest = XMLoadFloat3(&pVertices[iIndices[3]].vPosition) -
+				XMLoadFloat3(&pVertices[iIndices[2]].vPosition);
+			vNormal = XMVector3Normalize(XMVector3Cross(vSour, vDest));
+
+			XMStoreFloat3(&pVertices[iIndices[0]].vNormal,
+				XMLoadFloat3(&pVertices[iIndices[0]].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[iIndices[2]].vNormal,
+				XMLoadFloat3(&pVertices[iIndices[2]].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[iIndices[3]].vNormal,
+				XMLoadFloat3(&pVertices[iIndices[3]].vNormal) + vNormal);
 		}
 	}
+
+	for (size_t i = 0; i < m_iNumVertices; i++)
+	{
+		XMStoreFloat3(&pVertices[i].vNormal,
+			XMVector3Normalize(XMLoadFloat3(&pVertices[i].vNormal)));
+	}
+
+	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
+
+	m_BufferDesc.ByteWidth = { m_iStride * m_iNumVertices };
+	m_BufferDesc.Usage = { D3D11_USAGE_DEFAULT };
+	m_BufferDesc.BindFlags = { D3D11_BIND_VERTEX_BUFFER };
+	m_BufferDesc.StructureByteStride = { m_iStride };
+	m_BufferDesc.CPUAccessFlags = { 0 };
+	m_BufferDesc.MiscFlags = { 0 };
+
+	ZeroMemory(&m_SubResourceData, sizeof m_SubResourceData);
+	m_SubResourceData.pSysMem = pVertices;
+
+	if (FAILED(__super::Create_Buffer(&m_pVB)))
+		return E_FAIL;
+
+	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
+
+	m_BufferDesc.ByteWidth = { m_iIndexStride * m_iNumIndices };
+	m_BufferDesc.Usage = { D3D11_USAGE_DEFAULT };
+	m_BufferDesc.BindFlags = { D3D11_BIND_INDEX_BUFFER };
+	m_BufferDesc.StructureByteStride = { 0 };
+	m_BufferDesc.CPUAccessFlags = { 0 };
+	m_BufferDesc.MiscFlags = { 0 };
 
 	ZeroMemory(&m_SubResourceData, sizeof m_SubResourceData);
 	m_SubResourceData.pSysMem = pIndices;
 
 	if (FAILED(__super::Create_Buffer(&m_pIB)))
 		return E_FAIL;
+
+	Safe_Delete_Array(pVertices);
 	Safe_Delete_Array(pIndices);
+
 #pragma endregion
 
 	return S_OK;

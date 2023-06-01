@@ -58,7 +58,6 @@ private:
 
 public:
 	virtual void		Free(void);
-
 };
 
 END

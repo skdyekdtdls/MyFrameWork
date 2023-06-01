@@ -18,6 +18,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Lights()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -34,6 +37,27 @@ void CLevel_GamePlay::Late_Tick(_double TimeDelta)
 
 HRESULT CLevel_GamePlay::Render()
 {
+	return S_OK;
+}
+HRESULT CLevel_GamePlay::Ready_Lights()
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	CLight::LIGHTDESC LightDesc;
+	ZeroStruct(LightDesc);
+
+	LightDesc.eType = { CLight::TYPE_DIRECTION };
+	LightDesc.vDir = { 1.f, -1.f, 1.f, 0.f };
+	LightDesc.vAmbient = { 1.f, 1.f, 1.f, 1.f };
+	LightDesc.vDiffuse = { 1.f, 1.f, 1.f, 1.f };
+	LightDesc.vSpecular = { 1.f, 1.f, 1.f, 1.f };
+	
+	if (FAILED(pGameInstance->Add_Lights(LightDesc)))
+		return E_FAIL;
+
+	Safe_Release(pGameInstance);
+
 	return S_OK;
 }
 HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)

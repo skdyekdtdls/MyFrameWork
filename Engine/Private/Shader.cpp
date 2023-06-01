@@ -94,6 +94,19 @@ HRESULT CShader::Begin(_uint iPassIndex)
 	return S_OK;
 }
 
+HRESULT CShader::Bind_RawValue(const _char* pConstantName, const void* pValue, _uint iLength)
+{
+	if (nullptr == m_pEffect)
+		return E_FAIL;
+
+	//g_Texture
+	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
+	if (nullptr == pVariable)
+		return E_FAIL;
+
+	return pVariable->SetRawValue(pValue, 0, iLength);
+}
+
 HRESULT CShader::Bind_ShaderResource(const _char* pConstantName, ID3D11ShaderResourceView* pSRV)
 {
 	if (nullptr == m_pEffect)

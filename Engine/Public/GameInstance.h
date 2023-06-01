@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Component_Manager.h"
+#include "Light_Manager.h"
 #include "PipeLine.h"
 #include "Input_Device.h"
 
@@ -12,6 +13,7 @@ class CLevel_Manager;
 class CLevel;
 class CGameObject;
 class CTimer_Manager;
+class CLight_Manager;
 
 class ENGINE_DLL CGameInstance final : public CBase
 {
@@ -52,11 +54,16 @@ public: /* For Component Manager */
 	CComponent* Clone_Component(_uint iLevelIndex, const _tchar * pPrototypeTag, void* pArg = nullptr);
 
 public: /* For PipeLine */
+	_float4	Get_CamPosition() const;
 	void Set_Transform(CPipeLine::D3DTRANSFORMSTATE eTransformState, _fmatrix TransformStateMatrix);
 	_matrix Get_TransformMatrix(CPipeLine::D3DTRANSFORMSTATE eTransformState);
 	_float4x4 Get_TransformFloat4x4(CPipeLine::D3DTRANSFORMSTATE eTransformState);
 	_matrix Get_TransformMatrix_Inverse(CPipeLine::D3DTRANSFORMSTATE eTransformState);
 	_float4x4 Get_TransformFloat4x4_Inverse(CPipeLine::D3DTRANSFORMSTATE eTransformState);
+
+public: /* For Light_Manager */
+	const CLight::LIGHTDESC* Get_Light(_uint iIndex);
+	HRESULT Add_Lights(const CLight::LIGHTDESC & LightDesc);
 
 private:
 	CGraphic_Device* m_pGraphic_Device = { nullptr };
@@ -66,6 +73,7 @@ private:
 	CTimer_Manager* m_pTimer_Manager = { nullptr };
 	CComponent_Manager* m_pComponent_Manager = { nullptr };
 	CPipeLine*			m_pPipeLine = { nullptr };
+	CLight_Manager*		m_pLight_Manager = { nullptr };
 public:
 	static void Release_Engine();
 	void Free() override;
