@@ -2,7 +2,13 @@
 #include "GameInstance.h"
 #include "Level_GamePlay.h"
 #include "Level_Logo.h"
+
 #include "Loader.h"
+
+#ifdef _USE_IMGUI
+#include "Level_Imgui.h"
+#endif
+
 
 CLevel_Loading::CLevel_Loading(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
@@ -43,6 +49,11 @@ void CLevel_Loading::Tick(_double TimeDelta)
 		case LEVEL_GAMEPLAY:
 			pLevel = CLevel_GamePlay::Create(m_pDevice, m_pContext);
 			break;
+#ifdef _USE_IMGUI
+		case LEVEL_IMGUI:
+			pLevel = CLevel_Imgui::Create(m_pDevice, m_pContext);
+			break;
+#endif
 		}
 
 		if (nullptr == pLevel)

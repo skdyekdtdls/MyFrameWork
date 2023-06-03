@@ -55,7 +55,13 @@ HRESULT CLoader::Loading()
 	case Client::LEVEL_GAMEPLAY:
 		hr = Loading_For_GamePlay();
 		break;
+	case Client::LEVEL_IMGUI:
+		hr = Loading_For_GamePlay();
+		break;
+	default:
+		FAILED_CHECK_RETURN(E_FAIL, E_FAIL);
 	}
+	
 
 	if (FAILED(hr))
 		return E_FAIL;
@@ -97,7 +103,6 @@ HRESULT CLoader::Loading_For_GamePlay()
 	if (nullptr == m_pGameInstance)
 		return E_FAIL;
 
-
 	Set_LoadingText(L"텍스처 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Tile%d.dds", 2))), E_FAIL);
@@ -108,6 +113,34 @@ HRESULT CLoader::Loading_For_GamePlay()
 
 	Set_LoadingText(L"쉐이더 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxNorTex"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXPOSNORTEX_DECL::Elements, VTXPOSNORTEX_DECL::iNumElements)), E_FAIL);
+
+	Set_LoadingText(L"객체 로딩 중");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CTerrain::ProtoTag(), CTerrain::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CCamera_Free::ProtoTag(), CCamera_Free::Create(m_pDevice, m_pContext)), E_FAIL);
+
+	Set_LoadingText(L"로딩 완료");
+
+	m_isFinished = true;
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_For_IMGUI()
+{
+	if (nullptr == m_pGameInstance)
+		return E_FAIL;
+
+	Set_LoadingText(L"텍스처 로딩 중");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_IMGUI, TEXT("Prototype_Component_Texture_Terrain"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Tile%d.dds", 2))), E_FAIL);
+
+	Set_LoadingText(L"모델 로딩 중");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_IMGUI, CVIBuffer_Terrain::ProtoTag(),
+		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Terrain/Height.bmp"))), E_FAIL);
+
+	Set_LoadingText(L"쉐이더 로딩 중");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_IMGUI, TEXT("Prototype_Component_Shader_VtxNorTex"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXPOSNORTEX_DECL::Elements, VTXPOSNORTEX_DECL::iNumElements)), E_FAIL);
 
 	Set_LoadingText(L"객체 로딩 중");

@@ -104,6 +104,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             {
                 pGameInstance->ResizeBuffer(g_ResizeWidth, g_ResizeHeight);
             }
+#ifdef _USE_IMGUI
+            // Start the Dear ImGui frame
+            ImGui_ImplDX11_NewFrame();
+            ImGui_ImplWin32_NewFrame();
+            ImGui::NewFrame();
+#endif // _USE_IMGUI
 
             pGameInstance->Set_Timer(TEXT("Timer_60fps"));
 
@@ -114,13 +120,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             dwAccelTime = { 0.0 };
         }
     }
+#ifdef _USE_IMGUI
+    ImGui_ImplDX11_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();
+#endif // _USE_IMGUI
 
     Safe_Release(pGameInstance);
     Safe_Release(pMainApp);
     return (int) msg.wParam;
 }
-
-
 
 //
 //  함수: MyRegisterClass()
@@ -186,6 +195,15 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+
+#ifdef _USE_IMGUI
+#ifndef WM_DPICHANGED
+#define WM_DPICHANGED 0x02E0 // From Windows SDK 8.1+ headers
+#endif
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+#endif // _USE_IMGUI
+
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)

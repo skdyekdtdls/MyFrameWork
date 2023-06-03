@@ -91,7 +91,7 @@ HRESULT CGraphic_Device::Present()
 {
 	if (nullptr == m_pSwapChain)
 		return E_FAIL;
-
+	m_pDeviceContext->OMSetRenderTargets(1, &m_pBackBufferRTV, m_pDepthStencilView);
 	return m_pSwapChain->Present(0, 0);
 }
 

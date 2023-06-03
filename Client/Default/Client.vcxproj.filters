@@ -43,6 +43,27 @@
     <Filter Include="02. GameObject\Terrain">
       <UniqueIdentifier>{f002b723-511b-4b3c-aa44-e8f6b37d7d74}</UniqueIdentifier>
     </Filter>
+    <Filter Include="98. Default\IMGUI">
+      <UniqueIdentifier>{8b86e764-1f25-4760-b652-1c6d5fc58765}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Default\IMGUI\soruces">
+      <UniqueIdentifier>{46502292-4067-4030-a01d-ab28aa1a2917}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Levels\98. Imgui">
+      <UniqueIdentifier>{5d901690-a3cb-4630-8cdd-08f930725d02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Default\IMGUI\00. Manager">
+      <UniqueIdentifier>{0bb8ec66-41a2-4669-b788-e0201ee5de31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Default\IMGUI\01. ImWindow">
+      <UniqueIdentifier>{3df48032-fa95-43b1-bad1-309be2acdab8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Default\IMGUI\02. ImWindow_Demo">
+      <UniqueIdentifier>{9a6997b3-dc31-42aa-937e-1e07bf3bd6c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Default\IMGUI\imgui">
+      <UniqueIdentifier>{624ef5db-d6f4-4878-b346-e98003cfe17e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -84,6 +105,33 @@
     <ClInclude Include="..\public\Terrain.h">
       <Filter>02. GameObject\Terrain</Filter>
     </ClInclude>
+    <ClInclude Include="..\IMGUI\imconfig.h">
+      <Filter>98. Default\IMGUI\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\IMGUI\imgui.h">
+      <Filter>98. Default\IMGUI\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\IMGUI\imgui_internal.h">
+      <Filter>98. Default\IMGUI\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\IMGUI\backends\imgui_impl_dx11.h">
+      <Filter>98. Default\IMGUI\soruces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\IMGUI\backends\imgui_impl_win32.h">
+      <Filter>98. Default\IMGUI\soruces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Level_Imgui.h">
+      <Filter>01. Levels\98. Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_Demo.h">
+      <Filter>98. Default\IMGUI\02. ImWindow_Demo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow.h">
+      <Filter>98. Default\IMGUI\01. ImWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_Manager.h">
+      <Filter>98. Default\IMGUI\00. Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -121,6 +169,39 @@
     <ClCompile Include="..\Private\Terrain.cpp">
       <Filter>02. GameObject\Terrain</Filter>
     </ClCompile>
+    <ClCompile Include="..\IMGUI\imgui.cpp">
+      <Filter>98. Default\IMGUI\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\IMGUI\imgui_demo.cpp">
+      <Filter>98. Default\IMGUI\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\IMGUI\imgui_draw.cpp">
+      <Filter>98. Default\IMGUI\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\IMGUI\imgui_tables.cpp">
+      <Filter>98. Default\IMGUI\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\IMGUI\imgui_widgets.cpp">
+      <Filter>98. Default\IMGUI\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\IMGUI\backends\imgui_impl_dx11.cpp">
+      <Filter>98. Default\IMGUI\soruces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\IMGUI\backends\imgui_impl_win32.cpp">
+      <Filter>98. Default\IMGUI\soruces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Level_Imgui.cpp">
+      <Filter>01. Levels\98. Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_Demo.cpp">
+      <Filter>98. Default\IMGUI\02. ImWindow_Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow.cpp">
+      <Filter>98. Default\IMGUI\01. ImWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_Manager.cpp">
+      <Filter>98. Default\IMGUI\00. Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -134,5 +215,15 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\IMGUI\misc\debuggers\imgui.natstepfilter">
+      <Filter>98. Default\IMGUI\imgui</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="..\IMGUI\misc\debuggers\imgui.natvis">
+      <Filter>98. Default\IMGUI\imgui</Filter>
+    </Natvis>
   </ItemGroup>
 </Project>
