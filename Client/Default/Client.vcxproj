@@ -44,6 +44,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableUnitySupport>false</EnableUnitySupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -120,9 +121,9 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions);_USE_IMGUI</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../Public\;../Private\;../../Reference/Headers\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Public\;../Private\;../../Reference/Headers\;../IMGUI\;../IMGUI\backends</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -145,9 +146,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions);_USE_IMGUI</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../Public\;../Private\;../../Reference/Headers\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Public\;../Private\;../../Reference/Headers\;../IMGUI\;../IMGUI\backends</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -163,10 +164,19 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\IMGUI\backends\imgui_impl_dx11.h" />
+    <ClInclude Include="..\IMGUI\backends\imgui_impl_win32.h" />
+    <ClInclude Include="..\IMGUI\imconfig.h" />
+    <ClInclude Include="..\IMGUI\imgui.h" />
+    <ClInclude Include="..\IMGUI\imgui_internal.h" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
+    <ClInclude Include="..\Public\ImWindow.h" />
+    <ClInclude Include="..\Public\ImWindow_Demo.h" />
+    <ClInclude Include="..\Public\ImWindow_Manager.h" />
     <ClInclude Include="..\public\Level_GamePlay.h" />
+    <ClInclude Include="..\public\Level_Imgui.h" />
     <ClInclude Include="..\public\Level_Loading.h" />
     <ClInclude Include="..\public\Level_Logo.h" />
     <ClInclude Include="..\public\Loader.h" />
@@ -178,9 +188,20 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\IMGUI\backends\imgui_impl_dx11.cpp" />
+    <ClCompile Include="..\IMGUI\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\IMGUI\imgui.cpp" />
+    <ClCompile Include="..\IMGUI\imgui_demo.cpp" />
+    <ClCompile Include="..\IMGUI\imgui_draw.cpp" />
+    <ClCompile Include="..\IMGUI\imgui_tables.cpp" />
+    <ClCompile Include="..\IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
+    <ClCompile Include="..\Private\ImWindow.cpp" />
+    <ClCompile Include="..\Private\ImWindow_Demo.cpp" />
+    <ClCompile Include="..\Private\ImWindow_Manager.cpp" />
     <ClCompile Include="..\private\Level_GamePlay.cpp" />
+    <ClCompile Include="..\private\Level_Imgui.cpp" />
     <ClCompile Include="..\private\Level_Loading.cpp" />
     <ClCompile Include="..\private\Level_Logo.cpp" />
     <ClCompile Include="..\private\Loader.cpp" />
@@ -203,6 +224,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Vtxtex.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\IMGUI\misc\debuggers\imgui.natstepfilter" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="..\IMGUI\misc\debuggers\imgui.natvis" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
