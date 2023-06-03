@@ -19,15 +19,6 @@
     <Filter Include="98. Default\imgui">
       <UniqueIdentifier>{0587d7a3-f2ce-4d56-b84f-a0005d3bfce6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. Level">
-      <UniqueIdentifier>{0863460a-5ac6-44c3-9a8e-d12cb5ddab34}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. EditObejct">
-      <UniqueIdentifier>{69858522-2021-4d06-a60e-cc8b0e9281d0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. ImWindow\Manager">
-      <UniqueIdentifier>{885d66ec-ebb6-463a-9901-b72653474adf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. ImWindow\ImWindow_Demo">
       <UniqueIdentifier>{0a41a8d7-222d-461e-a7cb-08729a5b1f84}</UniqueIdentifier>
     </Filter>
@@ -37,10 +28,16 @@
     <Filter Include="04. Design\ToolInstance">
       <UniqueIdentifier>{7b1e0e9e-a531-4b48-98c6-ebac84bb57c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Design\EditObj_Mgr">
-      <UniqueIdentifier>{d51e6fa2-210b-48d3-b031-23314a87ad09}</UniqueIdentifier>
+    <Filter Include="04. Design\ImWindow_Manager">
+      <UniqueIdentifier>{885d66ec-ebb6-463a-9901-b72653474adf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. EditObejct\Edit_Terrain">
+    <Filter Include="02. Level">
+      <UniqueIdentifier>{1a613a39-cd7e-4d1d-9959-03acec9d519e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObejct">
+      <UniqueIdentifier>{69858522-2021-4d06-a60e-cc8b0e9281d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. GameObejct\Edit_Terrain">
       <UniqueIdentifier>{c730fa03-e178-49fb-8256-bd1284b16425}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -66,14 +63,11 @@
     <ClInclude Include="..\Public\Imgui_Defines.h">
       <Filter>99. Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Level_Tool.h">
-      <Filter>02. Level</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\ImWindow.h">
       <Filter>01. ImWindow</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ImWindow_Manager.h">
-      <Filter>01. ImWindow\Manager</Filter>
+      <Filter>04. Design\ImWindow_Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ImWindow_Demo.h">
       <Filter>01. ImWindow\ImWindow_Demo</Filter>
@@ -81,14 +75,11 @@
     <ClInclude Include="..\public\ToolInstance.h">
       <Filter>04. Design\ToolInstance</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\EditObj_Mgr.h">
-      <Filter>04. Design\EditObj_Mgr</Filter>
+    <ClInclude Include="..\Public\Level_Tool.h">
+      <Filter>02. Level</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\EditObject.h">
-      <Filter>03. EditObejct</Filter>
-    </ClInclude>
-    <ClInclude Include="Edit_Terrain.h">
-      <Filter>03. EditObejct\Edit_Terrain</Filter>
+    <ClInclude Include="..\Public\Edit_Terrain.h">
+      <Filter>03. GameObejct\Edit_Terrain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -119,14 +110,11 @@
     <ClCompile Include="main.cpp">
       <Filter>98. Default</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Level_Tool.cpp">
-      <Filter>02. Level</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\ImWindow.cpp">
       <Filter>01. ImWindow</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ImWindow_Manager.cpp">
-      <Filter>01. ImWindow\Manager</Filter>
+      <Filter>04. Design\ImWindow_Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ImWindow_Demo.cpp">
       <Filter>01. ImWindow\ImWindow_Demo</Filter>
@@ -134,14 +122,11 @@
     <ClCompile Include="..\private\ToolInstance.cpp">
       <Filter>04. Design\ToolInstance</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\EditObj_Mgr.cpp">
-      <Filter>04. Design\EditObj_Mgr</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\EditObject.cpp">
-      <Filter>03. EditObejct</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Edit_Terrain.cpp">
-      <Filter>03. EditObejct\Edit_Terrain</Filter>
+      <Filter>03. GameObejct\Edit_Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Tool.cpp">
+      <Filter>02. Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
