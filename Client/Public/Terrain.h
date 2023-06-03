@@ -40,7 +40,7 @@ private:
 	HRESULT SetUp_ShaderResources();
 
 public:
-	static const _tchar* ProtoTag() { return L"Prototype_GameObject_Terrain"; }
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_CTerrain"; }
 	static CTerrain* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free(void) override;

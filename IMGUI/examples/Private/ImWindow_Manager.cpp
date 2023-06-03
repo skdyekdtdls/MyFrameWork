@@ -33,7 +33,7 @@ void CImWindow_Manager::Render()
 
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
-    // Update and Render additional Platform Windows
+    // Tick and Render additional Platform Windows
     if (m_pIO->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
         ImGui::UpdatePlatformWindows();
@@ -61,7 +61,7 @@ void CImWindow_Manager::Initialize_Imgui(ImGuiIO** pIO, ID3D11Device* pDevice, I
     // Show the window
     ::ShowWindow(g_hWnd, SW_SHOWDEFAULT);
     ::UpdateWindow(g_hWnd);
-
+    
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();

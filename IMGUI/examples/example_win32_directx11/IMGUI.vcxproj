@@ -155,16 +155,14 @@
     <ClInclude Include="..\..\imgui_internal.h" />
     <ClInclude Include="..\..\backends\imgui_impl_dx11.h" />
     <ClInclude Include="..\..\backends\imgui_impl_win32.h" />
-    <ClInclude Include="..\public\EditObject.h" />
-    <ClInclude Include="..\public\EditObj_Mgr.h" />
+    <ClInclude Include="..\Public\Edit_Terrain.h" />
     <ClInclude Include="..\Public\Imgui_Defines.h" />
     <ClInclude Include="..\public\ImWindow.h" />
     <ClInclude Include="..\public\ImWindow_Demo.h" />
     <ClInclude Include="..\public\ImWindow_Manager.h" />
-    <ClInclude Include="..\public\Level_Tool.h" />
+    <ClInclude Include="..\Public\Level_Tool.h" />
     <ClInclude Include="..\Public\MainTool.h" />
     <ClInclude Include="..\public\ToolInstance.h" />
-    <ClInclude Include="Edit_Terrain.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\imgui.cpp" />
@@ -174,8 +172,6 @@
     <ClCompile Include="..\..\imgui_widgets.cpp" />
     <ClCompile Include="..\..\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="..\..\backends\imgui_impl_win32.cpp" />
-    <ClCompile Include="..\private\EditObject.cpp" />
-    <ClCompile Include="..\private\EditObj_Mgr.cpp" />
     <ClCompile Include="..\private\Edit_Terrain.cpp" />
     <ClCompile Include="..\private\ImWindow.cpp" />
     <ClCompile Include="..\private\ImWindow_Demo.cpp" />

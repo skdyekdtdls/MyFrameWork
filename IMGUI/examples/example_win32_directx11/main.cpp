@@ -3,7 +3,7 @@
 // Read online: https://github.com/ocornut/imgui/tree/master/docs
 
 #include "MainTool.h"
-
+#include "ToolInstance.h"
 static ID3D11Device* g_pd3dDevice = nullptr;
 static ID3D11DeviceContext* g_pd3dDeviceContext = nullptr;
 static UINT                     g_ResizeWidth = 0, g_ResizeHeight = 0;

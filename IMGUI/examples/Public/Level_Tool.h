@@ -17,6 +17,10 @@ public:
     virtual void Late_Tick(_double TimeDelta);
     virtual HRESULT Render();
 
+private:
+    HRESULT Ready_Prototype_Component();
+    HRESULT Ready_Prototype_GameObject(const _tchar* pLayerTag);
+
 public:
     static CLevel_Tool* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
     virtual void Free(void) override;
