@@ -11,6 +11,18 @@ namespace Engine
 		WINMODE		eWinMode;
 	}GRAPHICDESC;
 
+	typedef struct tagVertex_Position_Color
+	{
+		XMFLOAT3	vPosition;
+		XMFLOAT4	vColor;
+	}VTXPOSCOL;
+
+	typedef struct ENGINE_DLL tagVertex_Position_Color_Declaration
+	{
+		static const unsigned int	iNumElements = { 2 };
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
+	}VTXPOSCOL_DECL;
+
 	typedef struct tagVertex_Position_TexCoord
 	{
 		XMFLOAT3	vPosition;
@@ -22,6 +34,7 @@ namespace Engine
 		static const unsigned int	iNumElements = { 2 };
 		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
 	}VTXPOSTEX_DECL;
+
 
 	typedef struct tagVertex_Position_Normal_TexCoord
 	{

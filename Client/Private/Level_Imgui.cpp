@@ -3,7 +3,7 @@
 #include "GameInstance.h"
 #include "Camera_Free.h"
 #include "Terrain.h"
-
+#include "Cube.h"
 CLevel_Imgui::CLevel_Imgui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -67,7 +67,9 @@ HRESULT CLevel_Imgui::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, CTerrain::ProtoTag(), pLayerTag)))
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_IMGUI, CTerrain::ProtoTag(), pLayerTag)))
+		return E_FAIL;
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_IMGUI, CCube::ProtoTag(), pLayerTag)))
 		return E_FAIL;
 
 	Safe_Release(pGameInstance);
@@ -93,7 +95,7 @@ HRESULT CLevel_Imgui::Ready_Layer_Camera(const _tchar* pLayerTag)
 	CameraFreeDesc.CameraDesc.TransformDesc.SpeedPerSec = 10.f;
 	CameraFreeDesc.CameraDesc.TransformDesc.RotationPerSec = XMConvertToRadians(90.0f);
 
-	FAILED_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, CCamera_Free::ProtoTag(), pLayerTag, &CameraFreeDesc), E_FAIL);
+	FAILED_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CCamera_Free::ProtoTag(), pLayerTag, &CameraFreeDesc), E_FAIL);
 
 	Safe_Release(pGameInstance);
 
