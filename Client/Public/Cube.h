@@ -16,6 +16,11 @@ END
 BEGIN(Client)
 class CCube final : public CGameObject
 {
+public:
+	typedef struct tagCloneDesc : public CGameObject::tagCloneDesc
+	{
+		
+	}CLONE_DESC;
 private:
 	CCube(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CCube(const CCube& rhs);
@@ -45,5 +50,3 @@ public:
 	virtual void Free(void) override;
 };
 END
-
-

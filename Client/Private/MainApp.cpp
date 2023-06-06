@@ -69,7 +69,6 @@ HRESULT CMainApp::Render()
 #ifdef _USE_IMGUI
 	CImWindow_Manager::GetInstance()->Render();
 #endif
-
 	// TODO
 	m_pGameInstance->Present();
 

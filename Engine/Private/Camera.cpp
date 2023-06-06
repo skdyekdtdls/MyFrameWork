@@ -34,6 +34,7 @@ HRESULT CCamera::Initialize(void* pArg)
 		m_vUp = CameraDesc.vUp;
 
 		m_fFovy = CameraDesc.fFovy;
+
 		m_fAspect = CameraDesc.fAspect;
 		m_fNear = CameraDesc.fNear;
 		m_fFar = CameraDesc.fFar;

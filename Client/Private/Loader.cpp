@@ -3,6 +3,7 @@
 #include <process.h>
 #include "BackGround.h"
 #include "Camera_Free.h"
+#include "EditCamera.h"
 #include "Terrain.h"
 #include "Cube.h"
 
@@ -147,7 +148,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 
 	Set_LoadingText(L"객체 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CTerrain::ProtoTag(), CTerrain::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CCamera_Free::ProtoTag(), CCamera_Free::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CEditCamera::ProtoTag(), CEditCamera::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CCube::ProtoTag(), CCube::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	Set_LoadingText(L"로딩 완료");

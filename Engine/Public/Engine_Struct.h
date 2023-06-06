@@ -2,6 +2,12 @@
 
 namespace Engine
 {
+	typedef struct tagPickDesc
+	{
+		XMFLOAT3 vPickPos;
+		float	 fDist;
+	}PICK_DESC;
+
 	typedef struct tagGraphicDesc
 	{
 		enum WINMODE { WM_FULL, WM_WIN, WM_END };

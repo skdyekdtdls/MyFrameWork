@@ -30,18 +30,45 @@ HRESULT CCube::Initialize(void* pArg)
 	if (FAILED(Add_Components()))
 		return E_FAIL;
 
+	CLONE_DESC tCloneDesc;
+	ZeroStruct(tCloneDesc);
+
+	if (nullptr != pArg)
+	{
+		tCloneDesc = *static_cast<CLONE_DESC*>(pArg);
+		
+		_vector		vPosition = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+		vPosition += XMLoadFloat3(&tCloneDesc.vPosition);
+		m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPosition);
+		
+		cout << "°´Ã¼ »ý¼º" << endl;
+	}
+	
 	return S_OK;
 }
 
 void CCube::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
+	//m_pTransformCom->Go_Straight(TimeDelta);
+
+
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	//if(pGameInstance->Get_DIKeyState(VK_SPACE))
+		
+
+	Safe_Release(pGameInstance);	
 }
 
 void CCube::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
+	_float4 tmp;
+	XMStoreFloat4(&tmp, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	cout << tmp.x << "\t" << tmp.y << "\t" << tmp.z << "\t" <<endl;
 }
 
 HRESULT CCube::Render()
@@ -79,14 +106,14 @@ HRESULT CCube::SetUp_ShaderResources()
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
+	_float4x4 MyMatrix2 = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix",
-		&MyMatrix)))
+		&MyMatrix2)))
 		return E_FAIL;
 
-	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
+	_float4x4 MyMatrix3 = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix",
-		&MyMatrix)))
+		&MyMatrix3)))
 		return E_FAIL;
 
 	_float4 MyFloat4 = { _float4(0.f, 1.f, 0.f, 0.f) };

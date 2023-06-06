@@ -2,6 +2,7 @@
 #include "Level_Imgui.h"
 #include "GameInstance.h"
 #include "Camera_Free.h"
+#include "EditCamera.h"
 #include "Terrain.h"
 #include "Cube.h"
 CLevel_Imgui::CLevel_Imgui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -62,6 +63,7 @@ HRESULT CLevel_Imgui::Ready_Lights()
 
 	return S_OK;
 }
+
 HRESULT CLevel_Imgui::Ready_Layer_BackGround(const _tchar* pLayerTag)
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
@@ -69,8 +71,9 @@ HRESULT CLevel_Imgui::Ready_Layer_BackGround(const _tchar* pLayerTag)
 
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_IMGUI, CTerrain::ProtoTag(), pLayerTag)))
 		return E_FAIL;
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_IMGUI, CCube::ProtoTag(), pLayerTag)))
-		return E_FAIL;
+
+	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_IMGUI, CCube::ProtoTag(), pLayerTag)))
+	//	return E_FAIL;
 
 	Safe_Release(pGameInstance);
 
@@ -82,20 +85,20 @@ HRESULT CLevel_Imgui::Ready_Layer_Camera(const _tchar* pLayerTag)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	CCamera_Free::CAMERAFREEDESC		CameraFreeDesc;
+	CEditCamera::EDIT_CAMERA_DESC Edit_Camera_Desc;
 
-	CameraFreeDesc.iData = { 0 };
-	CameraFreeDesc.CameraDesc.vEye = _float4(0.f, 20.f, -15.f, 1.f);
-	CameraFreeDesc.CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
-	CameraFreeDesc.CameraDesc.vUp = _float4(0.f, 1.f, 0.f, 0.f);
-	CameraFreeDesc.CameraDesc.fFovy = XMConvertToRadians(60.0f);
-	CameraFreeDesc.CameraDesc.fAspect = (_float)g_iWinSizeX / g_iWinSizeY;
-	CameraFreeDesc.CameraDesc.fNear = 0.2f;
-	CameraFreeDesc.CameraDesc.fFar = 300.f;
-	CameraFreeDesc.CameraDesc.TransformDesc.SpeedPerSec = 10.f;
-	CameraFreeDesc.CameraDesc.TransformDesc.RotationPerSec = XMConvertToRadians(90.0f);
+	Edit_Camera_Desc.iData = { 0 };
+	Edit_Camera_Desc.CameraDesc.vEye = _float4(0.f, 20.f, -15.f, 1.f);
+	Edit_Camera_Desc.CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
+	Edit_Camera_Desc.CameraDesc.vUp = _float4(0.f, 1.f, 0.f, 0.f);
+	Edit_Camera_Desc.CameraDesc.fFovy = XMConvertToRadians(60.0f);
+	Edit_Camera_Desc.CameraDesc.fAspect = (_float)g_iWinSizeX / g_iWinSizeY;
+	Edit_Camera_Desc.CameraDesc.fNear = 0.2f;
+	Edit_Camera_Desc.CameraDesc.fFar = 300.f;
+	Edit_Camera_Desc.CameraDesc.TransformDesc.SpeedPerSec = 10.f;
+	Edit_Camera_Desc.CameraDesc.TransformDesc.RotationPerSec = XMConvertToRadians(90.0f);
 
-	FAILED_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CCamera_Free::ProtoTag(), pLayerTag, &CameraFreeDesc), E_FAIL);
+	FAILED_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CEditCamera::ProtoTag(), pLayerTag, &Edit_Camera_Desc), E_FAIL);
 
 	Safe_Release(pGameInstance);
 

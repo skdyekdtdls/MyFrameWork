@@ -43,6 +43,7 @@ public: /* For Object_Manager*/
 	HRESULT Add_Prototype(const _tchar * pPrototypeTag, CGameObject * pPrototype);
 	HRESULT Add_GameObject(_uint iLevelIndex, const _tchar * pPrototypeTag, const _tchar * pLayerTag, void* pArg = nullptr);
 	void Clear_LevelResources(_uint iLevelIndex);
+	CGameObject* Get_GameObject(_uint iLevelIndex, const _tchar * pLayerTag, string strName);
 
 public: /* For Timer Manager */
 	_double Get_Timer(const _tchar * pTimerTag);

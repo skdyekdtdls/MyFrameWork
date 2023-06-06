@@ -272,5 +272,8 @@
     <Filter Include="01. Utility\03. Components\VIBuffer\Cube">
       <UniqueIdentifier>{80befcf9-92f9-47a2-aefd-fbb7e3fbb1b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Utility\03. Components\Calculator">
+      <UniqueIdentifier>{1b57d4f7-33f3-4573-b030-d071942c755a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

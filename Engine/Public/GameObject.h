@@ -6,10 +6,21 @@ BEGIN(Engine)
 
 class ENGINE_DLL CGameObject : public CComposite
 {
+public:
+	typedef struct tagCloneDesc
+	{
+		_float3 vPosition;
+	}CLONE_DESC;
 protected:
 	CGameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CGameObject(const CGameObject& rhs);
 	virtual ~CGameObject() = default;
+
+public:
+	const string& Get_Name()
+	{
+		return m_strName;
+	}
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -20,6 +31,9 @@ public:
 public:
 	virtual CGameObject* Clone(void* pArg) override = 0;
 	virtual void Free() override;
+
+protected:
+	string m_strName;
 };
 
 END

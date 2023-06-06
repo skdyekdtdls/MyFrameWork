@@ -13,10 +13,9 @@ CTerrain::CTerrain(const CTerrain& rhs)
 HRESULT CTerrain::Initialize_Prototype()
 {
 	FAILED_CHECK_RETURN(__super::Initialize_Prototype(), E_FAIL);
-
+	m_strName = "Terrain";
 	return S_OK;
 }
-
 
 HRESULT CTerrain::Initialize(void* pArg)
 {
@@ -37,6 +36,13 @@ void CTerrain::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
+
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	
+
+
+	Safe_Release(pGameInstance);
 }
 
 HRESULT CTerrain::Render()
@@ -49,9 +55,58 @@ HRESULT CTerrain::Render()
 
 	m_pShaderCom->Begin(2);
 
-
-
 	m_pVIBufferCom->Render();
+}
+
+_bool CTerrain::Picked(PICK_DESC& tPickDesc)
+{
+	POINT	ptMouse{};
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+	_bool bResult = { false };
+	D3D11_VIEWPORT ViewPort;
+	UINT iNumViewPorts = 1;
+
+	ZeroStruct(ViewPort);
+	m_pContext->RSGetViewports(&iNumViewPorts, &ViewPort);
+
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	_float4x4 projMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
+
+	_float vx = (2.f * ptMouse.x / ViewPort.Width - 1.0f) / projMatrix.m[0][0];
+	_float vy = (-2.f * ptMouse.y / ViewPort.Height + 1.0f) / projMatrix.m[1][1];
+
+	_vector vRayOrigin = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	_vector vRayDir = XMVectorSet(vx, vy, 1.f, 0.f);
+
+	_matrix invView = pGameInstance->Get_TransformMatrix_Inverse(CPipeLine::D3DTS_VIEW);
+	_matrix invWorld = m_pTransformCom->Get_WorldMatrix_Inverse();
+
+	_matrix toLocal = XMMatrixMultiply(invView, invWorld);
+
+	vRayOrigin = XMVector3TransformCoord(vRayOrigin, toLocal);
+	vRayDir = XMVector3TransformNormal(vRayDir, toLocal);
+
+	vRayDir = XMVector3Normalize(vRayDir);
+
+	_float fMinDist = FLT_MAX;
+
+	bResult = m_pVIBufferCom->IsPicked(vRayOrigin, vRayDir, fMinDist);
+	
+	if (bResult)
+	{
+		_float3 vIntersection;
+		XMStoreFloat3(&vIntersection, XMVectorAdd(vRayOrigin, XMVectorScale(vRayDir, fMinDist)));
+
+		tPickDesc.fDist = fMinDist;
+		tPickDesc.vPickPos = vIntersection;
+		cout << vIntersection.x << '\t' << vIntersection.y << '\t' << vIntersection.z << endl;
+	}
+
+	Safe_Release(pGameInstance);
+	return bResult;
 }
 
 HRESULT CTerrain::Add_Components()

@@ -31,6 +31,17 @@ void CLayer::Late_Tick(_double TimeDelta)
 	}
 }
 
+CGameObject* CLayer::FindByName(string strName)
+{
+	auto GameObject = find_if(m_pGameObjects.begin(), m_pGameObjects.end(), [&strName](CGameObject* pObj)
+		{
+			return strName == pObj->Get_Name();
+		});
+
+	return (GameObject != m_pGameObjects.end()) ? *GameObject : nullptr;
+}
+
+
 CLayer* CLayer::Create()
 {
 	return new CLayer;

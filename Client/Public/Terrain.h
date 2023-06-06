@@ -28,6 +28,9 @@ public:
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
 
+public:
+	_bool Picked(_Inout_ PICK_DESC& tPickDesc);
+
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
