@@ -1,4 +1,6 @@
 #include "..\Public\PipeLine.h"
+#include "Transform.h"
+#include "VIBuffer_Terrain.h"
 
 IMPLEMENT_SINGLETON(CPipeLine)
 

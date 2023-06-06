@@ -3,6 +3,9 @@
 #include "Base.h"
 
 BEGIN(Engine)
+class CVIBuffer_Terrain;
+class CTransform;
+
 class CPipeLine final : public CBase
 {
 	DECLARE_SINGLETON(CPipeLine)
@@ -16,6 +19,7 @@ public:
 	void Set_Transform(D3DTRANSFORMSTATE eTransformState, _fmatrix TransformStateMatrix) {
 		XMStoreFloat4x4(&m_TransformState[eTransformState], TransformStateMatrix);
 	}
+
 	_matrix Get_TransformMatrix(D3DTRANSFORMSTATE eTransformState);
 	_float4x4 Get_TransformFloat4x4(D3DTRANSFORMSTATE eTransformState);
 	_matrix Get_TransformMatrix_Inverse(D3DTRANSFORMSTATE eTransformState);
@@ -24,6 +28,7 @@ public:
 	{
 		return m_vCameraPos;
 	}
+
 public:
 	void Tick();
 

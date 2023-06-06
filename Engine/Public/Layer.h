@@ -14,7 +14,8 @@ public:
 	HRESULT Add_GameObject(CGameObject * pGameObject);
 	void Tick(_double TimeDelta);
 	void Late_Tick(_double TimeDelta);
-
+	
+	CGameObject* FindByName(string strName);
 private:
 	list<CGameObject*>	m_pGameObjects;
 public:

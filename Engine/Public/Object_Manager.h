@@ -20,6 +20,7 @@ public:
 
 	void Tick(_double TimeDelta);
 	void Late_Tick(_double TimeDelta);
+	CLayer* Find_Layer(_uint iLevelIndex, const _tchar* pLayerTag);
 
 private:
 	unordered_map<const _tchar*, CGameObject*> m_Prototypes;
@@ -31,7 +32,6 @@ private:
 
 private:
 	CGameObject* Find_Prototype(const _tchar* pPrototypeTag);
-	CLayer* Find_Layer(_uint iLevelIndex, const _tchar* pLayerTag);
 
 public:
 	void Free() override;

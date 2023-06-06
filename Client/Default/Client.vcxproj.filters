@@ -64,6 +64,12 @@
     <Filter Include="98. Default\IMGUI\imgui">
       <UniqueIdentifier>{624ef5db-d6f4-4878-b346-e98003cfe17e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\Cube">
+      <UniqueIdentifier>{3198cdde-d249-4ee9-93c5-d530941a16e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Default\IMGUI\03. EditCamera">
+      <UniqueIdentifier>{eade0cab-4b16-472a-ab00-2f8994b484a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -131,6 +137,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\ImWindow_Manager.h">
       <Filter>98. Default\IMGUI\00. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Cube.h">
+      <Filter>02. GameObject\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EditCamera.h">
+      <Filter>98. Default\IMGUI\03. EditCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +214,15 @@
     <ClCompile Include="..\Private\ImWindow_Manager.cpp">
       <Filter>98. Default\IMGUI\00. Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Cube.cpp">
+      <Filter>02. GameObject\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UnityBuild.cpp">
+      <Filter>99. Headers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EditCamera.cpp">
+      <Filter>98. Default\IMGUI\03. EditCamera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -213,6 +234,9 @@
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCol.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

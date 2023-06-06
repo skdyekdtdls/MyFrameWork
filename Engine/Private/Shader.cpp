@@ -154,6 +154,11 @@ HRESULT CShader::Bind_Matrix(const _char* pConstantName, const _float4x4* pMatri
 	if (nullptr == pVariableMatrix)
 		return E_FAIL;
 
+	// 디버깅용
+	//pVariableMatrix->SetMatrix((_float*)pMatrix);
+	//_float4x4 tmp;
+	//pVariableMatrix->GetMatrix((_float*)&tmp);
+
 	/* 해당 컴객체로 변수에 값을 던진다. */
 	return pVariableMatrix->SetMatrix((_float*)pMatrix);
 }

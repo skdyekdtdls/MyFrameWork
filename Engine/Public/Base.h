@@ -14,7 +14,7 @@ public:
 	_ulong AddRef();
 	_ulong Release();
 
-private:
+protected:
 	_ulong m_dwRefCnt = { 0 };
 public:
 	virtual void Free() = 0;

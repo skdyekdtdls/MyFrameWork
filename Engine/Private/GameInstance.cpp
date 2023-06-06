@@ -5,6 +5,7 @@
 #include "Object_Manager.h"
 #include "Timer_Manager.h"
 #include "Component_Manager.h"
+#include "Layer.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -78,6 +79,23 @@ void CGameInstance::Clear_LevelResources(_uint iLevelIndex)
 
 	m_pObject_Manager->Clear_LevelResources(iLevelIndex);
 	m_pComponent_Manager->Clear_LevelResources(iLevelIndex);
+}
+
+CGameObject* CGameInstance::Get_GameObject(_uint iLevelIndex, const _tchar* pLayerTag, string strName)
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+
+	CLayer* pLayer = m_pObject_Manager->Find_Layer(iLevelIndex, pLayerTag);
+
+	if (nullptr == pLayer)
+		return nullptr;
+
+	CGameObject* pGameObject = pLayer->FindByName(strName);
+	if (nullptr == pGameObject)
+		return nullptr;
+
+	return pGameObject;
 }
 
 void CGameInstance::ResizeBuffer(_uint& g_ResizeWidth, _uint& g_ResizeHeight)

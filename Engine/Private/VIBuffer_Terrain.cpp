@@ -7,7 +7,11 @@ CVIBuffer_Terrain::CVIBuffer_Terrain(ID3D11Device* pDevice, ID3D11DeviceContext*
 
 CVIBuffer_Terrain::CVIBuffer_Terrain(const CVIBuffer_Terrain& rhs)
 	: CVIBuffer(rhs)
+	, m_pVertices(rhs.m_pVertices)
+	, m_iNumVerticesX(rhs.m_iNumVerticesX)
+	, m_iNumVerticesZ(rhs.m_iNumVerticesZ)
 {
+	
 }
 
 HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap)
@@ -23,7 +27,7 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap)
 
 	m_iNumVerticesX = { (_uint)ih.biWidth };
 	m_iNumVerticesZ = { (_uint)ih.biHeight };
-
+	
 	_ulong* pPixel = new _ulong[m_iNumVerticesX * m_iNumVerticesZ];
 	ZeroMemory(pPixel, sizeof(_ulong) * m_iNumVerticesX * m_iNumVerticesZ);
 
@@ -52,8 +56,8 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap)
 
 
 
-	VTXPOSNORTEX* pVertices = new VTXPOSNORTEX[m_iNumVertices];
-	ZeroMemory(pVertices, sizeof(VTXPOSNORTEX) * m_iNumVertices);
+	m_pVertices = new VTXPOSNORTEX[m_iNumVertices];
+	ZeroMemory(m_pVertices, sizeof(VTXPOSNORTEX) * m_iNumVertices);
 
 	for (_uint i = 0; i < m_iNumVerticesZ; ++i)
 	{
@@ -61,13 +65,11 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap)
 		{
 			_uint		iIndex = i * m_iNumVerticesX + j;
 
-			pVertices[iIndex].vPosition = _float3(j, (pPixel[iIndex] & 0x000000ff) / 10.0f, i);
-			pVertices[iIndex].vNormal = _float3(0.f, 0.f, 0.f);
-			pVertices[iIndex].vTexCoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
+			m_pVertices[iIndex].vPosition = _float3(j, (pPixel[iIndex] & 0x000000ff) / 10.0f, i);
+			m_pVertices[iIndex].vNormal = _float3(0.f, 0.f, 0.f);
+			m_pVertices[iIndex].vTexCoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
 		}
 	}
-
-
 
 	Safe_Delete_Array(pPixel);
 
@@ -100,43 +102,43 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap)
 			pIndices[iNumIndices++] = iIndices[1];
 			pIndices[iNumIndices++] = iIndices[2];
 
-			vSour = XMLoadFloat3(&pVertices[iIndices[1]].vPosition) -
-				XMLoadFloat3(&pVertices[iIndices[0]].vPosition);
-			vDest = XMLoadFloat3(&pVertices[iIndices[2]].vPosition) -
-				XMLoadFloat3(&pVertices[iIndices[1]].vPosition);
+			vSour = XMLoadFloat3(&m_pVertices[iIndices[1]].vPosition) -
+				XMLoadFloat3(&m_pVertices[iIndices[0]].vPosition);
+			vDest = XMLoadFloat3(&m_pVertices[iIndices[2]].vPosition) -
+				XMLoadFloat3(&m_pVertices[iIndices[1]].vPosition);
 			vNormal = XMVector3Normalize(XMVector3Cross(vSour, vDest));
 
 
-			XMStoreFloat3(&pVertices[iIndices[0]].vNormal,
-				XMLoadFloat3(&pVertices[iIndices[0]].vNormal) + vNormal);
-			XMStoreFloat3(&pVertices[iIndices[1]].vNormal,
-				XMLoadFloat3(&pVertices[iIndices[1]].vNormal) + vNormal);
-			XMStoreFloat3(&pVertices[iIndices[2]].vNormal,
-				XMLoadFloat3(&pVertices[iIndices[2]].vNormal) + vNormal);
+			XMStoreFloat3(&m_pVertices[iIndices[0]].vNormal,
+				XMLoadFloat3(&m_pVertices[iIndices[0]].vNormal) + vNormal);
+			XMStoreFloat3(&m_pVertices[iIndices[1]].vNormal,
+				XMLoadFloat3(&m_pVertices[iIndices[1]].vNormal) + vNormal);
+			XMStoreFloat3(&m_pVertices[iIndices[2]].vNormal,
+				XMLoadFloat3(&m_pVertices[iIndices[2]].vNormal) + vNormal);
 
 			pIndices[iNumIndices++] = iIndices[0];
 			pIndices[iNumIndices++] = iIndices[2];
 			pIndices[iNumIndices++] = iIndices[3];
 
-			vSour = XMLoadFloat3(&pVertices[iIndices[2]].vPosition) -
-				XMLoadFloat3(&pVertices[iIndices[0]].vPosition);
-			vDest = XMLoadFloat3(&pVertices[iIndices[3]].vPosition) -
-				XMLoadFloat3(&pVertices[iIndices[2]].vPosition);
+			vSour = XMLoadFloat3(&m_pVertices[iIndices[2]].vPosition) -
+				XMLoadFloat3(&m_pVertices[iIndices[0]].vPosition);
+			vDest = XMLoadFloat3(&m_pVertices[iIndices[3]].vPosition) -
+				XMLoadFloat3(&m_pVertices[iIndices[2]].vPosition);
 			vNormal = XMVector3Normalize(XMVector3Cross(vSour, vDest));
 
-			XMStoreFloat3(&pVertices[iIndices[0]].vNormal,
-				XMLoadFloat3(&pVertices[iIndices[0]].vNormal) + vNormal);
-			XMStoreFloat3(&pVertices[iIndices[2]].vNormal,
-				XMLoadFloat3(&pVertices[iIndices[2]].vNormal) + vNormal);
-			XMStoreFloat3(&pVertices[iIndices[3]].vNormal,
-				XMLoadFloat3(&pVertices[iIndices[3]].vNormal) + vNormal);
+			XMStoreFloat3(&m_pVertices[iIndices[0]].vNormal,
+				XMLoadFloat3(&m_pVertices[iIndices[0]].vNormal) + vNormal);
+			XMStoreFloat3(&m_pVertices[iIndices[2]].vNormal,
+				XMLoadFloat3(&m_pVertices[iIndices[2]].vNormal) + vNormal);
+			XMStoreFloat3(&m_pVertices[iIndices[3]].vNormal,
+				XMLoadFloat3(&m_pVertices[iIndices[3]].vNormal) + vNormal);
 		}
 	}
 
 	for (size_t i = 0; i < m_iNumVertices; i++)
 	{
-		XMStoreFloat3(&pVertices[i].vNormal,
-			XMVector3Normalize(XMLoadFloat3(&pVertices[i].vNormal)));
+		XMStoreFloat3(&m_pVertices[i].vNormal,
+			XMVector3Normalize(XMLoadFloat3(&m_pVertices[i].vNormal)));
 	}
 
 	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
@@ -149,7 +151,7 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap)
 	m_BufferDesc.MiscFlags = { 0 };
 
 	ZeroMemory(&m_SubResourceData, sizeof m_SubResourceData);
-	m_SubResourceData.pSysMem = pVertices;
+	m_SubResourceData.pSysMem = m_pVertices;
 
 	if (FAILED(__super::Create_Buffer(&m_pVB)))
 		return E_FAIL;
@@ -169,7 +171,6 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap)
 	if (FAILED(__super::Create_Buffer(&m_pIB)))
 		return E_FAIL;
 
-	Safe_Delete_Array(pVertices);
 	Safe_Delete_Array(pIndices);
 
 #pragma endregion
@@ -180,6 +181,58 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap)
 HRESULT CVIBuffer_Terrain::Initialize(void* pArg)
 {
 	return S_OK;
+}
+
+_bool CVIBuffer_Terrain::IsPicked(FXMVECTOR vRayOrigin, FXMVECTOR vRayDir, _float& fMinDist)
+{
+	_bool bResult = { false };
+	for (_ulong i = 0; i < m_iNumVerticesZ -1; ++i)
+	{
+		for (_ulong j = 0; j < m_iNumVerticesX - 1; ++j)
+		{
+			_uint iIndex = i * m_iNumVerticesX + j;
+
+			//if (iIndex >= (m_iNumVerticesX - 1)* (m_iNumVerticesZ - 1))
+			//	return false;
+
+			_float fDist;
+			_uint		iIndices[4] = {
+				iIndex + m_iNumVerticesX,
+				iIndex + m_iNumVerticesX + 1,
+				iIndex + 1,
+				iIndex
+			};
+			if (TriangleTests::Intersects(
+				vRayOrigin
+				, vRayDir
+				, XMLoadFloat3(&m_pVertices[iIndices[0]].vPosition)
+				, XMLoadFloat3(&m_pVertices[iIndices[1]].vPosition)
+				, XMLoadFloat3(&m_pVertices[iIndices[2]].vPosition)
+				, fDist))
+			{
+				bResult = { true };
+				if (fDist < fMinDist)
+					fMinDist = fDist;				
+			}
+
+			if (TriangleTests::Intersects(
+				vRayOrigin
+				, vRayDir
+				, XMLoadFloat3(&m_pVertices[iIndices[0]].vPosition)
+				, XMLoadFloat3(&m_pVertices[iIndices[2]].vPosition)
+				, XMLoadFloat3(&m_pVertices[iIndices[3]].vPosition)
+				, fDist))
+			{
+
+				bResult = { true };
+				if (fDist < fMinDist)
+					fMinDist = fDist;
+			}
+		}
+	}
+	
+	system("cls");
+	return bResult;
 }
 
 CVIBuffer_Terrain* CVIBuffer_Terrain::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pHeightMap)
@@ -209,5 +262,7 @@ CComponent* CVIBuffer_Terrain::Clone(void* pArg)
 void CVIBuffer_Terrain::Free()
 {
 	__super::Free();
-
+	
+	if(!m_IsCloned)
+		Safe_Delete_Array(m_pVertices);
 }
