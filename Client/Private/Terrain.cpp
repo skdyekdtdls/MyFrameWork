@@ -102,7 +102,6 @@ _bool CTerrain::Picked(PICK_DESC& tPickDesc)
 
 		tPickDesc.fDist = fMinDist;
 		tPickDesc.vPickPos = vIntersection;
-		cout << vIntersection.x << '\t' << vIntersection.y << '\t' << vIntersection.z << endl;
 	}
 
 	Safe_Release(pGameInstance);

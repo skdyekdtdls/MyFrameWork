@@ -41,7 +41,8 @@ HRESULT CCube::Initialize(void* pArg)
 		vPosition += XMLoadFloat3(&tCloneDesc.vPosition);
 		m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPosition);
 		
-		cout << "°´Ã¼ »ý¼º" << endl;
+		static int count = 0;
+		cout << ++count << endl;
 	}
 	
 	return S_OK;
@@ -68,7 +69,6 @@ void CCube::Late_Tick(_double TimeDelta)
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 	_float4 tmp;
 	XMStoreFloat4(&tmp, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-	cout << tmp.x << "\t" << tmp.y << "\t" << tmp.z << "\t" <<endl;
 }
 
 HRESULT CCube::Render()
