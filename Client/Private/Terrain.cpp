@@ -100,6 +100,8 @@ _bool CTerrain::Picked(PICK_DESC& tPickDesc)
 		_float3 vIntersection;
 		XMStoreFloat3(&vIntersection, XMVectorAdd(vRayOrigin, XMVectorScale(vRayDir, fMinDist)));
 
+		_float4x4 worldMatrix = m_pTransformCom->Get_WorldFloat4x4();
+		XMStoreFloat3(&vIntersection, XMVector3TransformCoord(XMLoadFloat3(&vIntersection), XMLoadFloat4x4(&worldMatrix)));
 		tPickDesc.fDist = fMinDist;
 		tPickDesc.vPickPos = vIntersection;
 	}
