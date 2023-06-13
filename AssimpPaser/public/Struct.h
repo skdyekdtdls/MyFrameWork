@@ -1,18 +1,31 @@
 #pragma once
+#include "Engine_Defines.h"
+enum class ANIM_TYPE { NONANIM, ANIM, a_END };
 
-
-typedef struct tagScene
+typedef struct tagModel
 {
-    _uint m_iNumMeshes;
-    _uint m_iNumMaterials;
-}SCENE;
+    ANIM_TYPE eAnimType;
+    _uint iNumMeshes;
+    _uint iNumMaterials;
+    _uint iNumAnimation;
+}MODEL;
+
+typedef struct tagNode
+{
+    char szName;
+
+}NODE;
 
 typedef struct tagMesh
 {
-    char					m_szName[MAX_PATH] = "";
-    _uint					m_iMaterialIndex = { 0 };
-    _uint					m_iNumBones = { 0 };
-    vector<_uint>			m_Bones;
-    _uint                   m_iNumVertices;
-    _uint                   m_iNumIndices;
+    char					szName[MAX_PATH] = "";
+    _uint					iMaterialIndex = { 0 };
+    _uint					iNumBones = { 0 };
+    _uint                   iNumVertices;
+    _uint                   iNumIndices;
 }MESH;
+
+typedef struct tagBone
+{
+
+}BONE;

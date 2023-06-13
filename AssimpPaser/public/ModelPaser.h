@@ -9,28 +9,28 @@ public:
 	virtual ~CModelPaser() = default;
 
 public:
-	HRESULT Pasing(TYPE eModelType, const char* pModelFilePath);
+	HRESULT Pasing(ANIM_TYPE eModelType, const char* pModelFilePath);
+	HRESULT Ready_Paser();
+	void Relase_Paser();
 
 private:
 	Assimp::Importer	m_Importer; /* 내가 경로로 던져준 파일을 읽고 저장한다.*/
 	const aiScene* m_pAIScene = { nullptr };
 
 private:
-	TYPE							m_eModelType = { TYPE_END };
+	class CBonePaser*				m_pBonePaser = { nullptr };
 
 private:
 	_uint							m_iNumMeshes = { 0 };
-	class CMeshPaser*				m_MeshPaser = { nullptr };
+	class CMeshPaser*				m_pMeshPaser = { nullptr };
 
 private:
 	_uint							m_iNumMaterials = { 0 };
-	class CMaterialPaser*			m_MaterialPaser = { nullptr };
+	class CMaterialPaser*			m_pMaterialPaser = { nullptr };
 
-private:
-	class CBonePaser*				m_BonePaser = { nullptr };
 
 private:
 	_uint							m_iNumAnimations = { 0 };
-	class CAnimationPaser*			m_AnimationPaser = { nullptr };
+	class CAnimationPaser*			m_pAnimationPaser = { nullptr };
 };
 

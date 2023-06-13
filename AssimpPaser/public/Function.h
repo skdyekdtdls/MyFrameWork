@@ -1,19 +1,28 @@
 #pragma once
 
-fs::path ToResourcesDir()
+template <typename T>
+void MySafe_Delete(T& pointer)
 {
-    fs::path ResourcesDir = fs::current_path();
-    ResourcesDir = ResourcesDir.parent_path().parent_path();
-    ResourcesDir.append("Client\\Bin\\Resources\\");
-
-
-    return ResourcesDir;
+	if (nullptr != pointer)
+	{
+		delete pointer;
+		pointer = nullptr;
+	}
 }
 
-fs::path ToModelsDir()
+static HRESULT WriteTCHAR(HANDLE hFile, const _tchar* pBuffer, DWORD& dwByte)
 {
-    fs::path ModelsDir = ToResourcesDir();
-    ModelsDir.append("Models\\");
-
-    return ModelsDir;
+	return WriteFile(hFile, pBuffer, lstrlen(pBuffer) * 2, &dwByte, nullptr);
 }
+//#define WriteTCHAR(hFile, pBuffer, dwByte) FAILED_CHECK_RETURN(WriteTCHAR(hFile, pBuffer, dwByte), E_FAIL)
+
+static HRESULT WriteCHAR(HANDLE hFile, const char* pBuffer, DWORD& dwByte)
+{
+	char Buffer[MAX_PATH];
+	_tchar LBuffer[MAX_PATH];
+	strcpy_s(Buffer, pBuffer);
+	MultiByteToWideChar(CP_ACP, 0, Buffer, MAX_PATH, LBuffer, MAX_PATH);
+	return WriteFile(hFile, LBuffer, strlen(pBuffer) * 2, &dwByte, nullptr);
+}
+//#define WriteCHAR(hFile, pBuffer, dwByte) FAILED_CHECK_RETURN(WriteCHAR(hFile, pBuffer, dwByte), E_FAIL)
+

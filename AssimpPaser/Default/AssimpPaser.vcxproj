@@ -19,12 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\private\BonePaser.cpp" />
     <ClCompile Include="..\private\main.cpp" />
+    <ClCompile Include="..\private\MeshPaser.cpp" />
     <ClCompile Include="..\private\ModelPaser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Assimp_Defines.h" />
+    <ClInclude Include="..\public\BonePaser.h" />
     <ClInclude Include="..\public\Function.h" />
+    <ClInclude Include="..\public\MeshPaser.h" />
     <ClInclude Include="..\public\ModelPaser.h" />
     <ClInclude Include="..\public\Struct.h" />
   </ItemGroup>
@@ -126,14 +130,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../public\;../public/assimp\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../public\;../public/assimp\;../../Reference/Headers\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../ThirdPartyLib\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../ThirdPartyLib\;C:\Program Files\Autodesk\FBX\FBX SDK\2020.0.1\lib\vs2017\x64\debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc142-mtd.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
