@@ -7,6 +7,7 @@
 #include "VIBuffer_Cube.h"
 #include "Texture.h"
 #include "Transform.h"
+#include "Model.h"
 
 BEGIN(Engine)
 class ENGINE_DLL CComponent_Manager final : public CBase

@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h" />
+    <ClInclude Include="..\public\Bone.h" />
     <ClInclude Include="..\public\Camera.h" />
     <ClInclude Include="..\public\Component.h" />
     <ClInclude Include="..\public\Component_Manager.h" />
@@ -38,8 +39,11 @@
     <ClInclude Include="..\public\Level_Manager.h" />
     <ClInclude Include="..\public\Light.h" />
     <ClInclude Include="..\public\Light_Manager.h" />
+    <ClInclude Include="..\public\Mesh.h" />
+    <ClInclude Include="..\public\Model.h" />
     <ClInclude Include="..\public\Object_Manager.h" />
     <ClInclude Include="..\public\PipeLine.h" />
+    <ClInclude Include="..\Public\ReadFunction.h" />
     <ClInclude Include="..\public\Renderer.h" />
     <ClInclude Include="..\public\Shader.h" />
     <ClInclude Include="..\public\Texture.h" />
@@ -53,12 +57,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp" />
+    <ClCompile Include="..\private\Bone.cpp" />
     <ClCompile Include="..\private\Camera.cpp" />
     <ClCompile Include="..\private\Component.cpp" />
     <ClCompile Include="..\private\Component_Manager.cpp" />
     <ClCompile Include="..\private\Composite.cpp" />
     <ClCompile Include="..\private\Input_Device.cpp" />
     <ClCompile Include="..\private\Light.cpp" />
+    <ClCompile Include="..\private\Mesh.cpp" />
+    <ClCompile Include="..\private\Model.cpp" />
     <ClCompile Include="..\private\PipeLine.cpp" />
     <ClCompile Include="..\private\Shader.cpp" />
     <ClCompile Include="..\private\Texture.cpp" />

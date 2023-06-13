@@ -22,6 +22,9 @@
     <Filter Include="소스 파일\BonePaser">
       <UniqueIdentifier>{f7b5ee47-23ea-4286-9b8d-d0c15cde1863}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\MaterialPaser">
+      <UniqueIdentifier>{f6603848-dd38-41e4-a714-159f27849ca0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\main.cpp">
@@ -35,6 +38,9 @@
     </ClCompile>
     <ClCompile Include="..\private\BonePaser.cpp">
       <Filter>소스 파일\BonePaser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MaterialPaser.cpp">
+      <Filter>소스 파일\MaterialPaser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +61,9 @@
     </ClInclude>
     <ClInclude Include="..\public\BonePaser.h">
       <Filter>소스 파일\BonePaser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MaterialPaser.h">
+      <Filter>소스 파일\MaterialPaser</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

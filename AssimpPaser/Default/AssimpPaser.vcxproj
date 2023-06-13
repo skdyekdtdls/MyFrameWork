@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\private\BonePaser.cpp" />
     <ClCompile Include="..\private\main.cpp" />
+    <ClCompile Include="..\private\MaterialPaser.cpp" />
     <ClCompile Include="..\private\MeshPaser.cpp" />
     <ClCompile Include="..\private\ModelPaser.cpp" />
   </ItemGroup>
@@ -28,6 +29,7 @@
     <ClInclude Include="..\public\Assimp_Defines.h" />
     <ClInclude Include="..\public\BonePaser.h" />
     <ClInclude Include="..\public\Function.h" />
+    <ClInclude Include="..\public\MaterialPaser.h" />
     <ClInclude Include="..\public\MeshPaser.h" />
     <ClInclude Include="..\public\ModelPaser.h" />
     <ClInclude Include="..\public\Struct.h" />
@@ -58,6 +60,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableUnitySupport>true</EnableUnitySupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>

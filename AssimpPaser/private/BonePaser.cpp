@@ -6,6 +6,7 @@ HRESULT CBonePaser::Pasing(HANDLE hFile, DWORD& dwByte, aiNode* pNode)
 	m_BoneNames.push_back(pNode->mName.data);
 	WriteAiMatrix4x4(pNode->mTransformation.Transpose());
 
+	WriteUINT(pNode->mNumChildren);
 	for (size_t i = 0; i < pNode->mNumChildren; ++i)
 	{
 		Pasing(hFile, dwByte, pNode->mChildren[i]);

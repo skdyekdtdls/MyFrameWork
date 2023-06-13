@@ -1,47 +1,46 @@
 #include "..\public\MeshPaser.h"
 #include "BonePaser.h"
 
-//HRESULT CMeshPaser::Pasing(HANDLE hFile, aiMesh* pAIMesh, DWORD& dwByte, ANIM_TYPE eAnimType, const BONES& BonesName)
-//{
-//	// m_iMaterialIndex
-//	WriteUINT(pAIMesh->mMaterialIndex);
-//
-//	// m_szName
-//	WriteCHAR(pAIMesh->mName.data);
-//
-//	// m_iNumVertices
-//	WriteUINT(pAIMesh->mNumVertices);
-//
-//	// m_iNumIndices
-//	WriteUINT(pAIMesh->mNumFaces);
-//
-//	if (ANIM_TYPE::NONANIM == eAnimType)
-//		Pasing_Vertex_NonAnim(hFile, pAIMesh, dwByte);
-//	else
-//		Pasing_Vertex_Anim(hFile, pAIMesh, dwByte, BonesName);
-//
-//	// TODO FOR INDEX
-//
-//	for (size_t i = 0; i < pAIMesh->mNumFaces; i++)
-//	{
-//		WriteUINT(pAIMesh->mFaces[i].mIndices[0]);
-//		WriteUINT(pAIMesh->mFaces[i].mIndices[1]);
-//		WriteUINT(pAIMesh->mFaces[i].mIndices[2]);
-//	}
-//
-//	return S_OK;
-//}
-
-
-
-
-
 HRESULT CMeshPaser::Pasing(HANDLE hFile, DWORD& dwByte, const aiScene* pAIScene, ANIM_TYPE eAnimType, const BONES& BonesName)
 {
+	WriteUINT(pAIScene->mNumMeshes);
+
+	for (_uint i = 0; i < pAIScene->mNumMeshes; ++i)
+	{
+		Pasing_SubMesh(hFile, dwByte, pAIScene->mMeshes[i], eAnimType, BonesName);
+	}
+
 	return S_OK;
 }
 
-void CMeshPaser::Pasing_Vertex_NonAnim(HANDLE hFile, aiMesh* pAIMesh, DWORD& dwByte)
+void CMeshPaser::Pasing_SubMesh(HANDLE hFile, DWORD& dwByte, const aiMesh* pAIMesh, ANIM_TYPE eAnimType, const BONES& BonesName)
+{
+	// m_iMaterialIndex
+	WriteUINT(pAIMesh->mMaterialIndex);
+	
+	// m_szName
+	WriteCHAR(pAIMesh->mName.data);
+	
+	// m_iNumVertices
+	WriteUINT(pAIMesh->mNumVertices);
+	
+	// m_iNumIndices
+	WriteUINT(pAIMesh->mNumFaces);
+	
+	if (ANIM_TYPE::NONANIM == eAnimType)
+		Pasing_Vertex_NonAnim(hFile, pAIMesh, dwByte);
+	else
+		Pasing_Vertex_Anim(hFile, pAIMesh, dwByte, BonesName);
+
+	for (size_t i = 0; i < pAIMesh->mNumFaces; i++)
+	{
+		WriteUINT(pAIMesh->mFaces[i].mIndices[0]);
+		WriteUINT(pAIMesh->mFaces[i].mIndices[1]);
+		WriteUINT(pAIMesh->mFaces[i].mIndices[2]);
+	}
+}
+
+void CMeshPaser::Pasing_Vertex_NonAnim(HANDLE hFile, const aiMesh* pAIMesh, DWORD& dwByte)
 {
 	for (size_t i = 0; i < pAIMesh->mNumVertices; ++i)
 	{
@@ -52,7 +51,7 @@ void CMeshPaser::Pasing_Vertex_NonAnim(HANDLE hFile, aiMesh* pAIMesh, DWORD& dwB
 	}
 }
 
-void CMeshPaser::Pasing_Vertex_Anim(HANDLE hFile, aiMesh* pAIMesh, DWORD& dwByte, const BONES& BonesName)
+void CMeshPaser::Pasing_Vertex_Anim(HANDLE hFile, const aiMesh* pAIMesh, DWORD& dwByte, const BONES& BonesName)
 {
 	for (size_t i = 0; i < pAIMesh->mNumVertices; ++i)
 	{

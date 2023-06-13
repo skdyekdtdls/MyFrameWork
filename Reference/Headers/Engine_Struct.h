@@ -17,6 +17,12 @@ namespace Engine
 		WINMODE		eWinMode;
 	}GRAPHICDESC;
 
+
+	typedef struct ENGINE_DLL tagMeshMaterial
+	{
+		class CTexture* pMtrlTexture[21];
+	}MESHMATERIAL;
+
 	typedef struct tagVertex_Position_Color
 	{
 		XMFLOAT3	vPosition;
