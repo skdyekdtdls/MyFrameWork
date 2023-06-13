@@ -11,6 +11,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Default\Engine.vcxproj", "{8A1BFF46-5741-4101-8BA8-F70C358112D3}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AssimpPaser", "AssimpPaser\Default\AssimpPaser.vcxproj", "{A370FE8F-3C0F-4487-A83F-56E2F470EFA0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8A1BFF46-5741-4101-8BA8-F70C358112D3} = {8A1BFF46-5741-4101-8BA8-F70C358112D3}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

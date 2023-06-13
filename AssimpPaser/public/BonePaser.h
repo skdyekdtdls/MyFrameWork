@@ -9,6 +9,9 @@ public:
 	virtual ~CBonePaser() = default;
 
 public:
-	HRESULT Pasing(HANDLE hFile, DWORD& dwByte, aiNode* pNode, class CBone* pParent);
+	HRESULT Pasing(HANDLE hFile, DWORD& dwByte, aiNode* pNode);
+
+public:
+	BONES m_BoneNames;
 };
 

@@ -14,7 +14,7 @@ int main()
 
     Paser.Ready_Paser();
 
-    Paser.Pasing(ANIM_TYPE::NONANIM, "../../Client/Bin/Resources/Models/Fiona/Fiona.fbx");
+    Paser.Pasing("../../Client/Bin/Resources/Models/Fiona/Fiona.fbx", ANIM_TYPE::ANIM);
 
     Paser.Relase_Paser();
 }

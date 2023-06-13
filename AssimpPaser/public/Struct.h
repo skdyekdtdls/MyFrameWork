@@ -1,6 +1,6 @@
 #pragma once
 #include "Engine_Defines.h"
-enum class ANIM_TYPE { NONANIM, ANIM, a_END };
+enum class ANIM_TYPE { NONANIM, ANIM, ANIM_END };
 
 typedef struct tagModel
 {

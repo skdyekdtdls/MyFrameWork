@@ -9,21 +9,13 @@
 #include <tchar.h>
 #include <algorithm>
 #include <regex>
+#include <d3d11.h>
 
 #include "Struct.h"
 #include "Function.h"
 
-#define FAILED_CHECK_RETURN(_hr, _return) \
-	{if ((HRESULT)_hr < 0) { __debugbreak(); return _return; }}
-
-#define ZeroStruct(Desc) ZeroMemory((&Desc), (sizeof(Desc)));
-
 namespace fs = std::filesystem;
 using namespace std;
-
-typedef UINT _uint;
-
-#define MAX_PATH 260
 
 #ifdef _DEBUG
 
@@ -38,3 +30,5 @@ typedef UINT _uint;
 
 #endif
 #endif
+
+typedef vector<const char*> BONES;

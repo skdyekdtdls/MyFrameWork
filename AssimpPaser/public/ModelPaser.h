@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Assimp_Defines.h"
+#include "Engine_Defines.h"
 
 class CModelPaser
 {
@@ -9,7 +10,7 @@ public:
 	virtual ~CModelPaser() = default;
 
 public:
-	HRESULT Pasing(ANIM_TYPE eModelType, const char* pModelFilePath);
+	HRESULT Pasing(const char* pModelFilePath, ANIM_TYPE eAnimType);
 	HRESULT Ready_Paser();
 	void Relase_Paser();
 
@@ -18,6 +19,7 @@ private:
 	const aiScene* m_pAIScene = { nullptr };
 
 private:
+	BONES							m_Bones;
 	class CBonePaser*				m_pBonePaser = { nullptr };
 
 private:
