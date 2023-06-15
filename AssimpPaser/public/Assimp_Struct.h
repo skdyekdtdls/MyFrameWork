@@ -4,32 +4,32 @@
 enum class ANIM_TYPE { NONANIM, ANIM, ANIM_END };
 using namespace DirectX;
 
-typedef struct SCENE;
-typedef struct NODE;
-typedef struct FACE;
-typedef struct MESH;
-typedef struct MATERIAL;
-typedef struct MATERIAL_PROPERTY;
-typedef struct ANIMATION;
-typedef struct NODE_ANIM;
-typedef struct VECTOR_KEY;
-typedef struct QUAT_KEY;
-typedef struct MESH_ANIM;
-typedef struct MESH_KEY;
-typedef struct MESH_MORPH_ANIM;
-typedef struct MESH_MORPH_KEY;
-typedef struct BONE;
-typedef struct VERTEX_WEIGHT;
-typedef struct ANIM_MESH;
-typedef struct AABB;
-typedef struct TEXTURE;
-typedef struct TEXEL;
-typedef struct LIGHT;
-typedef struct CAMERA;
-typedef struct SKELETON;
-typedef struct SKELETON_BONE;
-typedef struct META_DATA;
-typedef struct META_DATA_ENTRY;
+typedef class SCENE;
+typedef class NODE;
+typedef class FACE;
+typedef class MESH;
+typedef class MATERIAL;
+typedef class MATERIAL_PROPERTY;
+typedef class ANIMATION;
+typedef class NODE_ANIM;
+typedef class VECTOR_KEY;
+typedef class QUAT_KEY;
+typedef class MESH_ANIM;
+typedef class MESH_KEY;
+typedef class MESH_MORPH_ANIM;
+typedef class MESH_MORPH_KEY;
+typedef class BONE;
+typedef class VERTEX_WEIGHT;
+typedef class ANIM_MESH;
+typedef class AABB;
+typedef class TEXTURE;
+typedef class TEXEL;
+typedef class LIGHT;
+typedef class CAMERA;
+typedef class SKELETON;
+typedef class SKELETON_BONE;
+typedef class META_DATA;
+typedef class META_DATA_ENTRY;
 typedef enum E_MORPHING_METHOD;
 typedef enum E_PROPERTY_TYPE_INFO;
 typedef enum E_ANIM_BEHAVIOR;
@@ -100,105 +100,122 @@ enum E_META_DATA_TYPE {
 #endif
 };
 
-struct META_DATA_ENTRY
+class META_DATA_ENTRY
 {
+public:
+	~META_DATA_ENTRY();
 	static void Serialization(aiMetadataEntry* pAIMetadataEntry, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(META_DATA_ENTRY& tMetaDataEntry, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(META_DATA_ENTRY* tMetaDataEntry, HANDLE hFile, DWORD& dwByte);
 
+private:
 	E_META_DATA_TYPE m_eType;
-	void* m_Data;
+	void* m_Data = { nullptr };
 };
 
-struct META_DATA
+class META_DATA
 {
+public:
+	~META_DATA();
 	static void Serialization(aiMetadata* pAIMetadata, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(META_DATA& tMetaData, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(META_DATA* tMetaData, HANDLE hFile, DWORD& dwByte);
 
+private:
+	/* Length of the mKeys and mValues arrays, respectively */
 	unsigned int m_NumProperties;
-	char* m_szKeys[MAX_PATH];
-	META_DATA_ENTRY* m_Values;
+	char** m_szKeys = { nullptr };
+	META_DATA_ENTRY* m_Values = { nullptr };
 };
 
-struct NODE
+class NODE
 {
+public:
+	~NODE();
 	static void Serialization(aiNode* pAINode, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(NODE& tNode, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(NODE* tNode, HANDLE hFile, DWORD& dwByte);
 
+private:
 	char        m_Name[MAX_PATH] = "";
 	XMFLOAT4X4   m_Transformation;
 	NODE* m_Parent = { nullptr };
 	unsigned int       m_NumChildren = { 0 };
-	NODE* m_Children = { nullptr };
+	NODE** m_Children = { nullptr };
 	unsigned int		m_NumMeshes = { 0 };
 	unsigned int*		m_Meshes = { nullptr };
-	META_DATA m_MetaData;
+	META_DATA* m_MetaData = { nullptr };
 };
 
-struct FACE
+class FACE
 {
+public:
+	~FACE();
 	static void Serialization(aiFace* pAIFace, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(FACE& tFace, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(FACE* tFace, HANDLE hFile, DWORD& dwByte);
 
 	unsigned int  m_NumIndices = { 0 };
 	unsigned int* m_Indices = { nullptr };
 };
 
-
-
-struct AABB
+class AABB
 {
+public:
+	~AABB();
 	static void Serialization(aiAABB* pAIAABB, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(AABB& tAABB, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(AABB* tAABB, HANDLE hFile, DWORD& dwByte);
 
 	XMFLOAT3 m_Min;
 	XMFLOAT3 m_Max;
 };
 
-struct MESH
+class MESH
 {
+public:
+	~MESH();
 	static void Serialization(aiMesh* pAIMesh, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(MESH& tMesh, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(MESH* tMesh, HANDLE hFile, DWORD& dwByte);
 
-	unsigned int               m_PrimitiveTypes;
-	unsigned int               m_NumVertices;
-	unsigned int               m_NumFaces;
+private:
+	unsigned int        m_PrimitiveTypes;
+	unsigned int        m_NumVertices;
+	unsigned int        m_NumFaces;
 	XMFLOAT3*			m_Vertices;
 	XMFLOAT3*			m_Normals;
 	XMFLOAT3*			m_Tangents;
 	XMFLOAT3*			m_Bitangents;
 	XMFLOAT4*			m_Colors[AI_MAX_NUMBER_OF_COLOR_SETS];
 	XMFLOAT3*			m_TextureCoords[AI_MAX_NUMBER_OF_TEXTURECOORDS];
-	unsigned int               m_NumUVComponents[AI_MAX_NUMBER_OF_TEXTURECOORDS];
+	unsigned int        m_NumUVComponents[AI_MAX_NUMBER_OF_TEXTURECOORDS];
 	FACE*				m_Faces;
-	unsigned int               m_NumBones;
-	BONE**				m_pBone = { nullptr };
-	unsigned int				m_MaterialIndex;
-
+	unsigned int        m_NumBones;
+	BONE**				m_Bones = { nullptr };
+	unsigned int		m_MaterialIndex;
 	char				m_szName[MAX_PATH] = "";
-	unsigned int				m_NumAnimMeshes;
+	unsigned int		m_NumAnimMeshes;
 	ANIM_MESH**			m_AnimMeshes;
 	E_MORPHING_METHOD	m_eMethod;
 	AABB				m_AABB;
-	
-	//aiString** mTextureCoordsNames;
+	char**				m_TextureCoordsNames;
 };
 
-struct MATERIAL
+class MATERIAL
 {
+public:
+	~MATERIAL();
 	static void Serialization(aiMaterial* pAIMaterial, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(MATERIAL& Material, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(MATERIAL* tMaterial, HANDLE hFile, DWORD& dwByte);
 
-	MATERIAL_PROPERTY** m_Properties;
 	unsigned int m_NumProperties;
 	unsigned int m_NumAllocated;
+	MATERIAL_PROPERTY** m_Properties;
 };
 
 
 
-struct MATERIAL_PROPERTY
+class MATERIAL_PROPERTY
 {
+public:
+	~MATERIAL_PROPERTY();
 	static void Serialization(aiMaterialProperty* pAIMaterialProperty, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(MATERIAL_PROPERTY& tMaterialProperty, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(MATERIAL_PROPERTY* tMaterialProperty, HANDLE hFile, DWORD& dwByte);
 
 	char m_szKey[MAX_PATH] = "";
 	unsigned int m_Semantic;
@@ -208,28 +225,32 @@ struct MATERIAL_PROPERTY
 	char* m_Data;
 };
 
-struct ANIMATION
+class ANIMATION
 {
+public:
+	~ANIMATION();
 	static void Serialization(aiAnimation* pAIAnimation, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(ANIMATION& tAnimation, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(ANIMATION* tAnimation, HANDLE hFile, DWORD& dwByte);
 
 	char m_szName[MAX_PATH] = "";
 	double m_Duration;
 	double m_TicksPerSecond;
-	unsigned int mNumChannels;
-	NODE_ANIM* m_Channels;
+	unsigned int m_NumChannels;
+	NODE_ANIM** m_Channels;
 	unsigned int m_NumMeshChannels;
-	MESH_ANIM* m_MeshChannels;
+	MESH_ANIM** m_MeshChannels;
 	unsigned int m_NumMorphMeshChannels;
-	MESH_MORPH_ANIM* m_MorphMeshChannels;
+	MESH_MORPH_ANIM** m_MorphMeshChannels;
 };
 
 
 
-struct NODE_ANIM
+class NODE_ANIM
 {
+public:
+	~NODE_ANIM();
 	static void Serialization(aiNodeAnim* pAINodeAnim, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(NODE_ANIM& tNodeAnim, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(NODE_ANIM* tNodeAnim, HANDLE hFile, DWORD& dwByte);
 
 	char m_szNodeName[MAX_PATH] = "";
 	unsigned int m_NumPositionKeys;
@@ -242,57 +263,57 @@ struct NODE_ANIM
 	E_ANIM_BEHAVIOR m_ePostState;
 };
 
-struct VECTOR_KEY
+class VECTOR_KEY
 {
+public:
+	~VECTOR_KEY();
 	static void Serialization(aiVectorKey* pAIVectorKey, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(VECTOR_KEY& tVectorKey, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(VECTOR_KEY* tVectorKey, HANDLE hFile, DWORD& dwByte);
 
 	double m_Time;
 	XMFLOAT3 m_Value;
 };
 
-struct QUAT_KEY
+class QUAT_KEY
 {
+public:
+	~QUAT_KEY();
 	static void Serialization(aiQuatKey* pAIQuatKey, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(QUAT_KEY& tQuatKey, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(QUAT_KEY* tQuatKey, HANDLE hFile, DWORD& dwByte);
 
 	double m_Time;
-	XMFLOAT4 m_QuaternionValue;
+	XMFLOAT4 m_Value;
 };
 
-struct MESH_ANIM
+class MESH_ANIM
 {
+public:
+	~MESH_ANIM();
 	static void Serialization(aiMeshAnim* pAIMeshAnim, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(MESH_ANIM& tMeshAnim, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(MESH_ANIM* tMeshAnim, HANDLE hFile, DWORD& dwByte);
 
 	char m_szName[MAX_PATH] = "";
 	unsigned int m_NumKeys = { 0 };
 	MESH_KEY* m_Keys;
 };
 
-struct MESH_KEY
+class MESH_KEY
 {
+public:
+	~MESH_KEY();
 	static void Serialization(aiMeshKey* pAIMeshKey, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(MESH_KEY& tMeshKey, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(MESH_KEY* tMeshKey, HANDLE hFile, DWORD& dwByte);
 
 	double m_Time;
 	unsigned int m_Value;
 };
 
-struct MESH_MORPH_ANIM
+class MESH_MORPH_KEY
 {
-	static void Serialization(aiMeshMorphAnim* pAIMeshMorphAnim, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(MESH_MORPH_ANIM& tMeshMorphAnim, HANDLE hFile, DWORD& dwByte);
-
-	char m_szName[MAX_PATH] = "";
-	unsigned int m_NumKeys;
-	MESH_MORPH_KEY* m_Keys;
-};
-
-struct MESH_MORPH_KEY
-{
+public:
+	~MESH_MORPH_KEY();
 	static void Serialization(aiMeshMorphKey* pAIMeshMorphKey, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(MESH_MORPH_KEY& tMeshMorphKey, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(MESH_MORPH_KEY* tMeshMorphKey, HANDLE hFile, DWORD& dwByte);
 
 	double m_Time;
 	unsigned int m_NumValuesAndWeights;
@@ -300,50 +321,72 @@ struct MESH_MORPH_KEY
 	double* m_Weights;
 };
 
-struct BONE
+class MESH_MORPH_ANIM
 {
+public:
+	~MESH_MORPH_ANIM();
+	static void Serialization(aiMeshMorphAnim* pAIMeshMorphAnim, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(MESH_MORPH_ANIM* tMeshMorphAnim, HANDLE hFile, DWORD& dwByte);
+
+	char m_szName[MAX_PATH] = "";
+	unsigned int m_NumKeys;
+	MESH_MORPH_KEY* m_Keys;
+};
+
+
+
+class BONE
+{
+public:
+	~BONE();
 	static void Serialization(aiBone* pAIBone, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(BONE& tBone, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(BONE* tBone, HANDLE hFile, DWORD& dwByte);
 
 	char m_szName[MAX_PATH] = "";
 	unsigned int m_NumWeights;
 #ifndef ASSIMP_BUILD_NO_ARMATUREPOPULATE_PROCESS
-	NODE* mArmature;
-	NODE* mNode;
+	NODE* m_Armature;
+	NODE* m_Node;
 #endif
-	VERTEX_WEIGHT* mWeights;
+	VERTEX_WEIGHT* m_Weights;
 	XMFLOAT4X4 m_OffsetMatrix;
 };
 
-struct VERTEX_WEIGHT
+class VERTEX_WEIGHT
 {
+public:
+	~VERTEX_WEIGHT();
 	static void Serialization(aiVertexWeight* pAIVertexWeight, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(VERTEX_WEIGHT& tVertexWeight, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(VERTEX_WEIGHT* tVertexWeight, HANDLE hFile, DWORD& dwByte);
 
 	unsigned int m_VertexId;
 	float m_Weight;
 };
 
-struct ANIM_MESH
+class ANIM_MESH
 {
+public:
+	~ANIM_MESH();
 	static void Serialization(aiAnimMesh* pAIAnimMesh, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(ANIM_MESH& tAnimMesh, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(ANIM_MESH* tAnimMesh, HANDLE hFile, DWORD& dwByte);
 
 	char m_szName[MAX_PATH] = "";
+	unsigned int m_NumVertices;
 	XMFLOAT3* m_Vertices;
 	XMFLOAT3* m_Normals;
 	XMFLOAT3* m_Tangents;
 	XMFLOAT3* m_Bitangents;
 	XMFLOAT4* m_Colors[AI_MAX_NUMBER_OF_COLOR_SETS];
 	XMFLOAT3* m_TextureCoords[AI_MAX_NUMBER_OF_TEXTURECOORDS];
-	unsigned int m_NumVertices;
 	float m_Weight;
 };
 
-struct TEXTURE
+class TEXTURE
 {
+public:
+	~TEXTURE();
 	static void Serialization(aiTexture* pAITexture, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(TEXTURE& tTexture, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(TEXTURE* tTexture, HANDLE hFile, DWORD& dwByte);
 
 	unsigned int m_Width;
 	unsigned int m_Height;
@@ -352,18 +395,22 @@ struct TEXTURE
 	char m_szFilename[MAX_PATH] = "";
 };
 
-struct TEXEL
+class TEXEL
 {
+public:
+	~TEXEL();
 	static void Serialization(aiTexel* pAITexel, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(TEXEL& tTexel, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(TEXEL* tTexel, HANDLE hFile, DWORD& dwByte);
 
 	unsigned char b, g, r, a;
 };
 
-struct LIGHT
+class LIGHT
 {
+public:
+	~LIGHT();
 	static void Serialization(aiLight* pAILight, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(LIGHT& tLight, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(LIGHT* tLight, HANDLE hFile, DWORD& dwByte);
 
 	char m_szName[MAX_PATH] = "";
 	E_LIGHT_SOURCE_TYPE m_eType;
@@ -381,10 +428,12 @@ struct LIGHT
 	XMFLOAT2 m_Size;
 };
 
-struct CAMERA
+class CAMERA
 {
+public:
+	~CAMERA();
 	static void Serialization(aiCamera* pAICamera, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(CAMERA& tCamera, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(CAMERA* tCamera, HANDLE hFile, DWORD& dwByte);
 
 	char m_szName[MAX_PATH] = "";
 	XMFLOAT3 m_Position;
@@ -397,20 +446,24 @@ struct CAMERA
 	float m_OrthographicWidth;
 };
 
-struct SKELETON
+class SKELETON
 {
+public:
+	~SKELETON();
 	static void Serialization(aiSkeleton* pAISkeleton, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(SKELETON& tSkeleton, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(SKELETON* tSkeleton, HANDLE hFile, DWORD& dwByte);
 
 	char m_szName[MAX_PATH] = "";
 	unsigned int m_NumBones;
 	SKELETON_BONE** mBones;
 };
 
-struct SKELETON_BONE
+class SKELETON_BONE
 {
+public:
+	~SKELETON_BONE();
 	static void Serialization(aiSkeletonBone* pAISkeletonBone, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(SKELETON_BONE& tSkeletonBone, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(SKELETON_BONE* tSkeletonBone, HANDLE hFile, DWORD& dwByte);
 
 	int m_Parent;
 #ifndef ASSIMP_BUILD_NO_ARMATUREPOPULATE_PROCESS
@@ -425,32 +478,29 @@ struct SKELETON_BONE
 };
 
 
-
-
-
-
-
-struct SCENE
+class SCENE
 {
+public:
+	~SCENE();
 	static void Serialization(aiScene* pAIScene, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(SCENE& tScene, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(SCENE* tScene, HANDLE hFile, DWORD& dwByte);
 
 	unsigned int		m_Flags = { 0 };
-	NODE		m_RootNode;
+	NODE*		m_RootNode;
 	unsigned int		m_NumMeshes = { 0 };
-	MESH* m_Meshes = { nullptr };
+	MESH** m_Meshes = { nullptr };
 	unsigned int		m_NumMaterials = { 0 };
-	MATERIAL* m_Materials = { nullptr };
+	MATERIAL** m_Materials = { nullptr };
 	unsigned int		m_NumAnimations = { 0 };
-	ANIMATION* m_Animations;
+	ANIMATION** m_Animations;
 	unsigned int		m_NumTextures = { 0 };
-	TEXTURE* m_Textures = { nullptr };
+	TEXTURE** m_Textures = { nullptr };
 	unsigned int		m_NumLights = { 0 };
-	LIGHT* m_Lights = { nullptr };
+	LIGHT** m_Lights = { nullptr };
 	unsigned int		m_NumCameras = { 0 };
-	CAMERA* m_Cameras = { nullptr };
-	META_DATA	m_MetaData;
+	CAMERA** m_Cameras = { nullptr };
+	META_DATA*	m_MetaData;
 	char		m_Name[MAX_PATH] = "";
 	unsigned int		m_NumSkeletons = { 0 };
-	SKELETON* m_Skeletons = { nullptr };
+	SKELETON** m_Skeletons = { nullptr };
 };

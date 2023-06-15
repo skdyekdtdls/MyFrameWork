@@ -2,6 +2,12 @@
 
 namespace Engine
 {
+	static bool WriteEnable(HANDLE hFile, bool bValue, DWORD& dwByte)
+	{
+		return WriteFile(hFile, &bValue, sizeof(bool), &dwByte, nullptr);
+	}
+#define WriteEnable(bValue) Engine::WriteEnable(hFile, bValue, dwByte)
+
 	static bool WriteTCHAR(HANDLE hFile, const wchar_t* pBuffer, DWORD& dwByte)
 	{
 		return WriteFile(hFile, pBuffer, sizeof(wchar_t) * MAX_PATH * 2, &dwByte, nullptr);
@@ -33,6 +39,13 @@ namespace Engine
 	}
 #define WriteFloat(arg) Engine::WriteFloat(hFile, arg, dwByte)
 
+	// float3
+	static bool WriteFloat3(HANDLE hFile, _float3 pVBuffer, DWORD& dwByte)
+	{
+		return WriteFile(hFile, &pVBuffer, sizeof(_float3), &dwByte, nullptr);
+	}
+#define WriteFloat3(arg) Engine::WriteFloat3(hFile, arg, dwByte)
+
 	// XMFLOAT4X4
 	static bool WriteFloat4x4(HANDLE hFile, _float4x4 MatrixBuffer, DWORD& dwByte)
 	{
@@ -40,8 +53,23 @@ namespace Engine
 	}
 #define WriteFloat4x4(arg) Engine::WriteFloat4x4(hFile, arg, dwByte)
 
+
+
+	// void
+	static bool WriteVoid(HANDLE hFile, void* pBuffer, _uint iSize, DWORD& dwByte)
+	{
+		return WriteFile(hFile, pBuffer, iSize, &dwByte, nullptr);
+	}
+#define WriteVoid(arg, size) Engine::WriteVoid(hFile, arg, size, dwByte)
 	///////////////////////////////////////////////////////////
 
+	static bool ReadEnable(HANDLE hFile, DWORD& dwByte)
+	{
+		bool bValue = { false };
+		ReadFile(hFile, &bValue, sizeof(bool), &dwByte, nullptr);
+		return bValue;
+	}
+#define ReadEnable() Engine::ReadEnable(hFile, dwByte)
 
 	static bool ReadCHAR(HANDLE hFile, char* pBuffer, DWORD& dwByte)
 	{
@@ -81,6 +109,13 @@ namespace Engine
 		return ReadFile(hFile, &MatrixBuffer, sizeof(_float4x4), &dwByte, nullptr);
 	}
 #define ReadFloat4x4(arg) Engine::ReadFloat4x4(hFile, arg, dwByte)
+
+	// void
+	static bool ReadVoid(HANDLE hFile, void* pBuffer, _uint iSize, DWORD& dwByte)
+	{
+		return ReadFile(hFile, pBuffer, iSize, &dwByte, nullptr);
+	}
+#define ReadVoid(arg, size) Engine::ReadVoid(hFile, arg, size, dwByte)
 	enum TextureType {
 		/** Dummy value.
 		 *
