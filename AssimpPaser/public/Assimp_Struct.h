@@ -100,6 +100,17 @@ enum E_META_DATA_TYPE {
 #endif
 };
 
+class AI_STRING
+{
+public:
+	~AI_STRING();
+	static void Serialization(const aiString* pAIString, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(AI_STRING* tAIString, HANDLE hFile, DWORD& dwByte);
+
+public:
+	char m_data[1024Ui64];
+};
+
 class META_DATA_ENTRY
 {
 public:
@@ -122,7 +133,8 @@ public:
 private:
 	/* Length of the mKeys and mValues arrays, respectively */
 	unsigned int m_NumProperties;
-	char** m_szKeys = { nullptr };
+	
+	AI_STRING* m_Keys = { nullptr };
 	META_DATA_ENTRY* m_Values = { nullptr };
 };
 
@@ -134,14 +146,14 @@ public:
 	static void Deserialization(NODE* tNode, HANDLE hFile, DWORD& dwByte);
 
 private:
-	char        m_Name[MAX_PATH] = "";
-	XMFLOAT4X4   m_Transformation;
-	NODE* m_Parent = { nullptr };
-	unsigned int       m_NumChildren = { 0 };
-	NODE** m_Children = { nullptr };
-	unsigned int		m_NumMeshes = { 0 };
-	unsigned int*		m_Meshes = { nullptr };
-	META_DATA* m_MetaData = { nullptr };
+	AI_STRING       m_Name;
+	XMFLOAT4X4		m_Transformation;
+	NODE*			m_Parent = { nullptr };
+	unsigned int    m_NumChildren = { 0 };
+	NODE**			m_Children = { nullptr };
+	unsigned int	m_NumMeshes = { 0 };
+	unsigned int*	m_Meshes = { nullptr };
+	META_DATA*		m_MetaData = { nullptr };
 };
 
 class FACE
@@ -188,12 +200,12 @@ private:
 	unsigned int        m_NumBones;
 	BONE**				m_Bones = { nullptr };
 	unsigned int		m_MaterialIndex;
-	char				m_szName[MAX_PATH] = "";
+	AI_STRING			m_Name;
 	unsigned int		m_NumAnimMeshes;
 	ANIM_MESH**			m_AnimMeshes;
 	E_MORPHING_METHOD	m_eMethod;
 	AABB				m_AABB;
-	char**				m_TextureCoordsNames;
+	AI_STRING*			m_TextureCoordsNames;
 };
 
 class MATERIAL
@@ -217,7 +229,7 @@ public:
 	static void Serialization(aiMaterialProperty* pAIMaterialProperty, HANDLE hFile, DWORD& dwByte);
 	static void Deserialization(MATERIAL_PROPERTY* tMaterialProperty, HANDLE hFile, DWORD& dwByte);
 
-	char m_szKey[MAX_PATH] = "";
+	AI_STRING m_Key;
 	unsigned int m_Semantic;
 	unsigned int m_Index;
 	unsigned int m_DataLength;
@@ -232,7 +244,7 @@ public:
 	static void Serialization(aiAnimation* pAIAnimation, HANDLE hFile, DWORD& dwByte);
 	static void Deserialization(ANIMATION* tAnimation, HANDLE hFile, DWORD& dwByte);
 
-	char m_szName[MAX_PATH] = "";
+	AI_STRING m_Name;
 	double m_Duration;
 	double m_TicksPerSecond;
 	unsigned int m_NumChannels;
@@ -252,7 +264,7 @@ public:
 	static void Serialization(aiNodeAnim* pAINodeAnim, HANDLE hFile, DWORD& dwByte);
 	static void Deserialization(NODE_ANIM* tNodeAnim, HANDLE hFile, DWORD& dwByte);
 
-	char m_szNodeName[MAX_PATH] = "";
+	AI_STRING m_NodeName;
 	unsigned int m_NumPositionKeys;
 	VECTOR_KEY* m_PositionKeys;
 	unsigned int m_NumRotationKeys;
@@ -292,7 +304,7 @@ public:
 	static void Serialization(aiMeshAnim* pAIMeshAnim, HANDLE hFile, DWORD& dwByte);
 	static void Deserialization(MESH_ANIM* tMeshAnim, HANDLE hFile, DWORD& dwByte);
 
-	char m_szName[MAX_PATH] = "";
+	AI_STRING m_Name;
 	unsigned int m_NumKeys = { 0 };
 	MESH_KEY* m_Keys;
 };
@@ -328,7 +340,7 @@ public:
 	static void Serialization(aiMeshMorphAnim* pAIMeshMorphAnim, HANDLE hFile, DWORD& dwByte);
 	static void Deserialization(MESH_MORPH_ANIM* tMeshMorphAnim, HANDLE hFile, DWORD& dwByte);
 
-	char m_szName[MAX_PATH] = "";
+	AI_STRING m_Name;
 	unsigned int m_NumKeys;
 	MESH_MORPH_KEY* m_Keys;
 };
@@ -342,7 +354,7 @@ public:
 	static void Serialization(aiBone* pAIBone, HANDLE hFile, DWORD& dwByte);
 	static void Deserialization(BONE* tBone, HANDLE hFile, DWORD& dwByte);
 
-	char m_szName[MAX_PATH] = "";
+	AI_STRING m_Name;
 	unsigned int m_NumWeights;
 #ifndef ASSIMP_BUILD_NO_ARMATUREPOPULATE_PROCESS
 	NODE* m_Armature;
@@ -370,7 +382,7 @@ public:
 	static void Serialization(aiAnimMesh* pAIAnimMesh, HANDLE hFile, DWORD& dwByte);
 	static void Deserialization(ANIM_MESH* tAnimMesh, HANDLE hFile, DWORD& dwByte);
 
-	char m_szName[MAX_PATH] = "";
+	AI_STRING m_Name;
 	unsigned int m_NumVertices;
 	XMFLOAT3* m_Vertices;
 	XMFLOAT3* m_Normals;
@@ -392,7 +404,7 @@ public:
 	unsigned int m_Height;
 	char m_achFormatHint[HINTMAXTEXTURELEN];
 	TEXEL* m_pcData;
-	char m_szFilename[MAX_PATH] = "";
+	AI_STRING m_Filename;
 };
 
 class TEXEL
@@ -412,7 +424,7 @@ public:
 	static void Serialization(aiLight* pAILight, HANDLE hFile, DWORD& dwByte);
 	static void Deserialization(LIGHT* tLight, HANDLE hFile, DWORD& dwByte);
 
-	char m_szName[MAX_PATH] = "";
+	AI_STRING m_Name;
 	E_LIGHT_SOURCE_TYPE m_eType;
 	XMFLOAT3 m_Position;
 	XMFLOAT3 m_Direction;
@@ -435,7 +447,7 @@ public:
 	static void Serialization(aiCamera* pAICamera, HANDLE hFile, DWORD& dwByte);
 	static void Deserialization(CAMERA* tCamera, HANDLE hFile, DWORD& dwByte);
 
-	char m_szName[MAX_PATH] = "";
+	AI_STRING m_Name;
 	XMFLOAT3 m_Position;
 	XMFLOAT3 m_Up;
 	XMFLOAT3 m_LookAt;
@@ -444,18 +456,6 @@ public:
 	float m_ClipPlaneFar;
 	float m_Aspect;
 	float m_OrthographicWidth;
-};
-
-class SKELETON
-{
-public:
-	~SKELETON();
-	static void Serialization(aiSkeleton* pAISkeleton, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(SKELETON* tSkeleton, HANDLE hFile, DWORD& dwByte);
-
-	char m_szName[MAX_PATH] = "";
-	unsigned int m_NumBones;
-	SKELETON_BONE** mBones;
 };
 
 class SKELETON_BONE
@@ -477,30 +477,42 @@ public:
 	XMFLOAT4X4 m_LocalMatrix;
 };
 
+class SKELETON
+{
+public:
+	~SKELETON();
+	static void Serialization(aiSkeleton* pAISkeleton, HANDLE hFile, DWORD& dwByte);
+	static void Deserialization(SKELETON* tSkeleton, HANDLE hFile, DWORD& dwByte);
+
+	AI_STRING m_Name;
+	unsigned int m_NumBones;
+	SKELETON_BONE** m_Bones;
+};
+
 
 class SCENE
 {
 public:
 	~SCENE();
-	static void Serialization(aiScene* pAIScene, HANDLE hFile, DWORD& dwByte);
+	static void Serialization(const aiScene* pAIScene, HANDLE hFile, DWORD& dwByte);
 	static void Deserialization(SCENE* tScene, HANDLE hFile, DWORD& dwByte);
 
 	unsigned int		m_Flags = { 0 };
-	NODE*		m_RootNode;
+	NODE*				m_RootNode;
 	unsigned int		m_NumMeshes = { 0 };
-	MESH** m_Meshes = { nullptr };
+	MESH**				m_Meshes = { nullptr };
 	unsigned int		m_NumMaterials = { 0 };
-	MATERIAL** m_Materials = { nullptr };
+	MATERIAL**			m_Materials = { nullptr };
 	unsigned int		m_NumAnimations = { 0 };
-	ANIMATION** m_Animations;
+	ANIMATION**			m_Animations;
 	unsigned int		m_NumTextures = { 0 };
-	TEXTURE** m_Textures = { nullptr };
+	TEXTURE**			m_Textures = { nullptr };
 	unsigned int		m_NumLights = { 0 };
-	LIGHT** m_Lights = { nullptr };
+	LIGHT**				m_Lights = { nullptr };
 	unsigned int		m_NumCameras = { 0 };
-	CAMERA** m_Cameras = { nullptr };
-	META_DATA*	m_MetaData;
-	char		m_Name[MAX_PATH] = "";
+	CAMERA**			m_Cameras = { nullptr };
+	META_DATA*			m_MetaData;
+	AI_STRING			m_Name;
 	unsigned int		m_NumSkeletons = { 0 };
-	SKELETON** m_Skeletons = { nullptr };
+	SKELETON**			m_Skeletons = { nullptr };
 };

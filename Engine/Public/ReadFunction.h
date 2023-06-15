@@ -54,9 +54,8 @@ namespace Engine
 #define WriteFloat4x4(arg) Engine::WriteFloat4x4(hFile, arg, dwByte)
 
 
-
 	// void
-	static bool WriteVoid(HANDLE hFile, void* pBuffer, _uint iSize, DWORD& dwByte)
+	static bool WriteVoid(HANDLE hFile, const void* pBuffer, _uint iSize, DWORD& dwByte)
 	{
 		return WriteFile(hFile, pBuffer, iSize, &dwByte, nullptr);
 	}

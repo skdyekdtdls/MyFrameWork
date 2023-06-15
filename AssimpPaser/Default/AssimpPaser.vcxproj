@@ -20,14 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\main.cpp" />
-    <ClCompile Include="..\private\ModelPaser.cpp" />
+    <ClCompile Include="..\private\Paser.cpp" />
     <ClCompile Include="..\public\Assimp_Struct.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Assimp_Defines.h" />
     <ClInclude Include="..\public\Assimp_Struct.h" />
     <ClInclude Include="..\public\Assimp_Typdef.h" />
-    <ClInclude Include="..\public\ModelPaser.h" />
+    <ClInclude Include="..\public\Paser.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
