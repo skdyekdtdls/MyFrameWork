@@ -19,20 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\private\BonePaser.cpp" />
     <ClCompile Include="..\private\main.cpp" />
-    <ClCompile Include="..\private\MaterialPaser.cpp" />
-    <ClCompile Include="..\private\MeshPaser.cpp" />
     <ClCompile Include="..\private\ModelPaser.cpp" />
+    <ClCompile Include="..\public\Assimp_Struct.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Assimp_Defines.h" />
-    <ClInclude Include="..\public\BonePaser.h" />
-    <ClInclude Include="..\public\Function.h" />
-    <ClInclude Include="..\public\MaterialPaser.h" />
-    <ClInclude Include="..\public\MeshPaser.h" />
+    <ClInclude Include="..\public\Assimp_Struct.h" />
+    <ClInclude Include="..\public\Assimp_Typdef.h" />
     <ClInclude Include="..\public\ModelPaser.h" />
-    <ClInclude Include="..\public\Struct.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

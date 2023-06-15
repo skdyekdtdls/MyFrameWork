@@ -2,6 +2,47 @@
 
 namespace Engine
 {
+	static bool WriteTCHAR(HANDLE hFile, const wchar_t* pBuffer, DWORD& dwByte)
+	{
+		return WriteFile(hFile, pBuffer, sizeof(wchar_t) * MAX_PATH * 2, &dwByte, nullptr);
+	}
+#define WriteTCHAR(pBuffer) Engine::WriteTCHAR(hFile, pBuffer, dwByte)
+
+	// char*
+	static bool WriteCHAR(HANDLE hFile, const char* pBuffer, DWORD& dwByte)
+	{
+		char Buffer[MAX_PATH];
+		wchar_t LBuffer[MAX_PATH];
+		strcpy_s(Buffer, pBuffer);
+		MultiByteToWideChar(CP_ACP, 0, Buffer, MAX_PATH, LBuffer, MAX_PATH);
+		return WriteFile(hFile, LBuffer, sizeof(wchar_t) * MAX_PATH, &dwByte, nullptr);
+	}
+#define WriteCHAR(pBuffer) Engine::WriteCHAR(hFile, pBuffer, dwByte)
+
+	// unsigned int
+	static bool WriteUINT(HANDLE hFile, unsigned int iBuffer, DWORD& dwByte)
+	{
+		return WriteFile(hFile, &iBuffer, sizeof(unsigned int), &dwByte, nullptr);
+	}
+#define WriteUINT(iBuffer) Engine::WriteUINT(hFile, iBuffer, dwByte)
+
+	// float
+	static bool WriteFloat(HANDLE hFile, float pVBuffer, DWORD& dwByte)
+	{
+		return WriteFile(hFile, &pVBuffer, sizeof(float), &dwByte, nullptr);
+	}
+#define WriteFloat(arg) Engine::WriteFloat(hFile, arg, dwByte)
+
+	// XMFLOAT4X4
+	static bool WriteFloat4x4(HANDLE hFile, _float4x4 MatrixBuffer, DWORD& dwByte)
+	{
+		return WriteFile(hFile, &MatrixBuffer, sizeof(XMFLOAT4X4), &dwByte, nullptr);
+	}
+#define WriteFloat4x4(arg) Engine::WriteFloat4x4(hFile, arg, dwByte)
+
+	///////////////////////////////////////////////////////////
+
+
 	static bool ReadCHAR(HANDLE hFile, char* pBuffer, DWORD& dwByte)
 	{
 		_tchar wszBuffer[MAX_PATH];
@@ -9,37 +50,37 @@ namespace Engine
 		WideCharToMultiByte(CP_ACP, 0, wszBuffer, MAX_PATH, pBuffer, MAX_PATH, NULL, NULL);
 		return bResult;
 	}
-#define ReadCHAR(pBuffer) ReadCHAR(hFile, pBuffer, dwByte)
+#define ReadCHAR(pBuffer) Engine::ReadCHAR(hFile, pBuffer, dwByte)
 
 	static bool ReadUINT(HANDLE hFile, _uint& iBuffer, DWORD& dwByte)
 	{
 		return ReadFile(hFile, &iBuffer, sizeof(_uint), &dwByte, nullptr);
 	}
-#define ReadUINT(iBuffer) ReadUINT(hFile, iBuffer, dwByte)
+#define ReadUINT(iBuffer) Engine::ReadUINT(hFile, iBuffer, dwByte)
 
 	static bool ReadFloat(HANDLE hFile, _float& pVBuffer, DWORD& dwByte)
 	{
 		return ReadFile(hFile, &pVBuffer, sizeof(_float), &dwByte, nullptr);
 	}
-#define ReadFloat(arg) ReadFloat(hFile, arg, dwByte)
+#define ReadFloat(arg) Engine::ReadFloat(hFile, arg, dwByte)
 
 	static bool ReadFloat2(HANDLE hFile, _float2& pVBuffer, DWORD& dwByte)
 	{
 		return ReadFile(hFile, &pVBuffer, sizeof(_float2), &dwByte, nullptr);
 	}
-#define ReadFloat2(arg) ReadFloat2(hFile, arg, dwByte)
+#define ReadFloat2(arg) Engine::ReadFloat2(hFile, arg, dwByte)
 
 	static bool ReadFloat3(HANDLE hFile, _float3& pVBuffer, DWORD& dwByte)
 	{
 		return ReadFile(hFile, &pVBuffer, sizeof(_float3), &dwByte, nullptr);
 	}
-#define ReadFloat3(arg) ReadFloat3(hFile, arg, dwByte)
+#define ReadFloat3(arg) Engine::ReadFloat3(hFile, arg, dwByte)
 
 	static bool ReadFloat4x4(HANDLE hFile, _float4x4& MatrixBuffer, DWORD& dwByte)
 	{
 		return ReadFile(hFile, &MatrixBuffer, sizeof(_float4x4), &dwByte, nullptr);
 	}
-#define ReadFloat4x4(arg) ReadFloat4x4(hFile, arg, dwByte)
+#define ReadFloat4x4(arg) Engine::ReadFloat4x4(hFile, arg, dwByte)
 	enum TextureType {
 		/** Dummy value.
 		 *

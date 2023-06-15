@@ -10,9 +10,11 @@
 #include <algorithm>
 #include <regex>
 #include <d3d11.h>
+#include <DirectXMath.h>
 
-#include "Struct.h"
+#include "Assimp_Struct.h"
 #include "Function.h"
+#include "Assimp_Typdef.h"
 
 namespace fs = std::filesystem;
 using namespace std;
