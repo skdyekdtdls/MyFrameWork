@@ -105,7 +105,7 @@ class AI_STRING
 public:
 	~AI_STRING();
 	static void Serialization(const aiString* pAIString, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(AI_STRING* tAIString, HANDLE hFile, DWORD& dwByte);
+	void Deserialization(HANDLE hFile, DWORD& dwByte);
 
 public:
 	char m_data[1024Ui64];
@@ -116,9 +116,9 @@ class META_DATA_ENTRY
 public:
 	~META_DATA_ENTRY();
 	static void Serialization(aiMetadataEntry* pAIMetadataEntry, HANDLE hFile, DWORD& dwByte);
-	static void Deserialization(META_DATA_ENTRY* tMetaDataEntry, HANDLE hFile, DWORD& dwByte);
+	void Deserialization(HANDLE hFile, DWORD& dwByte);
 
-private:
+public:
 	E_META_DATA_TYPE m_eType;
 	void* m_Data = { nullptr };
 };
@@ -130,14 +130,16 @@ public:
 	static void Serialization(aiMetadata* pAIMetadata, HANDLE hFile, DWORD& dwByte);
 	static void Deserialization(META_DATA* tMetaData, HANDLE hFile, DWORD& dwByte);
 
-private:
+public:
 	/* Length of the mKeys and mValues arrays, respectively */
 	unsigned int m_NumProperties;
 	
 	AI_STRING* m_Keys = { nullptr };
 	META_DATA_ENTRY* m_Values = { nullptr };
 };
-
+/// <summary>
+/// ¿Ï·á
+/// </summary>
 class NODE
 {
 public:
@@ -148,9 +150,8 @@ public:
 private:
 	AI_STRING       m_Name;
 	XMFLOAT4X4		m_Transformation;
-	NODE*			m_Parent = { nullptr };
 	unsigned int    m_NumChildren = { 0 };
-	NODE**			m_Children = { nullptr };
+	NODE*			m_Children = { nullptr };
 	unsigned int	m_NumMeshes = { 0 };
 	unsigned int*	m_Meshes = { nullptr };
 	META_DATA*		m_MetaData = { nullptr };

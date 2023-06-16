@@ -12,8 +12,5 @@ public:
 public:
 	HRESULT Pasing(const char* pModelFilePath, ANIM_TYPE eAnimType);
 	HRESULT Load(const char* pModelFilePath);
-private:
-	Assimp::Importer	m_Importer; /* 내가 경로로 던져준 파일을 읽고 저장한다.*/
-	const aiScene* m_pAIScene = { nullptr };
 };
 

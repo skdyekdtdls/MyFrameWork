@@ -15,7 +15,7 @@ void META_DATA_ENTRY::Serialization(aiMetadataEntry* pAIMetadataEntry, HANDLE hF
 	}
 	WriteEnable(true);	
 
-	WriteVoid(&pAIMetadataEntry->mType, sizeof(pAIMetadataEntry->mType));
+	WriteVoid(&pAIMetadataEntry->mType, sizeof(E_META_DATA_TYPE));
 
 	unsigned int iSize = 0;
 	switch (pAIMetadataEntry->mType)
@@ -58,16 +58,16 @@ void META_DATA_ENTRY::Serialization(aiMetadataEntry* pAIMetadataEntry, HANDLE hF
 	WriteVoid(&pAIMetadataEntry->mData, iSize);
 }
 
-void META_DATA_ENTRY::Deserialization(META_DATA_ENTRY* tMetaDataEntry, HANDLE hFile, DWORD& dwByte)
+void META_DATA_ENTRY::Deserialization(HANDLE hFile, DWORD& dwByte)
 {
 	if (false == ReadEnable())
 		return;
 
-	ReadVoid(&tMetaDataEntry->m_eType, sizeof(tMetaDataEntry->m_eType));
+	ReadVoid(&m_eType, sizeof(E_META_DATA_TYPE));
 	unsigned int iSize = 0;
 
 	ReadVoid(&iSize, sizeof(iSize));
-	ReadVoid(&tMetaDataEntry->m_Data, iSize);
+	ReadVoid(&m_Data, iSize);
 }
 
 META_DATA::~META_DATA()
@@ -85,11 +85,12 @@ void META_DATA::Serialization(aiMetadata* pAIMetadata, HANDLE hFile, DWORD& dwBy
 	}
 	WriteEnable(true);
 	WriteVoid(&pAIMetadata->mNumProperties, sizeof(pAIMetadata->mNumProperties));
+	unsigned int size = pAIMetadata->mNumProperties;
 
-	for (size_t i = 0; i < pAIMetadata->mNumProperties; ++i)
+	for (size_t i = 0; i < size; ++i)
 		AI_STRING::Serialization(&pAIMetadata->mKeys[i], hFile, dwByte);
 
-	for (size_t i = 0; i < pAIMetadata->mNumProperties; ++i)
+	for (size_t i = 0; i < size; ++i)
 		META_DATA_ENTRY::Serialization(&pAIMetadata->mValues[i], hFile, dwByte);
 }
 
@@ -99,25 +100,22 @@ void META_DATA::Deserialization(META_DATA* tMetaData, HANDLE hFile, DWORD& dwByt
 		return;
 
 	ReadVoid(&tMetaData->m_NumProperties, sizeof(tMetaData->m_NumProperties));
+	unsigned int size = tMetaData->m_NumProperties;
 
-	tMetaData->m_Keys = new AI_STRING[tMetaData->m_NumProperties];
-	for (size_t i = 0; i < tMetaData->m_NumProperties; ++i)
+	tMetaData->m_Keys = new AI_STRING[size];
+	for (size_t i = 0; i < size; ++i)
 		AI_STRING::Deserialization(&tMetaData->m_Keys[i], hFile, dwByte);
 	
-	tMetaData->m_Values = new META_DATA_ENTRY[tMetaData->m_NumProperties];
-	for (size_t i = 0; i < tMetaData->m_NumProperties; ++i)
+	tMetaData->m_Values = new META_DATA_ENTRY[size];
+	for (size_t i = 0; i < size; ++i)
 		META_DATA_ENTRY::Deserialization(&tMetaData->m_Values[i], hFile, dwByte);
 }
 
 NODE::~NODE()
 {
+	Safe_Delete_Array(m_Children);
 	Safe_Delete(m_MetaData);
 	Safe_Delete_Array(m_Meshes);
-	Safe_Delete_Array(m_Children);
-	for (size_t i = 0; i < m_NumChildren; ++i)
-	{
-		Safe_Delete(m_Children[i]);
-	}
 	//Safe_Delete(m_Parent);
 }
 
@@ -131,25 +129,22 @@ void NODE::Serialization(aiNode* pAINode, HANDLE hFile, DWORD& dwByte)
 	WriteEnable(true);
 
 	AI_STRING::Serialization(&pAINode->mName, hFile, dwByte);
-	WriteVoid(&pAINode->mTransformation.Transpose(), sizeof(pAINode->mTransformation.Transpose()));
 
-	NODE::Serialization(pAINode->mParent, hFile, dwByte);
+	WriteVoid(&pAINode->mTransformation.Transpose(), sizeof(pAINode->mTransformation));
+
+	WriteVoid(&pAINode->mNumMeshes, sizeof(pAINode->mNumMeshes));
+	for (size_t i = 0; i < pAINode->mNumMeshes; ++i)
+	{
+		WriteVoid(&pAINode->mMeshes[i], sizeof(pAINode->mMeshes[i]));
+	}
+
+	META_DATA::Serialization(pAINode->mMetaData, hFile, dwByte);
 
 	WriteVoid(&pAINode->mNumChildren, sizeof(pAINode->mNumChildren));
 	for (size_t i = 0; i < pAINode->mNumChildren; ++i)
 	{
 		NODE::Serialization(pAINode->mChildren[i], hFile, dwByte);
 	}
-	for (size_t i = 0; i < pAINode->mNumChildren; i++)
-	{
-		Serialization(pAINode->mChildren[i], hFile, dwByte);
-	}
-
-	WriteVoid(&pAINode->mNumMeshes, sizeof(pAINode->mNumMeshes));
-	for (size_t i = 0; i < pAINode->mNumMeshes; ++i)
-		WriteVoid(&pAINode->mMeshes[i], sizeof(pAINode->mMeshes[i]));
-
-	META_DATA::Serialization(pAINode->mMetaData, hFile, dwByte);
 }
 
 void NODE::Deserialization(NODE* tNode, HANDLE hFile, DWORD& dwByte)
@@ -161,17 +156,6 @@ void NODE::Deserialization(NODE* tNode, HANDLE hFile, DWORD& dwByte)
 
 	ReadVoid(&tNode->m_Transformation, sizeof(tNode->m_Transformation));
 
-	//tNode->m_Parent = new NODE;
-	//NODE::Deserialization(tNode->m_Parent, hFile, dwByte);
-
-	ReadVoid(&tNode->m_NumChildren, sizeof(tNode->m_NumChildren));
-	tNode->m_Children = new NODE*[tNode->m_NumChildren];
-	for (size_t i = 0; i < tNode->m_NumChildren; ++i)
-	{
-		tNode->m_Children[i] = new NODE;
-		NODE::Deserialization(tNode->m_Children[i], hFile, dwByte);
-	}
-
 	ReadVoid(&tNode->m_NumMeshes, sizeof(tNode->m_NumMeshes));
 	tNode->m_Meshes = new unsigned int[tNode->m_NumMeshes];
 	for (size_t i = 0; i < tNode->m_NumMeshes; ++i)
@@ -181,6 +165,13 @@ void NODE::Deserialization(NODE* tNode, HANDLE hFile, DWORD& dwByte)
 
 	tNode->m_MetaData = new META_DATA;
 	META_DATA::Deserialization(tNode->m_MetaData, hFile, dwByte);
+
+	ReadVoid(&tNode->m_NumChildren, sizeof(tNode->m_NumChildren));
+	tNode->m_Children = new NODE[tNode->m_NumChildren];
+	for (size_t i = 0; i < tNode->m_NumChildren; ++i)
+	{
+		NODE::Deserialization(&tNode->m_Children[i], hFile, dwByte);
+	}
 }
 
 FACE::~FACE()
@@ -1322,15 +1313,15 @@ void AI_STRING::Serialization(const aiString* pAIString, HANDLE hFile, DWORD& dw
 	}
 	WriteEnable(true);
 
-	WriteVoid(pAIString->data, sizeof(pAIString->data));
+	WriteVoid(pAIString->data, sizeof(char) * 1024Ui64);
 }
 
-void AI_STRING::Deserialization(AI_STRING* tAIString, HANDLE hFile, DWORD& dwByte)
+void AI_STRING::Deserialization(HANDLE hFile, DWORD& dwByte)
 {
 	if (false == ReadEnable())
 		return;
 
-	ReadVoid(tAIString->m_data, sizeof(tAIString->m_data));
+	ReadVoid(m_data, sizeof(char) * 1024Ui64);
 }
 
 MESH_MORPH_KEY::~MESH_MORPH_KEY()

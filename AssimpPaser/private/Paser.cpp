@@ -26,14 +26,15 @@ HRESULT Paser::Pasing(const char* pModelFilePath, ANIM_TYPE eAnimType)
 		iFlag = aiProcess_PreTransformVertices | aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
 	else
 		iFlag = aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
+	
+	Assimp::Importer	m_Importer; /* 내가 경로로 던져준 파일을 읽고 저장한다.*/
+	const aiScene* m_pAIScene = { nullptr };
 
 	m_pAIScene = m_Importer.ReadFile(pModelFilePath, iFlag);
-
-	WriteVoid(&eAnimType, sizeof(eAnimType));
-	//SCENE Scene;
-	//Scene.Serialization(m_pAIScene, hFile, dwByte);
 	NODE::Serialization(m_pAIScene->mRootNode, hFile, dwByte);
-	
+	//WriteVoid(&eAnimType, sizeof(eAnimType));
+
+	//Scene.Serialization(m_pAIScene, hFile, dwByte);
 	CloseHandle(hFile);
 
 	return S_OK;
@@ -60,11 +61,15 @@ HRESULT Paser::Load(const char* pModelFilePath)
 
 	ANIM_TYPE eAnimType;
 
-	ReadVoid(&eAnimType, sizeof(eAnimType));
-	//SCENE::Deserialization(&Scene, hFile, dwByte);
+	//ReadVoid(&eAnimType, sizeof(eAnimType));
+	 
 	NODE a;
-	NODE::Deserialization(&a, hFile, dwByte);
+	a.Deserialization(&a, hFile, dwByte);
+	
+	//SCENE* Scene = new SCENE;
+	//SCENE::Deserialization(Scene, hFile, dwByte);
 
+	//Safe_Delete(Scene);
 	CloseHandle(hFile);
 	return S_OK;
 }
