@@ -12,7 +12,9 @@ int main()
     char pModelFilePath[MAX_PATH];
     Paser Paser;
     Paser.Pasing("../../Client/Bin/Resources/Models/Fiona/Fiona.fbx", ANIM_TYPE::ANIM);
-    Paser.Load("../../Client/Bin/Resources/Models/Fiona/Fiona.fbx");
-    
+
+    SCENE tScene;
+    Paser.Load(L"../Bin/Fiona.dat", tScene);
+    int a = 0;
 
 }

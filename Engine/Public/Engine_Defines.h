@@ -2,6 +2,10 @@
 
 #pragma warning (disable : 4005)
 
+#include "assimp\Importer.hpp"
+#include "assimp\scene.h"
+#include "assimp\postprocess.h"
+#include <filesystem>
 #include <iostream>
 #include <tchar.h>
 #include <DirectXMath.h>
@@ -16,7 +20,7 @@
 
 using namespace std;
 using namespace DirectX;
-
+namespace fs = std::filesystem;
 
 #include <vector>
 #include <list>
@@ -33,6 +37,7 @@ using namespace Engine;
 #include "Engine_Function.h"
 #include "DirectXTK/DDSTextureLoader.h"
 #include "DirectXTK/WICTextureLoader.h"
+#include "Assimp_Struct.h"
 
 #ifdef _DEBUG
 

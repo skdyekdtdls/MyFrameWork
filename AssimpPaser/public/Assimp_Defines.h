@@ -1,9 +1,8 @@
 #pragma once
-#include "assimp\Importer.hpp"
-#include "assimp\scene.h"
-#include "assimp\postprocess.h"
+
+
 #include <string>
-#include <filesystem>
+
 #include <iostream>
 #include <Windows.h>
 #include <tchar.h>
@@ -13,10 +12,9 @@
 #include <DirectXMath.h>
 
 #include "Assimp_Struct.h"
-#include "Function.h"
 #include "Assimp_Typdef.h"
 
-namespace fs = std::filesystem;
+
 using namespace std;
 
 #ifdef _DEBUG
@@ -33,4 +31,3 @@ using namespace std;
 #endif
 #endif
 
-typedef vector<const char*> BONES;

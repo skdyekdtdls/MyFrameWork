@@ -40,10 +40,10 @@ HRESULT Paser::Pasing(const char* pModelFilePath, ANIM_TYPE eAnimType)
 	return S_OK;
 }
 
-HRESULT Paser::Load(const char* pModelFilePath)
+HRESULT Paser::Load(const _tchar* pModelFilePath, _Inout_ SCENE& tScene)
 {
 	// 파일 개방
-	HANDLE		hFile = CreateFile(L"../Bin/Fiona.dat",		// 파일 경로와 이름을 명시
+	HANDLE		hFile = CreateFile(pModelFilePath,		// 파일 경로와 이름을 명시
 		GENERIC_READ,			// 파일 접근 모드(쓰기 전용), GENERIC_READ(읽기 전용)
 		NULL,					// 공유 방식, 파일이 열려 있는 상태에서 다른 프로세스가 오픈 할 때 허가하는 것에 대한 설정, NULL을 지정하면 공유하지 않겠다는 의미
 		NULL,					// 보안 속성, NULL인 경우 기본값으로 보안 상태를 설정
@@ -61,8 +61,7 @@ HRESULT Paser::Load(const char* pModelFilePath)
 
 	ANIM_TYPE eAnimType;
 	ReadFile(hFile, &eAnimType, sizeof(eAnimType), &dwByte, nullptr);
-	SCENE tmp;
-	tmp.Deserialization(hFile, dwByte);
+	tScene.Deserialization(hFile, dwByte);
 
 	//Safe_Delete(Scene);
 	CloseHandle(hFile);

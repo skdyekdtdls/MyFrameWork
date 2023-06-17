@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Assimp_Defines.h"
+//#include "Assimp_Defines.h"
 #include "Engine_Defines.h"
 
 class Paser
@@ -10,7 +10,6 @@ public:
 	virtual ~Paser() = default;
 
 public:
-	HRESULT Test(const char* pModelFilePath, ANIM_TYPE eAnimType);
 	HRESULT Pasing(const char* pModelFilePath, ANIM_TYPE eAnimType);
-	HRESULT Load(const char* pModelFilePath);
+	HRESULT Load(const _tchar* pModelFilePath, _Inout_ SCENE& tScene);
 };

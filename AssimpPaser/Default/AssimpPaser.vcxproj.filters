@@ -21,9 +21,6 @@
     <ClCompile Include="..\private\main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="..\public\Assimp_Struct.cpp">
-      <Filter>헤더 파일</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Paser.cpp">
       <Filter>소스 파일\00. Paser</Filter>
     </ClCompile>
@@ -33,9 +30,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Assimp_Typdef.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Assimp_Struct.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Paser.h">

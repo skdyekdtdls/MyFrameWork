@@ -91,6 +91,9 @@
     <ClCompile Include="..\private\Mesh.cpp">
       <Filter>01. Utility\03. Components\Model\Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Assimp_Struct.cpp">
+      <Filter>99. Headers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Graphic_Device.h">
@@ -197,6 +200,9 @@
     </ClInclude>
     <ClInclude Include="..\public\Mesh.h">
       <Filter>01. Utility\03. Components\Model\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Assimp_Struct.h">
+      <Filter>99. Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
