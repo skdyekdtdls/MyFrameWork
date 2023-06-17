@@ -3,7 +3,7 @@
 //#include "Assimp_Defines.h"
 
 BEGIN(Engine)
-enum class ANIM_TYPE { NONANIM, ANIM, ANIM_END };
+
 using namespace DirectX;
 
 typedef class COLOR_RGBA_FLOAT;
@@ -167,7 +167,6 @@ public:
 	static void Serialization(aiNode* pAINode, HANDLE hFile, DWORD& dwByte);
 	bool Deserialization(HANDLE hFile, DWORD& dwByte);
 
-private:
 	AI_STRING       m_Name;
 	XMFLOAT4X4		m_Transformation;
 	unsigned int    m_NumChildren = { 0 };
@@ -209,7 +208,6 @@ public:
 	static void Serialization(aiMesh* pAIMesh, HANDLE hFile, DWORD& dwByte);
 	bool Deserialization(HANDLE hFile, DWORD& dwByte);
 
-private:
 	unsigned int        m_PrimitiveTypes = 0;
 	unsigned int        m_NumVertices = 0;
 	unsigned int        m_NumFaces = 0;
@@ -529,7 +527,7 @@ public:
 };
 
 
-class SCENE
+class ENGINE_DLL SCENE
 {
 public:
 	SCENE();

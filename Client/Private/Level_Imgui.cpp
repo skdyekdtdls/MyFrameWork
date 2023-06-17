@@ -5,6 +5,7 @@
 #include "EditCamera.h"
 #include "Terrain.h"
 #include "Cube.h"
+#include "Player.h"
 CLevel_Imgui::CLevel_Imgui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -69,11 +70,9 @@ HRESULT CLevel_Imgui::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_IMGUI, CTerrain::ProtoTag(), pLayerTag)))
-		return E_FAIL;
-
-	//if (FAILED(pGameInstance->Add_GameObject(LEVEL_IMGUI, CCube::ProtoTag(), pLayerTag)))
-	//	return E_FAIL;
+	FAILED_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CTerrain::ProtoTag(), pLayerTag), E_FAIL);
+	//FAILED_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CPlayer::ProtoTag(), pLayerTag), E_FAIL);
+		
 
 	Safe_Release(pGameInstance);
 

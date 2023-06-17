@@ -3,7 +3,7 @@
 //#include "Assimp_Defines.h"
 
 BEGIN(Engine)
-enum class ANIM_TYPE { NONANIM, ANIM, ANIM_END };
+
 using namespace DirectX;
 
 typedef class COLOR_RGBA_FLOAT;
@@ -529,7 +529,7 @@ public:
 };
 
 
-class SCENE
+class ENGINE_DLL SCENE
 {
 public:
 	SCENE();

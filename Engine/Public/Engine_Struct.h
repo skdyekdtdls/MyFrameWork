@@ -23,6 +23,30 @@ namespace Engine
 		class CTexture* pMtrlTexture[21];
 	}MESHMATERIAL;
 
+	typedef struct tagKeyFrame
+	{
+		XMFLOAT3	vScale;
+		XMFLOAT4	vRotation;
+		XMFLOAT3	vPos;
+		double		Time;
+	}KEYFRAME;
+
+	typedef struct tagVertex_Anim_Mesh
+	{
+		XMFLOAT3	vPosition;
+		XMFLOAT3	vNormal;
+		XMFLOAT2	vTexCoord;
+		XMFLOAT3	vTangent;
+		XMUINT4		vBlendIndices;
+		XMFLOAT4	vBlendWeights;
+	}VTXANIMMESH;
+
+	typedef struct ENGINE_DLL tagVertex_Anim_Mesh_Decl
+	{
+		static const unsigned int iNumElements = { 6 };
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
+	}VTXANIMMESH_DECL;
+
 	typedef struct tagVertex_Position_Color
 	{
 		XMFLOAT3	vPosition;
@@ -35,18 +59,19 @@ namespace Engine
 		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
 	}VTXPOSCOL_DECL;
 
-	typedef struct tagVertex_Position_TexCoord
+	typedef struct tagVertex_Mesh
 	{
 		XMFLOAT3	vPosition;
+		XMFLOAT3	vNormal;
 		XMFLOAT2	vTexCoord;
-	}VTXPOSTEX;
+		XMFLOAT3	vTangent;
+	}VTXMESH;
 
-	typedef struct ENGINE_DLL tagVertex_Position_TexCoord_Declaration
+	typedef struct ENGINE_DLL tagVertex_Mesh_Decl
 	{
-		static const unsigned int	iNumElements = { 2 };
+		static const unsigned int iNumElements = { 4 };
 		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
-	}VTXPOSTEX_DECL;
-
+	}VTXMESH_DECL;
 
 	typedef struct tagVertex_Position_Normal_TexCoord
 	{
@@ -60,4 +85,17 @@ namespace Engine
 		static const unsigned int iNumElements = { 3 };
 		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
 	}VTXPOSNORTEX_DECL;
+
+	typedef struct tagVertex_Position_TexCoord
+	{
+		XMFLOAT3	vPosition;
+		XMFLOAT2	vTexCoord;
+	}VTXPOSTEX;
+
+	typedef struct ENGINE_DLL tagVertex_Position_TexCoord_Declaration
+	{
+		static const unsigned int	iNumElements = { 2 };
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
+	}VTXPOSTEX_DECL;
+
 }

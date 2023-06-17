@@ -2,6 +2,8 @@
 //
 //
 #include "Paser.h"
+#include <filesystem>
+namespace fs = std::filesystem;
 
 int main()
 {
@@ -9,12 +11,6 @@ int main()
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif // _DEBUG
 
-    char pModelFilePath[MAX_PATH];
-    Paser Paser;
-    Paser.Pasing("../../Client/Bin/Resources/Models/Fiona/Fiona.fbx", ANIM_TYPE::ANIM);
-
-    SCENE tScene;
-    Paser.Load(L"../Bin/Fiona.dat", tScene);
-    int a = 0;
-
+    CPaser Paser;
+    Paser.Pasing("../../Resources/Models/Fiona/Fiona.fbx");
 }

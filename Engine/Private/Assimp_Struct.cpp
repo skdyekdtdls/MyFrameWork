@@ -1065,7 +1065,7 @@ void BONE::Serialization(aiBone* pAIBone, HANDLE hFile, DWORD& dwByte)
 #endif
 	for (size_t i = 0; i < pAIBone->mNumWeights; ++i)
 		VERTEX_WEIGHT::Serialization(&pAIBone->mWeights[i], hFile, dwByte);
-	WriteVoid(&pAIBone->mOffsetMatrix, sizeof(pAIBone->mOffsetMatrix));
+	WriteVoid(&pAIBone->mOffsetMatrix.Transpose(), sizeof(pAIBone->mOffsetMatrix));
 }
 
 bool BONE::Deserialization(HANDLE hFile, DWORD& dwByte)

@@ -23,8 +23,6 @@
     <ClCompile Include="..\private\Paser.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\public\Assimp_Defines.h" />
-    <ClInclude Include="..\public\Assimp_Typdef.h" />
     <ClInclude Include="..\public\Paser.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -27,7 +27,7 @@ public:
 	}
 
 public:
-	HRESULT Initialize(HANDLE hFile, DWORD& dwByte, CBone* pParent);
+	HRESULT Initialize(const SCENE& tScene, CBone* pParent);
 	void	Invalidate_CombinedTransformationMatrix();
 
 private:
@@ -38,7 +38,7 @@ private:
 	CBone*		m_pParent = { nullptr };
 
 public:
-	static CBone* Create(HANDLE hFile, DWORD& dwByte, CBone* pParent);
+	static CBone* Create(const SCENE& tScene, CBone* pParent);
 	virtual void Free(void) override;
 };
 
