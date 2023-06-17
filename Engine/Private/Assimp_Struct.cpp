@@ -581,11 +581,26 @@ bool MESH::Deserialization(HANDLE hFile, DWORD& dwByte)
 
 MATERIAL::MATERIAL()
 {
+	ZeroMemory(&m_TexturePath[0], sizeof(AI_STRING*) * TextureType_TRANSMISSION);
 }
 
 MATERIAL::~MATERIAL()
 {
 	Safe_Delete_Array(m_Properties);
+	for (size_t i = 0; i < TextureType_TRANSMISSION; ++i)
+	{
+		Safe_Delete(m_TexturePath[i]);
+	}
+}
+
+bool MATERIAL::GetTexture(TextureType type, unsigned int index, AI_STRING* path)
+{
+	if(nullptr == m_TexturePath[type])
+		return false;
+
+	strcpy_s(path->m_data, m_TexturePath[type]->m_data);
+
+	return true;
 }
 
 void MATERIAL::Serialization(aiMaterial* pAIMaterial, HANDLE hFile, DWORD& dwByte)
@@ -597,6 +612,18 @@ void MATERIAL::Serialization(aiMaterial* pAIMaterial, HANDLE hFile, DWORD& dwByt
 	}
 	WriteEnable(true);
 
+	for (size_t i = 0; i < aiTextureType_TRANSMISSION; ++i)
+	{
+		aiString path;
+		if (AI_SUCCESS == pAIMaterial->GetTexture(aiTextureType(i), 0, &path))
+		{
+			WriteEnable(true);
+			AI_STRING::Serialization(&path, hFile, dwByte);
+		}
+		else
+			WriteEnable(false);
+	}
+	
 	WriteVoid(&pAIMaterial->mNumProperties, sizeof(pAIMaterial->mNumProperties));
 	WriteVoid(&pAIMaterial->mNumAllocated, sizeof(pAIMaterial->mNumAllocated));
 
@@ -608,6 +635,15 @@ bool MATERIAL::Deserialization(HANDLE hFile, DWORD& dwByte)
 {
 	if (false == ReadEnable())
 		return false;
+	for (size_t i = 0; i < TextureType_TRANSMISSION; ++i)
+	{
+		m_TexturePath[i] = nullptr;
+		if (true == ReadEnable())
+		{
+			m_TexturePath[i] = new AI_STRING;
+			m_TexturePath[i]->Deserialization(hFile, dwByte);
+		}
+	}
 
 	ReadVoid(&m_NumProperties, sizeof(m_NumProperties));
 	ReadVoid(&m_NumAllocated, sizeof(m_NumAllocated));
@@ -1058,7 +1094,7 @@ void BONE::Serialization(aiBone* pAIBone, HANDLE hFile, DWORD& dwByte)
 	WriteEnable(true);
 
 	AI_STRING::Serialization(&pAIBone->mName, hFile, dwByte);
-	WriteVoid(&pAIBone->mNumWeights, sizeof(pAIBone->mNumWeights));
+	WriteVoid(&pAIBone->mNumWeights, sizeof(unsigned int));
 #ifndef ASSIMP_BUILD_NO_ARMATUREPOPULATE_PROCESS
 	NODE::Serialization(pAIBone->mArmature, hFile, dwByte);
 	NODE::Serialization(pAIBone->mNode, hFile, dwByte);
@@ -1074,7 +1110,7 @@ bool BONE::Deserialization(HANDLE hFile, DWORD& dwByte)
 		return false;
 
 	m_Name.Deserialization(hFile, dwByte);
-	ReadVoid(&m_NumWeights, sizeof(m_NumWeights));
+	ReadVoid(&m_NumWeights, sizeof(unsigned int));
 #ifndef ASSIMP_BUILD_NO_ARMATUREPOPULATE_PROCESS
 	m_Armature = new NODE;
 	if (!m_Armature->Deserialization(hFile, dwByte))

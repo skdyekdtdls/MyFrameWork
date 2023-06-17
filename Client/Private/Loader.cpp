@@ -7,6 +7,7 @@
 #include "Terrain.h"
 #include "Cube.h"
 #include "Player.h"
+#include "Monster.h"
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext)
 	: m_pDevice(pDevice)
 	, m_pContext(pDeviceContext)
@@ -143,17 +144,20 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Cube::ProtoTag(),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext)), E_FAIL);
 
+	_matrix		PivotMatrix = XMMatrixIdentity();
+
+	PivotMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Model_Fiona"),
-		CModel::Create(m_pDevice, m_pContext, TEXT("../../Resources/Models/Fiona/Fiona.dat"), XMMatrixIdentity())), E_FAIL);
-	Set_LoadingText(L"쉐이더 로딩 중");
+		CModel::Create(m_pDevice, m_pContext, TEXT("../../Resources/Models/Fiona/Fiona.dat"), PivotMatrix)), E_FAIL);
+	Set_LoadingText(L"셰이더 로딩 중");
 
 
 	Set_LoadingText(L"객체 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CTerrain::ProtoTag(), CTerrain::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CEditCamera::ProtoTag(), CEditCamera::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CCube::ProtoTag(), CCube::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CPlayer::ProtoTag(), CPlayer::Create(m_pDevice, m_pContext)), E_FAIL);
-
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CPlayer::ProtoTag(), CPlayer::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CMonster::ProtoTag(), CMonster::Create(m_pDevice, m_pContext)), E_FAIL);
 	Set_LoadingText(L"로딩 완료");
 
 	m_isFinished = true;

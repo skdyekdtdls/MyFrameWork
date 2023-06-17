@@ -23,6 +23,14 @@ namespace Engine
 		class CTexture* pMtrlTexture[21];
 	}MESHMATERIAL;
 
+	typedef struct tagKeyFrame
+	{
+		XMFLOAT3	vScale;
+		XMFLOAT4	vRotation;
+		XMFLOAT3	vPos;
+		double		Time;
+	}KEYFRAME;
+
 	typedef struct tagVertex_Anim_Mesh
 	{
 		XMFLOAT3	vPosition;
@@ -56,7 +64,7 @@ namespace Engine
 		XMFLOAT3	vPosition;
 		XMFLOAT3	vNormal;
 		XMFLOAT2	vTexCoord;
-		XMFLOAT4	vTangent;
+		XMFLOAT3	vTangent;
 	}VTXMESH;
 
 	typedef struct ENGINE_DLL tagVertex_Mesh_Decl

@@ -37,7 +37,7 @@ public:
 
 public:
 	HRESULT Bind_Material(class CShader* pShader, const char* pConstantName, _uint iMeshIndex, TextureType MaterialType);
-	HRESULT Bind_BoneMatrices(class CShaer* pShader, const char* pConstantName, _uint iMeshIndex);
+	HRESULT Bind_BoneMatrices(class CShader* pShader, const char* pConstantName, _uint iMeshIndex);
 
 private: /* For Meshes */
 	_uint m_iNumMeshes = { 0 };
@@ -64,7 +64,7 @@ private:
 private:
 	HRESULT LoadModel(const _tchar* pModelFilePath, _Inout_ SCENE& tScene);
 	HRESULT Ready_Meshes(const SCENE& tScene, _fmatrix PivotMatrix);
-	HRESULT Ready_Materials(const SCENE& tScene);
+	HRESULT Ready_Materials(const SCENE& tScene, const _tchar* ptModelFilePath);
 	HRESULT Ready_Bones(const NODE* pNode, CBone* pParent);
 	HRESULT Ready_Animations(const SCENE& tScene);
 

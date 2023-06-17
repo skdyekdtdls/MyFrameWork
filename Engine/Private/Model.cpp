@@ -2,6 +2,8 @@
 #include "Mesh.h"
 #include "Bone.h"
 #include "Animation.h"
+#include "Texture.h"
+#include "Shader.h"
 
 CModel::CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComponent(pDevice, pContext)
@@ -15,7 +17,6 @@ CModel::CModel(const CModel& rhs)
 	, m_iNumMaterials(rhs.m_iNumMaterials)
 	, m_Materials(rhs.m_Materials)
 	, m_iNumAnimations(rhs.m_iNumAnimations)
-	, m_Animations(rhs.m_Animations)
 	, m_PivotMatrix(rhs.m_PivotMatrix)
 {
 	for (auto& pOriginalAnimation : rhs.m_Animations)
@@ -40,7 +41,7 @@ HRESULT CModel::Initialize_Prototype(const _tchar* pModelFilePath, _fmatrix Pivo
 	FAILED_CHECK_RETURN(LoadModel(pModelFilePath, tScene), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Bones(tScene.m_RootNode, nullptr), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Meshes(tScene, PivotMatrix), E_FAIL);
-	FAILED_CHECK_RETURN(Ready_Materials(tScene), E_FAIL);	
+	FAILED_CHECK_RETURN(Ready_Materials(tScene, pModelFilePath), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Animations(tScene), E_FAIL);	
 	
 	return S_OK;
@@ -53,20 +54,46 @@ HRESULT CModel::Initialize(void* pArg)
 
 HRESULT CModel::Render(_uint iMeshIndex)
 {
+	m_Meshes[iMeshIndex]->Render();
+
 	return S_OK;
 }
 
 void CModel::Play_Animation(_double TimeDelta)
 {
+	/* 어떤 애니메이션을 재생하려고하는지?! */
+	/* 이 애니메이션은 어떤 뼈를 사용하는지?! */
+	/* 뼈들은 각각 어떤 상태(TransformationMatrix)를 취하고 있어야하는가?! */
+
+	/* 현재 애니메이션에서 사용하는 뼈들을 찾아서 해당 뼈들의 TransformationMatrix를 갱신한다. */
+	m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(m_Bones, TimeDelta);
+
+	/* 모델에 표현되어있는 모든 뼈들의 CombinedTransformationMatrix */
+	for (auto& pBone : m_Bones)
+	{
+		pBone->Invalidate_CombinedTransformationMatrix(m_Bones);
+	}
 }
 
 HRESULT CModel::Bind_Material(CShader* pShader, const char* pConstantName, _uint iMeshIndex, TextureType MaterialType)
 {
-	return S_OK;
+	if (iMeshIndex >= m_iNumMeshes ||
+		MaterialType >= AI_TEXTURE_TYPE_MAX)
+		return E_FAIL;
+
+	return m_Materials[m_Meshes[iMeshIndex]->Get_MaterialIndex()].pMtrlTexture[MaterialType]->Bind_ShaderResource(pShader, pConstantName);;
 }
 
-HRESULT CModel::Bind_BoneMatrices(CShaer* pShader, const char* pConstantName, _uint iMeshIndex)
+HRESULT CModel::Bind_BoneMatrices(CShader* pShader, const char* pConstantName, _uint iMeshIndex)
 {
+	_float4x4		BoneMatrices[256];
+	ZeroMemory(BoneMatrices, sizeof(_float4x4) * 256);
+
+	/* iMeshIndex번째 메시가 사용하느 ㄴ뼈들의 행려을 가져와서 BoneMatrices에 넣어준다. */
+	m_Meshes[iMeshIndex]->Get_Matrices(m_Bones, BoneMatrices, XMLoadFloat4x4(&m_PivotMatrix));
+
+	pShader->Bind_Matrices(pConstantName, BoneMatrices, 256);
+
 	return S_OK;
 }
 
@@ -99,13 +126,68 @@ HRESULT CModel::LoadModel(const _tchar* pModelFilePath, SCENE& tScene)
 
 HRESULT CModel::Ready_Meshes(const SCENE& tScene, _fmatrix PivotMatrix)
 {
+	m_iNumMeshes = tScene.m_NumMeshes;
+
+	for (size_t i = 0; i < m_iNumMeshes; i++)
+	{
+		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eAnimType, m_Bones, &tScene.m_Meshes[i], PivotMatrix);
+		if (nullptr == pMesh)
+			return E_FAIL;
+
+		m_Meshes.push_back(pMesh);
+	}
 	return S_OK;
 }
 
-HRESULT CModel::Ready_Materials(const SCENE& tScene)
+HRESULT CModel::Ready_Materials(const SCENE& tScene, const _tchar* ptModelFilePath)
 {
+	/* 현재 모델에게 부여할 수 있는 재질(Diffuse, Normal, Specular etc) 텍스쳐의 갯수. */
+	m_iNumMaterials = tScene.m_NumMaterials;
+
+	char pModelFilePath[MAX_PATH];
+	WideCharToMultiByte(CP_ACP, 0, ptModelFilePath, MAX_PATH, pModelFilePath, MAX_PATH, nullptr, nullptr);
+
+	for (size_t i = 0; i < m_iNumMaterials; i++)
+	{
+		MESHMATERIAL			MeshMaterial;
+		ZeroMemory(&MeshMaterial, sizeof MeshMaterial);
+
+		for (size_t j = 0; j < AI_TEXTURE_TYPE_MAX; j++)
+		{
+			AI_STRING	strPath;
+
+			if (false == tScene.m_Materials[i].GetTexture(TextureType(j), 0, &strPath))
+				continue;
+
+			char		szDrive[MAX_PATH] = "";
+			char		szDirectory[MAX_PATH] = "";
+			_splitpath_s(pModelFilePath, szDrive, MAX_PATH, szDirectory, MAX_PATH, nullptr, 0, nullptr, 0);
+
+			char		szFileName[MAX_PATH] = "";
+			char		szExt[MAX_PATH] = "";
+			_splitpath_s(strPath.m_data, nullptr, 0, nullptr, 0, szFileName, MAX_PATH, szExt, MAX_PATH);
+
+			char		szFullPath[MAX_PATH] = "";
+			strcpy_s(szFullPath, szDrive);
+			strcat_s(szFullPath, szDirectory);
+			strcat_s(szFullPath, szFileName);
+			strcat_s(szFullPath, szExt);
+
+			_tchar		wszFullPath[MAX_PATH] = TEXT("");
+
+			MultiByteToWideChar(CP_ACP, 0, szFullPath, strlen(szFullPath),
+				wszFullPath, MAX_PATH);
+
+			MeshMaterial.pMtrlTexture[j] = CTexture::Create(m_pDevice, m_pContext, wszFullPath, 1);
+			if (nullptr == MeshMaterial.pMtrlTexture[j])
+				return E_FAIL;
+		}
+
+		m_Materials.push_back(MeshMaterial);
+	}
 	return S_OK;
 }
+
 
 HRESULT CModel::Ready_Bones(const NODE* pNode, CBone* pParent)
 {
@@ -171,18 +253,22 @@ void CModel::Free()
 	{
 		for (auto& pTexture : Material.pMtrlTexture)
 			Safe_Release(pTexture);
-	}
+	}		
+
 	m_Materials.clear();
 
 	for (auto& pMesh : m_Meshes)
 		Safe_Release(pMesh);
+
 	m_Meshes.clear();
 
 	for (auto& pBone : m_Bones)
 		Safe_Release(pBone);
+
 	m_Bones.clear();
 
 	for (auto& pAnimation : m_Animations)
 		Safe_Release(pAnimation);
+
 	m_Animations.clear();
 }

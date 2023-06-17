@@ -167,7 +167,6 @@ public:
 	static void Serialization(aiNode* pAINode, HANDLE hFile, DWORD& dwByte);
 	bool Deserialization(HANDLE hFile, DWORD& dwByte);
 
-private:
 	AI_STRING       m_Name;
 	XMFLOAT4X4		m_Transformation;
 	unsigned int    m_NumChildren = { 0 };
@@ -209,7 +208,6 @@ public:
 	static void Serialization(aiMesh* pAIMesh, HANDLE hFile, DWORD& dwByte);
 	bool Deserialization(HANDLE hFile, DWORD& dwByte);
 
-private:
 	unsigned int        m_PrimitiveTypes = 0;
 	unsigned int        m_NumVertices = 0;
 	unsigned int        m_NumFaces = 0;
@@ -237,9 +235,11 @@ class MATERIAL // Test Complete
 public:
 	MATERIAL();
 	~MATERIAL();
+	bool GetTexture(TextureType type, unsigned int index, AI_STRING* path);
 	static void Serialization(aiMaterial* pAIMaterial, HANDLE hFile, DWORD& dwByte);
 	bool Deserialization(HANDLE hFile, DWORD& dwByte);
 
+	AI_STRING*	m_TexturePath[TextureType_TRANSMISSION];
 	unsigned int m_NumProperties = 0;
 	unsigned int m_NumAllocated = 0;
 	MATERIAL_PROPERTY* m_Properties = { nullptr };

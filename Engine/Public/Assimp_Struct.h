@@ -235,9 +235,11 @@ class MATERIAL // Test Complete
 public:
 	MATERIAL();
 	~MATERIAL();
+	bool GetTexture(TextureType type, unsigned int index, AI_STRING* path);
 	static void Serialization(aiMaterial* pAIMaterial, HANDLE hFile, DWORD& dwByte);
 	bool Deserialization(HANDLE hFile, DWORD& dwByte);
 
+	AI_STRING*	m_TexturePath[TextureType_TRANSMISSION];
 	unsigned int m_NumProperties = 0;
 	unsigned int m_NumAllocated = 0;
 	MATERIAL_PROPERTY* m_Properties = { nullptr };

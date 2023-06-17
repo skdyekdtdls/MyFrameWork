@@ -20,7 +20,7 @@ namespace Engine
 
 	typedef struct ENGINE_DLL tagMeshMaterial
 	{
-		class CTexture* pMtrlTexture[21];
+		class CTexture* pMtrlTexture[AI_TEXTURE_TYPE_MAX];
 	}MESHMATERIAL;
 
 	typedef struct tagKeyFrame

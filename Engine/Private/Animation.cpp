@@ -5,6 +5,22 @@ CAnimation::CAnimation()
 {
 }
 
+CAnimation::CAnimation(const CAnimation& rhs)
+	: m_iNumChannels(rhs.m_iNumChannels)
+	, m_Channels(rhs.m_Channels)
+	, m_ChannelCurrentKeyFrames(rhs.m_ChannelCurrentKeyFrames)
+	, m_Duration(rhs.m_Duration)
+	, m_TickPerSecond(rhs.m_TickPerSecond)
+	, m_TimeAcc(rhs.m_TimeAcc)
+	, m_isFinished(rhs.m_isFinished)
+	, m_isLoop(rhs.m_isLoop)
+{
+	strcpy_s(m_szName, rhs.m_szName);
+
+	for (auto& pChannel : m_Channels)
+		Safe_AddRef(pChannel);
+}
+
 HRESULT CAnimation::Initialize(const ANIMATION* pAnimation, const CModel::BONES& Bones)
 {
 	strcpy_s(m_szName, pAnimation->m_Name.m_data);
@@ -70,5 +86,9 @@ CAnimation* CAnimation::Clone()
 
 void CAnimation::Free()
 {
+	for (auto& pChannel : m_Channels)
+		Safe_Release(pChannel);
+
+	m_Channels.clear();
 }
 

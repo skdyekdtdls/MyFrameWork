@@ -123,6 +123,7 @@ HRESULT CMesh::Ready_VertexBuffer_NonAnim(const MESH* pMesh, _matrix PivotMatrix
 HRESULT CMesh::Ready_VertexBuffer_Anim(const MESH* pMesh, const CModel::BONES& Bones)
 {
 	m_iStride = { sizeof(VTXANIMMESH) };
+	ZeroStruct(m_BufferDesc);
 
 	m_BufferDesc.ByteWidth = { m_iStride * m_iNumVertices };
 	m_BufferDesc.Usage = { D3D11_USAGE_DEFAULT };
@@ -132,8 +133,7 @@ HRESULT CMesh::Ready_VertexBuffer_Anim(const MESH* pMesh, const CModel::BONES& B
 	m_BufferDesc.MiscFlags = { 0 };
 
 	VTXANIMMESH* pVertices = new VTXANIMMESH[m_iNumVertices];
-	ZeroStruct(m_BufferDesc);
-
+	ZeroMemory(pVertices, sizeof(VTXANIMMESH) * m_iNumVertices);
 	for (size_t i = 0; i < m_iNumVertices; ++i)
 	{
 		memcpy(&pVertices[i].vPosition, &pMesh->m_Vertices[i], sizeof(_float3));
@@ -162,14 +162,14 @@ HRESULT CMesh::Ready_VertexBuffer_Anim(const MESH* pMesh, const CModel::BONES& B
 			});
 
 		_float4x4	OffsetMatrix;
-		memcpy(&OffsetMatrix, &pBone->m_OffsetMatrix, sizeof(_float4x4));
+		memcpy(&OffsetMatrix, &pBone->m_OffsetMatrix, sizeof(_float4x4)); // 트랜스포즈 한 상태로 정보 넘어옴
 		Bones[iBoneIndex]->Set_OffsetMatrix(OffsetMatrix);
 
 		m_BoneIndices.push_back(iBoneIndex);
 
 		for (size_t j = 0; j < pBone->m_NumWeights; ++j)
 		{
-			VERTEX_WEIGHT VertexWeight = pBone->m_Weights[i];
+			VERTEX_WEIGHT VertexWeight = pBone->m_Weights[j];
 
 			if (0.0f == pVertices[VertexWeight.m_VertexId].vBlendWeights.x)
 			{
