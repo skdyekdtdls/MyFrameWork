@@ -13,48 +13,33 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="소스 파일\ModelPaser">
+    <Filter Include="소스 파일\00. Paser">
       <UniqueIdentifier>{72ce724c-1b59-4ecf-91e9-de4382e832a4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\MeshPaser">
-      <UniqueIdentifier>{5bade82a-5970-4ee4-a66d-f973798a7bc7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\BonePaser">
-      <UniqueIdentifier>{f7b5ee47-23ea-4286-9b8d-d0c15cde1863}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\ModelPaser.cpp">
-      <Filter>소스 파일\ModelPaser</Filter>
+    <ClCompile Include="..\public\Assimp_Struct.cpp">
+      <Filter>헤더 파일</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\MeshPaser.cpp">
-      <Filter>소스 파일\MeshPaser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\BonePaser.cpp">
-      <Filter>소스 파일\BonePaser</Filter>
+    <ClCompile Include="..\private\Paser.cpp">
+      <Filter>소스 파일\00. Paser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\public\Struct.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Assimp_Defines.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Function.h">
+    <ClInclude Include="..\public\Assimp_Typdef.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\ModelPaser.h">
-      <Filter>소스 파일\ModelPaser</Filter>
+    <ClInclude Include="..\public\Assimp_Struct.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\MeshPaser.h">
-      <Filter>소스 파일\MeshPaser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\BonePaser.h">
-      <Filter>소스 파일\BonePaser</Filter>
+    <ClInclude Include="..\public\Paser.h">
+      <Filter>소스 파일\00. Paser</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -82,6 +82,15 @@
     <ClCompile Include="VIBuffer_Cube.cpp">
       <Filter>01. Utility\03. Components\VIBuffer\Cube</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Model.cpp">
+      <Filter>01. Utility\03. Components\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Bone.cpp">
+      <Filter>01. Utility\03. Components\Model\Bone</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Mesh.cpp">
+      <Filter>01. Utility\03. Components\Model\Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Graphic_Device.h">
@@ -176,6 +185,18 @@
     </ClInclude>
     <ClInclude Include="..\public\VIBuffer_Cube.h">
       <Filter>01. Utility\03. Components\VIBuffer\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Model.h">
+      <Filter>01. Utility\03. Components\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ReadFunction.h">
+      <Filter>99. Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Bone.h">
+      <Filter>01. Utility\03. Components\Model\Bone</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Mesh.h">
+      <Filter>01. Utility\03. Components\Model\Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -274,6 +295,18 @@
     </Filter>
     <Filter Include="01. Utility\03. Components\Calculator">
       <UniqueIdentifier>{1b57d4f7-33f3-4573-b030-d071942c755a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\Model">
+      <UniqueIdentifier>{53826820-81c3-46d0-9ed3-1cc19151bdb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\Model\Animation">
+      <UniqueIdentifier>{956aa2b1-155c-45ee-a62f-b3b2ab9324d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\Model\Bone">
+      <UniqueIdentifier>{d8a186bb-7962-4112-a3cf-13ca693ea819}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\Model\Mesh">
+      <UniqueIdentifier>{44ce9f18-0397-4b6c-b74c-11864483ca08}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

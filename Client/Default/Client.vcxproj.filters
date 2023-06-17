@@ -70,6 +70,9 @@
     <Filter Include="98. Default\IMGUI\03. EditCamera">
       <UniqueIdentifier>{eade0cab-4b16-472a-ab00-2f8994b484a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\Player">
+      <UniqueIdentifier>{97037014-9efd-49a3-8612-7273ea3b7474}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -143,6 +146,9 @@
     </ClInclude>
     <ClInclude Include="..\public\EditCamera.h">
       <Filter>98. Default\IMGUI\03. EditCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Player.h">
+      <Filter>02. GameObject\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -223,6 +229,9 @@
     <ClCompile Include="..\private\EditCamera.cpp">
       <Filter>98. Default\IMGUI\03. EditCamera</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Player.cpp">
+      <Filter>02. GameObject\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -237,6 +246,12 @@
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCol.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

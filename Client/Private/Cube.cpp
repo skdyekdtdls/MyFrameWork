@@ -92,7 +92,11 @@ HRESULT CCube::Add_Components()
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_IMGUI, CVIBuffer_Cube::ProtoTag(), L"Com_VIBuffer_Cube", (CComponent**)&m_pVIBufferCom), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxAnimMesh", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxCol", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxMesh", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxNorTex", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_Vtxtex", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
 
 	return S_OK;
 }
@@ -100,26 +104,19 @@ HRESULT CCube::Add_Components()
 HRESULT CCube::SetUp_ShaderResources()
 {
 	_float4x4 MyMatrix = m_pTransformCom->Get_WorldFloat4x4();
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &MyMatrix)))
-		return E_FAIL;
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &MyMatrix), E_FAIL);
 
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	_float4x4 MyMatrix2 = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix",
-		&MyMatrix2)))
-		return E_FAIL;
+	_float4x4 MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &MyMatrix), E_FAIL);
 
-	_float4x4 MyMatrix3 = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix",
-		&MyMatrix3)))
-		return E_FAIL;
+	_float4x4 MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &MyMatrix), E_FAIL);
 
 	_float4 MyFloat4 = { _float4(0.f, 1.f, 0.f, 0.f) };
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_Color",
-		&MyFloat4, sizeof(_float4))))
-		return E_FAIL;
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_Color", &MyFloat4, sizeof(_float4)), E_FAIL);
 
 	Safe_Release(pGameInstance);
 

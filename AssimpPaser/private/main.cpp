@@ -1,7 +1,7 @@
 ﻿// AssimpPaser.cpp : 이 파일에는 'main' 함수가 포함됩니다. 거기서 프로그램 실행이 시작되고 종료됩니다.
 //
 //
-#include "ModelPaser.h"
+#include "Paser.h"
 
 int main()
 {
@@ -10,11 +10,9 @@ int main()
 #endif // _DEBUG
 
     char pModelFilePath[MAX_PATH];
-    CModelPaser Paser;
+    Paser Paser;
+    Paser.Pasing("../../Client/Bin/Resources/Models/Fiona/Fiona.fbx", ANIM_TYPE::ANIM);
+    Paser.Load("../../Client/Bin/Resources/Models/Fiona/Fiona.fbx");
+    
 
-    Paser.Ready_Paser();
-
-    Paser.Pasing(ANIM_TYPE::NONANIM, "../../Client/Bin/Resources/Models/Fiona/Fiona.fbx");
-
-    Paser.Relase_Paser();
 }

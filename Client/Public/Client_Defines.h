@@ -6,7 +6,9 @@
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
 #include <d3d11.h>
+
 #endif
+
 namespace Client
 {
 	const unsigned int g_iWinSizeX = 1280;
@@ -19,4 +21,3 @@ extern HINSTANCE g_hInst;
 extern HWND g_hWnd;
 
 using namespace Client;
-
