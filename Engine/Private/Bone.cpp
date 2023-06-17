@@ -6,8 +6,8 @@ CBone::CBone()
 
 HRESULT CBone::Initialize(HANDLE hFile, DWORD& dwByte, CBone* pParent)
 {
-	ReadCHAR(m_szName);
-	ReadFloat4x4(m_TransformationMatrix);
+	//ReadCHAR(m_szName);
+	//ReadFloat4x4(m_TransformationMatrix);
 	XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMMatrixIdentity());
 	m_pParent = pParent;
 	Safe_AddRef(m_pParent);

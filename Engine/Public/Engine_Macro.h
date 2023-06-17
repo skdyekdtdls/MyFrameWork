@@ -54,6 +54,9 @@
 #define FAILED_CHECK_RETURN_CONSOLE_MSG(_hr, _return, _message) \
 	{if ((HRESULT)_hr < 0) { CONSOLE_MSG(_message); __debugbreak(); return _return; }}
 
+#define BOOL_CHECK(_hr) \
+	{if ((bool)_hr == false) { __debugbreak(); return; }}
+
 #define NO_COPY(CLASSNAME)										\
 private:														\
 	CLASSNAME(const CLASSNAME&) = delete;						\

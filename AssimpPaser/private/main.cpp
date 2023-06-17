@@ -13,5 +13,6 @@ int main()
     Paser Paser;
     Paser.Pasing("../../Client/Bin/Resources/Models/Fiona/Fiona.fbx", ANIM_TYPE::ANIM);
     Paser.Load("../../Client/Bin/Resources/Models/Fiona/Fiona.fbx");
+    
 
 }

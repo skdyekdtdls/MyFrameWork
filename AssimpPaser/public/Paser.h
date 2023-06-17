@@ -10,7 +10,7 @@ public:
 	virtual ~Paser() = default;
 
 public:
+	HRESULT Test(const char* pModelFilePath, ANIM_TYPE eAnimType);
 	HRESULT Pasing(const char* pModelFilePath, ANIM_TYPE eAnimType);
 	HRESULT Load(const char* pModelFilePath);
 };
-

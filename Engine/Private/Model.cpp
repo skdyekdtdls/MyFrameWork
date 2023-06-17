@@ -42,8 +42,8 @@ HRESULT CModel::Initialize_Prototype(TYPE eType, const _tchar* pModelFilePath, _
 
 	DWORD		dwByte = 0;
 
-	_uint iAnimType;
-	ReadUINT(iAnimType);
+	_uint iAnimType = 0;
+	//ReadUINT(iAnimType);
 
 	FAILED_CHECK_RETURN(Ready_Bones(hFile, dwByte, nullptr), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Meshes(hFile, dwByte, static_cast<TYPE>(iAnimType), PivotMatrix), E_FAIL);
@@ -96,7 +96,7 @@ HRESULT CModel::Ready_Bones(HANDLE hFile, DWORD& dwByte, CBone* pParent)
 	m_Bones.push_back(pBone);
 
 	_uint iNumChildren = { 0 };
-	ReadUINT(iNumChildren);
+	//ReadUINT(iNumChildren);
 	for (_uint i = 0; i < iNumChildren; ++i)
 	{
 		Ready_Bones(hFile, dwByte, pParent);

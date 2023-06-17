@@ -4,16 +4,16 @@ namespace Engine
 {
 	static bool WriteEnable(HANDLE hFile, bool bValue, DWORD& dwByte)
 	{
-		bool value = bValue;
-		return WriteFile(hFile, &value, sizeof(value), &dwByte, nullptr);
+		return WriteFile(hFile, &bValue, sizeof(bool), &dwByte, nullptr);;
 	}
-#define WriteEnable(bValue) Engine::WriteEnable(hFile, bValue, dwByte)
+#define WriteEnable(arg) Engine::WriteEnable(hFile, arg, dwByte)
+
 	// void
 	static bool WriteVoid(HANDLE hFile, const void* pBuffer, _uint iSize, DWORD& dwByte)
 	{
 		return WriteFile(hFile, pBuffer, iSize, &dwByte, nullptr);
 	}
-#define WriteVoid(arg, size) Engine::WriteVoid(hFile, arg, size, dwByte)
+#define WriteVoid(arg, size) BOOL_CHECK(Engine::WriteVoid(hFile, arg, size, dwByte))
 	///////////////////////////////////////////////////////////
 
 	static bool ReadEnable(HANDLE hFile, DWORD& dwByte)
