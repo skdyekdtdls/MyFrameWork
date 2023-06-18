@@ -90,4 +90,7 @@ private:														\
 		return dwRefCnt;								\
 	}
 
-#define ZeroStruct(Desc) ZeroMemory((&Desc), (sizeof(Desc)));
+#define ZeroStruct(Desc) ZeroMemory((&Desc), (sizeof(Desc)))
+
+#define TO_WCHAR(Cha, Wcha) MultiByteToWideChar(CP_ACP, 0, Cha, MAX_PATH, Wcha, MAX_PATH)
+#define TO_CHAR(Wcha, Cha) WideCharToMultiByte(CP_APC, 0, Wcha, MAX_PATH, Cha, MAX_PATH, NULL, NULL)

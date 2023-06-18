@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Engine_Defines.h"
+#include <filesystem>
+namespace fs = std::filesystem;
 
 class CPaser
 {
@@ -9,6 +11,6 @@ public:
 	virtual ~CPaser() = default;
 
 public:
-	HRESULT Pasing(const char* pModelFilePath);
-	HRESULT Load(const _tchar* pModelFilePath, _Inout_ SCENE& tScene);
+	HRESULT Pasing(fs::path ModelFilePath);
+	//HRESULT Load(const _tchar* pModelFilePath, _Inout_ SCENE& tScene);
 };

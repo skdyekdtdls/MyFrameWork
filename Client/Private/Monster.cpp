@@ -108,9 +108,8 @@ HRESULT CMonster::SetUp_ShaderResources()
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &MyMatrix), E_FAIL);
 
 	_float4 MyFloat4 = pGameInstance->Get_CamPosition();
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition",
-		&MyFloat4, sizeof(_float4))))
-		return E_FAIL;
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", &MyFloat4, sizeof(_float4)), E_FAIL);
+		
 
 	Safe_Release(pGameInstance);
 

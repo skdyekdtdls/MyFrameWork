@@ -52,9 +52,16 @@ HRESULT CPlayer::Render()
 	if (FAILED(SetUp_ShaderResources()))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(0);
+	_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
+	for (size_t i = 0; i < iNumMeshes; i++)
+	{
+		m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
+		// m_pModelCom->Bind_Material(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS);
 
-	//m_pVIBufferCom->Render();
+		m_pShaderCom->Begin(0);
+
+		m_pModelCom->Render(i);
+	}
 }
 
 HRESULT CPlayer::Add_Components()
@@ -66,8 +73,8 @@ HRESULT CPlayer::Add_Components()
 	CTransform::TRANSFORMDESC TransformDesc{ 7.0, XMConvertToRadians(90.f) };
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxAnimMesh", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_IMGUI , L"Prototype_Component_Model_Fiona", L"Com_Model", (CComponent**)&m_pModelCom), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxMesh", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_IMGUI , L"Prototype_Component_Model_ForkLift", L"Com_Model", (CComponent**)&m_pModelCom), E_FAIL);
 
 	// You can Add VIBuffer or Model Component
 	return S_OK;
@@ -87,8 +94,8 @@ HRESULT CPlayer::SetUp_ShaderResources()
 	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &MyMatrix), E_FAIL);
 
-	_float4 MyFloat4 = { _float4(0.f, 1.f, 0.f, 0.f) };
-	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_Color", &MyFloat4, sizeof(_float4)), E_FAIL);
+	_float4 MyFloat4 = pGameInstance->Get_CamPosition();
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", &MyFloat4, sizeof(_float4)), E_FAIL);
 
 	Safe_Release(pGameInstance);
 
