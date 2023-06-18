@@ -193,7 +193,7 @@ void NODE::Serialization(aiNode* pAINode, HANDLE hFile, DWORD& dwByte)
 
 	AI_STRING::Serialization(&pAINode->mName, hFile, dwByte);
 
-	WriteVoid(&pAINode->mTransformation.Transpose(), sizeof(pAINode->mTransformation));
+	WriteVoid(&pAINode->mTransformation, sizeof(pAINode->mTransformation));
 
 	WriteVoid(&pAINode->mNumMeshes, sizeof(pAINode->mNumMeshes));
 	for (size_t i = 0; i < pAINode->mNumMeshes; ++i)
@@ -1101,7 +1101,7 @@ void BONE::Serialization(aiBone* pAIBone, HANDLE hFile, DWORD& dwByte)
 #endif
 	for (size_t i = 0; i < pAIBone->mNumWeights; ++i)
 		VERTEX_WEIGHT::Serialization(&pAIBone->mWeights[i], hFile, dwByte);
-	WriteVoid(&pAIBone->mOffsetMatrix.Transpose(), sizeof(pAIBone->mOffsetMatrix));
+	WriteVoid(&pAIBone->mOffsetMatrix, sizeof(pAIBone->mOffsetMatrix));
 }
 
 bool BONE::Deserialization(HANDLE hFile, DWORD& dwByte)

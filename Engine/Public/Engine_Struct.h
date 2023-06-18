@@ -27,7 +27,7 @@ namespace Engine
 	{
 		XMFLOAT3	vScale;
 		XMFLOAT4	vRotation;
-		XMFLOAT3	vPos;
+		XMFLOAT3	vTranslation;
 		double		Time;
 	}KEYFRAME;
 

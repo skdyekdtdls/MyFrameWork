@@ -4,13 +4,25 @@ CBone::CBone()
 {
 }
 
-HRESULT CBone::Initialize(const NODE* pNode, CBone* pParent, _uint iIndex)
+CBone::CBone(const CBone& rhs)
+	: m_TransformationMatrix(rhs.m_TransformationMatrix)
+	, m_CombinedTransformationMatrix(rhs.m_CombinedTransformationMatrix)
+	, m_OffsetMatrix(rhs.m_OffsetMatrix)
+	, m_iParentIndex(rhs.m_iParentIndex)
+	, m_iIndex(rhs.m_iIndex)
 {
-	strcpy_s(m_szName, pNode->m_Name.m_data);
-	memcpy(&m_TransformationMatrix, &pNode->m_Transformation, sizeof(_float4x4));
+	strcpy_s(m_szName, rhs.m_szName);
+}
+
+
+HRESULT CBone::Initialize(const NODE* pNODE, CBone* pParent, _uint iIndex)
+{
+	strcpy_s(m_szName, pNODE->m_Name.m_data);
+	memcpy(&m_TransformationMatrix, &pNODE->m_Transformation, sizeof(_float4x4));
+	XMStoreFloat4x4(&m_TransformationMatrix, XMMatrixTranspose(XMLoadFloat4x4(&m_TransformationMatrix)));
 	XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMMatrixIdentity());
 	m_OffsetMatrix = m_CombinedTransformationMatrix;
-	m_iParentIndex = (nullptr == pParent) ? -1 : pParent->m_iIndex;
+	m_iParentIndex = pParent == nullptr ? -1 : pParent->m_iIndex;
 	m_iIndex = iIndex;
 
 	return S_OK;
@@ -24,28 +36,32 @@ void CBone::Invalidate_CombinedTransformationMatrix(const CModel::BONES& Bones)
 	}
 	else
 	{
-		XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMLoadFloat4x4(&m_TransformationMatrix)* XMLoadFloat4x4(&Bones[m_iParentIndex]->m_CombinedTransformationMatrix));
-	}	
+		XMStoreFloat4x4(&m_CombinedTransformationMatrix,
+			XMLoadFloat4x4(&m_TransformationMatrix) * XMLoadFloat4x4(&Bones[m_iParentIndex]->m_CombinedTransformationMatrix));
+
+	}
+
+
 }
 
-CBone* CBone::Create(const NODE* pNode, CBone* pParent, _uint iIndex)
+CBone* CBone::Create(const NODE* pNODE, CBone* pParent, _uint iIndex)
 {
 	CBone* pInstance = new CBone();
 
-	if (FAILED(pInstance->Initialize(pNode, pParent, iIndex)))
+	if (FAILED(pInstance->Initialize(pNODE, pParent, iIndex)))
 	{
 		MSG_BOX("Failed to Created CBone");
 		Safe_Release(pInstance);
 	}
-
 	return pInstance;
-}
-
-void CBone::Free(void)
-{
 }
 
 CBone* CBone::Clone()
 {
 	return new CBone(*this);
+}
+
+void CBone::Free()
+{
+
 }

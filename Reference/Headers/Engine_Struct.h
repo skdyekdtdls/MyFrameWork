@@ -20,14 +20,14 @@ namespace Engine
 
 	typedef struct ENGINE_DLL tagMeshMaterial
 	{
-		class CTexture* pMtrlTexture[21];
+		class CTexture* pMtrlTexture[AI_TEXTURE_TYPE_MAX];
 	}MESHMATERIAL;
 
 	typedef struct tagKeyFrame
 	{
 		XMFLOAT3	vScale;
 		XMFLOAT4	vRotation;
-		XMFLOAT3	vPos;
+		XMFLOAT3	vTranslation;
 		double		Time;
 	}KEYFRAME;
 

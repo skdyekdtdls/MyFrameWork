@@ -1,5 +1,6 @@
-#include "Animation.h"
+#include "..\Public\Animation.h"
 #include "Channel.h"
+
 CAnimation::CAnimation()
 	: m_isLoop(true)
 {
@@ -21,19 +22,21 @@ CAnimation::CAnimation(const CAnimation& rhs)
 		Safe_AddRef(pChannel);
 }
 
-HRESULT CAnimation::Initialize(const ANIMATION* pAnimation, const CModel::BONES& Bones)
+HRESULT CAnimation::Initialize(const ANIMATION* pAnimation, const aiAnimation* pAIAnimation, const CModel::BONES& Bones)
 {
 	strcpy_s(m_szName, pAnimation->m_Name.m_data);
+
 	m_Duration = pAnimation->m_Duration;
 	m_TickPerSecond = pAnimation->m_TicksPerSecond;
 
 	m_iNumChannels = pAnimation->m_NumChannels;
 
-	for (size_t i = 0; i < m_iNumChannels; ++i)
+	for (size_t i = 0; i < m_iNumChannels; i++)
 	{
 		CChannel* pChannel = CChannel::Create(&pAnimation->m_Channels[i], Bones);
-		NULL_CHECK_RETURN(pChannel, E_FAIL);
-		
+		if (nullptr == pChannel)
+			return E_FAIL;
+
 		m_Channels.push_back(pChannel);
 	}
 
@@ -53,29 +56,33 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 			m_TimeAcc = 0.f;
 		}
 		else
-			m_isFinished = { true };
+			m_isFinished = true;
 	}
-	_uint iChannelIndex = 0;
 
+
+
+	/* 현재 재생된 시간에 맞도록 모든 뼈의 상태를 키프레임정보를 기반으로하여 갱신한다. */
+	_uint		iChannelIndex = 0;
 	for (auto& pChannel : m_Channels)
 	{
 		if (nullptr == pChannel)
 			return;
-		
+
 		pChannel->Invalidate_TransformationMatrix(Bones, m_TimeAcc, &m_ChannelCurrentKeyFrames[iChannelIndex++]);
 	}
+
+
 }
 
-CAnimation* CAnimation::Create(const ANIMATION* pAnimation, const CModel::BONES& Bones)
+CAnimation* CAnimation::Create(const ANIMATION* pAnimation, const aiAnimation* pAIAnimation, const CModel::BONES& Bones)
 {
 	CAnimation* pInstance = new CAnimation();
 
-	if (FAILED(pInstance->Initialize(pAnimation, Bones)))
+	if (FAILED(pInstance->Initialize(pAnimation, pAIAnimation, Bones)))
 	{
 		MSG_BOX("Failed to Created CAnimation");
 		Safe_Release(pInstance);
 	}
-
 	return pInstance;
 }
 
@@ -90,5 +97,6 @@ void CAnimation::Free()
 		Safe_Release(pChannel);
 
 	m_Channels.clear();
+
 }
 
