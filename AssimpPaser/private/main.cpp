@@ -10,7 +10,19 @@ int main()
 #ifdef _DEBUG
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif // _DEBUG
-
     CPaser Paser;
-    Paser.Pasing("../../Resources/Models/Fiona/Fiona.fbx");
+    
+    fs::path ModelsPath = "../../Resources/Models/";
+    fs::recursive_directory_iterator iter(ModelsPath);
+
+    for (const fs::directory_entry& entry : iter)
+    {
+        if (".fbx" == entry.path().extension() || ".FBX" == entry.path().extension())
+        {
+            Paser.Pasing(entry.path());
+        }        
+    }
+
+    cout << "All Completed swithcing .fbx to .dat" << endl;
+    
 }
