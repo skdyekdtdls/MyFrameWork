@@ -1,9 +1,11 @@
 #include "..\public\Paser.h"
+#include "GameInstance.h"
 
-HRESULT Paser::Pasing(const char* pModelFilePath, ANIM_TYPE eAnimType)
+HRESULT CPaser::Pasing(const char* pModelFilePath)
 {
+	// 파일이름 가져와서 경로만들기.
 	// 파일 개방
-	HANDLE		hFile = CreateFile(L"../Bin/Fiona.dat",		// 파일 경로와 이름을 명시
+	HANDLE		hFile = CreateFile(L"../../Resources/Models/Fiona/Fiona.dat",		// 파일 경로와 이름을 명시
 		GENERIC_WRITE,			// 파일 접근 모드(쓰기 전용), GENERIC_READ(읽기 전용)
 		NULL,					// 공유 방식, 파일이 열려 있는 상태에서 다른 프로세스가 오픈 할 때 허가하는 것에 대한 설정, NULL을 지정하면 공유하지 않겠다는 의미
 		NULL,					// 보안 속성, NULL인 경우 기본값으로 보안 상태를 설정
@@ -21,10 +23,11 @@ HRESULT Paser::Pasing(const char* pModelFilePath, ANIM_TYPE eAnimType)
 	DWORD		dwByte = 0;
 
 	_uint		iFlag = 0;
+	CModel::TYPE eAnimType = CModel::TYPE::TYPE_ANIM; //assert(false); // 자동으로 타입결정짓기
 
 	WriteFile(hFile, &eAnimType, sizeof(eAnimType), &dwByte, nullptr);
 
-	if (ANIM_TYPE::NONANIM == eAnimType)
+	if (CModel::TYPE::TYPE_NONANIM == eAnimType)
 		iFlag = aiProcess_PreTransformVertices | aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
 	else
 		iFlag = aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
@@ -40,7 +43,7 @@ HRESULT Paser::Pasing(const char* pModelFilePath, ANIM_TYPE eAnimType)
 	return S_OK;
 }
 
-HRESULT Paser::Load(const _tchar* pModelFilePath, _Inout_ SCENE& tScene)
+HRESULT CPaser::Load(const _tchar* pModelFilePath, _Inout_ SCENE& tScene)
 {
 	// 파일 개방
 	HANDLE		hFile = CreateFile(pModelFilePath,		// 파일 경로와 이름을 명시
@@ -59,7 +62,7 @@ HRESULT Paser::Load(const _tchar* pModelFilePath, _Inout_ SCENE& tScene)
 	DWORD dwByte = { 0 };
 	//SCENE Scene;
 
-	ANIM_TYPE eAnimType;
+	CModel::TYPE eAnimType;
 	ReadFile(hFile, &eAnimType, sizeof(eAnimType), &dwByte, nullptr);
 	tScene.Deserialization(hFile, dwByte);
 

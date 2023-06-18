@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "GameInstance.h"
 
-/* Don't Forget Release for the VIBuffer Component*/
+/* Don't Forget Release for the VIBuffer or Model Component*/
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
@@ -36,15 +36,12 @@ HRESULT CPlayer::Initialize(void* pArg)
 void CPlayer::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
-
-	m_pModelCom->Play_Animation(TimeDelta);
 }
 
 void CPlayer::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
-	if (nullptr != m_pRendererCom)
-		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 }
 
 HRESULT CPlayer::Render()
@@ -55,71 +52,45 @@ HRESULT CPlayer::Render()
 	if (FAILED(SetUp_ShaderResources()))
 		return E_FAIL;
 
-	_uint	iNumMeshes = m_pModelCom->Get_NumMeshes();
-
-	for (size_t i = 0; iNumMeshes; ++i)
-	{
-		//TODO
-		m_pShaderCom->Begin(0);
-	}
-
+	m_pShaderCom->Begin(0);
 
 	//m_pVIBufferCom->Render();
 }
 
 HRESULT CPlayer::Add_Components()
 {
-	///* For.Com_Renderer */
-	//if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"),
-	//	TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
-	//	return E_FAIL;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom), E_FAIL);
 
-	///* For.Com_Transform */
-	//if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
-	//	TEXT("Com_Transform"), (CComponent**)&m_pTransformCom, &CTransform::TRANSFORMDESC(7.0, XMConvertToRadians(90.0f)))))
-	//	return E_FAIL;
+	// no texture now, you have to add texture later
 
-	///* For.Com_Model */
-	//if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
-	//	TEXT("Com_Model"), (CComponent**)&m_pModelCom)))
-	//	return E_FAIL;
+	CTransform::TRANSFORMDESC TransformDesc{ 7.0, XMConvertToRadians(90.f) };
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
+		, &TransformDesc), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxAnimMesh", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_IMGUI , L"Prototype_Component_Model_Fiona", L"Com_Model", (CComponent**)&m_pModelCom), E_FAIL);
 
-	///* For.Com_Shader */
-	//if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
-	//	TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
-	//	return E_FAIL;
-
+	// You can Add VIBuffer or Model Component
 	return S_OK;
 }
 
 HRESULT CPlayer::SetUp_ShaderResources()
 {
 	_float4x4 MyMatrix = m_pTransformCom->Get_WorldFloat4x4();
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &MyMatrix)))
-		return E_FAIL;
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &MyMatrix), E_FAIL);
 
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
 	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix",
-		&MyMatrix)))
-		return E_FAIL;
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &MyMatrix), E_FAIL);
 
 	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix",
-		&MyMatrix)))
-		return E_FAIL;
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &MyMatrix), E_FAIL);
 
-	_float4 MyFloat4 = pGameInstance->Get_CamPosition();
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition",
-		&MyFloat4, sizeof(_float4))))
-		return E_FAIL;
+	_float4 MyFloat4 = { _float4(0.f, 1.f, 0.f, 0.f) };
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_Color", &MyFloat4, sizeof(_float4)), E_FAIL);
 
 	Safe_Release(pGameInstance);
-
-	if (FAILED(m_pTextureCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture")))
-		return E_FAIL;
 
 	return S_OK;
 }
@@ -158,3 +129,4 @@ void CPlayer::Free(void)
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
 }
+

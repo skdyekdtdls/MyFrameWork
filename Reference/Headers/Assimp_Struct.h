@@ -3,7 +3,7 @@
 //#include "Assimp_Defines.h"
 
 BEGIN(Engine)
-enum class ANIM_TYPE { NONANIM, ANIM, ANIM_END };
+
 using namespace DirectX;
 
 typedef class COLOR_RGBA_FLOAT;
@@ -38,6 +38,36 @@ typedef enum E_PROPERTY_TYPE_INFO;
 typedef enum E_ANIM_BEHAVIOR;
 typedef enum E_LIGHT_SOURCE_TYPE;
 typedef enum E_META_DATA_TYPE;
+
+enum TextureType {
+	TextureType_NONE = 0,
+	TextureType_DIFFUSE = 1,
+	TextureType_SPECULAR = 2,
+	TextureType_AMBIENT = 3,
+	TextureType_EMISSIVE = 4,
+	TextureType_HEIGHT = 5,
+	TextureType_NORMALS = 6,
+	TextureType_SHININESS = 7,
+	TextureType_OPACITY = 8,
+	TextureType_DISPLACEMENT = 9,
+	TextureType_LIGHTMAP = 10,
+	TextureType_REFLECTION = 11,
+	TextureType_BASE_COLOR = 12,
+	TextureType_NORMAL_CAMERA = 13,
+	TextureType_EMISSION_COLOR = 14,
+	TextureType_METALNESS = 15,
+	TextureType_DIFFUSE_ROUGHNESS = 16,
+	TextureType_AMBIENT_OCCLUSION = 17,
+	TextureType_SHEEN = 19,
+	TextureType_CLEARCOAT = 20,
+	TextureType_TRANSMISSION = 21,
+	TextureType_UNKNOWN = 18,
+#ifndef SWIG
+	_TextureType_Force32Bit = INT_MAX
+#endif
+};
+#define TEXTURE_TYPE_MAX TextureType_TRANSMISSION
+
 
 enum E_MORPHING_METHOD
 {
@@ -167,7 +197,6 @@ public:
 	static void Serialization(aiNode* pAINode, HANDLE hFile, DWORD& dwByte);
 	bool Deserialization(HANDLE hFile, DWORD& dwByte);
 
-private:
 	AI_STRING       m_Name;
 	XMFLOAT4X4		m_Transformation;
 	unsigned int    m_NumChildren = { 0 };
@@ -209,7 +238,6 @@ public:
 	static void Serialization(aiMesh* pAIMesh, HANDLE hFile, DWORD& dwByte);
 	bool Deserialization(HANDLE hFile, DWORD& dwByte);
 
-private:
 	unsigned int        m_PrimitiveTypes = 0;
 	unsigned int        m_NumVertices = 0;
 	unsigned int        m_NumFaces = 0;
@@ -237,9 +265,11 @@ class MATERIAL // Test Complete
 public:
 	MATERIAL();
 	~MATERIAL();
+	bool GetTexture(TextureType type, unsigned int index, AI_STRING* path);
 	static void Serialization(aiMaterial* pAIMaterial, HANDLE hFile, DWORD& dwByte);
 	bool Deserialization(HANDLE hFile, DWORD& dwByte);
 
+	AI_STRING*	m_TexturePath[TextureType_TRANSMISSION];
 	unsigned int m_NumProperties = 0;
 	unsigned int m_NumAllocated = 0;
 	MATERIAL_PROPERTY* m_Properties = { nullptr };
@@ -313,6 +343,11 @@ public:
 	XMFLOAT3 m_Value;
 };
 
+typedef struct QUATERNION
+{
+	float w, x, y, z;
+};
+
 class QUAT_KEY // Test Complete
 {
 public:
@@ -322,7 +357,7 @@ public:
 	bool Deserialization(HANDLE hFile, DWORD& dwByte);
 
 	double m_Time = 0.0;
-	XMFLOAT4 m_Value;
+	QUATERNION m_Value;
 };
 
 class MESH_ANIM // Test Complete
@@ -529,7 +564,7 @@ public:
 };
 
 
-class SCENE
+class ENGINE_DLL SCENE
 {
 public:
 	SCENE();

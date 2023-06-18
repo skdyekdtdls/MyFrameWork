@@ -4,43 +4,64 @@ CBone::CBone()
 {
 }
 
-HRESULT CBone::Initialize(HANDLE hFile, DWORD& dwByte, CBone* pParent)
+CBone::CBone(const CBone& rhs)
+	: m_TransformationMatrix(rhs.m_TransformationMatrix)
+	, m_CombinedTransformationMatrix(rhs.m_CombinedTransformationMatrix)
+	, m_OffsetMatrix(rhs.m_OffsetMatrix)
+	, m_iParentIndex(rhs.m_iParentIndex)
+	, m_iIndex(rhs.m_iIndex)
 {
-	//ReadCHAR(m_szName);
-	//ReadFloat4x4(m_TransformationMatrix);
+	strcpy_s(m_szName, rhs.m_szName);
+}
+
+
+HRESULT CBone::Initialize(const NODE* pNODE, CBone* pParent, _uint iIndex)
+{
+	strcpy_s(m_szName, pNODE->m_Name.m_data);
+	memcpy(&m_TransformationMatrix, &pNODE->m_Transformation, sizeof(_float4x4));
+	XMStoreFloat4x4(&m_TransformationMatrix, XMMatrixTranspose(XMLoadFloat4x4(&m_TransformationMatrix)));
 	XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMMatrixIdentity());
-	m_pParent = pParent;
-	Safe_AddRef(m_pParent);
+	m_OffsetMatrix = m_CombinedTransformationMatrix;
+	m_iParentIndex = pParent == nullptr ? -1 : pParent->m_iIndex;
+	m_iIndex = iIndex;
 
 	return S_OK;
 }
 
-void CBone::Invalidate_CombinedTransformationMatrix()
+void CBone::Invalidate_CombinedTransformationMatrix(const CModel::BONES& Bones)
 {
-	if (nullptr == m_pParent)
+	if (-1 == m_iParentIndex)
 	{
 		m_CombinedTransformationMatrix = m_TransformationMatrix;
 	}
 	else
 	{
-		XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMLoadFloat4x4(&m_TransformationMatrix)* XMLoadFloat4x4(&m_pParent->m_CombinedTransformationMatrix));
+		XMStoreFloat4x4(&m_CombinedTransformationMatrix,
+			XMLoadFloat4x4(&m_TransformationMatrix) * XMLoadFloat4x4(&Bones[m_iParentIndex]->m_CombinedTransformationMatrix));
+
 	}
+
+
 }
 
-CBone* CBone::Create(HANDLE hFile, DWORD& dwByte, CBone* pParent)
+CBone* CBone::Create(const NODE* pNODE, CBone* pParent, _uint iIndex)
 {
 	CBone* pInstance = new CBone();
 
-	if (FAILED(pInstance->Initialize(hFile, dwByte, pParent)))
+	if (FAILED(pInstance->Initialize(pNODE, pParent, iIndex)))
 	{
 		MSG_BOX("Failed to Created CBone");
 		Safe_Release(pInstance);
 	}
-
 	return pInstance;
 }
 
-void CBone::Free(void)
+CBone* CBone::Clone()
 {
-	Safe_Release(m_pParent);
+	return new CBone(*this);
+}
+
+void CBone::Free()
+{
+
 }

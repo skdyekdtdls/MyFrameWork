@@ -94,6 +94,12 @@
     <ClCompile Include="..\Private\Assimp_Struct.cpp">
       <Filter>99. Headers</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Channel.cpp">
+      <Filter>01. Utility\03. Components\Model\Animation\Channel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Animation.cpp">
+      <Filter>01. Utility\03. Components\Model\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Graphic_Device.h">
@@ -204,6 +210,12 @@
     <ClInclude Include="..\Public\Assimp_Struct.h">
       <Filter>99. Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Channel.h">
+      <Filter>01. Utility\03. Components\Model\Animation\Channel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Animation.h">
+      <Filter>01. Utility\03. Components\Model\Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -299,9 +311,6 @@
     <Filter Include="01. Utility\03. Components\VIBuffer\Cube">
       <UniqueIdentifier>{80befcf9-92f9-47a2-aefd-fbb7e3fbb1b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Utility\03. Components\Calculator">
-      <UniqueIdentifier>{1b57d4f7-33f3-4573-b030-d071942c755a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Utility\03. Components\Model">
       <UniqueIdentifier>{53826820-81c3-46d0-9ed3-1cc19151bdb1}</UniqueIdentifier>
     </Filter>
@@ -313,6 +322,9 @@
     </Filter>
     <Filter Include="01. Utility\03. Components\Model\Mesh">
       <UniqueIdentifier>{44ce9f18-0397-4b6c-b74c-11864483ca08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\Model\Animation\Channel">
+      <UniqueIdentifier>{8db63411-f692-46d3-bd98-50d7298447fc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

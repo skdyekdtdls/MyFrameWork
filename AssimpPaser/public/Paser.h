@@ -1,15 +1,14 @@
 #pragma once
 
-//#include "Assimp_Defines.h"
 #include "Engine_Defines.h"
 
-class Paser
+class CPaser
 {
 public:
-	Paser() = default;
-	virtual ~Paser() = default;
+	CPaser() = default;
+	virtual ~CPaser() = default;
 
 public:
-	HRESULT Pasing(const char* pModelFilePath, ANIM_TYPE eAnimType);
+	HRESULT Pasing(const char* pModelFilePath);
 	HRESULT Load(const _tchar* pModelFilePath, _Inout_ SCENE& tScene);
 };

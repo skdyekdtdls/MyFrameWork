@@ -5,7 +5,6 @@
 #include "assimp\Importer.hpp"
 #include "assimp\scene.h"
 #include "assimp\postprocess.h"
-#include <filesystem>
 #include <iostream>
 #include <tchar.h>
 #include <DirectXMath.h>
@@ -20,7 +19,7 @@
 
 using namespace std;
 using namespace DirectX;
-namespace fs = std::filesystem;
+
 
 #include <vector>
 #include <list>
