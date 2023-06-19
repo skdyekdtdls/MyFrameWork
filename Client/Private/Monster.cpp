@@ -1,6 +1,8 @@
 #include "..\Public\Monster.h"
 #include "GameInstance.h"
 
+_uint CMonster::CMonster_Id = 0;
+
 CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
@@ -30,6 +32,9 @@ HRESULT CMonster::Initialize(void* pArg)
 	if (FAILED(Add_Components()))
 		return E_FAIL;
 
+	++CMonster_Id;
+	m_strName = "CMonster" + to_string(CMonster_Id);
+	cout << m_strName << endl;
 	m_pModelCom->Set_AnimIndex(rand() % 10);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(rand() % 20, 3.f, rand() % 20, 1.f));
 
@@ -41,14 +46,18 @@ void CMonster::Tick(_double TimeDelta)
 	__super::Tick(TimeDelta);
 
 	m_pModelCom->Play_Animation(TimeDelta);
+
+	//m_pTransformCom->Rotation(XMVectorSet(1.f, 0.f, 0.f, 1.f), XMConvertToRadians(77.f));
+
+	if (nullptr != m_pRendererCom)
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 }
 
 void CMonster::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
 
-	if (nullptr != m_pRendererCom)
-		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
+
 }
 
 HRESULT CMonster::Render()

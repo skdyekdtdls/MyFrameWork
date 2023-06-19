@@ -46,10 +46,10 @@ public:
 
 private:
 	LPDIRECTINPUT8			m_pInputSDK;
-
+	HWND					m_hWnd = { nullptr };
 	LPDIRECTINPUTDEVICE8	m_pKeyBoard;
 	LPDIRECTINPUTDEVICE8	m_pMouse;
-
+	_bool					m_Focused = { true };
 private:
 	_byte					m_byKeyState[256];
 	_byte					m_byPreKeyState[256];

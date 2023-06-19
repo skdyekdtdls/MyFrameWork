@@ -19,7 +19,7 @@ public:
 	virtual HRESULT Render();
 
 	HRESULT Add_Component(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pComponentTag, _Inout_ CComponent** ppOut, void* pArg = nullptr);
-
+	CComponent* Get_Component(const _tchar* pComponent);
 private:
 	unordered_map<const _tchar*, CComponent*>	m_Components;
 

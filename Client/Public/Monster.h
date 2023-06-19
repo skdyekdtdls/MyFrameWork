@@ -37,6 +37,9 @@ public:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();
 
+private:
+	static _uint CMonster_Id;
+
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_GameObject_CMonster"; }
 	static CMonster* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -20,6 +20,42 @@ _float3 CTransform::Get_Scaled()
 		XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&m_WorldMatrix).r[STATE_LOOK])));
 }
 
+_float3 CTransform::Get_AulerDegree()
+{
+	// YZX순서라고 가정
+	_float3 euler;
+
+	float yaw, pitch, roll; // y, x, z 축에 대한 회전
+
+	roll = std::asin(m_WorldMatrix.m[1][0]);
+	if (std::cos(roll) != 0) {
+		pitch = std::atan2(-m_WorldMatrix.m[2][0], m_WorldMatrix.m[0][0]);
+		yaw = std::atan2(-m_WorldMatrix.m[1][2], m_WorldMatrix.m[1][1]);
+	}
+	else {
+		pitch = 0;
+		yaw = std::atan2(m_WorldMatrix.m[2][1], -m_WorldMatrix.m[2][2]);
+	}
+	euler.x = XMConvertToDegrees(yaw);
+	euler.y = XMConvertToDegrees(pitch);
+	euler.z = XMConvertToDegrees(roll);
+	
+	//// Adjust the range from [-180, 180] to [0, 360]
+	if (euler.x < 0) euler.x += 360.0f;
+	if (euler.y < 0) euler.y += 360.0f;
+	if (euler.z < 0) euler.z += 360.0f;
+
+	euler.x = 360.f - euler.x;
+	euler.y = 360.f - euler.y;
+	euler.z = 360.f - euler.z;
+
+	if (euler.x > 359.9f) euler.x = 0.f;
+	if (euler.y > 359.9f) euler.y = 0.f;
+	if (euler.z > 359.9f) euler.z = 0.f;
+
+	return euler;
+}
+
 void CTransform::Set_State(STATE _eState, _fvector _vState)
 {
 	_float4		vState;
@@ -127,6 +163,19 @@ void CTransform::Rotation(_fvector vAxis, _float fRadian)
 	Set_State(STATE_RIGHT, XMVector3TransformNormal(vRight, RotationMatrix));
 	Set_State(STATE_UP, XMVector3TransformNormal(vUp, RotationMatrix));
 	Set_State(STATE_LOOK, XMVector3TransformNormal(vLook, RotationMatrix));
+}
+
+void CTransform::Rotation(_fmatrix RotationMatrixX, _fmatrix RotationMatrixY, _fmatrix RotationMatrixZ)
+{
+	_float3 vScale = Get_Scaled();
+	_float3 vPos;
+	XMStoreFloat3(&vPos, Get_State(STATE_POSITION));
+
+	_matrix matScale = XMMatrixScaling(vScale.x, vScale.y, vScale.z);
+	_matrix matRot = RotationMatrixX * RotationMatrixY * RotationMatrixZ;
+	_matrix matPos = XMMatrixTranslation(vPos.x, vPos.y, vPos.z);
+
+	XMStoreFloat4x4(&m_WorldMatrix, matScale * matRot * matPos);
 }
 
 void CTransform::Turn(_fvector vAxis, _double TimeDelta)

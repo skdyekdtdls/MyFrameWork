@@ -38,6 +38,9 @@ public: /* For Input_Device*/
 
 public: /* For Level_Manager */
 	HRESULT Open_Level(_uint iLevelIndex, CLevel * pNewLevel);
+	const _uint& Get_CurLevelIndex();
+	const _uint& Get_NextLevelIndex();
+	void Set_NextLevelIndex(_uint iIndex);
 
 public: /* For Object_Manager*/
 	HRESULT Add_Prototype(const _tchar * pPrototypeTag, CGameObject * pPrototype);

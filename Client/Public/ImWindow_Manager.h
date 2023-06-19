@@ -4,7 +4,9 @@
 #include "Base.h"
 
 BEGIN(Client)
+
 class CImWindow;
+
 class CImWindow_Manager final : public CBase
 {
     DECLARE_SINGLETON(CImWindow_Manager);
@@ -15,7 +17,7 @@ private:
 
 public:
     CImWindow* Get_ImWindow(const _tchar* tag);
-
+    MODE    CurretMode();
 public:
     HRESULT Initialize(__inout ImGuiIO** pIO, ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
     void Tick();

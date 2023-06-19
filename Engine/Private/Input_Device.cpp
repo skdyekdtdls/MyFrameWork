@@ -15,6 +15,7 @@ CInput_Device::CInput_Device()
 
 HRESULT CInput_Device::Ready_DInput(HINSTANCE hInst, HWND hWnd)
 {
+	m_hWnd = hWnd;
 	// 何葛 哪按眉 积己
 	if (FAILED(DirectInput8Create(hInst, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&m_pInputSDK, nullptr)))
 		return E_FAIL;

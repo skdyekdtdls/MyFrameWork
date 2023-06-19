@@ -31,6 +31,9 @@ HRESULT CCamera_Free::Initialize(void* pArg)
 
 void CCamera_Free::Tick(_double TimeDelta)
 {
+	if (g_hWnd != ::GetFocus())
+		return;
+
 	if (GetAsyncKeyState('W') & 0x8000)
 	{
 		m_pTransform->Go_Straight(TimeDelta);

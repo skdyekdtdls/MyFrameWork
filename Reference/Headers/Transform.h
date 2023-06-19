@@ -37,6 +37,11 @@ public:
 		return XMLoadFloat4x4(&m_WorldMatrix).r[_eState];
 	}
 	_float3 Get_Scaled();
+	_float3 Get_AulerDegree();
+
+	_float4x4* Get_WorldFloat4x4Ptr() {
+		return &m_WorldMatrix;
+	}
 	_float4x4 Get_WorldFloat4x4() {
 		return m_WorldMatrix;
 	}
@@ -48,6 +53,11 @@ public:
 	void Set_Desc(const TRANSFORMDESC& TransformDesc) {
 		m_TransformDesc = TransformDesc;
 	}
+
+	void Set_WorldMatrix(_fmatrix matWorldMatrix) {
+		XMStoreFloat4x4(&m_WorldMatrix, matWorldMatrix);
+	}
+
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
@@ -59,6 +69,7 @@ public:
 	void Chase(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance = 0.1f);
 	void LookAt(_fvector vTargetPosition);
 	void Rotation(_fvector vAxis, _float fRadian);
+	void Rotation(_fmatrix RotationMatrixX, _fmatrix RotationMatrixY, _fmatrix RotationMatrixZ);
 	void Turn(_fvector vAxis, _double TimeDelta);
 
 	void Scaled(const _float3 & vScale);
