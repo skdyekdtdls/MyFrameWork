@@ -96,7 +96,7 @@ HRESULT CMonster::Add_Components()
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxAnimMesh", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_IMGUI, L"Prototype_Component_Model_Fiona", L"Com_Model", (CComponent**)&m_pModelCom), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_IMGUI, L"Prototype_Component_Model_NPC_Hispanic_Waiter_01", L"Com_Model", (CComponent**)&m_pModelCom), E_FAIL);
 
 
 	return S_OK;

@@ -79,6 +79,9 @@ HRESULT CModel::Render(_uint iMeshIndex)
 
 void CModel::Play_Animation(_double TimeDelta)
 {
+	if (TYPE_NONANIM == m_eAnimType)
+		return;
+
 	/* 어떤 애니메이션을 재생하려고하는지?! */
 	/* 이 애니메이션은 어떤 뼈를 사용하는지?! */
 	/* 뼈들은 각각 어떤 상태(TransformationMatrix)를 취하고 있어야하는가?! */

@@ -157,6 +157,10 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Cube::ProtoTag(),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext)), E_FAIL);
 
+	PivotMatrix = XMMatrixIdentity();/*XMMatrixRotationY(XMConvertToRadians(180.0f));*/
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Model_NPC_Hispanic_Waiter_01"),
+		CModel::Create(m_pDevice, m_pContext, TEXT("../../Resources/Models/NPC_Hispanic_Waiter_01/NPC_Hispanic_Waiter_01.dat"), PivotMatrix)), E_FAIL);
+
 	PivotMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Model_Fiona"),
 		CModel::Create(m_pDevice, m_pContext, TEXT("../../Resources/Models/Fiona/Fiona.dat"), PivotMatrix)), E_FAIL);
