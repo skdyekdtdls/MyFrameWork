@@ -3,7 +3,13 @@
 #include "Client_Defines.h"
 #include "Camera.h"
 
+BEGIN(Engine)
+class CRenderer;
+END
+
 BEGIN(Client)
+class CTerrain;
+
 class CEditCamera final : public CCamera
 {
 public:
@@ -29,8 +35,20 @@ private:
 	void Mouse_Input(_double TimeDelta);
 	void Key_Input(_double TimeDelta);
 
+	void Late_Mouse_Input(_double TimeDelta);
 private:
 	_uint	m_iData = { 0 };
+	RAY		m_tMouseRay;
+
+private:
+	CTerrain* m_pTerrain = { nullptr };
+	CRenderer* m_pRenderer = { nullptr };
+
+private:
+	void Object_Place(CGameInstance* pGameInstance);
+	void Edit_Navigation_Mesh(CGameInstance* pGameInstance);
+	void Edit_Transform(CGameInstance* pGameInstance);
+	void Make_MouseRay();
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_GameObject_Camera_Edit"; }

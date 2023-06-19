@@ -14,6 +14,11 @@ private:
 	virtual ~CRenderer() = default;
 
 public:
+	const list<CGameObject*>& Get_RenderObjects(_uint iIndex) {
+		return m_RenderObjects[iIndex];
+	}
+
+public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 	

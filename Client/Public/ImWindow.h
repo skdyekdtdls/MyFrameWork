@@ -3,7 +3,6 @@
 
 #include "Client_Defines.h"
 #include "Base.h"
-#include "ImWindow_Manager.h"
 
 BEGIN(Engine)
 class CGameInstance;
@@ -24,15 +23,14 @@ protected:
 
 public:
     _bool   m_IsShow;
-
+    _bool   m_bStart = { true };
 public:
     virtual HRESULT Initialize(void* pArg);
     virtual void Tick() = 0;
 
 protected:
     ImGuiIO* m_pIO = { nullptr };
-    CGameInstance* m_pGameInstance = { nullptr };
-    CImWindow_Manager* m_pImWindow_Manager = { nullptr };
+
 public:
     virtual void Free(void) override;
 };

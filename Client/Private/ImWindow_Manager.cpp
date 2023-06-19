@@ -2,6 +2,9 @@
 #include "..\Public\ImWindow_Manager.h"
 #include "ImWindow.h"
 #include "ImWindow_Demo.h"
+#include "ImMode.h"
+#include "ImWindow_Transform.h"
+
 IMPLEMENT_SINGLETON(CImWindow_Manager)
 
 CImWindow_Manager::CImWindow_Manager()
@@ -13,11 +16,20 @@ CImWindow* CImWindow_Manager::Get_ImWindow(const _tchar* tag)
     return Find_Window(tag);
 }
 
+MODE CImWindow_Manager::CurretMode()
+{
+    CImMode* pMode = static_cast<CImMode*>(Find_Window(L"CImMode"));
+    return pMode->m_eMode;
+}
+
 HRESULT CImWindow_Manager::Initialize(ImGuiIO** pIO, ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
     Initialize_Imgui(pIO, pDevice, pContext);
     
     Add_Window(L"CImWindow_Demo", CImWindow_Demo::Create(m_pIO));
+    Add_Window(L"CImMode", CImMode::Create(m_pIO));
+    Add_Window(L"CImWindow_Transform", CImWindow_Transform::Create(m_pIO));
+
     return S_OK;
 }
 

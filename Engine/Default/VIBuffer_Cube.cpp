@@ -85,7 +85,7 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype()
 	pIndices[33] = 6; pIndices[34] = 3; pIndices[35] = 7;
 
 	ZeroMemory(&m_SubResourceData, sizeof D3D11_SUBRESOURCE_DATA);
-	m_SubResourceData.pSysMem = pIndices;
+	m_SubResourceData.pSysMem = { pIndices };
 
 	if (FAILED(__super::Create_Buffer(&m_pIB)))
 		return E_FAIL;

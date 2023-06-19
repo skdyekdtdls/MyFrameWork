@@ -15,6 +15,9 @@ namespace Client
 	const unsigned int g_iWinSizeY = 720;
 
 	enum LEVELID { LEVEL_STATIC, LEVEL_IMGUI, LEVEL_LOGO, LEVEL_GAMEPLAY, LEVEL_LOADING, LEVEL_END};
+#ifdef _USE_IMGUI
+	enum MODE { OBJECT_PLACE_MODE, NAVIGATION_MESH_MODE, TRANSFORM_MODE, MODE_END };
+#endif
 }
 
 extern HINSTANCE g_hInst;

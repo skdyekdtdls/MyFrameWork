@@ -58,36 +58,16 @@ HRESULT CTerrain::Render()
 	m_pVIBufferCom->Render();
 }
 
-_bool CTerrain::Picked(PICK_DESC& tPickDesc)
+_bool CTerrain::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 {
-	POINT	ptMouse{};
-	GetCursorPos(&ptMouse);
-	ScreenToClient(g_hWnd, &ptMouse);
 	_bool bResult = { false };
-	D3D11_VIEWPORT ViewPort;
-	UINT iNumViewPorts = 1;
+	_vector vRayOrigin = XMLoadFloat4(&tMouseRay.vRayOrigin);
+	_vector vRayDir = XMLoadFloat4(&tMouseRay.vRayDir);
 
-	ZeroStruct(ViewPort);
-	m_pContext->RSGetViewports(&iNumViewPorts, &ViewPort);
-
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
-
-	_float4x4 projMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
-
-	_float vx = (2.f * ptMouse.x / ViewPort.Width - 1.0f) / projMatrix.m[0][0];
-	_float vy = (-2.f * ptMouse.y / ViewPort.Height + 1.0f) / projMatrix.m[1][1];
-
-	_vector vRayOrigin = XMVectorSet(0.f, 0.f, 0.f, 1.f);
-	_vector vRayDir = XMVectorSet(vx, vy, 1.f, 0.f);
-
-	_matrix invView = pGameInstance->Get_TransformMatrix_Inverse(CPipeLine::D3DTS_VIEW);
 	_matrix invWorld = m_pTransformCom->Get_WorldMatrix_Inverse();
 
-	_matrix toLocal = XMMatrixMultiply(invView, invWorld);
-
-	vRayOrigin = XMVector3TransformCoord(vRayOrigin, toLocal);
-	vRayDir = XMVector3TransformNormal(vRayDir, toLocal);
+	vRayOrigin = XMVector3TransformCoord(vRayOrigin, invWorld);
+	vRayDir = XMVector3TransformNormal(vRayDir, invWorld);
 
 	vRayDir = XMVector3Normalize(vRayDir);
 
@@ -105,21 +85,25 @@ _bool CTerrain::Picked(PICK_DESC& tPickDesc)
 		tPickDesc.fDist = fMinDist;
 		tPickDesc.vPickPos = vIntersection;
 	}
-
-	Safe_Release(pGameInstance);
+	
 	return bResult;
 }
 
 HRESULT CTerrain::Add_Components()
 {	
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom), E_FAIL);
 	CTransform::TRANSFORMDESC TransformDesc{7.0, XMConvertToRadians(90.f)};
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxNorTex", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_IMGUI, CVIBuffer_Terrain::ProtoTag(), L"Com_VIBuffer_Terrain", (CComponent**)&m_pVIBufferCom), E_FAIL);
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_IMGUI, L"Prototype_Component_Texture_Terrain", L"Com_Texture", (CComponent**)&m_pTextureCom), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), CVIBuffer_Terrain::ProtoTag(), L"Com_VIBuffer_Terrain", (CComponent**)&m_pVIBufferCom), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), L"Prototype_Component_Texture_Terrain", L"Com_Texture", (CComponent**)&m_pTextureCom), E_FAIL);
 
+	Safe_Release(pGameInstance);
 	return S_OK;
 }
 

@@ -6,7 +6,35 @@
 #include "MainApp.h"
 #include "Client_Defines.h"
 #include "GameInstance.h"
+
+
+
 #ifdef _DEBUG
+void SetConsoleWindowSize(int width, int height)
+{
+    // 콘솔 핸들 얻음
+    _tchar consoleTitle[MAX_PATH];
+    GetConsoleTitle(consoleTitle, MAX_PATH);
+    HWND console = FindWindow(NULL, consoleTitle);
+
+    // 콘솔 크기 조절
+    RECT ConsoleRect;
+    GetWindowRect(console, &ConsoleRect);
+    MoveWindow(console, ConsoleRect.left, ConsoleRect.top, width, height, TRUE);
+}
+
+void SetConsoleWindowPosition(int x, int y)
+{
+    // 콘솔 핸들 얻음
+    _tchar consoleTitle[MAX_PATH];
+    GetConsoleTitle(consoleTitle, MAX_PATH);
+    HWND console = FindWindow(NULL, consoleTitle);
+
+    // 콘솔 위치 조절
+    RECT ConsoleRect;
+    GetWindowRect(console, &ConsoleRect);
+    MoveWindow(console, x, y, ConsoleRect.right - ConsoleRect.left, ConsoleRect.bottom - ConsoleRect.top, TRUE);
+}
 
 #ifdef UNICODE
 #pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
@@ -38,7 +66,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
 #ifdef _DEBUG
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    int ConsoleCX = 500, ConsoleCY = 200;
+    // Set console size
+    SetConsoleWindowSize(ConsoleCX, ConsoleCY);
+    // Get the screen size
+    int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+    // Set console position
+    SetConsoleWindowPosition(0, screenHeight - ConsoleCY - 30);
 #endif
+
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
@@ -76,7 +112,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         MSG_BOX("Failed to Ready Timer_60fps");
            return FALSE;
     }
-
 
     _double dwAccelTime = 0.0;
 
@@ -171,8 +206,13 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    g_hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
+   int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+   int xPos = screenWidth - g_iWinSizeX; // g_iWinSizeX is the width of your window
+
    HWND hWnd = g_hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, g_iWinSizeX, g_iWinSizeY, nullptr, nullptr, hInstance, nullptr);
+       xPos, 0, g_iWinSizeX, g_iWinSizeY, nullptr, nullptr, hInstance, nullptr);
+
+
 
    if (!hWnd)
    {
@@ -233,13 +273,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_KEYDOWN:
     {
+#ifdef _DEBUG
         switch (wParam)
         {
         case VK_ESCAPE:
-#ifdef _DEBUG
+        
+
             PostQuitMessage(0);
-#endif
+
         }
+#endif
     }
     case WM_PAINT:
         {

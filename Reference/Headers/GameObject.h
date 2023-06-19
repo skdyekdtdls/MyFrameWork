@@ -28,6 +28,8 @@ public:
 	virtual void Tick(_double TimeDelta);
 	virtual void Late_Tick(_double TimeDelta);
 
+	virtual _bool Picked(_Inout_ PICK_DESC& tPickDesc, const RAY& tMouseRay);
+
 public:
 	virtual CGameObject* Clone(void* pArg) override = 0;
 	virtual void Free() override;

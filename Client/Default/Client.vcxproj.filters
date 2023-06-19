@@ -43,38 +43,47 @@
     <Filter Include="02. GameObject\Terrain">
       <UniqueIdentifier>{f002b723-511b-4b3c-aa44-e8f6b37d7d74}</UniqueIdentifier>
     </Filter>
-    <Filter Include="98. Default\IMGUI">
-      <UniqueIdentifier>{8b86e764-1f25-4760-b652-1c6d5fc58765}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="98. Default\IMGUI\soruces">
-      <UniqueIdentifier>{46502292-4067-4030-a01d-ab28aa1a2917}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Levels\98. Imgui">
       <UniqueIdentifier>{5d901690-a3cb-4630-8cdd-08f930725d02}</UniqueIdentifier>
     </Filter>
-    <Filter Include="98. Default\IMGUI\00. Manager">
-      <UniqueIdentifier>{0bb8ec66-41a2-4669-b788-e0201ee5de31}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="98. Default\IMGUI\01. ImWindow">
-      <UniqueIdentifier>{3df48032-fa95-43b1-bad1-309be2acdab8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="98. Default\IMGUI\02. ImWindow_Demo">
-      <UniqueIdentifier>{9a6997b3-dc31-42aa-937e-1e07bf3bd6c2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="98. Default\IMGUI\imgui">
-      <UniqueIdentifier>{624ef5db-d6f4-4878-b346-e98003cfe17e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\Cube">
       <UniqueIdentifier>{3198cdde-d249-4ee9-93c5-d530941a16e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="98. Default\IMGUI\03. EditCamera">
-      <UniqueIdentifier>{eade0cab-4b16-472a-ab00-2f8994b484a6}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\Player">
       <UniqueIdentifier>{97037014-9efd-49a3-8612-7273ea3b7474}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\Monster">
       <UniqueIdentifier>{8e4eb307-a883-48ed-85a0-e80d476bfd64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. IMGUI">
+      <UniqueIdentifier>{8b86e764-1f25-4760-b652-1c6d5fc58765}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. IMGUI\soruces">
+      <UniqueIdentifier>{46502292-4067-4030-a01d-ab28aa1a2917}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. IMGUI\00. Manager">
+      <UniqueIdentifier>{0bb8ec66-41a2-4669-b788-e0201ee5de31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. IMGUI\01. ImWindow">
+      <UniqueIdentifier>{3df48032-fa95-43b1-bad1-309be2acdab8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. IMGUI\01. ImWindow\01. ImWindow_Demo">
+      <UniqueIdentifier>{9a6997b3-dc31-42aa-937e-1e07bf3bd6c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. IMGUI\02. EditCamera">
+      <UniqueIdentifier>{eade0cab-4b16-472a-ab00-2f8994b484a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. IMGUI\99. imgui">
+      <UniqueIdentifier>{624ef5db-d6f4-4878-b346-e98003cfe17e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. IMGUI\03. ImVertex">
+      <UniqueIdentifier>{675ca7ed-4838-4cb9-a47f-76e4ca3b4996}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. IMGUI\01. ImWindow\03. ImTransform">
+      <UniqueIdentifier>{7d682137-07bc-4bc1-ba90-d8d2b03136f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. IMGUI\01. ImWindow\02. ImMode">
+      <UniqueIdentifier>{ac93cbdd-3359-43d8-9728-079d56d1aba1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -118,43 +127,52 @@
       <Filter>02. GameObject\Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\IMGUI\imconfig.h">
-      <Filter>98. Default\IMGUI\imgui</Filter>
+      <Filter>97. IMGUI\99. imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\IMGUI\imgui.h">
-      <Filter>98. Default\IMGUI\imgui</Filter>
+      <Filter>97. IMGUI\99. imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\IMGUI\imgui_internal.h">
-      <Filter>98. Default\IMGUI\imgui</Filter>
+      <Filter>97. IMGUI\99. imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\IMGUI\backends\imgui_impl_dx11.h">
-      <Filter>98. Default\IMGUI\soruces</Filter>
+      <Filter>97. IMGUI\soruces</Filter>
     </ClInclude>
     <ClInclude Include="..\IMGUI\backends\imgui_impl_win32.h">
-      <Filter>98. Default\IMGUI\soruces</Filter>
+      <Filter>97. IMGUI\soruces</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level_Imgui.h">
       <Filter>01. Levels\98. Imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImWindow_Demo.h">
-      <Filter>98. Default\IMGUI\02. ImWindow_Demo</Filter>
+      <Filter>97. IMGUI\01. ImWindow\01. ImWindow_Demo</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImWindow.h">
-      <Filter>98. Default\IMGUI\01. ImWindow</Filter>
+      <Filter>97. IMGUI\01. ImWindow</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImWindow_Manager.h">
-      <Filter>98. Default\IMGUI\00. Manager</Filter>
+      <Filter>97. IMGUI\00. Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Cube.h">
       <Filter>02. GameObject\Cube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\EditCamera.h">
-      <Filter>98. Default\IMGUI\03. EditCamera</Filter>
+      <Filter>97. IMGUI\02. EditCamera</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Player.h">
       <Filter>02. GameObject\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Monster.h">
       <Filter>02. GameObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImMode.h">
+      <Filter>97. IMGUI\01. ImWindow\02. ImMode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImVertex.h">
+      <Filter>97. IMGUI\03. ImVertex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ImWindow_Transform.h">
+      <Filter>97. IMGUI\01. ImWindow\03. ImTransform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -194,52 +212,58 @@
       <Filter>02. GameObject\Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\IMGUI\imgui.cpp">
-      <Filter>98. Default\IMGUI\imgui</Filter>
+      <Filter>97. IMGUI\99. imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\IMGUI\imgui_demo.cpp">
-      <Filter>98. Default\IMGUI\imgui</Filter>
+      <Filter>97. IMGUI\99. imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\IMGUI\imgui_draw.cpp">
-      <Filter>98. Default\IMGUI\imgui</Filter>
+      <Filter>97. IMGUI\99. imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\IMGUI\imgui_tables.cpp">
-      <Filter>98. Default\IMGUI\imgui</Filter>
+      <Filter>97. IMGUI\99. imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\IMGUI\imgui_widgets.cpp">
-      <Filter>98. Default\IMGUI\imgui</Filter>
+      <Filter>97. IMGUI\99. imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\IMGUI\backends\imgui_impl_dx11.cpp">
-      <Filter>98. Default\IMGUI\soruces</Filter>
+      <Filter>97. IMGUI\soruces</Filter>
     </ClCompile>
     <ClCompile Include="..\IMGUI\backends\imgui_impl_win32.cpp">
-      <Filter>98. Default\IMGUI\soruces</Filter>
+      <Filter>97. IMGUI\soruces</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level_Imgui.cpp">
       <Filter>01. Levels\98. Imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImWindow_Demo.cpp">
-      <Filter>98. Default\IMGUI\02. ImWindow_Demo</Filter>
+      <Filter>97. IMGUI\01. ImWindow\01. ImWindow_Demo</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImWindow.cpp">
-      <Filter>98. Default\IMGUI\01. ImWindow</Filter>
+      <Filter>97. IMGUI\01. ImWindow</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImWindow_Manager.cpp">
-      <Filter>98. Default\IMGUI\00. Manager</Filter>
+      <Filter>97. IMGUI\00. Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Cube.cpp">
       <Filter>02. GameObject\Cube</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\UnityBuild.cpp">
-      <Filter>99. Headers</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\EditCamera.cpp">
-      <Filter>98. Default\IMGUI\03. EditCamera</Filter>
+      <Filter>97. IMGUI\02. EditCamera</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Player.cpp">
       <Filter>02. GameObject\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Monster.cpp">
       <Filter>02. GameObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImMode.cpp">
+      <Filter>97. IMGUI\01. ImWindow\02. ImMode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ImVertex.cpp">
+      <Filter>97. IMGUI\03. ImVertex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ImWindow_Transform.cpp">
+      <Filter>97. IMGUI\01. ImWindow\03. ImTransform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -266,12 +290,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\IMGUI\misc\debuggers\imgui.natstepfilter">
-      <Filter>98. Default\IMGUI\imgui</Filter>
+      <Filter>97. IMGUI\99. imgui</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="..\IMGUI\misc\debuggers\imgui.natvis">
-      <Filter>98. Default\IMGUI\imgui</Filter>
+      <Filter>97. IMGUI\99. imgui</Filter>
     </Natvis>
   </ItemGroup>
 </Project>

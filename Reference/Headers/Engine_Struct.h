@@ -6,6 +6,7 @@ namespace Engine
 	{
 		XMFLOAT3 vPickPos;
 		float	 fDist;
+		class CGameObject* pPickedObject = { nullptr };
 	}PICK_DESC;
 
 	typedef struct tagGraphicDesc
@@ -30,6 +31,12 @@ namespace Engine
 		XMFLOAT3	vTranslation;
 		double		Time;
 	}KEYFRAME;
+
+	typedef struct tagRay
+	{
+		_float4 vRayOrigin;
+		_float4 vRayDir;
+	}RAY;
 
 	typedef struct tagVertex_Anim_Mesh
 	{

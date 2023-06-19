@@ -60,6 +60,16 @@ HRESULT CComposite::Add_Component(_uint iLevelIndex, const _tchar* pPrototypeTag
 	return S_OK;
 }
 
+CComponent* CComposite::Get_Component(const _tchar* pComponent)
+{
+	auto iter = find_if(m_Components.begin(), m_Components.end(), CTag_Finder(pComponent));
+
+	if (iter == m_Components.end())
+		return nullptr;
+
+	return iter->second;
+}
+
 void CComposite::Free()
 {
 	__super::Free();

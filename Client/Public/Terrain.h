@@ -29,7 +29,7 @@ public:
 	virtual HRESULT Render() override;
 
 public:
-	_bool Picked(_Inout_ PICK_DESC& tPickDesc);
+	virtual _bool Picked(_Inout_ PICK_DESC& tPickDesc, const RAY& tRay) override;
 
 private:
 	CShader* m_pShaderCom = { nullptr };

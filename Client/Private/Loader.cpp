@@ -49,7 +49,7 @@ HRESULT CLoader::Loading()
 	HRESULT hr = { 0 };
 
 	EnterCriticalSection(&m_Critical_Section);
-
+	m_pGameInstance->Set_NextLevelIndex(m_eNextLevel);
 	switch (m_eNextLevel)
 	{
 	case Client::LEVEL_LOGO:
@@ -81,7 +81,7 @@ HRESULT CLoader::Loading_For_Logo()
 
 	Set_LoadingText(L"텍스처 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Logo"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2)), E_FAIL);
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Default%d.jpg"), 2)), E_FAIL);
 
 	Set_LoadingText(L"모델 로딩 중");
 
@@ -158,7 +158,10 @@ HRESULT CLoader::Loading_For_IMGUI()
 
 	Set_LoadingText(L"객체 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CTerrain::ProtoTag(), CTerrain::Create(m_pDevice, m_pContext)), E_FAIL);
+#ifdef _DEBUG
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CEditCamera::ProtoTag(), CEditCamera::Create(m_pDevice, m_pContext)), E_FAIL);
+#endif // DEBUG
+
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CCube::ProtoTag(), CCube::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CPlayer::ProtoTag(), CPlayer::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CMonster::ProtoTag(), CMonster::Create(m_pDevice, m_pContext)), E_FAIL);
