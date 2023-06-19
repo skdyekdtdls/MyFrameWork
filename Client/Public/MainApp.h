@@ -23,7 +23,7 @@ public:
 	HRESULT Open_Level(LEVELID eLevelIndex);
 
 	HRESULT Ready_Prototype_Component_For_Static();
-
+	HRESULT Ready_Gara();
 private: /* For Prototype */
 	CRenderer* m_pRenderer = { nullptr };
 

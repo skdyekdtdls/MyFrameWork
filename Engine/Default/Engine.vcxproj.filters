@@ -100,6 +100,15 @@
     <ClCompile Include="..\private\Animation.cpp">
       <Filter>01. Utility\03. Components\Model\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Cell.cpp">
+      <Filter>01. Utility\03. Components\VIBuffer\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Navigation.cpp">
+      <Filter>01. Utility\03. Components\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Cell.cpp">
+      <Filter>01. Utility\03. Components\Navigation\Cell</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Graphic_Device.h">
@@ -216,6 +225,15 @@
     <ClInclude Include="..\public\Animation.h">
       <Filter>01. Utility\03. Components\Model\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Cell.h">
+      <Filter>01. Utility\03. Components\VIBuffer\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Navigation.h">
+      <Filter>01. Utility\03. Components\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Cell.h">
+      <Filter>01. Utility\03. Components\Navigation\Cell</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -326,5 +344,19 @@
     <Filter Include="01. Utility\03. Components\Model\Animation\Channel">
       <UniqueIdentifier>{8db63411-f692-46d3-bd98-50d7298447fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Utility\03. Components\Navigation">
+      <UniqueIdentifier>{fe35c284-8ab7-40e4-82d6-6b5a214db939}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\VIBuffer\Navigation">
+      <UniqueIdentifier>{f0a49dc5-28b8-4b27-9aa4-2ea3d028fab1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\Navigation\Cell">
+      <UniqueIdentifier>{bb535f83-f346-44f2-815a-3aaf2cf68dc0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Navigation.hlsl">
+      <Filter>01. Utility\03. Components\Navigation</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

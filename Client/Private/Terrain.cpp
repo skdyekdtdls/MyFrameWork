@@ -53,9 +53,12 @@ HRESULT CTerrain::Render()
 	if (FAILED(SetUp_ShaderResources()))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(2);
+	m_pShaderCom->Begin(1);
 
 	m_pVIBufferCom->Render();
+#ifdef _DEBUG
+	m_pNavigationCom->Render_Navigation();
+#endif
 }
 
 _bool CTerrain::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
@@ -101,7 +104,12 @@ HRESULT CTerrain::Add_Components()
 		, &TransformDesc), E_FAIL);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxNorTex", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
 	FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), CVIBuffer_Terrain::ProtoTag(), L"Com_VIBuffer_Terrain", (CComponent**)&m_pVIBufferCom), E_FAIL);
-	FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), L"Prototype_Component_Texture_Terrain", L"Com_Texture", (CComponent**)&m_pTextureCom), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), L"Prototype_Component_Texture_Terrain", L"Com_Texture", (CComponent**)&m_pTextureCom[TYPE_DIFFUSE]), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), L"Prototype_Component_Texture_Terrain_Mask", L"Com_Texture_Mask", (CComponent**)&m_pTextureCom[TYPE_MASK]), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), L"Prototype_Component_Texture_Terrain_Brush", L"Com_Texture_Brush", (CComponent**)&m_pTextureCom[TYPE_BRUSH]), E_FAIL);
+
+	FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), CNavigation::ProtoTag(), L"Com_Navigation", (CComponent**)&m_pNavigationCom), E_FAIL);
+
 
 	Safe_Release(pGameInstance);
 	return S_OK;
@@ -110,30 +118,29 @@ HRESULT CTerrain::Add_Components()
 HRESULT CTerrain::SetUp_ShaderResources()
 {
 	_float4x4 tmp = m_pTransformCom->Get_WorldFloat4x4();
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &tmp)))
-		return E_FAIL;
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &tmp), E_FAIL);
 
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
 	tmp = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix",
-		&tmp)))
-		return E_FAIL;
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &tmp), E_FAIL);
+
 
 	tmp = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix",
-		&tmp)))
-		return E_FAIL;
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &tmp), E_FAIL);
+
 
 	_float4 tmp2 = pGameInstance->Get_CamPosition();
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCamPosition",
-		&tmp2, sizeof(_float4))))
-		return E_FAIL;
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", &tmp2, sizeof(_float4)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pTextureCom[TYPE_DIFFUSE]->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture"), E_FAIL);
+	FAILED_CHECK_RETURN(m_pTextureCom[TYPE_MASK]->Bind_ShaderResources(m_pShaderCom, "g_MaskTexture"), E_FAIL);
+	FAILED_CHECK_RETURN(m_pTextureCom[TYPE_BRUSH]->Bind_ShaderResources(m_pShaderCom, "g_BrushTexture"), E_FAIL);
 
 	Safe_Release(pGameInstance);
 
-	if (FAILED(m_pTextureCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture")))
+	if (FAILED(m_pTextureCom[TYPE_DIFFUSE]->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture")))
 		return E_FAIL;
 
 	return S_OK;
@@ -167,7 +174,11 @@ void CTerrain::Free(void)
 {
 	__super::Free();
 
-	Safe_Release(m_pTextureCom);
+	Safe_Release(m_pNavigationCom);
+
+	for (size_t i = 0; i < TYPE_END; i++)
+		Safe_Release(m_pTextureCom[i]);
+
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pVIBufferCom);
