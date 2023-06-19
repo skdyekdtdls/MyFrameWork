@@ -40,6 +40,8 @@ HRESULT CMainApp::Initialize()
 	if(FAILED(Open_Level(LEVEL_LOGO)))
 		return E_FAIL;
 #endif
+	if (FAILED(Ready_Gara()))
+		return E_FAIL;
 	return S_OK;
 }
 
@@ -113,6 +115,45 @@ HRESULT CMainApp::Ready_Prototype_Component_For_Static()
 		CTransform::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	Safe_AddRef(m_pRenderer);
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Gara()
+{
+	if (nullptr == m_pDevice)
+		return E_FAIL;
+
+	_float3		vPoints[3];
+
+	_ulong		dwByte = { 0 };
+	HANDLE		hFile = { 0 };
+
+	hFile = CreateFile(TEXT("../Bin/Data/Navigation.dat"), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	if (0 == hFile)
+		return E_FAIL;
+
+	vPoints[0] = _float3(0.0f, 0.f, 5.f);
+	vPoints[1] = _float3(5.f, 0.f, 0.f);
+	vPoints[2] = _float3(0.f, 0.f, 0.f);
+	WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
+
+	vPoints[0] = _float3(0.0f, 0.f, 5.f);
+	vPoints[1] = _float3(5.f, 0.f, 5.f);
+	vPoints[2] = _float3(5.f, 0.f, 0.f);
+	WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
+
+	vPoints[0] = _float3(0.0f, 0.f, 10.0f);
+	vPoints[1] = _float3(5.f, 0.f, 5.f);
+	vPoints[2] = _float3(0.f, 0.f, 5.f);
+	WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
+
+	vPoints[0] = _float3(5.f, 0.f, 5.f);
+	vPoints[1] = _float3(10.f, 0.f, 0.f);
+	vPoints[2] = _float3(5.f, 0.f, 0.f);
+	WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
+
+	CloseHandle(hFile);
 
 	return S_OK;
 }

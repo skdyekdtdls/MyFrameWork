@@ -38,6 +38,17 @@ namespace Engine
 		_float4 vRayDir;
 	}RAY;
 
+	typedef struct tagVertex_Postion
+	{
+		_float3 vPosition;
+	}VTXPOS;
+
+	typedef struct ENGINE_DLL tagVertex_Position_Decl
+	{
+		static const unsigned int iNumElements = { 1 };
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iNumElements];
+	}VTXPOS_DECL;
+
 	typedef struct tagVertex_Anim_Mesh
 	{
 		XMFLOAT3	vPosition;
