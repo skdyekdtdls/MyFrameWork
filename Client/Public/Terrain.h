@@ -2,6 +2,7 @@
 
 #include "Client_Defines.h"
 #include "GameObject.h"
+#include "ISerializable.h"
 
 BEGIN(Engine)
 
@@ -14,7 +15,7 @@ class CNevigation;
 END
 
 BEGIN(Client)
-class CTerrain final : public CGameObject
+class CTerrain final : public CGameObject, public ISerializable
 {
 public:
 	enum TEXTURETYPE { TYPE_DIFFUSE, TYPE_MASK, TYPE_BRUSH, TYPE_END };
@@ -22,7 +23,16 @@ public:
 private:
 	CTerrain(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CTerrain(const CTerrain& rhs);
+	CTerrain& operator=(const CTerrain& rhs) = delete;
 	virtual ~CTerrain() = default;
+
+public:
+	// ISerializable을(를) 통해 상속됨
+	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
+	virtual void Load(HANDLE hFile, DWORD& dwByte) override;
+
+public:
+	_uint GetCellSize();
 
 public:
 	HRESULT Initialize_Prototype();
@@ -30,10 +40,12 @@ public:
 	virtual void Tick(_double TimeDelta) override;
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
-
+	void AddCell(const _float3* vPoints);
+	
+#ifdef _USE_IMGUI
 public:
 	virtual _bool Picked(_Inout_ PICK_DESC& tPickDesc, const RAY& tRay) override;
-
+#endif _USE_IMGUI
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom[TYPE_END] = { nullptr };

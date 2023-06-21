@@ -1,13 +1,13 @@
 #pragma once
 
 #include "Component.h"
-
+#include "ISerializable.h"
 /* 객체의 월드 변환 상태를 가진다.(월드행렬을 보관한다.) */
 /* 월드에서의 변환 기능을 가진다.(Go_Straight(), Go_Backword(), Turn() )*/
 
 BEGIN(Engine)
 
-class ENGINE_DLL CTransform final : public CComponent
+class ENGINE_DLL CTransform final : public CComponent, public ISerializable
 {
 public:
 	enum STATE { STATE_RIGHT, STATE_UP, STATE_LOOK, STATE_POSITION, STATE_END };
@@ -26,11 +26,15 @@ public:
 		_double		RotationPerSec = { 0.0 };
 	}TRANSFORMDESC;
 
-
 private:
 	CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CTransform(const CTransform& rhs);
+	CTransform& operator=(const CTransform& other) = delete;
 	virtual ~CTransform() = default;
+
+public:
+	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
+	virtual void Load(HANDLE hFile, DWORD& dwByte) override;
 
 public:
 	_vector Get_State(STATE _eState) {
@@ -61,6 +65,7 @@ public:
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
+
 public:
 	void Go_Straight(_double TimeDelta, class CNavigation* pNavigation = nullptr);
 	void Go_Backward(_double TimeDelta);
@@ -71,9 +76,7 @@ public:
 	void Rotation(_fvector vAxis, _float fRadian);
 	void Rotation(_fmatrix RotationMatrixX, _fmatrix RotationMatrixY, _fmatrix RotationMatrixZ);
 	void Turn(_fvector vAxis, _double TimeDelta);
-
 	void Scaled(const _float3 & vScale);
-
 
 private:
 	TRANSFORMDESC			m_TransformDesc;

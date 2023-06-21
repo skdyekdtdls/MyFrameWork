@@ -4,7 +4,6 @@
 #include "Light_Manager.h"
 #include "PipeLine.h"
 #include "Input_Device.h"
-
 BEGIN(Engine)
 class CGraphic_Device;
 class CInput_Device;

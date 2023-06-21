@@ -2,6 +2,7 @@
 #include "ImWindow_Navigation.h"
 #include "ImWindow_Manager.h"
 #include "ImWindow_Demo.h"
+#include "Terrain.h"
 CImWindow_Navigation::CImWindow_Navigation(ImGuiIO* pIO)
 	: CImWindow(pIO)
 {
@@ -12,6 +13,7 @@ HRESULT CImWindow_Navigation::Initialize(void* pArg)
 {
 	if (__super::Initialize(pArg))
 		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -37,16 +39,36 @@ void CImWindow_Navigation::Tick()
 
 	
 	//ImGui::ListBox("Navigation Index", &item_current, VectorGetter, static_cast<void*>(&items),items.size(), 4);
-		ImGui::ListBox("listbox\n(single select)",
-			&item_current,
-			VectorGetter,
-			static_cast<void*>(&items),
-			items.size(),
-			8);
+	ImGui::ListBox("listbox\n(single select)",
+		&item_current,
+		VectorGetter,
+		static_cast<void*>(&items),
+		items.size(),
+		8);
+
+	if (ImGui::Button("Save_Terrain"))
+	{
+		int a = 0;
+	}
 
 	ImGui::End();
 
 	Safe_Release(pImManagerInstance);
+}
+
+void CImWindow_Navigation::Set_Terrain(CTerrain* pTerrain)
+{
+	m_pCurTerrain = pTerrain;
+	items.clear();
+	for (_uint i = 0; i < m_pCurTerrain->GetCellSize(); ++i)
+	{
+		AddItems(to_string(i).c_str());
+	}
+}
+
+void CImWindow_Navigation::AddItems(const char* strItem)
+{
+	items.push_back(strItem);
 }
 
 bool CImWindow_Navigation::VectorGetter(void* data, int idx, const char** out_str)
@@ -73,5 +95,7 @@ CImWindow_Navigation* CImWindow_Navigation::Create(ImGuiIO* pIO)
 void CImWindow_Navigation::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pCurTerrain);
 }
 #endif

@@ -14,6 +14,16 @@ CTransform::CTransform(const CTransform& rhs)
 {
 }
 
+void CTransform::Save(HANDLE hFile, DWORD& dwByte)
+{
+	WriteVoid(&m_WorldMatrix, sizeof(m_WorldMatrix));
+}
+
+void CTransform::Load(HANDLE hFile, DWORD& dwByte)
+{
+	ReadVoid(&m_WorldMatrix, sizeof(m_WorldMatrix));
+}
+
 _float3 CTransform::Get_Scaled()
 {
 	return _float3(XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&m_WorldMatrix).r[STATE_RIGHT])),

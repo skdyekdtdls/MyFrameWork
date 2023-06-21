@@ -76,7 +76,6 @@ HRESULT CLevel_Imgui::Ready_Layer_BackGround(const _tchar* pLayerTag)
 
 	FAILED_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CTerrain::ProtoTag(), pLayerTag), E_FAIL);
 	//FAILED_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CPlayer::ProtoTag(), pLayerTag), E_FAIL);
-		
 
 	Safe_Release(pGameInstance);
 

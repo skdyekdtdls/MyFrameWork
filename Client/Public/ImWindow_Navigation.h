@@ -3,6 +3,7 @@
 #include "ImWindow.h"
 
 BEGIN(Client)
+class CTerrain;
 class CImWindow_Navigation final : public CImWindow
 {
 public:
@@ -15,16 +16,19 @@ public:
     virtual HRESULT Initialize(void* pArg = nullptr);
     virtual void Tick();
 
+    void Set_Terrain(CTerrain* pTerrain);
+    void AddItems(const char* strItem);
+
 public:
     MODE m_eMode = { MODE_END };
 
 private:
+    CTerrain* m_pCurTerrain = { nullptr };
     int item_current = 0;
-    vector<std::string> items{ "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+    vector<std::string> items;
 
 private:
     static bool VectorGetter(void* data, int idx, const char** out_str);
-
 
 public:
     static  CImWindow_Navigation* Create(ImGuiIO* pIO);

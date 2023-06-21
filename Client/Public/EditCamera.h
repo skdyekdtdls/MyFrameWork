@@ -60,6 +60,8 @@ private: /* For. Navigation Mdoe */
 	_uint m_iClickCount = { 0 };
 	_float3 m_vClickPoint[CCell::POINT_END];
 
+	void Set_Terrain(class CTerrain* pTerrain);
+
 	void CreateTriangleStrip(CGameInstance* pGameInstance);
 	//void SelectPoint(CGameInstance* pGameInstance);
 	//void SelectCellCGameInstance* pGameInstance();

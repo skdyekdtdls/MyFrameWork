@@ -31,7 +31,7 @@ HRESULT CEditCamera::Initialize(void* pArg)
 	FAILED_CHECK_RETURN(__super::Initialize(&CameraFreeDesc.CameraDesc), E_FAIL);
 
 	m_iData = CameraFreeDesc.iData;
-	m_pTerrain = static_cast<CTerrain*>(CGameInstance::GetInstance()->Get_GameObject(LEVEL_IMGUI, L"Layer_BackGround", "CTerrain"));
+	Set_Terrain(static_cast<CTerrain*>(CGameInstance::GetInstance()->Get_GameObject(LEVEL_IMGUI, L"Layer_BackGround", "CTerrain")));
 	
 	Add_Components();
 
@@ -63,7 +63,6 @@ void CEditCamera::Late_Tick(_double TimeDelta)
 
 HRESULT CEditCamera::Render()
 {
-	/*Render_Cells();*/
 
 	return S_OK;
 }
@@ -219,11 +218,7 @@ void CEditCamera::CreateTriangleStrip(CGameInstance* pGameInstance)
 			{
 				m_vClickPoint[m_iClickCount] = tPickDesc.vPickPos;
 				m_iClickCount = 0;
-
-				
-				//CCell* pCell = CCell::Create(m_pDevice, m_pContext, m_vClickPoint, m_Cells.size());
-				//if (nullptr != pCell)
-				//	m_Cells.push_back(pCell);
+				m_pTerrain->AddCell(m_vClickPoint);			
 			}
 			else
 			{
@@ -267,34 +262,18 @@ void CEditCamera::Make_MouseRay()
 	Safe_Release(pGameInstance);
 }
 
-//void CEditCamera::Render_Cells()
-//{
-//	NULL_CHECK(m_pShaderCom);
-//
-//	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-//	Safe_AddRef(pGameInstance);
-//
-//	_float4x4	WorldMatrix, Matrix;
-//	XMStoreFloat4x4(&WorldMatrix, XMMatrixIdentity());
-//
-//	FAILED_CHECK(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &WorldMatrix));
-//
-//	Matrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
-//	FAILED_CHECK(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &Matrix));
-//
-//	Matrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
-//	FAILED_CHECK(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &Matrix));
-//
-//	_float4 vColor = _float4(0.f, 1.f, 0.f, 1.f);
-//	FAILED_CHECK(m_pShaderCom->Bind_RawValue("g_vColor", &vColor, sizeof(_float4)));
-//
-//	FAILED_CHECK(m_pShaderCom->Begin(0));
-//
-//	for (auto& pCell : m_Cells)
-//		pCell->Render();
-//
-//	Safe_Release(pGameInstance);
-//}
+void CEditCamera::Set_Terrain(CTerrain* pTerrain)
+{
+	m_pTerrain = pTerrain;
+
+	CImWindow_Manager* pWindowMgr = CImWindow_Manager::GetInstance();
+	Safe_AddRef(pWindowMgr);
+	CImWindow_Navigation* pImWindow_Transform = pWindowMgr->Get_ImWindow<CImWindow_Navigation>();
+
+	pImWindow_Transform->Set_Terrain(m_pTerrain);
+
+	Safe_Release(pWindowMgr);
+}
 
 CEditCamera* CEditCamera::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
@@ -323,9 +302,6 @@ CGameObject* CEditCamera::Clone(void* pArg)
 void CEditCamera::Free(void)
 {
 	__super::Free();
-
-	//for(auto& pCell : m_Cells)
-	//	Safe_Release(pCell);
 
 	Safe_Release(m_pTerrain);
 	Safe_Release(m_pRendererCom);
