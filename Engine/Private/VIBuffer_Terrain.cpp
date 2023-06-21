@@ -14,7 +14,7 @@ CVIBuffer_Terrain::CVIBuffer_Terrain(const CVIBuffer_Terrain& rhs)
 	
 }
 
-HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap)
+HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap) // 지금 여기서 추가하고있잖아. 그냥 함수하나파서
 {
 	_ulong			dwByte = { 0 };
 	HANDLE			hFile = CreateFile(pHeightMap, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);

@@ -12,9 +12,11 @@ CCell::CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	Safe_AddRef(m_pContext);
 }
 
-
 HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex)
 {
+	memcpy(m_vPoints, pPoints, sizeof(_float3) * POINT_END);
+	m_iIndex = iIndex;
+
 #ifdef _DEBUG
 	m_pVIBuffer = CVIBuffer_Cell::Create(m_pDevice, m_pContext, pPoints);
 	if (nullptr == m_pVIBuffer)
@@ -28,8 +30,7 @@ HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex)
 
 HRESULT CCell::Render()
 {
-	if (nullptr == m_pVIBuffer)
-		return E_FAIL;
+	NULL_CHECK_RETURN(m_pVIBuffer, E_FAIL);
 
 	m_pVIBuffer->Render();
 

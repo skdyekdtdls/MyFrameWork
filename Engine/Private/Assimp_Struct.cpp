@@ -635,6 +635,7 @@ bool MATERIAL::Deserialization(HANDLE hFile, DWORD& dwByte)
 {
 	if (false == ReadEnable())
 		return false;
+
 	for (size_t i = 0; i < TextureType_TRANSMISSION; ++i)
 	{
 		m_TexturePath[i] = nullptr;

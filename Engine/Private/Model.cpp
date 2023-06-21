@@ -18,6 +18,7 @@ CModel::CModel(const CModel& rhs)
 	, m_Materials(rhs.m_Materials)
 	, m_iNumAnimations(rhs.m_iNumAnimations)
 	, m_PivotMatrix(rhs.m_PivotMatrix)
+	, m_eAnimType(rhs.m_eAnimType)
 {
 	/* 애니메이션의 경우, 각 복제된 객체들마다 사용하는 시간과 키프레임들의 현재 인덱스를
 	구분하여 사용해야할 필요가 있기때문에 깊은 복사. */
@@ -43,15 +44,7 @@ CModel::CModel(const CModel& rhs)
 
 HRESULT CModel::Initialize_Prototype(const _tchar* pModelFilePath, _fmatrix PivotMatrix)
 {
-	_uint		iFlag = 0;
-
-
 	XMStoreFloat4x4(&m_PivotMatrix, PivotMatrix);
-	TYPE eType = TYPE_ANIM;
-	if (TYPE_NONANIM == eType)
-		iFlag = aiProcess_PreTransformVertices | aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
-	else
-		iFlag = aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
 
 	SCENE tScene;
 
@@ -153,6 +146,7 @@ HRESULT CModel::LoadModel(const _tchar* pModelFilePath, SCENE& tScene)
 	//SCENE Scene;
 
 	ReadVoid(&m_eAnimType, sizeof(m_eAnimType));
+	
 	tScene.Deserialization(hFile, dwByte);
 	
 	CloseHandle(hFile);

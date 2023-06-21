@@ -5,6 +5,7 @@
 #include "Cube.h"
 #include "ImWindow_Manager.h"
 #include "ImWindow_Transform.h"
+#include "ImWindow_Navigation.h"
 
 CEditCamera::CEditCamera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
@@ -30,8 +31,9 @@ HRESULT CEditCamera::Initialize(void* pArg)
 	FAILED_CHECK_RETURN(__super::Initialize(&CameraFreeDesc.CameraDesc), E_FAIL);
 
 	m_iData = CameraFreeDesc.iData;
-	m_pTerrain = static_cast<CTerrain*>(CGameInstance::GetInstance()->Get_GameObject(LEVEL_IMGUI, L"Layer_BackGround", "Terrain"));
-	m_pRenderer = static_cast<CRenderer*>(m_pTerrain->Get_Component(L"Com_Renderer"));
+	m_pTerrain = static_cast<CTerrain*>(CGameInstance::GetInstance()->Get_GameObject(LEVEL_IMGUI, L"Layer_BackGround", "CTerrain"));
+	
+	Add_Components();
 
 	return S_OK;
 }
@@ -45,7 +47,7 @@ void CEditCamera::Tick(_double TimeDelta)
 
 	Key_Input(TimeDelta);
 	Mouse_Input(TimeDelta);
-
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 	__super::Tick(TimeDelta);
 }
 
@@ -61,6 +63,8 @@ void CEditCamera::Late_Tick(_double TimeDelta)
 
 HRESULT CEditCamera::Render()
 {
+	/*Render_Cells();*/
+
 	return S_OK;
 }
 
@@ -136,6 +140,11 @@ void CEditCamera::Late_Mouse_Input(_double TimeDelta)
 	Safe_Release(pGameInstance);
 }
 
+HRESULT CEditCamera::Add_Components()
+{
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom), E_FAIL);
+}
+
 void CEditCamera::Object_Place(CGameInstance* pGameInstance)
 {
 	if (pGameInstance->Get_DIMouseState(CInput_Device::DIMK_LBUTTON))
@@ -152,7 +161,23 @@ void CEditCamera::Object_Place(CGameInstance* pGameInstance)
 
 void CEditCamera::Edit_Navigation_Mesh(CGameInstance* pGameInstance)
 {
+	CImWindow_Manager* pWindowMgr= CImWindow_Manager::GetInstance();
+	Safe_AddRef(pWindowMgr);
 
+	 CImWindow_Navigation* pImWindow_Transform = pWindowMgr->Get_ImWindow<CImWindow_Navigation>();
+
+	 switch (pImWindow_Transform->m_eMode)
+	 {
+	 case CImWindow_Navigation::CREATE_MODE:
+		 CreateTriangleStrip(pGameInstance);
+		 break;
+	 case CImWindow_Navigation::SELECT_POINT_MODE:
+		 break;
+	 case CImWindow_Navigation::SELECT_CELL_MODE:
+		 break;
+	 }
+
+	Safe_Release(pWindowMgr);
 }
 
 void CEditCamera::Edit_Transform(CGameInstance* pGameInstance)
@@ -164,7 +189,7 @@ void CEditCamera::Edit_Transform(CGameInstance* pGameInstance)
 		_bool bResult = { false };
 		for (_uint i = 0; i < CRenderer::RENDER_END; ++i)
 		{
-			for (auto& iter : m_pRenderer->Get_RenderObjects(i))
+			for (auto& iter : m_pRendererCom->Get_RenderObjects(i))
 			{
 				if (iter->Picked(tPickDesc, m_tMouseRay))
 				{
@@ -177,6 +202,33 @@ void CEditCamera::Edit_Transform(CGameInstance* pGameInstance)
 		{
 			CImWindow_Transform* pImWindow_Transform = static_cast<CImWindow_Transform*>(CImWindow_Manager::GetInstance()->Get_ImWindow(L"CImWindow_Transform"));
 			pImWindow_Transform->Set_GameObject(tPickDesc.pPickedObject);
+		}
+	}
+}
+
+void CEditCamera::CreateTriangleStrip(CGameInstance* pGameInstance)
+{
+	if (pGameInstance->Mouse_Down(CInput_Device::DIMK_LBUTTON))
+	{
+		PICK_DESC tPickDesc;
+		ZeroStruct(tPickDesc);
+
+		if (m_pTerrain->Picked(tPickDesc, m_tMouseRay))
+		{
+			if (m_iClickCount == 2)
+			{
+				m_vClickPoint[m_iClickCount] = tPickDesc.vPickPos;
+				m_iClickCount = 0;
+
+				
+				//CCell* pCell = CCell::Create(m_pDevice, m_pContext, m_vClickPoint, m_Cells.size());
+				//if (nullptr != pCell)
+				//	m_Cells.push_back(pCell);
+			}
+			else
+			{
+				m_vClickPoint[m_iClickCount++] = tPickDesc.vPickPos;
+			}
 		}
 	}
 }
@@ -215,6 +267,35 @@ void CEditCamera::Make_MouseRay()
 	Safe_Release(pGameInstance);
 }
 
+//void CEditCamera::Render_Cells()
+//{
+//	NULL_CHECK(m_pShaderCom);
+//
+//	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+//	Safe_AddRef(pGameInstance);
+//
+//	_float4x4	WorldMatrix, Matrix;
+//	XMStoreFloat4x4(&WorldMatrix, XMMatrixIdentity());
+//
+//	FAILED_CHECK(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &WorldMatrix));
+//
+//	Matrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
+//	FAILED_CHECK(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &Matrix));
+//
+//	Matrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
+//	FAILED_CHECK(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &Matrix));
+//
+//	_float4 vColor = _float4(0.f, 1.f, 0.f, 1.f);
+//	FAILED_CHECK(m_pShaderCom->Bind_RawValue("g_vColor", &vColor, sizeof(_float4)));
+//
+//	FAILED_CHECK(m_pShaderCom->Begin(0));
+//
+//	for (auto& pCell : m_Cells)
+//		pCell->Render();
+//
+//	Safe_Release(pGameInstance);
+//}
+
 CEditCamera* CEditCamera::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CEditCamera* pInstance = new CEditCamera(pDevice, pContext);
@@ -243,7 +324,10 @@ void CEditCamera::Free(void)
 {
 	__super::Free();
 
+	//for(auto& pCell : m_Cells)
+	//	Safe_Release(pCell);
+
 	Safe_Release(m_pTerrain);
-	Safe_Release(m_pRenderer);
+	Safe_Release(m_pRendererCom);
 }
 #endif

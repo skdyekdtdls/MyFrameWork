@@ -113,7 +113,7 @@ HRESULT CLevel_Imgui::Ready_Layer_Monster(const _tchar* pLayerTag)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	for (size_t i = 0; i < 20; i++)
+	for (size_t i = 0; i < 1; i++)
 	{
 		FAILED_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CMonster::ProtoTag(), pLayerTag), E_FAIL);
 	}

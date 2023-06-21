@@ -13,7 +13,7 @@ CTerrain::CTerrain(const CTerrain& rhs)
 HRESULT CTerrain::Initialize_Prototype()
 {
 	FAILED_CHECK_RETURN(__super::Initialize_Prototype(), E_FAIL);
-	m_strName = "Terrain";
+	m_strName = "CTerrain";
 	return S_OK;
 }
 
@@ -59,6 +59,8 @@ HRESULT CTerrain::Render()
 #ifdef _DEBUG
 	m_pNavigationCom->Render_Navigation();
 #endif
+
+	return S_OK;
 }
 
 _bool CTerrain::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)

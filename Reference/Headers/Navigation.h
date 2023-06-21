@@ -6,6 +6,15 @@ BEGIN(Engine)
 class ENGINE_DLL CNavigation :
 	public CComponent
 {
+public:
+	typedef struct tagNavigation
+	{
+		tagNavigation() : iCurrentIndex(-1) {}
+		explicit tagNavigation(_int _iCurrentIndex) : iCurrentIndex{ _iCurrentIndex } {}
+
+		_int iCurrentIndex = { -1 };
+	}NAVIGATIONDESC;
+
 private:
 	explicit CNavigation(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	explicit CNavigation(const CNavigation& rhs);
@@ -21,7 +30,7 @@ public:
 #endif
 
 private:
-	_int	m_iCurrentIndex = { 0 };
+	NAVIGATIONDESC	m_tNaviDesc;
 	vector<class CCell*>	m_Cells;
 
 #ifdef _DEBUG

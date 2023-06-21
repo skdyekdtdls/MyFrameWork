@@ -49,7 +49,7 @@ int folderCount = 0;
 int prevCount = 0;
 int main()
 {   
-    fs::path basePath = "C:/Users/skdye/OneDrive/바탕 화면/Animator2";
+    fs::path basePath = "C:/Users/skdye/OneDrive/바탕 화면/OverCookedAsset/Animator";
 
     fs::path path_to_read(basePath);
     vector<fs::directory_entry> entries;

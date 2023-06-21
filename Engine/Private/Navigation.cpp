@@ -60,8 +60,6 @@ HRESULT CNavigation::Initialize(void* pArg)
 	return S_OK;
 }
 
-
-
 #ifdef _DEBUG
 void CNavigation::Set_ShaderResources()
 {
@@ -81,6 +79,9 @@ void CNavigation::Set_ShaderResources()
 	_float4x4 ProjMatrix = pPipeLine->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
 	FAILED_CHECK(m_pShader->Bind_Matrix("g_ProjMatrix", &ProjMatrix));
 
+	_float4		vColor = -1 == m_tNaviDesc.iCurrentIndex ? _float4(0.f, 1.f, 0.f, 1.f) : _float4(1.f, 0.f, 0.f, 1.f);
+	FAILED_CHECK(m_pShader->Bind_RawValue("g_vColor", &vColor, sizeof(_float4)));
+
 	Safe_Release(pPipeLine);
 	return;
 }
@@ -94,9 +95,11 @@ HRESULT CNavigation::Render_Navigation()
 
 	for (auto& pCell : m_Cells)
 		pCell->Render();
+
 	return S_OK;
 }
 #endif // _DEBUG
+
 CNavigation* CNavigation::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pNavigationDataFiles)
 {
 	CNavigation* pInstance = new CNavigation(pDevice, pContext);
@@ -129,6 +132,7 @@ void CNavigation::Free()
 
 	for (auto& pCell : m_Cells)
 		Safe_Release(pCell);
+	m_Cells.clear();
 #ifdef _DEBUG
 	Safe_Release(m_pShader);
 #endif // _DEBUG

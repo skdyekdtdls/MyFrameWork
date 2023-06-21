@@ -60,7 +60,7 @@ private:
 
 private:
 	_float4x4					m_PivotMatrix;
-	TYPE						m_eAnimType = { TYPE_NONANIM };
+	TYPE						m_eAnimType = { TYPE_END };
 
 private:
 	HRESULT LoadModel(const _tchar* pModelFilePath, _Inout_ SCENE& tScene);

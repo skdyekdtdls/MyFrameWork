@@ -35,9 +35,10 @@ int main()
     break;
     case 2:
     {
-        string folderName;
         std::cout << "Input Directory Name : ";
-        std::cin >> folderName;
+        std::string folderName;
+        std::cin.ignore();
+        std::getline(std::cin, folderName);
         ModelsPath = ModelsPath / folderName / string(folderName + ".fbx");
         Paser.Pasing(ModelsPath);
     }

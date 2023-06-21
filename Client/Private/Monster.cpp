@@ -34,7 +34,7 @@ HRESULT CMonster::Initialize(void* pArg)
 
 	++CMonster_Id;
 	m_strName = "CMonster" + to_string(CMonster_Id);
-	cout << m_strName << endl;
+
 	m_pModelCom->Set_AnimIndex(rand() % 10);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(rand() % 20, 3.f, rand() % 20, 1.f));
 
@@ -56,8 +56,6 @@ void CMonster::Tick(_double TimeDelta)
 void CMonster::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
-
-
 }
 
 HRESULT CMonster::Render()
@@ -96,8 +94,7 @@ HRESULT CMonster::Add_Components()
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxAnimMesh", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_IMGUI, L"Prototype_Component_Model_NPC_Hispanic_Waiter_01", L"Com_Model", (CComponent**)&m_pModelCom), E_FAIL);
-
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_IMGUI, L"Prototype_Component_Model_Fiona", L"Com_Model", (CComponent**)&m_pModelCom), E_FAIL);
 
 	return S_OK;
 }
@@ -118,7 +115,6 @@ HRESULT CMonster::SetUp_ShaderResources()
 
 	_float4 MyFloat4 = pGameInstance->Get_CamPosition();
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", &MyFloat4, sizeof(_float4)), E_FAIL);
-		
 
 	Safe_Release(pGameInstance);
 
@@ -136,7 +132,6 @@ CMonster* CMonster::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	}
 	return pInstance;
 }
-
 
 CGameObject* CMonster::Clone(void* pArg)
 {

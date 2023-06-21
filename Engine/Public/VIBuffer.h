@@ -33,8 +33,7 @@ protected:
 	_uint	m_iNumIndices = { 0 };
 	_uint	m_iIndexStride = { 0 };
 	DXGI_FORMAT	m_eFormat;
-
-	/* For Render */
+	
 	_uint	m_iNumVertexBuffers = { 0 };
 	D3D11_PRIMITIVE_TOPOLOGY	m_eTopology;
 

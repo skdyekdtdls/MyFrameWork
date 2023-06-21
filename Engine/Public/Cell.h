@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class CCell final : public CBase
+class ENGINE_DLL CCell final : public CBase
 {
 public:
 	enum POINT { POINT_A, POINT_B, POINT_C, POINT_END };
@@ -29,8 +29,8 @@ private:
 	ID3D11DeviceContext* m_pContext = { nullptr };
 private:
 	_int				m_iIndex = { 0 };
-	_float3				m_vPoints[3];
-	_int				m_iNeighborIndices[3] = { -1, -1, -1 };
+	_float3				m_vPoints[POINT_END];
+	_int				m_iNeighborIndices[NEIGHBOR_END] = { -1, -1, -1 };
 
 #ifdef _DEBUG
 private:
