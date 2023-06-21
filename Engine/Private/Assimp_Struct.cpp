@@ -881,8 +881,8 @@ bool NODE_ANIM::Deserialization(HANDLE hFile, DWORD& dwByte)
 }
 
 VECTOR_KEY::VECTOR_KEY()
-	: m_Value{}
 {
+	ZeroMemory(&m_Value, sizeof(XMFLOAT3));
 }
 
 

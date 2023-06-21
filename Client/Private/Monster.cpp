@@ -31,11 +31,11 @@ HRESULT CMonster::Initialize(void* pArg)
 
 	if (FAILED(Add_Components()))
 		return E_FAIL;
-
+	
 	++CMonster_Id;
 	m_strName = "CMonster" + to_string(CMonster_Id);
 
-	m_pModelCom->Set_AnimIndex(rand() % 10);
+	m_pModelCom->Set_AnimIndex(0);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(rand() % 20, 3.f, rand() % 20, 1.f));
 
 	return S_OK;
