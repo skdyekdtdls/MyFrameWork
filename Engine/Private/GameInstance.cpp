@@ -145,11 +145,34 @@ _byte CGameInstance::Get_DIMouseState(CInput_Device::MOUSEKEYSTATE eMouseID)
 
 _long CGameInstance::Get_DIMouseMove(CInput_Device::MOUSEMOVESTATE eMouseMoveID)
 {
-
 	if (nullptr == m_pInput_Device)
 		return 0;
 
 	return m_pInput_Device->Get_DIMouseMove(eMouseMoveID);
+}
+
+bool CGameInstance::Mouse_Down(CInput_Device::MOUSEKEYSTATE eMouseID)
+{
+	if (nullptr == m_pInput_Device)
+		return false;
+
+	return m_pInput_Device->Mouse_Down(eMouseID);
+}
+
+bool CGameInstance::Mouse_Pressing(CInput_Device::MOUSEKEYSTATE eMouseID)
+{
+	if (nullptr == m_pInput_Device)
+		return false;
+
+	return m_pInput_Device->Mouse_Pressing(eMouseID);
+}
+
+bool CGameInstance::Mouse_Up(CInput_Device::MOUSEKEYSTATE eMouseID)
+{
+	if (nullptr == m_pInput_Device)
+		return false;
+
+	return m_pInput_Device->Mouse_Up(eMouseID);
 }
 
 HRESULT CGameInstance::Open_Level(_uint iLevelIndex, CLevel* pNewLevel)

@@ -635,6 +635,7 @@ bool MATERIAL::Deserialization(HANDLE hFile, DWORD& dwByte)
 {
 	if (false == ReadEnable())
 		return false;
+
 	for (size_t i = 0; i < TextureType_TRANSMISSION; ++i)
 	{
 		m_TexturePath[i] = nullptr;
@@ -880,8 +881,8 @@ bool NODE_ANIM::Deserialization(HANDLE hFile, DWORD& dwByte)
 }
 
 VECTOR_KEY::VECTOR_KEY()
-	: m_Value{}
 {
+	ZeroMemory(&m_Value, sizeof(XMFLOAT3));
 }
 
 

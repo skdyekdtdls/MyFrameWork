@@ -38,6 +38,7 @@
     <ClInclude Include="..\Public\GameObject.h" />
     <ClInclude Include="..\Public\Graphic_Device.h" />
     <ClInclude Include="..\public\Input_Device.h" />
+    <ClInclude Include="..\Public\ISerializable.h" />
     <ClInclude Include="..\public\Layer.h" />
     <ClInclude Include="..\public\Level.h" />
     <ClInclude Include="..\public\Level_Manager.h" />
@@ -221,7 +222,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>../Public\;../Public/fx11\;../Public\assimp\</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

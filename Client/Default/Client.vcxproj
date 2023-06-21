@@ -177,6 +177,7 @@
     <ClInclude Include="..\public\Cube.h" />
     <ClInclude Include="..\public\EditCamera.h" />
     <ClInclude Include="..\Public\ImMode.h" />
+    <ClInclude Include="..\public\ImWindow_Navigation.h" />
     <ClInclude Include="..\public\ImWindow_Transform.h" />
     <ClInclude Include="..\Public\ImVertex.h" />
     <ClInclude Include="..\Public\ImWindow.h" />
@@ -241,6 +242,7 @@
     </ClCompile>
     <ClCompile Include="..\private\EditCamera.cpp" />
     <ClCompile Include="..\Private\ImMode.cpp" />
+    <ClCompile Include="..\private\ImWindow_Navigation.cpp" />
     <ClCompile Include="..\private\ImWindow_Transform.cpp" />
     <ClCompile Include="..\private\ImVertex.cpp" />
     <ClCompile Include="..\Private\ImWindow.cpp" />

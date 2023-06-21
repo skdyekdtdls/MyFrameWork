@@ -4,7 +4,6 @@
 #include "Light_Manager.h"
 #include "PipeLine.h"
 #include "Input_Device.h"
-
 BEGIN(Engine)
 class CGraphic_Device;
 class CInput_Device;
@@ -35,6 +34,9 @@ public: /* For Input_Device*/
 	_byte Get_DIKeyState(_ubyte ubyKeyID);
 	_byte Get_DIMouseState(CInput_Device::MOUSEKEYSTATE eMouseID);
 	_long Get_DIMouseMove(CInput_Device::MOUSEMOVESTATE eMouseMoveID);
+	_bool	Mouse_Down(CInput_Device::MOUSEKEYSTATE eMouseID);
+	_bool	Mouse_Pressing(CInput_Device::MOUSEKEYSTATE eMouseID);
+	_bool	Mouse_Up(CInput_Device::MOUSEKEYSTATE eMouseID);
 
 public: /* For Level_Manager */
 	HRESULT Open_Level(_uint iLevelIndex, CLevel * pNewLevel);

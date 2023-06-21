@@ -5,6 +5,7 @@
 #include "Cube.h"
 #include "ImWindow_Manager.h"
 #include "ImWindow_Transform.h"
+#include "ImWindow_Navigation.h"
 
 CEditCamera::CEditCamera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
@@ -30,8 +31,9 @@ HRESULT CEditCamera::Initialize(void* pArg)
 	FAILED_CHECK_RETURN(__super::Initialize(&CameraFreeDesc.CameraDesc), E_FAIL);
 
 	m_iData = CameraFreeDesc.iData;
-	m_pTerrain = static_cast<CTerrain*>(CGameInstance::GetInstance()->Get_GameObject(LEVEL_IMGUI, L"Layer_BackGround", "Terrain"));
-	m_pRenderer = static_cast<CRenderer*>(m_pTerrain->Get_Component(L"Com_Renderer"));
+	Set_Terrain(static_cast<CTerrain*>(CGameInstance::GetInstance()->Get_GameObject(LEVEL_IMGUI, L"Layer_BackGround", "CTerrain")));
+	
+	Add_Components();
 
 	return S_OK;
 }
@@ -45,7 +47,7 @@ void CEditCamera::Tick(_double TimeDelta)
 
 	Key_Input(TimeDelta);
 	Mouse_Input(TimeDelta);
-
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 	__super::Tick(TimeDelta);
 }
 
@@ -61,6 +63,7 @@ void CEditCamera::Late_Tick(_double TimeDelta)
 
 HRESULT CEditCamera::Render()
 {
+
 	return S_OK;
 }
 
@@ -136,6 +139,11 @@ void CEditCamera::Late_Mouse_Input(_double TimeDelta)
 	Safe_Release(pGameInstance);
 }
 
+HRESULT CEditCamera::Add_Components()
+{
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom), E_FAIL);
+}
+
 void CEditCamera::Object_Place(CGameInstance* pGameInstance)
 {
 	if (pGameInstance->Get_DIMouseState(CInput_Device::DIMK_LBUTTON))
@@ -152,7 +160,23 @@ void CEditCamera::Object_Place(CGameInstance* pGameInstance)
 
 void CEditCamera::Edit_Navigation_Mesh(CGameInstance* pGameInstance)
 {
+	CImWindow_Manager* pWindowMgr= CImWindow_Manager::GetInstance();
+	Safe_AddRef(pWindowMgr);
 
+	 CImWindow_Navigation* pImWindow_Transform = pWindowMgr->Get_ImWindow<CImWindow_Navigation>();
+
+	 switch (pImWindow_Transform->m_eMode)
+	 {
+	 case CImWindow_Navigation::CREATE_MODE:
+		 CreateTriangleStrip(pGameInstance);
+		 break;
+	 case CImWindow_Navigation::SELECT_POINT_MODE:
+		 break;
+	 case CImWindow_Navigation::SELECT_CELL_MODE:
+		 break;
+	 }
+
+	Safe_Release(pWindowMgr);
 }
 
 void CEditCamera::Edit_Transform(CGameInstance* pGameInstance)
@@ -164,7 +188,7 @@ void CEditCamera::Edit_Transform(CGameInstance* pGameInstance)
 		_bool bResult = { false };
 		for (_uint i = 0; i < CRenderer::RENDER_END; ++i)
 		{
-			for (auto& iter : m_pRenderer->Get_RenderObjects(i))
+			for (auto& iter : m_pRendererCom->Get_RenderObjects(i))
 			{
 				if (iter->Picked(tPickDesc, m_tMouseRay))
 				{
@@ -177,6 +201,29 @@ void CEditCamera::Edit_Transform(CGameInstance* pGameInstance)
 		{
 			CImWindow_Transform* pImWindow_Transform = static_cast<CImWindow_Transform*>(CImWindow_Manager::GetInstance()->Get_ImWindow(L"CImWindow_Transform"));
 			pImWindow_Transform->Set_GameObject(tPickDesc.pPickedObject);
+		}
+	}
+}
+
+void CEditCamera::CreateTriangleStrip(CGameInstance* pGameInstance)
+{
+	if (pGameInstance->Mouse_Down(CInput_Device::DIMK_LBUTTON))
+	{
+		PICK_DESC tPickDesc;
+		ZeroStruct(tPickDesc);
+
+		if (m_pTerrain->Picked(tPickDesc, m_tMouseRay))
+		{
+			if (m_iClickCount == 2)
+			{
+				m_vClickPoint[m_iClickCount] = tPickDesc.vPickPos;
+				m_iClickCount = 0;
+				m_pTerrain->AddCell(m_vClickPoint);			
+			}
+			else
+			{
+				m_vClickPoint[m_iClickCount++] = tPickDesc.vPickPos;
+			}
 		}
 	}
 }
@@ -215,6 +262,19 @@ void CEditCamera::Make_MouseRay()
 	Safe_Release(pGameInstance);
 }
 
+void CEditCamera::Set_Terrain(CTerrain* pTerrain)
+{
+	m_pTerrain = pTerrain;
+
+	CImWindow_Manager* pWindowMgr = CImWindow_Manager::GetInstance();
+	Safe_AddRef(pWindowMgr);
+	CImWindow_Navigation* pImWindow_Transform = pWindowMgr->Get_ImWindow<CImWindow_Navigation>();
+
+	pImWindow_Transform->Set_Terrain(m_pTerrain);
+
+	Safe_Release(pWindowMgr);
+}
+
 CEditCamera* CEditCamera::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CEditCamera* pInstance = new CEditCamera(pDevice, pContext);
@@ -244,6 +304,6 @@ void CEditCamera::Free(void)
 	__super::Free();
 
 	Safe_Release(m_pTerrain);
-	Safe_Release(m_pRenderer);
+	Safe_Release(m_pRendererCom);
 }
 #endif

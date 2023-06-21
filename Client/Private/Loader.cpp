@@ -157,13 +157,13 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Cube::ProtoTag(),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext)), E_FAIL);
 
+	//PivotMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationX(XMConvertToRadians(-90.f)) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Model_clint_Skeleton"),
+	//	CModel::Create(m_pDevice, m_pContext, TEXT("../../Resources/Models/clint_Skeleton/clint_Skeleton.dat"), PivotMatrix)), E_FAIL);
+
 	PivotMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Model_Fiona"),
-		CModel::Create(m_pDevice, m_pContext, TEXT("../../Resources/Models/Fiona/Fiona.dat"), PivotMatrix)), E_FAIL);
-
-	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Model_ForkLift"),
-		CModel::Create(m_pDevice, m_pContext, TEXT("../../Resources/Models/ForkLift/ForkLift.dat"), PivotMatrix)), E_FAIL);
+		CModel::Create(m_pDevice, m_pContext, TEXT("../../Resources/Models/crow_final/crow_final.dat"), PivotMatrix)), E_FAIL);
 
 	lstrcpy(m_szLoading, TEXT("네비게이션정보 로딩 중."));
 	/* For.Prototype_COmpoentn_Navigation */
@@ -171,7 +171,9 @@ HRESULT CLoader::Loading_For_IMGUI()
 		CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/Data/Navigation.dat"))), E_FAIL);
 
 	Set_LoadingText(L"셰이더 로딩 중");
-
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Navigation"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Navigation.hlsl")
+			, VTXPOS_DECL::Elements, VTXPOS_DECL::iNumElements)), E_FAIL);
 
 	Set_LoadingText(L"객체 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CTerrain::ProtoTag(), CTerrain::Create(m_pDevice, m_pContext)), E_FAIL);

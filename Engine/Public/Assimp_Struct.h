@@ -169,7 +169,7 @@ public:
 	bool Deserialization(HANDLE hFile, DWORD& dwByte);
 
 public:
-	E_META_DATA_TYPE m_eType;
+	E_META_DATA_TYPE m_eType = { _META_MAX };
 	void* m_Data = { nullptr };
 };
 

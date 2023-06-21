@@ -12,15 +12,37 @@ int main()
 #endif // _DEBUG
     CPaser Paser;
     
-    fs::path ModelsPath = "../../Resources/Models/";
-    fs::recursive_directory_iterator iter(ModelsPath);
+    int a = 1;
+    std::cout << "Select Mode[ 1(All), 2(One) ] : ";
+    std:cin >> a;
 
-    for (const fs::directory_entry& entry : iter)
+    fs::path ModelsPath = "../../Resources/Models/";
+    switch (a)
     {
-        if (".fbx" == entry.path().extension() || ".FBX" == entry.path().extension())
+    case 1:
+    {
+        
+        fs::recursive_directory_iterator iter(ModelsPath);
+
+        for (const fs::directory_entry& entry : iter)
         {
-            Paser.Pasing(entry.path());
-        }        
+            if (".fbx" == entry.path().extension() || ".FBX" == entry.path().extension())
+            {
+                Paser.Pasing(entry.path());
+            }
+        }
+    }
+    break;
+    case 2:
+    {
+        std::cout << "Input Directory Name : ";
+        std::string folderName;
+        std::cin.ignore();
+        std::getline(std::cin, folderName);
+        ModelsPath = ModelsPath / folderName / string(folderName + ".fbx");
+        Paser.Pasing(ModelsPath);
+    }
+        break;
     }
 
     cout << "All Completed swithcing .fbx to .dat" << endl;

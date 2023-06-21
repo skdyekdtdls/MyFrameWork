@@ -14,7 +14,7 @@ CVIBuffer_Terrain::CVIBuffer_Terrain(const CVIBuffer_Terrain& rhs)
 	
 }
 
-HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap)
+HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap) // 지금 여기서 추가하고있잖아. 그냥 함수하나파서
 {
 	_ulong			dwByte = { 0 };
 	HANDLE			hFile = CreateFile(pHeightMap, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
@@ -65,7 +65,7 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap)
 		{
 			_uint		iIndex = i * m_iNumVerticesX + j;
 
-			m_pVertices[iIndex].vPosition = _float3(j, (pPixel[iIndex] & 0x000000ff) / 10.0f, i);
+			m_pVertices[iIndex].vPosition = _float3(j, 0.f /*(pPixel[iIndex] & 0x000000ff) / 10.0f */, i);
 			m_pVertices[iIndex].vNormal = _float3(0.f, 0.f, 0.f);
 			m_pVertices[iIndex].vTexCoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
 		}

@@ -39,6 +39,8 @@ private: /* For. Component */
 private:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();
+	
+	static _uint CPlayer_Id;
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_GameObject_CPlayer"; }

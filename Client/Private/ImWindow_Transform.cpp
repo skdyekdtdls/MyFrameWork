@@ -20,16 +20,20 @@ HRESULT CImWindow_Transform::Initialize(void* pArg)
 
 void CImWindow_Transform::Tick()
 {
-	if (TRANSFORM_MODE != CImWindow_Manager::GetInstance()->CurretMode())
+	if (TRANSFORM_MODE != CImWindow_Manager::GetInstance()->CurretMode() && NAVIGATION_MESH_MODE != CImWindow_Manager::GetInstance()->CurretMode())
 		return;
 
 	ImGui::Begin("Transform");
+	if (NAVIGATION_MESH_MODE == CImWindow_Manager::GetInstance()->CurretMode())
+	{
+		strName = "NAVIGATION_MESH";
+	}
 	ImGui::Text("name : "); ImGui::SameLine();
 	ImGui::Text(strName.c_str());
 	ImGui::Spacing();
-	VecInfo("Position", &vPos, 60);
-	VecInfo("Rotation", &vRot, 60);
-	VecInfo(" Scale", &vScale, 60);
+	VecInfo("Position", &vPos, 120);
+	VecInfo("Rotation", &vRot, 120);
+	VecInfo(" Scale", &vScale, 120);
 
 	if (m_pGameObject)
 	{

@@ -1,5 +1,9 @@
 #include "Terrain.h"
 #include "GameInstance.h"
+#ifdef _USE_IMGUI
+#include "ImWindow_Manager.h"
+#include "ImWindow_Navigation.h"
+#endif
 CTerrain::CTerrain(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
@@ -10,10 +14,21 @@ CTerrain::CTerrain(const CTerrain& rhs)
 {
 }
 
+void CTerrain::Save(HANDLE hFile, DWORD& dwByte)
+{
+	m_pTransformCom->Save(hFile, dwByte);
+	m_pNavigationCom->Save(hFile, dwByte);
+}
+
+void CTerrain::Load(HANDLE hFile, DWORD& dwByte)
+{
+	
+}
+
 HRESULT CTerrain::Initialize_Prototype()
 {
 	FAILED_CHECK_RETURN(__super::Initialize_Prototype(), E_FAIL);
-	m_strName = "Terrain";
+	m_strName = "CTerrain";
 	return S_OK;
 }
 
@@ -59,8 +74,31 @@ HRESULT CTerrain::Render()
 #ifdef _DEBUG
 	m_pNavigationCom->Render_Navigation();
 #endif
-}
 
+	return S_OK;
+}
+void CTerrain::AddCell(const _float3* vPoints)
+{
+	NULL_CHECK(m_pNavigationCom);
+
+	m_pNavigationCom->AddCell(vPoints);
+
+#ifdef _USE_IMGUI
+	CImWindow_Manager* pImWinMgr = CImWindow_Manager::GetInstance();
+	Safe_AddRef(pImWinMgr);
+
+	CImWindow_Navigation* pImWinNavi = pImWinMgr->Get_ImWindow<CImWindow_Navigation>();
+	GetCellSize();
+	pImWinNavi->AddItems(to_string(GetCellSize() - 1).c_str());
+	Safe_Release(pImWinMgr);
+#endif
+
+}
+_uint CTerrain::GetCellSize()
+{
+	return m_pNavigationCom->GetCellSize();
+}
+#ifdef _USE_IMGUI
 _bool CTerrain::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 {
 	_bool bResult = { false };
@@ -91,12 +129,12 @@ _bool CTerrain::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 	
 	return bResult;
 }
+#endif _USE_IMGUI
 
 HRESULT CTerrain::Add_Components()
 {	
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
-
 
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom), E_FAIL);
 	CTransform::TRANSFORMDESC TransformDesc{7.0, XMConvertToRadians(90.f)};
@@ -109,7 +147,6 @@ HRESULT CTerrain::Add_Components()
 	FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), L"Prototype_Component_Texture_Terrain_Brush", L"Com_Texture_Brush", (CComponent**)&m_pTextureCom[TYPE_BRUSH]), E_FAIL);
 
 	FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), CNavigation::ProtoTag(), L"Com_Navigation", (CComponent**)&m_pNavigationCom), E_FAIL);
-
 
 	Safe_Release(pGameInstance);
 	return S_OK;

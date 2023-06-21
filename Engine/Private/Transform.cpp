@@ -1,4 +1,5 @@
 #include "..\Public\Transform.h"
+#include "Navigation.h"
 
 CTransform::CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComponent(pDevice, pContext)
@@ -11,6 +12,16 @@ CTransform::CTransform(const CTransform& rhs)
 	, m_TransformDesc(rhs.m_TransformDesc)
 	, m_WorldMatrix(rhs.m_WorldMatrix)
 {
+}
+
+void CTransform::Save(HANDLE hFile, DWORD& dwByte)
+{
+	WriteVoid(&m_WorldMatrix, sizeof(m_WorldMatrix));
+}
+
+void CTransform::Load(HANDLE hFile, DWORD& dwByte)
+{
+	ReadVoid(&m_WorldMatrix, sizeof(m_WorldMatrix));
 }
 
 _float3 CTransform::Get_Scaled()
@@ -80,7 +91,7 @@ HRESULT CTransform::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CTransform::Go_Straight(_double TimeDelta)
+void CTransform::Go_Straight(_double TimeDelta, CNavigation* pNavigation)
 {
 	_vector		vPosition = Get_State(STATE_POSITION);
 	_vector		vLook = Get_State(STATE_LOOK);

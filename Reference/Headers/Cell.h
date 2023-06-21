@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Base.h"
-
+#include "ISerializable.h"
 BEGIN(Engine)
 
-class CCell final : public CBase
+class ENGINE_DLL CCell final : public CBase, public ISerializable
 {
 public:
 	enum POINT { POINT_A, POINT_B, POINT_C, POINT_END };
@@ -12,11 +12,16 @@ public:
 
 private:
 	CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CCell(const CCell& rhs) = delete;
+	CCell& operator=(const CCell& rhs) = delete;
 	virtual ~CCell() = default;
 
 public:
-	HRESULT Initialize(const _float3* pPoints, _int iIndex);
+	void Save(HANDLE hFile, DWORD& dwByte) override;
+	void Load(HANDLE hFile, DWORD& dwByte) override;
 
+public:
+	HRESULT Initialize(const _float3* pPoints, _int iIndex);
 
 #ifdef _DEBUG
 public:
@@ -29,8 +34,8 @@ private:
 	ID3D11DeviceContext* m_pContext = { nullptr };
 private:
 	_int				m_iIndex = { 0 };
-	_float3				m_vPoints[3];
-	_int				m_iNeighborIndices[3] = { -1, -1, -1 };
+	_float3				m_vPoints[POINT_END];
+	_int				m_iNeighborIndices[NEIGHBOR_END] = { -1, -1, -1 };
 
 #ifdef _DEBUG
 private:

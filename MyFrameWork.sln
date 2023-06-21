@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AssimpPaser", "AssimpPaser\
 		{8A1BFF46-5741-4101-8BA8-F70C358112D3} = {8A1BFF46-5741-4101-8BA8-F70C358112D3}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FolderOrganizer", "FolderOrganizer\FolderOrganizer.vcxproj", "{2E04786F-118E-4C46-A02A-69C16C7D775B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -47,6 +49,14 @@ Global
 		{A370FE8F-3C0F-4487-A83F-56E2F470EFA0}.Release|x64.Build.0 = Release|x64
 		{A370FE8F-3C0F-4487-A83F-56E2F470EFA0}.Release|x86.ActiveCfg = Release|Win32
 		{A370FE8F-3C0F-4487-A83F-56E2F470EFA0}.Release|x86.Build.0 = Release|Win32
+		{2E04786F-118E-4C46-A02A-69C16C7D775B}.Debug|x64.ActiveCfg = Debug|x64
+		{2E04786F-118E-4C46-A02A-69C16C7D775B}.Debug|x64.Build.0 = Debug|x64
+		{2E04786F-118E-4C46-A02A-69C16C7D775B}.Debug|x86.ActiveCfg = Debug|Win32
+		{2E04786F-118E-4C46-A02A-69C16C7D775B}.Debug|x86.Build.0 = Debug|Win32
+		{2E04786F-118E-4C46-A02A-69C16C7D775B}.Release|x64.ActiveCfg = Release|x64
+		{2E04786F-118E-4C46-A02A-69C16C7D775B}.Release|x64.Build.0 = Release|x64
+		{2E04786F-118E-4C46-A02A-69C16C7D775B}.Release|x86.ActiveCfg = Release|Win32
+		{2E04786F-118E-4C46-A02A-69C16C7D775B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
