@@ -27,9 +27,6 @@ private:
     int item_current = 0;
     vector<std::string> items;
 
-private:
-    static bool VectorGetter(void* data, int idx, const char** out_str);
-
 public:
     static  CImWindow_Navigation* Create(ImGuiIO* pIO);
     virtual void Free(void) override;

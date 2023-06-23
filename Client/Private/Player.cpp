@@ -14,6 +14,17 @@ CPlayer::CPlayer(const CPlayer& rhs)
 {
 }
 
+void CPlayer::Save(HANDLE hFile, DWORD& dwByte)
+{
+	m_tInfo.Save(hFile, dwByte);
+	m_pTransformCom->Save(hFile, dwByte);
+}
+
+void CPlayer::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
+{
+	m_pTransformCom->Load(hFile, dwByte, iLevelIndex);
+}
+
 HRESULT CPlayer::Initialize_Prototype()
 {
 	if (FAILED(__super::Initialize_Prototype()))
@@ -32,8 +43,9 @@ HRESULT CPlayer::Initialize(void* pArg)
 		return E_FAIL;
 
 	++CPlayer_Id;
-	m_strName = "CPlayer" + to_string(CPlayer_Id);
-	cout << CPlayer_Id << endl;
+	m_tInfo.wstrName = TO_WSTR("CPlayer" + to_string(CPlayer_Id));
+	m_tInfo.wstrKey = ProtoTag();
+	m_tInfo.ID = CPlayer_Id;
 
 	return S_OK;
 }

@@ -17,7 +17,7 @@ HRESULT CImWindow_Demo::Initialize(void* pArg)
 void CImWindow_Demo::Tick()
 {
     // Our state
-    static bool show_demo_window = true;
+    static bool show_demo_window = false;
     static bool show_another_window = false;
 
     static const float clear_color_with_alpha[4] = { clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w };

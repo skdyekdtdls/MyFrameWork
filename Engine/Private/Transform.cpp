@@ -1,6 +1,8 @@
 #include "..\Public\Transform.h"
 #include "Navigation.h"
 
+
+
 CTransform::CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComponent(pDevice, pContext)
 	, m_TransformDesc(0.0, 0.0)
@@ -16,12 +18,16 @@ CTransform::CTransform(const CTransform& rhs)
 
 void CTransform::Save(HANDLE hFile, DWORD& dwByte)
 {
-	WriteVoid(&m_WorldMatrix, sizeof(m_WorldMatrix));
+	WriteVoid(&m_WorldMatrix, sizeof(_float4x4));
+	WriteVoid(&m_TransformDesc.RotationPerSec, sizeof(_double));
+	WriteVoid(&m_TransformDesc.SpeedPerSec, sizeof(_double));
 }
 
-void CTransform::Load(HANDLE hFile, DWORD& dwByte)
+void CTransform::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 {
-	ReadVoid(&m_WorldMatrix, sizeof(m_WorldMatrix));
+	ReadVoid(&m_WorldMatrix, sizeof(_float4x4));
+	ReadVoid(&m_TransformDesc.RotationPerSec, sizeof(_double));
+	ReadVoid(&m_TransformDesc.SpeedPerSec, sizeof(_double));
 }
 
 _float3 CTransform::Get_Scaled()
@@ -98,7 +104,13 @@ void CTransform::Go_Straight(_double TimeDelta, CNavigation* pNavigation)
 
 	vPosition += XMVector3Normalize(vLook) * m_TransformDesc.SpeedPerSec * TimeDelta;
 
-	Set_State(STATE_POSITION, vPosition);
+	_bool isMove = { true };
+
+	if (nullptr != pNavigation)
+		isMove = pNavigation->is_Move(vPosition);
+
+	if(true == isMove)
+		Set_State(STATE_POSITION, vPosition);
 }
 
 void CTransform::Go_Backward(_double TimeDelta)

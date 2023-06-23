@@ -44,6 +44,7 @@ private:
 
 private:
 	CTerrain* m_pTerrain = { nullptr };
+	_bool	m_bStart = { true };
 
 private: /* Components */
 	CRenderer* m_pRendererCom = { nullptr };

@@ -17,11 +17,20 @@ private:
 	virtual ~CCell() = default;
 
 public:
-	void Save(HANDLE hFile, DWORD& dwByte) override;
-	void Load(HANDLE hFile, DWORD& dwByte) override;
+	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
+	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
+public:
+	_vector Get_Point(POINT ePoint) {
+		return XMLoadFloat3(&m_vPoints[ePoint]);
+	}
 
+	void SetUp_Neighbor(NEIGHBOR eNeighbor, CCell* pNeighbor) {
+		m_iNeighborIndices[eNeighbor] = pNeighbor->m_iIndex;
+	}
 public:
 	HRESULT Initialize(const _float3* pPoints, _int iIndex);
+	_bool Compare_Points(_fvector vSourPoint, _fvector vDestPoint);
+	_bool is_In(_fvector vPosition, _int* pNeighborIndex);
 
 #ifdef _DEBUG
 public:
@@ -35,6 +44,7 @@ private:
 private:
 	_int				m_iIndex = { 0 };
 	_float3				m_vPoints[POINT_END];
+	_float3				m_vNormals[NEIGHBOR_END];
 	_int				m_iNeighborIndices[NEIGHBOR_END] = { -1, -1, -1 };
 
 #ifdef _DEBUG

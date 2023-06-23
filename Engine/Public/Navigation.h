@@ -3,7 +3,7 @@
 #include "ISerializable.h"
 BEGIN(Engine)
 
-class ENGINE_DLL CNavigation : public CComponent, public ISerializable 
+class ENGINE_DLL CNavigation : public CComponent, public ISerializable
 {
 public:
 	typedef struct tagNavigation
@@ -23,7 +23,7 @@ private:
 public:
 	// ISerializable을(를) 통해 상속됨
 	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
-	virtual void Load(HANDLE hFile, DWORD& dwByte) override;
+	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
 
 public:
 	virtual HRESULT Initialize_Prototype(const _tchar* pNavigationDataFiles);
@@ -33,6 +33,8 @@ public:
 		return m_Cells.size();
 	}
 	void AddCell(const _float3* vPoints);
+
+	_bool is_Move(_fvector vPosition);
 #ifdef _DEBUG
 	void Set_ShaderResources();
 	HRESULT Render_Navigation();
@@ -47,6 +49,8 @@ private:
 	class CShader* m_pShader = { nullptr };
 #endif // _DEBUG
 
+private:
+	void SetUp_Neighbors();
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_Component_CNavigation"; }

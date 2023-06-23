@@ -88,6 +88,15 @@
     <Filter Include="96. IMGUI\03. ImVertex">
       <UniqueIdentifier>{675ca7ed-4838-4cb9-a47f-76e4ca3b4996}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96. IMGUI\01. ImWindow\05. ImWindow_SaveLoad">
+      <UniqueIdentifier>{def33324-2540-4ccc-a1ed-bc5d563df143}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. IMGUI\01. ImWindow\07. ImWindow_MapTool">
+      <UniqueIdentifier>{7857ea36-7826-4123-8501-f5c613895ef6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. IMGUI\01. ImWindow\06. ImWindow_ObjectTool">
+      <UniqueIdentifier>{296bff4e-de67-4fee-8759-0a4a723de7ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -179,6 +188,12 @@
     </ClInclude>
     <ClInclude Include="..\public\ImWindow_Navigation.h">
       <Filter>96. IMGUI\01. ImWindow\04. ImWindow_Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ImWindow_SaveLoads.h">
+      <Filter>96. IMGUI\01. ImWindow\05. ImWindow_SaveLoad</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ImWindow_ObjectTool.h">
+      <Filter>96. IMGUI\01. ImWindow\06. ImWindow_ObjectTool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -273,6 +288,12 @@
     </ClCompile>
     <ClCompile Include="..\private\ImWindow_Navigation.cpp">
       <Filter>96. IMGUI\01. ImWindow\04. ImWindow_Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ImWindow_SaveLoads.cpp">
+      <Filter>96. IMGUI\01. ImWindow\05. ImWindow_SaveLoad</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ImWindow_ObjectTool.cpp">
+      <Filter>96. IMGUI\01. ImWindow\06. ImWindow_ObjectTool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,57 @@
 
 namespace Engine
 {
+	struct INFO
+	{
+		INFO() : ID(0){}
+		~INFO() { wstrName.clear(); }
+
+		void Save(HANDLE hFile, DWORD& dwByte)
+		{
+			_uint iNameLength = wstrName.size() + 1;
+			_uint iNameKey = wstrKey.size() + 1;
+
+			WriteVoid(&iNameLength, sizeof(_uint));
+			WriteVoid(&iNameKey, sizeof(_uint));
+			WriteVoid(&ID, sizeof(_uint));
+			if (iNameLength > 0) {
+				WriteVoid(&wstrName[0], sizeof(_tchar) * iNameLength);
+			}			
+			if (iNameKey > 0) {
+				WriteVoid(&wstrKey[0], sizeof(_tchar) * iNameKey);
+			}
+		}
+
+		void Load(HANDLE hFile, DWORD& dwByte) {
+			_uint iNameLength;
+			_uint iNameKey;
+
+			ReadVoid(&iNameLength, sizeof(_uint));
+			ReadVoid(&iNameKey, sizeof(_uint));
+			ReadVoid(&ID, sizeof(_uint));
+
+			if (iNameLength > 0) {
+				wstrName.resize(iNameLength);
+				ReadVoid(&wstrName[0], sizeof(_tchar) * iNameLength);
+			}
+			else {
+				wstrName.clear();
+			}
+
+			if (iNameKey > 0) {
+				wstrKey.resize(iNameKey);
+				ReadVoid(&wstrKey[0], sizeof(_tchar) * iNameKey);
+			}
+			else {
+				wstrKey.clear();
+			}
+		}
+
+		wstring wstrName;
+		wstring wstrKey;
+		_uint ID;
+	};
+
 	typedef struct tagPickDesc
 	{
 		XMFLOAT3 vPickPos;
@@ -17,7 +68,6 @@ namespace Engine
 		unsigned int	iViewportSizeX, iViewportSizeY;
 		WINMODE		eWinMode;
 	}GRAPHICDESC;
-
 
 	typedef struct ENGINE_DLL tagMeshMaterial
 	{

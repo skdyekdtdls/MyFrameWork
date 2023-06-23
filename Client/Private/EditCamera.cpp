@@ -26,27 +26,43 @@ HRESULT CEditCamera::Initialize_Prototype()
 
 HRESULT CEditCamera::Initialize(void* pArg)
 {
-	EDIT_CAMERA_DESC CameraFreeDesc = *(EDIT_CAMERA_DESC*)pArg;
-
+	EDIT_CAMERA_DESC CameraFreeDesc;
+	if (nullptr != pArg)
+	{
+		CameraFreeDesc = *(EDIT_CAMERA_DESC*)pArg;
+	}
 	FAILED_CHECK_RETURN(__super::Initialize(&CameraFreeDesc.CameraDesc), E_FAIL);
 
 	m_iData = CameraFreeDesc.iData;
-	Set_Terrain(static_cast<CTerrain*>(CGameInstance::GetInstance()->Get_GameObject(LEVEL_IMGUI, L"Layer_BackGround", "CTerrain")));
 	
 	Add_Components();
 
+	m_tInfo.ID = 0;
+	m_tInfo.wstrName = L"EditCamera";
+	m_tInfo.wstrKey = ProtoTag();
+	
 	return S_OK;
 }
 
 void CEditCamera::Tick(_double TimeDelta)
 {
+	if (m_bStart)
+	{
+		m_bStart = false;
+		m_pTerrain = static_cast<CTerrain*>(CGameInstance::GetInstance()->Get_GameObject(LEVEL_IMGUI, L"Layer_BackGround", "CTerrain1"));
+
+		NULL_CHECK(m_pTerrain);
+		Set_Terrain(m_pTerrain);
+	}
+
 	Make_MouseRay();
 
-	if (g_hWnd != ::GetFocus())
-		return;
+	if (g_hWnd == ::GetFocus())
+	{
+		Key_Input(TimeDelta);
+		Mouse_Input(TimeDelta);
+	}
 
-	Key_Input(TimeDelta);
-	Mouse_Input(TimeDelta);
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 	__super::Tick(TimeDelta);
 }

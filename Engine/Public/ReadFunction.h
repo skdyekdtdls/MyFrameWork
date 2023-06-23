@@ -13,7 +13,7 @@ namespace Engine
 	{
 		return WriteFile(hFile, pBuffer, iSize, &dwByte, nullptr);
 	}
-#define WriteVoid(arg, size) BOOL_CHECK(Engine::WriteVoid(hFile, arg, size, dwByte))
+#define WriteVoid(arg, size) Engine::WriteVoid(hFile, arg, size, dwByte)
 	///////////////////////////////////////////////////////////
 
 	static bool ReadEnable(HANDLE hFile, DWORD& dwByte)

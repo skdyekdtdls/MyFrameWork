@@ -17,9 +17,9 @@ protected:
 	virtual ~CGameObject() = default;
 
 public:
-	const string& Get_Name()
+	string Get_Name()
 	{
-		return m_strName;
+		return TO_STR(m_tInfo.wstrName);
 	}
 
 public:
@@ -35,7 +35,7 @@ public:
 	virtual void Free() override;
 
 protected:
-	string m_strName;
+	INFO m_tInfo;
 };
 
 END

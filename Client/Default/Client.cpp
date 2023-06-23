@@ -7,8 +7,6 @@
 #include "Client_Defines.h"
 #include "GameInstance.h"
 
-
-
 #ifdef _DEBUG
 void SetConsoleWindowSize(int width, int height)
 {

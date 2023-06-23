@@ -177,7 +177,7 @@ CMainApp* CMainApp::Create()
 	}
 	return pInstance;
 }
-//
+
 void CMainApp::Free()
 {
 	Safe_Release(m_pRenderer);

@@ -91,7 +91,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const _tchar* pLayerTag)
 	CameraFreeDesc.CameraDesc.TransformDesc.SpeedPerSec = 10.f;
 	CameraFreeDesc.CameraDesc.TransformDesc.RotationPerSec = XMConvertToRadians(90.0f);
 
-	FAILED_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, CCamera_Free::ProtoTag(), pLayerTag, &CameraFreeDesc), E_FAIL);
+	NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, CCamera_Free::ProtoTag(), pLayerTag, &CameraFreeDesc), E_FAIL);
 
 	Safe_Release(pGameInstance);
 
