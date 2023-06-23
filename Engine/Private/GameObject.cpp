@@ -46,9 +46,9 @@ _bool CGameObject::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 	vRayDir = XMVector3Normalize(vRayDir);
 
 	_float3 vPosFloat3;
-
+	BoundingSphere sphere; 
 	XMStoreFloat3(&vPosFloat3, pTransform->Get_State(CTransform::STATE_POSITION));
-	BoundingSphere sphere(vPosFloat3, 1.f);
+	sphere.Center = (vPosFloat3, 1.f);
 	_float fDistance = FLT_MAX;
 	sphere.Radius = 0.5f;
 
