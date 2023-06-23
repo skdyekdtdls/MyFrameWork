@@ -1,4 +1,4 @@
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 #include "ImWindow_SaveLoads.h"
 #include "GameInstance.h"
 CImWindow_SaveLoads::CImWindow_SaveLoads(ImGuiIO* pIO)

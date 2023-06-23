@@ -137,12 +137,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             {
                 pGameInstance->ResizeBuffer(g_ResizeWidth, g_ResizeHeight);
             }
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
             // Start the Dear ImGui frame
             ImGui_ImplDX11_NewFrame();
             ImGui_ImplWin32_NewFrame();
             ImGui::NewFrame();
-#endif // _USE_IMGUI
+#endif // DEBUG
 
             pGameInstance->Set_Timer(TEXT("Timer_60fps"));
 
@@ -153,11 +153,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             dwAccelTime = { 0.0 };
         }
     }
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
-#endif // _USE_IMGUI
+#endif // DEBUG
 
     Safe_Release(pGameInstance);
     Safe_Release(pMainApp);
@@ -234,12 +234,12 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 //
 
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 #ifndef WM_DPICHANGED
 #define WM_DPICHANGED 0x02E0 // From Windows SDK 8.1+ headers
 #endif
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-#endif // _USE_IMGUI
+#endif // DEBUG
 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

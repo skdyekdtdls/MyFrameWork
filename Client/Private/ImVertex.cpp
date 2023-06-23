@@ -1,4 +1,4 @@
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 #include "ImVertex.h"
 
 CImVertex::CImVertex(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

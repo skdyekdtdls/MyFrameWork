@@ -1,4 +1,4 @@
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 #include "ImWindow_Transform.h"
 #include "ImWindow_Manager.h"
 #include "ImMode.h"

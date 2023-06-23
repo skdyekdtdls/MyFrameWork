@@ -1,4 +1,4 @@
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 #include "ImMode.h"
 
 CImMode::CImMode(ImGuiIO* pIO)

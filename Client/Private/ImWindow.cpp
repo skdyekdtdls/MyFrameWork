@@ -1,4 +1,4 @@
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 #include "..\Public\ImWindow.h"
 
 CImWindow::CImWindow(ImGuiIO* pIO)

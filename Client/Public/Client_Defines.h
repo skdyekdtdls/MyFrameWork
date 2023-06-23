@@ -1,7 +1,7 @@
 #pragma once
 #include <windows.h>
 
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
@@ -15,7 +15,7 @@ namespace Client
 	const unsigned int g_iWinSizeY = 720;
 
 	enum LEVELID { LEVEL_STATIC, LEVEL_IMGUI, LEVEL_LOGO, LEVEL_GAMEPLAY, LEVEL_LOADING, LEVEL_END};
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 	enum MODE { OBJECT_PLACE_MODE, NAVIGATION_MESH_MODE, TRANSFORM_MODE, MODE_END };
 #endif
 }

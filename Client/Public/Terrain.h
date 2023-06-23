@@ -44,7 +44,7 @@ public:
 #ifdef _DEBUG
 public:
 	virtual _bool Picked(_Inout_ PICK_DESC& tPickDesc, const RAY& tRay) override;
-#endif _USE_IMGUI
+#endif DEBUG
 
 private:
 	CShader* m_pShaderCom = { nullptr };

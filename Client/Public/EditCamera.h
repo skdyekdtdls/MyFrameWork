@@ -1,4 +1,4 @@
-#define _USE_IMGUI
+#define DEBUG
 #pragma once
 
 #include "Client_Defines.h"

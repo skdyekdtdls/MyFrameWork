@@ -1,4 +1,4 @@
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 #include "ImWindow_Navigation.h"
 #include "ImWindow_Manager.h"
 #include "ImWindow_Demo.h"

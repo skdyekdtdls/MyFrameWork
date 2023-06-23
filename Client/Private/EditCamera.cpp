@@ -1,4 +1,4 @@
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 #include "EditCamera.h"
 #include "Terrain.h"
 #include "GameInstance.h"

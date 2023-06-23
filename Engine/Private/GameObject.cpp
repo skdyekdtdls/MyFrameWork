@@ -25,7 +25,7 @@ HRESULT CGameObject::Initialize(void* pArg)
 {
 	FAILED_CHECK_RETURN(__super::Initialize(pArg), E_FAIL);
 
-#ifdef  _DEBUG
+#ifdef _DEBUG
 	CColliderSphere::COLLIDER_SPHERE_DESC tColliderSphereDesc;
 	tColliderSphereDesc.fRadius = { 0.5f };
 	tColliderSphereDesc.vCenter = { _float3(0.f, tColliderSphereDesc.fRadius * 1.f, 0.f) };
@@ -94,7 +94,7 @@ _bool CGameObject::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 #ifdef _DEBUG
 _float CGameObject::GetPickSphereRadius()
 {
-	return m_pPickCollider->GetBoundingSphere()->Radius;;
+	return m_pPickCollider->GetBoundingSphere()->Radius;
 }
 #endif
 

@@ -1,4 +1,4 @@
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 #include "ImWindow_ObjectTool.h"
 #include "Layer.h"
 CImWindow_ObjectTool::CImWindow_ObjectTool(ImGuiIO* pIO)

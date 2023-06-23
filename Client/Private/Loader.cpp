@@ -108,6 +108,8 @@ HRESULT CLoader::Loading_For_GamePlay()
 	if (nullptr == m_pGameInstance)
 		return E_FAIL;
 
+	_matrix		PivotMatrix = XMMatrixIdentity();
+
 	Set_LoadingText(L"텍스처 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Terrain"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Terrain/Tile%d.dds", 2))), E_FAIL);
@@ -122,19 +124,46 @@ HRESULT CLoader::Loading_For_GamePlay()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Terrain::ProtoTag(),
 		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Terrain/Height.bmp"))), E_FAIL);
 
-	Set_LoadingText(L"쉐이더 로딩 중");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Cube::ProtoTag(),
+		CVIBuffer_Cube::Create(m_pDevice, m_pContext)), E_FAIL);
 
+	//PivotMatrix = XMMatrixScaling(0.1f, 0.1f, 0.1f) * XMMatrixRotationX(XMConvertToRadians(-90.f)) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Model_clint_Skeleton"),
+	//	CModel::Create(m_pDevice, m_pContext, TEXT("../../Resources/Models/clint_Skeleton/clint_Skeleton.dat"), PivotMatrix)), E_FAIL);
 
-	Set_LoadingText(L"객체 로딩 중");
+	PivotMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Model_Fiona"),
+		CModel::Create(m_pDevice, m_pContext, TEXT("../../Resources/Models/Fiona/Fiona.dat"), PivotMatrix)), E_FAIL);
+
+	lstrcpy(m_szLoading, TEXT("네비게이션정보 로딩 중."));
+	/* For.Prototype_COmpoentn_Navigation */
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CNavigation::ProtoTag(),
+		CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/Data/Navigation.dat"))), E_FAIL);
+
+	Set_LoadingText(L"셰이더 로딩 중");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Shader_Navigation"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Navigation.hlsl")
+			, VTXPOS_DECL::Elements, VTXPOS_DECL::iNumElements)), E_FAIL);
+
+	Set_LoadingText(L"충돌체 로딩 중");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CColliderSphere::ProtoTag(),
+		CColliderSphere::Create(m_pDevice, m_pContext)), E_FAIL);
+
+	Set_LoadingText(L"객체 로딩 중"); // 객체는 마지막에 로딩되어야한다.
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CTerrain::ProtoTag(), CTerrain::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CCamera_Free::ProtoTag(), CCamera_Free::Create(m_pDevice, m_pContext)), E_FAIL);
 
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CCube::ProtoTag(), CCube::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CPlayer::ProtoTag(), CPlayer::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CMonster::ProtoTag(), CMonster::Create(m_pDevice, m_pContext)), E_FAIL);
 	Set_LoadingText(L"로딩 완료");
 
 	m_isFinished = true;
 
 	return S_OK;
 }
+
+
 
 #ifdef _DEBUG
 HRESULT CLoader::Loading_For_IMGUI()
@@ -193,7 +222,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 	Set_LoadingText(L"로딩 완료");
 
 	m_isFinished = true;
-
+	
 	return S_OK;
 }
 #endif

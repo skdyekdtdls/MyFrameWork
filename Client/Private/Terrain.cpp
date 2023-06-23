@@ -1,6 +1,6 @@
 #include "Terrain.h"
 #include "GameInstance.h"
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 #include "ImWindow_Manager.h"
 #include "ImWindow_Navigation.h"
 #endif
@@ -84,7 +84,7 @@ void CTerrain::AddCell(const _float3* vPoints)
 
 	m_pNavigationCom->AddCell(vPoints);
 
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 	CImWindow_Manager* pImWinMgr = CImWindow_Manager::GetInstance();
 	Safe_AddRef(pImWinMgr);
 
@@ -100,7 +100,7 @@ _uint CTerrain::GetCellSize()
 	return m_pNavigationCom->GetCellSize();
 }
 
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 _bool CTerrain::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 {
 	_bool bResult = { false };
@@ -133,7 +133,7 @@ _bool CTerrain::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 	
 	return bResult;
 }
-#endif _USE_IMGUI
+#endif DEBUG
 
 HRESULT CTerrain::Add_Components()
 {	
