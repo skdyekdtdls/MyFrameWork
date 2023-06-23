@@ -13,6 +13,12 @@
 #include <cassert>
 #include <DirectXCollision.h>
 #include "DirectXTK\ScreenGrab.h"
+#include "DirectXTK/PrimitiveBatch.h"
+#include "DirectXTK/VertexTypes.h"
+#include "DirectXTK/Effects.h"
+#include "DirectXTK/SpriteBatch.h"
+#include "DirectXTK/SpriteFont.h"
+
 
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>

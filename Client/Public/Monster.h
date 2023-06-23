@@ -9,6 +9,7 @@ class CShader;
 class CRenderer;
 class CTransform;
 class CModel;
+class CCollider;
 END
 
 BEGIN(Client)
@@ -37,6 +38,7 @@ private:
 	CShader* m_pShaderCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
+	CCollider* m_pColliderCom = { nullptr };
 
 public:
 	HRESULT Add_Components();

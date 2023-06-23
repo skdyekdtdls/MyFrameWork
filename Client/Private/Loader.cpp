@@ -171,11 +171,15 @@ HRESULT CLoader::Loading_For_IMGUI()
 		CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/Data/Navigation.dat"))), E_FAIL);
 
 	Set_LoadingText(L"셰이더 로딩 중");
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Navigation"),
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Shader_Navigation"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Navigation.hlsl")
 			, VTXPOS_DECL::Elements, VTXPOS_DECL::iNumElements)), E_FAIL);
 
-	Set_LoadingText(L"객체 로딩 중");
+	Set_LoadingText(L"충돌체 로딩 중");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CColliderSphere::ProtoTag(),
+		CColliderSphere::Create(m_pDevice, m_pContext)), E_FAIL);
+
+	Set_LoadingText(L"객체 로딩 중"); // 객체는 마지막에 로딩되어야한다.
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CTerrain::ProtoTag(), CTerrain::Create(m_pDevice, m_pContext)), E_FAIL);
 #ifdef _DEBUG
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CEditCamera::ProtoTag(), CEditCamera::Create(m_pDevice, m_pContext)), E_FAIL);
