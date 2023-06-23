@@ -51,6 +51,7 @@ void CImWindow_Transform::Tick()
 
 	ImGui::End();
 }
+
 void CImWindow_Transform::Set_GameObject(CGameObject* pGameObject)
 {
 	Safe_Release(m_pGameObject);
@@ -58,7 +59,7 @@ void CImWindow_Transform::Set_GameObject(CGameObject* pGameObject)
 	m_pGameObject = pGameObject;
 
 	Safe_AddRef(m_pGameObject);
-	CTransform* pTransform = static_cast<CTransform*>(m_pGameObject->Get_Component(L"Com_Transform"));
+	CTransform* pTransform = dynamic_cast<CTransform*>(m_pGameObject->Get_Component(L"Com_Transform"));
 
 	if (nullptr == pTransform)
 	{

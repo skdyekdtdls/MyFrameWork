@@ -34,7 +34,7 @@ private:
 
 public:
 	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
-	virtual void Load(HANDLE hFile, DWORD& dwByte) override;
+	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
 
 public:
 	_vector Get_State(STATE _eState) {

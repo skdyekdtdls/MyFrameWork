@@ -1,6 +1,8 @@
 #include "Object_Manager.h"
 #include "GameObject.h"
 #include "Layer.h"
+#include "Level_Manager.h"
+#include "Camera.h"
 IMPLEMENT_SINGLETON(CObject_Manager)
 
 CObject_Manager::CObject_Manager()
@@ -30,30 +32,30 @@ HRESULT CObject_Manager::Add_Prototype(const _tchar* pPrototypeTag, CGameObject*
 	return S_OK;
 }
 
-HRESULT CObject_Manager::Add_GameObject(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pLayerTag, void* pArg)
+CGameObject* CObject_Manager::Add_GameObject(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pLayerTag, void* pArg)
 {
 	CGameObject* pPrototype = Find_Prototype(pPrototypeTag);
 	if (nullptr == pPrototype)
-		return E_FAIL;
+		return nullptr;
 
 	CGameObject* pGameObject = pPrototype->Clone(pArg);
 
 	if (nullptr == pGameObject)
 	{
 		Safe_Release(pGameObject);
-		return E_FAIL;
+		return nullptr;
 	}
 
 	CLayer* pLayer = Find_Layer(iLevelIndex, pLayerTag);
 	if (nullptr == pLayer)
 	{
-		pLayer = CLayer::Create();
+		pLayer = CLayer::Create(pLayerTag);
 		m_pLayers[iLevelIndex].emplace(pLayerTag, pLayer);
 	}
 
 	pLayer->Add_GameObject(pGameObject);
 
-	return S_OK;
+	return pGameObject;
 }
 
 void CObject_Manager::Clear_LevelResources(_uint iLevelIndex)
@@ -124,4 +126,36 @@ void CObject_Manager::Free()
 		Safe_Release(Pair.second);
 	}
 	m_Prototypes.clear();
+}
+
+void CObject_Manager::Serialization(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
+{
+	_uint iSize = m_pLayers[iLevelIndex].size();
+	WriteVoid(&iSize, sizeof(_uint));
+
+	for (auto& Layer : m_pLayers[iLevelIndex])
+	{
+		Layer.second->Save(hFile, dwByte);
+	}
+}
+
+void CObject_Manager::Deserialization(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
+{
+	for (auto& Pair : m_pLayers[iLevelIndex])
+	{
+		Safe_Release(Pair.second);
+	}
+	m_pLayers[iLevelIndex].clear();
+
+	_uint iSize = 0;
+	ReadVoid(&iSize, sizeof(_uint));
+
+	for(_uint i = 0 ; i < iSize; ++i)
+	{			
+		INFO tTagInfo;
+		tTagInfo.Load(hFile, dwByte);
+		CLayer* pLayer = CLayer::Create(tTagInfo.wstrName);
+		m_pLayers[iLevelIndex].emplace(pLayer->GetLayerName(), pLayer);
+		pLayer->Load(hFile, dwByte, iLevelIndex);
+	}	
 }

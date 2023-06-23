@@ -2,6 +2,7 @@
 
 #include "Client_Defines.h"
 #include "GameObject.h"
+#include "ISerializable.h"
 
 BEGIN(Engine)
 class CShader;
@@ -12,7 +13,7 @@ END
 
 BEGIN(Client)
 
-class CMonster final : public CGameObject
+class CMonster final : public CGameObject, public ISerializable
 {
 
 protected:
@@ -26,6 +27,10 @@ public:
 	virtual void Tick(_double TimeDelta) override;
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
+
+public:
+	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
+	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
 
 private:
 	CModel* m_pModelCom = { nullptr };

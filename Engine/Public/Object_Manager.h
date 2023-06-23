@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base.h"
+#include "ISerializable.h"
 
 BEGIN(Engine)
 class CGameObject;
@@ -11,11 +12,14 @@ class CObject_Manager final : public CBase
 public:
 	CObject_Manager();
 	~CObject_Manager() = default;
+public:
+	void Serialization(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex = 1);
+	void Deserialization(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex);
 
 public:
 	HRESULT Reserve_Containers(_uint iNumLevels);
 	HRESULT Add_Prototype(const _tchar* pPrototypeTag, CGameObject* pGameObject);
-	HRESULT Add_GameObject(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pLayerTag, void* pArg);
+	CGameObject* Add_GameObject(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pLayerTag, void* pArg);
 	void Clear_LevelResources(_uint iLevelIndex);
 
 	void Tick(_double TimeDelta);

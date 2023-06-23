@@ -98,6 +98,22 @@ CGameObject* CGameInstance::Get_GameObject(_uint iLevelIndex, const _tchar* pLay
 	return pGameObject;
 }
 
+void CGameInstance::Serialization(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
+{
+	if (nullptr == m_pObject_Manager)
+		return;
+
+	m_pObject_Manager->Serialization(hFile, dwByte, iLevelIndex);
+}
+
+void CGameInstance::Deserialization(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
+{
+	if (nullptr == m_pObject_Manager)
+		return;
+
+	m_pObject_Manager->Deserialization(hFile, dwByte, iLevelIndex);
+}
+
 void CGameInstance::ResizeBuffer(_uint& g_ResizeWidth, _uint& g_ResizeHeight)
 {
 	if (nullptr == m_pGraphic_Device)
@@ -215,10 +231,10 @@ HRESULT CGameInstance::Add_Prototype(const _tchar* pPrototypeTag, CGameObject* p
 	return m_pObject_Manager->Add_Prototype(pPrototypeTag, pPrototype);
 }
 
-HRESULT CGameInstance::Add_GameObject(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pLayerTag, void* pArg)
+CGameObject* CGameInstance::Add_GameObject(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pLayerTag, void* pArg)
 {
 	if (nullptr == m_pObject_Manager)
-		return E_FAIL;
+		return nullptr;
 
 	return m_pObject_Manager->Add_GameObject(iLevelIndex, pPrototypeTag, pLayerTag, pArg);
 }

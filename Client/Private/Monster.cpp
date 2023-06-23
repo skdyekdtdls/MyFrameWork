@@ -31,9 +31,11 @@ HRESULT CMonster::Initialize(void* pArg)
 
 	if (FAILED(Add_Components()))
 		return E_FAIL;
-	
+
 	++CMonster_Id;
-	m_strName = "CMonster" + to_string(CMonster_Id);
+	m_tInfo.wstrName = TO_WSTR("CMonster" + to_string(CMonster_Id));
+	m_tInfo.wstrKey = ProtoTag();
+	m_tInfo.ID = CMonster_Id;
 
 	m_pModelCom->Set_AnimIndex(0);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(rand() % 20, 3.f, rand() % 20, 1.f));
@@ -81,6 +83,17 @@ HRESULT CMonster::Render()
 	}
 
 	return S_OK;
+}
+
+void CMonster::Save(HANDLE hFile, DWORD& dwByte)
+{
+	m_tInfo.Save(hFile, dwByte);
+	m_pTransformCom->Save(hFile, dwByte);
+}
+
+void CMonster::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
+{
+	m_pTransformCom->Load(hFile, dwByte, iLevelIndex);
 }
 
 HRESULT CMonster::Add_Components()

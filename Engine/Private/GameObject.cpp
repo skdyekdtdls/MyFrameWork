@@ -2,13 +2,13 @@
 #include "Transform.h"
 CGameObject::CGameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComposite(pDevice, pContext)
-	, m_strName("")
+	, m_tInfo()
 {
 }
 
 CGameObject::CGameObject(const CGameObject& rhs)
 	: CComposite(rhs)
-	, m_strName(rhs.m_strName.c_str())
+	, m_tInfo()
 {
 }
 

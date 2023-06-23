@@ -29,8 +29,7 @@ private:
 public:
 	// ISerializable을(를) 통해 상속됨
 	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
-	virtual void Load(HANDLE hFile, DWORD& dwByte) override;
-
+	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
 public:
 	_uint GetCellSize();
 
@@ -46,6 +45,7 @@ public:
 public:
 	virtual _bool Picked(_Inout_ PICK_DESC& tPickDesc, const RAY& tRay) override;
 #endif _USE_IMGUI
+
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom[TYPE_END] = { nullptr };
@@ -59,6 +59,7 @@ private:
 	HRESULT SetUp_ShaderResources();
 
 public:
+	static _uint CTerrain_Id;
 	static const _tchar* ProtoTag() { return L"Prototype_GameObject_CTerrain"; }
 	static CTerrain* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

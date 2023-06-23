@@ -2,9 +2,9 @@
 
 #include "GameObject.h"
 #include "Transform.h"
-
+#include "ISerializable.h"
 BEGIN(Engine)
-class ENGINE_DLL CCamera abstract : public CGameObject
+class ENGINE_DLL CCamera abstract : public CGameObject, public ISerializable
 {
 public:
 	typedef struct tagCameraDesc
@@ -17,8 +17,12 @@ public:
 protected:
 	CCamera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CCamera(const CCamera& rhs);
+	CCamera operator=(const CCamera& rhs) = delete;
 	virtual ~CCamera() = default;
 
+public:
+	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
+	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;

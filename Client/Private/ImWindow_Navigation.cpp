@@ -14,7 +14,6 @@ HRESULT CImWindow_Navigation::Initialize(void* pArg)
 	if (__super::Initialize(pArg))
 		return E_FAIL;
 
-
 	return S_OK;
 }
 
@@ -71,13 +70,7 @@ void CImWindow_Navigation::AddItems(const char* strItem)
 	items.push_back(strItem);
 }
 
-bool CImWindow_Navigation::VectorGetter(void* data, int idx, const char** out_str)
-{
-	auto& vector = *static_cast<std::vector<std::string>*>(data);
-	if (idx < 0 || idx >= static_cast<int>(vector.size())) { return false; }
-	*out_str = vector.at(idx).c_str();
-	return true;
-}
+
 
 CImWindow_Navigation* CImWindow_Navigation::Create(ImGuiIO* pIO)
 {

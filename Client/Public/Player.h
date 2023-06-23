@@ -4,7 +4,7 @@
 
 #include "Client_Defines.h"
 #include "GameObject.h"
-
+#include "ISerializable.h"
 BEGIN(Engine)
 
 class CShader;
@@ -15,12 +15,16 @@ class CModel;
 END
 
 BEGIN(Client)
-class CPlayer final : public CGameObject
+class CPlayer final : public CGameObject, public ISerializable
 {
 private:
 	CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CPlayer(const CPlayer& rhs);
 	virtual ~CPlayer() = default;
+
+public:
+	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
+	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

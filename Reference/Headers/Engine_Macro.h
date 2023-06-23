@@ -55,7 +55,7 @@
 	{if ((HRESULT)_hr < 0) { CONSOLE_MSG(_message); __debugbreak(); return _return; }}
 
 #define BOOL_CHECK(_hr) \
-	{if ((bool)_hr == false) { __debugbreak(); return; }}
+	{if ((bool)_hr == false) { __debugbreak(); return false; }}
 
 #define NO_COPY(CLASSNAME)										\
 private:														\

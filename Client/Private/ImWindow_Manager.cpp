@@ -5,6 +5,7 @@
 #include "ImMode.h"
 #include "ImWindow_Transform.h"
 #include "ImWindow_Navigation.h"
+#include "ImWindow_SaveLoads.h"
 IMPLEMENT_SINGLETON(CImWindow_Manager)
 
 CImWindow_Manager::CImWindow_Manager()
@@ -30,7 +31,8 @@ HRESULT CImWindow_Manager::Initialize(ImGuiIO** pIO, ID3D11Device* pDevice, ID3D
     Add_Window(L"CImMode", CImMode::Create(m_pIO));
     Add_Window(L"CImWindow_Transform", CImWindow_Transform::Create(m_pIO));
     Add_Window(L"CImWindow_Navigation", CImWindow_Navigation::Create(m_pIO));
-
+    Add_Window(L"CImWindow_SaveLoads", CImWindow_SaveLoads::Create(m_pIO));
+    Add_Window(L"CImWindow_ObjectTool", CImWindow_ObjectTool::Create(m_pIO));
     return S_OK;
 }
 

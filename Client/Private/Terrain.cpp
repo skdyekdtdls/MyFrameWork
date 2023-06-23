@@ -4,9 +4,13 @@
 #include "ImWindow_Manager.h"
 #include "ImWindow_Navigation.h"
 #endif
+
+_uint CTerrain::CTerrain_Id = { 0 };
+
 CTerrain::CTerrain(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
+
 }
 
 CTerrain::CTerrain(const CTerrain& rhs)
@@ -14,21 +18,13 @@ CTerrain::CTerrain(const CTerrain& rhs)
 {
 }
 
-void CTerrain::Save(HANDLE hFile, DWORD& dwByte)
-{
-	m_pTransformCom->Save(hFile, dwByte);
-	m_pNavigationCom->Save(hFile, dwByte);
-}
-
-void CTerrain::Load(HANDLE hFile, DWORD& dwByte)
-{
-	
-}
-
 HRESULT CTerrain::Initialize_Prototype()
 {
 	FAILED_CHECK_RETURN(__super::Initialize_Prototype(), E_FAIL);
-	m_strName = "CTerrain";
+	
+
+
+
 	return S_OK;
 }
 
@@ -38,6 +34,11 @@ HRESULT CTerrain::Initialize(void* pArg)
 
 	if (FAILED(Add_Components()))
 		return E_FAIL;
+
+	++CTerrain_Id;
+	m_tInfo.wstrName = TO_WSTR("CTerrain" + to_string(CTerrain_Id));
+	m_tInfo.wstrKey = ProtoTag();
+	m_tInfo.ID = CTerrain_Id;
 
 	return S_OK;
 }
@@ -123,8 +124,12 @@ _bool CTerrain::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 
 		_float4x4 worldMatrix = m_pTransformCom->Get_WorldFloat4x4();
 		XMStoreFloat3(&vIntersection, XMVector3TransformCoord(XMLoadFloat3(&vIntersection), XMLoadFloat4x4(&worldMatrix)));
-		tPickDesc.fDist = fMinDist;
-		tPickDesc.vPickPos = vIntersection;
+		if (tPickDesc.fDist > fMinDist)
+		{
+			tPickDesc.fDist = fMinDist;
+			tPickDesc.vPickPos = vIntersection;
+			tPickDesc.pPickedObject = this;
+		}
 	}
 	
 	return bResult;
@@ -145,7 +150,6 @@ HRESULT CTerrain::Add_Components()
 	FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), L"Prototype_Component_Texture_Terrain", L"Com_Texture", (CComponent**)&m_pTextureCom[TYPE_DIFFUSE]), E_FAIL);
 	FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), L"Prototype_Component_Texture_Terrain_Mask", L"Com_Texture_Mask", (CComponent**)&m_pTextureCom[TYPE_MASK]), E_FAIL);
 	FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), L"Prototype_Component_Texture_Terrain_Brush", L"Com_Texture_Brush", (CComponent**)&m_pTextureCom[TYPE_BRUSH]), E_FAIL);
-
 	FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), CNavigation::ProtoTag(), L"Com_Navigation", (CComponent**)&m_pNavigationCom), E_FAIL);
 
 	Safe_Release(pGameInstance);
@@ -210,7 +214,7 @@ CGameObject* CTerrain::Clone(void* pArg)
 void CTerrain::Free(void)
 {
 	__super::Free();
-
+	--CTerrain_Id;
 	Safe_Release(m_pNavigationCom);
 
 	for (size_t i = 0; i < TYPE_END; i++)
@@ -220,6 +224,20 @@ void CTerrain::Free(void)
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);
+}
+
+void CTerrain::Save(HANDLE hFile, DWORD& dwByte)
+{
+	m_tInfo.Save(hFile, dwByte);
+	m_pTransformCom->Save(hFile, dwByte);
+	m_pNavigationCom->Save(hFile, dwByte);
+
+}
+
+void CTerrain::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
+{
+	m_pTransformCom->Load(hFile, dwByte, iLevelIndex);
+	m_pNavigationCom->Load(hFile, dwByte, iLevelIndex);
 }
 
 

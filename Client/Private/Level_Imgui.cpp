@@ -47,6 +47,8 @@ HRESULT CLevel_Imgui::Render()
 {
 	return S_OK;
 }
+
+
 HRESULT CLevel_Imgui::Ready_Lights()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
@@ -74,8 +76,8 @@ HRESULT CLevel_Imgui::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	FAILED_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CTerrain::ProtoTag(), pLayerTag), E_FAIL);
-	//FAILED_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CPlayer::ProtoTag(), pLayerTag), E_FAIL);
+	NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CTerrain::ProtoTag(), pLayerTag), E_FAIL);
+	//NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CPlayer::ProtoTag(), pLayerTag), E_FAIL);
 
 	Safe_Release(pGameInstance);
 
@@ -100,7 +102,7 @@ HRESULT CLevel_Imgui::Ready_Layer_Camera(const _tchar* pLayerTag)
 	Edit_Camera_Desc.CameraDesc.TransformDesc.SpeedPerSec = 10.f;
 	Edit_Camera_Desc.CameraDesc.TransformDesc.RotationPerSec = XMConvertToRadians(90.0f);
 
-	FAILED_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CEditCamera::ProtoTag(), pLayerTag, &Edit_Camera_Desc), E_FAIL);
+	NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CEditCamera::ProtoTag(), pLayerTag, &Edit_Camera_Desc), E_FAIL);
 
 	Safe_Release(pGameInstance);
 
@@ -114,7 +116,7 @@ HRESULT CLevel_Imgui::Ready_Layer_Monster(const _tchar* pLayerTag)
 
 	for (size_t i = 0; i < 1; i++)
 	{
-		FAILED_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CMonster::ProtoTag(), pLayerTag), E_FAIL);
+		NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CMonster::ProtoTag(), pLayerTag), E_FAIL);
 	}
 
 	Safe_Release(pGameInstance);

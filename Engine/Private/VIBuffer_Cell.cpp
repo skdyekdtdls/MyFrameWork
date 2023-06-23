@@ -32,8 +32,11 @@ HRESULT CVIBuffer_Cell::Initialize_Prototype(const _float3* pPoints)
 
 	VTXPOS* pVertices = new VTXPOS[m_iNumVertices];
 
-	for (_uint i = 0; i < m_iNumVertices; ++i)
-		pVertices[i].vPosition = pPoints[i];
+	if (nullptr != pPoints)
+	{
+		for (_uint i = 0; i < m_iNumVertices; ++i)
+			pVertices[i].vPosition = pPoints[i];
+	}
 
 	ZeroStruct(m_SubResourceData);
 	m_SubResourceData.pSysMem = { pVertices };
