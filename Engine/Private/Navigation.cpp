@@ -130,6 +130,7 @@ _bool CNavigation::is_Move(_fvector vPosition)
 	return false;
 }
 
+#ifdef _DEBUG
 void CNavigation::Set_ShaderResources()
 {
 	NULL_CHECK(m_pShader);
@@ -154,6 +155,7 @@ void CNavigation::Set_ShaderResources()
 	Safe_Release(pPipeLine);
 	return;
 }
+#endif
 
 #ifdef _DEBUG
 HRESULT CNavigation::Render_Navigation()

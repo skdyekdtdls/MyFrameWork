@@ -57,10 +57,10 @@ void CMonster::Tick(_double TimeDelta)
 
 	//m_pTransformCom->Rotation(XMVectorSet(1.f, 0.f, 0.f, 1.f), XMConvertToRadians(77.f));
 
-	if (nullptr != m_pRendererCom)
-		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
+	NULL_CHECK(m_pRendererCom);
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 
-	if (nullptr != m_pColliderCom)
+	if(nullptr != m_pColliderCom)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
 }
 
@@ -92,7 +92,8 @@ HRESULT CMonster::Render()
 	}
 
 #ifdef _DEBUG
-	m_pColliderCom->Render();
+	if(nullptr != m_pColliderCom)
+		m_pColliderCom->Render();
 #endif
 
 	return S_OK;
@@ -125,12 +126,6 @@ HRESULT CMonster::Add_Components()
 		, &TransformDesc), E_FAIL);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxAnimMesh", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
 	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Fiona", L"Com_Model", (CComponent**)&m_pModelCom), E_FAIL);
-
-	CColliderSphere::COLLIDER_SPHERE_DESC tColliderSphereDesc;
-	tColliderSphereDesc.fRadius = { 0.5f };
-	tColliderSphereDesc.vCenter = { _float3(0.f, tColliderSphereDesc.fRadius * 1.f, 0.f) };
-	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, CColliderSphere::ProtoTag()
-		, L"Com_Collider", (CComponent**)&m_pColliderCom, &tColliderSphereDesc), E_FAIL);
 
 	Safe_Release(pGameInstance);
 	return S_OK;

@@ -42,7 +42,7 @@ public:
 };
 
 END
-#endif
+
 
 template<typename T>
 inline T* CImWindow_Manager::Get_ImWindow()
@@ -51,3 +51,4 @@ inline T* CImWindow_Manager::Get_ImWindow()
     className.erase(0, strlen("class Client::"));
     return dynamic_cast<T*>(Find_Window(TO_WSTR(className).c_str()));
 }
+#endif

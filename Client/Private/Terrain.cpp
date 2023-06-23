@@ -99,6 +99,7 @@ _uint CTerrain::GetCellSize()
 {
 	return m_pNavigationCom->GetCellSize();
 }
+
 #ifdef _USE_IMGUI
 _bool CTerrain::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 {
@@ -179,8 +180,7 @@ HRESULT CTerrain::SetUp_ShaderResources()
 
 	Safe_Release(pGameInstance);
 
-	if (FAILED(m_pTextureCom[TYPE_DIFFUSE]->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture")))
-		return E_FAIL;
+	FAILED_CHECK_RETURN(m_pTextureCom[TYPE_DIFFUSE]->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture"), E_FAIL);
 
 	return S_OK;
 }
@@ -229,7 +229,6 @@ void CTerrain::Save(HANDLE hFile, DWORD& dwByte)
 	m_tInfo.Save(hFile, dwByte);
 	m_pTransformCom->Save(hFile, dwByte);
 	m_pNavigationCom->Save(hFile, dwByte);
-
 }
 
 void CTerrain::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)

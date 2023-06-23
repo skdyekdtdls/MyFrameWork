@@ -39,7 +39,7 @@ void CColliderSphere::Tick(_fmatrix TransformMatrix)
 
 	m_pBoudingSphere_Origin->Transform(*m_pBoudingSphere, TransformMatrix);
 }
-
+#ifdef _DEBUG
 HRESULT CColliderSphere::Render()
 {
 	SetupResources();
@@ -52,6 +52,7 @@ HRESULT CColliderSphere::Render()
 
 	return S_OK;
 }
+#endif
 
 CColliderSphere* CColliderSphere::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {

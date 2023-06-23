@@ -9,8 +9,8 @@ namespace Engine
 
 		void Save(HANDLE hFile, DWORD& dwByte)
 		{
-			_uint iNameLength = wstrName.size() + 1;
-			_uint iNameKey = wstrKey.size() + 1;
+			_uint iNameLength = static_cast<_uint>(wstrName.size()) + 1;
+			_uint iNameKey = static_cast<_uint>(wstrKey.size()) + 1;
 
 			WriteVoid(&iNameLength, sizeof(_uint));
 			WriteVoid(&iNameKey, sizeof(_uint));

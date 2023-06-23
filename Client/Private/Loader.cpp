@@ -58,9 +58,11 @@ HRESULT CLoader::Loading()
 	case Client::LEVEL_GAMEPLAY:
 		hr = Loading_For_GamePlay();
 		break;
+#ifdef _DEBUG
 	case Client::LEVEL_IMGUI:
 		hr = Loading_For_IMGUI();
 		break;
+#endif
 	default:
 		FAILED_CHECK_RETURN(E_FAIL, E_FAIL);
 	}
@@ -134,6 +136,7 @@ HRESULT CLoader::Loading_For_GamePlay()
 	return S_OK;
 }
 
+#ifdef _DEBUG
 HRESULT CLoader::Loading_For_IMGUI()
 {
 	if (nullptr == m_pGameInstance)
@@ -181,9 +184,8 @@ HRESULT CLoader::Loading_For_IMGUI()
 
 	Set_LoadingText(L"객체 로딩 중"); // 객체는 마지막에 로딩되어야한다.
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CTerrain::ProtoTag(), CTerrain::Create(m_pDevice, m_pContext)), E_FAIL);
-#ifdef _DEBUG
+
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CEditCamera::ProtoTag(), CEditCamera::Create(m_pDevice, m_pContext)), E_FAIL);
-#endif // DEBUG
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CCube::ProtoTag(), CCube::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CPlayer::ProtoTag(), CPlayer::Create(m_pDevice, m_pContext)), E_FAIL);
@@ -194,7 +196,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 
 	return S_OK;
 }
-
+#endif
 CLoader* CLoader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, LEVELID eNextLevel)
 {
 	CLoader* pInstance = new CLoader(pDevice, pDeviceContext);
