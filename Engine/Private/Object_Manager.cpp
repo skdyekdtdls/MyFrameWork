@@ -70,6 +70,12 @@ void CObject_Manager::Clear_LevelResources(_uint iLevelIndex)
 	m_pLayers[iLevelIndex].clear();
 }
 
+const list<CGameObject*>& CObject_Manager::GetObjListOfLayer(const _tchar* pTag, _uint iLevelIndex)
+{
+	CLayer* pLayer = Find_Layer(iLevelIndex, pTag);
+	return pLayer->GetGameObjects();
+}
+
 void CObject_Manager::Tick(_double TimeDelta)
 {
 	for (_uint i = 0; i < m_iNumLevels; ++i)

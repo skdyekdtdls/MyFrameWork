@@ -113,7 +113,6 @@ HRESULT CModel::Bind_BoneMatrices(CShader* pShader, const char* pConstantName, _
 	return S_OK;
 }
 
-
 HRESULT CModel::Ready_Meshes(const SCENE& tScene, _fmatrix PivotMatrix)
 {
 	m_iNumMeshes = tScene.m_NumMeshes;

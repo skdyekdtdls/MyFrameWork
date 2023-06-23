@@ -18,14 +18,18 @@ public:
     static  CImWindow_ObjectTool* Create(ImGuiIO* pIO);
     virtual void Free(void) override;
 
-private: /* Static_ */
-    int Prototype_item_current = 0;
-    vector<std::string> Prototype_items;
+private: /* Static_Mesh */
+    int Static_Mesh_item_current = 0;
+    vector<std::string> Static_Mesh_items;
 
+private: /* Skeletal_Mesh*/
+    int Skeletal_Mesh_item_current = 0;
+    vector<std::string> Skeletal_Mesh_items;
+    char buf[32] = "";
+
+private: /* Hierachy */
     int Hierachy_item_current = 0;
-    vector<std::string> Hierachy_itesm;
-private: /* */
-
+    vector<std::string> Hierachy_items;
 
 };
 

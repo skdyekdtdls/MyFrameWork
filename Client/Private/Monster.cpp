@@ -37,9 +37,14 @@ HRESULT CMonster::Initialize(void* pArg)
 	m_tInfo.wstrKey = ProtoTag();
 	m_tInfo.ID = CMonster_Id;
 
-	m_pModelCom->Set_AnimIndex(0);
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(rand() % 20, 3.f, rand() % 20, 1.f));
-
+	CLONE_DESC tCloneDesc;
+	ZeroStruct(tCloneDesc);
+	if (nullptr != pArg)
+		tCloneDesc = *(CLONE_DESC*)pArg;
+	
+	m_pModelCom->Set_AnimIndex(rand() % 10);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
+	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(rand() % 20, 3.f, rand() % 20, 1.f));
 	return S_OK;
 }
 

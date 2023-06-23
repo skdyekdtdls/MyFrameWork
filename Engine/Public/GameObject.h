@@ -9,7 +9,7 @@ class ENGINE_DLL CGameObject : public CComposite
 public:
 	typedef struct tagCloneDesc
 	{
-		_float3 vPosition;
+		_float4 vPosition;
 	}CLONE_DESC;
 protected:
 	CGameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

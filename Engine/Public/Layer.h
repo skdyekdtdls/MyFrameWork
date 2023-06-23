@@ -25,7 +25,9 @@ public:
 	void SetLayerName(wstring wstrLayerName) {
 		m_tInfo.wstrName = wstrLayerName.c_str();
 	}
-
+	const list<CGameObject*>& GetGameObjects() {
+		return m_pGameObjects;
+	}
 public:
 	HRESULT Add_GameObject(CGameObject * pGameObject);
 	void Tick(_double TimeDelta);

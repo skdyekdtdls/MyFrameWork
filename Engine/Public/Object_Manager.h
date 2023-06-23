@@ -16,6 +16,11 @@ public:
 	void Serialization(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex = 1);
 	void Deserialization(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex);
 
+	const list<CGameObject*>& GetObjListOfLayer(const _tchar* pTag, _uint iLevelIndex = 1);
+	_uint GetNumLayers() {
+		return m_pLayers->size();
+	}
+
 public:
 	HRESULT Reserve_Containers(_uint iNumLevels);
 	HRESULT Add_Prototype(const _tchar* pPrototypeTag, CGameObject* pGameObject);

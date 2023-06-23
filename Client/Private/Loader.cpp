@@ -163,7 +163,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 
 	PivotMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Model_Fiona"),
-		CModel::Create(m_pDevice, m_pContext, TEXT("../../Resources/Models/crow_final/crow_final.dat"), PivotMatrix)), E_FAIL);
+		CModel::Create(m_pDevice, m_pContext, TEXT("../../Resources/Models/Fiona/Fiona.dat"), PivotMatrix)), E_FAIL);
 
 	lstrcpy(m_szLoading, TEXT("네비게이션정보 로딩 중."));
 	/* For.Prototype_COmpoentn_Navigation */

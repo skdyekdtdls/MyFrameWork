@@ -37,7 +37,7 @@ HRESULT CCube::Initialize(void* pArg)
 		tCloneDesc = *static_cast<CLONE_DESC*>(pArg);
 		
 		_vector		vPosition = XMVectorSet(0.f, 0.f, 0.f, 1.f);
-		vPosition += XMLoadFloat3(&tCloneDesc.vPosition);
+		vPosition += XMLoadFloat4(&tCloneDesc.vPosition);
 		m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPosition);
 		
 		static int count = 0;
