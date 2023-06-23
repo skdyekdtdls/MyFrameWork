@@ -3,6 +3,7 @@
 #include "Terrain.h"
 #include "GameInstance.h"
 #include "Cube.h"
+#include "Monster.h"
 #include "ImWindow_Manager.h"
 #include "ImWindow_Transform.h"
 #include "ImWindow_Navigation.h"
@@ -162,14 +163,16 @@ HRESULT CEditCamera::Add_Components()
 
 void CEditCamera::Object_Place(CGameInstance* pGameInstance)
 {
-	if (pGameInstance->Get_DIMouseState(CInput_Device::DIMK_LBUTTON))
+	if (pGameInstance->Mouse_Down(CInput_Device::DIMK_LBUTTON))
 	{
 		Engine::PICK_DESC tPickDesc;
 		if (m_pTerrain->Picked(tPickDesc, m_tMouseRay))
 		{
-			CCube::CLONE_DESC tCloneDesc;
-			tCloneDesc.vPosition = { tPickDesc.vPickPos };
-			pGameInstance->Add_GameObject(LEVEL_IMGUI, CCube::ProtoTag(), L"Layer_BackGround", &tCloneDesc);
+			CMonster::CLONE_DESC tCloneDesc;
+			//CCube::CLONE_DESC tCloneDesc;
+			tCloneDesc.vPosition = { *(_float4*)&tPickDesc.vPickPos };
+			tCloneDesc.vPosition.w = 1.f;
+			pGameInstance->Add_GameObject(LEVEL_IMGUI, CMonster::ProtoTag(), L"Layer_BackGround", &tCloneDesc);
 		}
 	}
 }
@@ -206,6 +209,9 @@ void CEditCamera::Edit_Transform(CGameInstance* pGameInstance)
 		{
 			for (auto& iter : m_pRendererCom->Get_RenderObjects(i))
 			{
+				if (dynamic_cast<CTerrain*>(iter))
+					continue;
+
 				if (iter->Picked(tPickDesc, m_tMouseRay))
 				{
 					bResult = true;

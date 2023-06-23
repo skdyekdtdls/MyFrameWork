@@ -9,6 +9,7 @@
 #include "Transform.h"
 #include "Model.h"
 #include "Navigation.h"
+#include "ColliderSphere.h"
 
 BEGIN(Engine)
 class ENGINE_DLL CComponent_Manager final : public CBase

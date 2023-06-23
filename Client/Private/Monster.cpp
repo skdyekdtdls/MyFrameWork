@@ -37,8 +37,14 @@ HRESULT CMonster::Initialize(void* pArg)
 	m_tInfo.wstrKey = ProtoTag();
 	m_tInfo.ID = CMonster_Id;
 
-	m_pModelCom->Set_AnimIndex(0);
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(rand() % 20, 3.f, rand() % 20, 1.f));
+	CLONE_DESC tCloneDesc;
+	ZeroStruct(tCloneDesc);
+	if (nullptr != pArg)
+		tCloneDesc = *(CLONE_DESC*)pArg;
+	
+	m_pModelCom->Set_AnimIndex(rand() % 10);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
+
 
 	return S_OK;
 }
@@ -53,6 +59,9 @@ void CMonster::Tick(_double TimeDelta)
 
 	if (nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
+
+	if (nullptr != m_pColliderCom)
+		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
 }
 
 void CMonster::Late_Tick(_double TimeDelta)
@@ -82,6 +91,10 @@ HRESULT CMonster::Render()
 		m_pModelCom->Render(i);
 	}
 
+#ifdef _DEBUG
+	m_pColliderCom->Render();
+#endif
+
 	return S_OK;
 }
 
@@ -98,6 +111,10 @@ void CMonster::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 
 HRESULT CMonster::Add_Components()
 {
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	LEVELID eLevelID = static_cast<LEVELID>(pGameInstance->Get_NextLevelIndex());
+
 	/* For.Com_Renderer */
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom), E_FAIL);
 
@@ -107,8 +124,15 @@ HRESULT CMonster::Add_Components()
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxAnimMesh", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_IMGUI, L"Prototype_Component_Model_Fiona", L"Com_Model", (CComponent**)&m_pModelCom), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Fiona", L"Com_Model", (CComponent**)&m_pModelCom), E_FAIL);
 
+	CColliderSphere::COLLIDER_SPHERE_DESC tColliderSphereDesc;
+	tColliderSphereDesc.fRadius = { 0.5f };
+	tColliderSphereDesc.vCenter = { _float3(0.f, tColliderSphereDesc.fRadius * 1.f, 0.f) };
+	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, CColliderSphere::ProtoTag()
+		, L"Com_Collider", (CComponent**)&m_pColliderCom, &tColliderSphereDesc), E_FAIL);
+
+	Safe_Release(pGameInstance);
 	return S_OK;
 }
 
@@ -161,7 +185,7 @@ CGameObject* CMonster::Clone(void* pArg)
 void CMonster::Free()
 {
 	__super::Free();
-
+	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);

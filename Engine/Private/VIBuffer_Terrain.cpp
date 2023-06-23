@@ -263,6 +263,6 @@ void CVIBuffer_Terrain::Free()
 {
 	__super::Free();
 	
-	if(!m_IsCloned)
+	if(!m_isCloned)
 		Safe_Delete_Array(m_pVertices);
 }
