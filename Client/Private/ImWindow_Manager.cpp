@@ -49,16 +49,6 @@ HRESULT CImWindow_Manager::Initialize(ImGuiIO** pIO, ID3D11Device* pDevice, ID3D
 
 void CImWindow_Manager::Tick()
 {
-    if (m_bStart)
-    {
-        CGameInstance* pGameInstance = CGameInstance::GetInstance();
-        Safe_AddRef(pGameInstance);
-        m_pEditCamera = (CEditCamera*)pGameInstance->Get_GameObject(LEVEL_IMGUI, L"Layer_Camera", "EditCamera");
-        NULL_CHECK(m_pEditCamera);
-        Safe_Release(pGameInstance);
-        m_bStart = false;
-    }
-
     if (m_pImMode->Get_Mode() != m_pImMode->Get_PreMode())
     {
         switch (m_pImMode->Get_Mode())
@@ -174,19 +164,17 @@ void CImWindow_Manager::Initialize_Imgui(ImGuiIO** pIO, ID3D11Device* pDevice, I
 
 PICK_DESC CImWindow_Manager::GetMinDistPickDesc()
 {
-    return m_pEditCamera->GetMinDistPickDesc();
+    return Get_EditCamera()->GetMinDistPickDesc();
 }
 
 PICK_DESC CImWindow_Manager::GetTerrainPickDesc()
 {
-    return m_pEditCamera->GetTerrainPickDesc();
+    return Get_EditCamera()->GetTerrainPickDesc();
 }
 
 const _bool& CImWindow_Manager::IsPicking()
 {
-    if (nullptr == m_pEditCamera)
-        return false;
-    return m_pEditCamera->IsPicking();
+    return Get_EditCamera()->IsPicking();
 }
 
 void CImWindow_Manager::AddItems(const char* strItem)
@@ -206,8 +194,6 @@ IMWIN_MODE CImWindow_Manager::Get_PreMode()
 
 void CImWindow_Manager::Free(void)
 {
-    Safe_Release(m_pEditCamera);
-
     Safe_Release(m_pObjectTool);
     Safe_Release(m_pMapTool);
     Safe_Release(m_pCameraTool);
@@ -219,5 +205,15 @@ void CImWindow_Manager::Free(void)
     Safe_Release(m_pDemo);
     Safe_Release(m_pSaveLoads);
     Safe_Release(m_pImMode);
+}
+CEditCamera* CImWindow_Manager::Get_EditCamera()
+{
+    CGameInstance* pGameInstance = CGameInstance::GetInstance();
+    Safe_AddRef(pGameInstance);
+    CEditCamera* pEditCamera = (CEditCamera*)pGameInstance->Get_GameObject(LEVEL_IMGUI, L"Layer_Camera", "EditCamera");
+    NULL_CHECK_RETURN(pEditCamera, nullptr);
+    Safe_Release(pGameInstance);
+
+    return pEditCamera;
 }
 #endif

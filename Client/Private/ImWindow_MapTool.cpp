@@ -6,7 +6,7 @@
 #include "ImWindow_Demo.h"
 #include "Terrain.h"
 #include "ImWindow.h"
-#include "Monster.h"
+#include "Fiona.h"
 
 CImWindow_MapTool::CImWindow_MapTool(ImGuiIO* pIO)
 	: CImWindow(pIO)
@@ -80,11 +80,11 @@ void CImWindow_MapTool::Object_Place()
 	Safe_AddRef(pGameInstance);
 
 
-	CMonster::CLONE_DESC tCloneDesc;
+	Fiona::CLONE_DESC tCloneDesc;
 	//CCube::CLONE_DESC tCloneDesc;
 	//tCloneDesc.vPosition = { *(_float4*)&tPickDesc.vPickPos };
 	//tCloneDesc.vPosition.w = 1.f;
-	pGameInstance->Add_GameObject(LEVEL_IMGUI, CMonster::ProtoTag(), L"Layer_BackGround", &tCloneDesc);
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, Fiona::ProtoTag(), L"Layer_BackGround", &tCloneDesc);
 
 	Safe_Release(pGameInstance);
 }

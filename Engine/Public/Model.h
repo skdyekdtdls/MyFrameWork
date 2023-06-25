@@ -63,9 +63,9 @@ private:
 	TYPE						m_eAnimType = { TYPE_END };
 
 private:
-	HRESULT LoadModel(const _tchar* pModelFilePath, _Inout_ SCENE& tScene);
+	HRESULT LoadModel(const _tchar* pModelFilePath, _Inout_ SCENE& tScene, _Out_ fs::path& ModelFilePath);
 	HRESULT Ready_Meshes(const SCENE& tScene , _fmatrix PivotMatrix);
-	HRESULT Ready_Materials(const SCENE* tScene, const _tchar* pModelFilePath);
+	HRESULT Ready_Materials(const SCENE* tScene, fs::path pModelFilePath);
 	HRESULT Ready_Bones(const NODE * pNode, class CBone* pParent);
 	HRESULT Ready_Animations(const SCENE& tScene);
 	fs::path FindModelDirecotyPath(fs::path ModelPath, fs::path Stem);

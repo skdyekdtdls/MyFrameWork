@@ -2,7 +2,7 @@
 #include "GameInstance.h"
 #include "Camera_Free.h"
 #include "Terrain.h"
-#include "Monster.h"
+#include "Fiona.h"
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -71,7 +71,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
 
 	for (size_t i = 0; i < 1; i++)
 	{
-		NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, CMonster::ProtoTag(), pLayerTag), E_FAIL);
+		NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, Fiona::ProtoTag(), pLayerTag), E_FAIL);
 	}
 
 	Safe_Release(pGameInstance);

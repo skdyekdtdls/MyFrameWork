@@ -26,6 +26,8 @@ public:
     void Set_Window(CImWindow* pWindow) {
         m_pCurrentImWindow = pWindow;
     }
+
+
 public: /* CImWindow_ObjectTool */
 
 public: /* CImWindow_MapTool */
@@ -61,7 +63,9 @@ private:
     _bool m_bStart = { true };
     
 private:
-    class CEditCamera* m_pEditCamera = { nullptr };
+    CEditCamera* Get_EditCamera();
+
+private:
     class CImWindow* m_pCurrentImWindow = { nullptr };
 
     class CImWindow_ObjectTool* m_pObjectTool = { nullptr };

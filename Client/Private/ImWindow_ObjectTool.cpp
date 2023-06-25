@@ -20,15 +20,21 @@ HRESULT CImWindow_ObjectTool::Initialize(void* pArg)
 	if (__super::Initialize(pArg))
 		return E_FAIL;
 	
-	//fs::path Staitc_Mesh_Folder = "../../Resources/Models/Staitc_Mesh/";
-	//fs::directory_iterator itr(Staitc_Mesh_Folder);
-	//while (itr != fs::end(itr)) {
-	//	const fs::directory_entry& entry = *itr;
-	//	Static_Mesh_items.push_back(entry.path().filename().string());
-	//	itr++;
-	//}
+	fs::path Static_Mesh_Folder = "../../Resources/Static_Mesh/";
+	fs::directory_iterator iter(Static_Mesh_Folder);
+	while (iter != fs::end(iter)) {
+		const fs::directory_entry& entry = *iter;
+		Static_Mesh_items.push_back(entry.path().filename().string());
+		iter++;
+	}
 
-
+	fs::path Skeletal_Mesh_Folder = "../../Resources/Skeletal_Mesh/";
+	fs::directory_iterator iter2(Skeletal_Mesh_Folder);
+	while (iter2 != fs::end(iter2)) {
+		const fs::directory_entry& entry = *iter2;
+		Skeletal_Mesh_items.push_back(entry.path().filename().string());
+		iter2++;
+	}
 
 	return S_OK;
 }
@@ -41,20 +47,32 @@ void CImWindow_ObjectTool::Tick()
 	ImGui::Begin("Transform");
 
 	//ImGui::ListBox("Navigation Index", &item_current, VectorGetter, static_cast<void*>(&items),items.size(), 4);
-	ImGui::ListBox("Staitc_Mesh\n(single select)",
-		&Staitc_Mesh_item_current,
+	if (ImGui::ListBox("Static_Mesh##hidden\n(single select)",
+		&Static_Mesh_item_current,
 		VectorGetter,
 		static_cast<void*>(&Static_Mesh_items),
 		Static_Mesh_items.size(),
-		15);
+		15))
+	{
+		Skeletal_Mesh_item_current = -1;
+	}
 
 	//ImGui::ListBox("Navigation Index", &item_current, VectorGetter, static_cast<void*>(&items),items.size(), 4);
-	ImGui::ListBox("Skeletal_Mesh\n(single select)",
+	if (ImGui::ListBox("Skeletal_Mesh##hidden\n(single select)",
 		&Skeletal_Mesh_item_current,
 		VectorGetter,
 		static_cast<void*>(&Skeletal_Mesh_items),
 		Skeletal_Mesh_items.size(),
-		15);
+		15))
+	{
+		Static_Mesh_item_current = -1;
+	}
+
+	ImGui::Checkbox("Object_Place", &m_bCheck);
+	if (m_bCheck)
+	{
+		ObjectPlace();
+	}
 
 	//if (ImGui::Button("Open File Dialog"))
 	//{
@@ -181,6 +199,25 @@ void CImWindow_ObjectTool::VecInfo(const char* text, _float3* vec3, int iSize)
 	label.append("0");
 	ImGui::DragFloat(label.c_str(), &vec3->z); ImGui::Spacing();  // 공백 추가
 	ImGui::PopItemWidth();
+}
+void CImWindow_ObjectTool::ObjectPlace()
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	CImWindow_Manager* pImMgr = CImWindow_Manager::GetInstance();
+	Safe_AddRef(pGameInstance);
+	Safe_AddRef(pImMgr);
+
+	wstring tag;
+	PICK_DESC tTerrainPickDesc = pImMgr->GetTerrainPickDesc();
+	if (Static_Mesh_item_current != -1)
+		tag = L"Prototype_Gameobject_" + TO_WSTR(Static_Mesh_items[Static_Mesh_item_current]);
+	else if(Skeletal_Mesh_item_current != -1)
+		tag = L"Prototype_Gameobject_" + TO_WSTR(Skeletal_Mesh_items[Skeletal_Mesh_item_current]);
+	
+	//pGameInstance->Add_GameObject(LEVEL_IMGUI, tag.c_str(), )
+
+	Safe_Release(pImMgr);
+	Safe_Release(pGameInstance);
 }
 void CImWindow_ObjectTool::Free()
 {

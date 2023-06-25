@@ -23,17 +23,20 @@ public:
     void Set_GameObject(CGameObject* pGameObject);
     void ShowFileDialog();
 
-private: /* Staitc_Mesh */
+private: /* Static_Mesh */
     CTerrain* m_pCurTerrain = { nullptr };
-    int Staitc_Mesh_item_current = 0;
+    _int Static_Mesh_item_current = -1;
     vector<std::string> Static_Mesh_items;
 
 private: /* Skeletal_Mesh */
-    int Skeletal_Mesh_item_current = 0;
+    _int Skeletal_Mesh_item_current = -1;
     vector<std::string> Skeletal_Mesh_items;
 
     std::string filePathName;
     std::string filePath;
+
+private: /* Obejct_Place */
+    _bool   m_bCheck = { false };
 
 private: /* Transform */
     
@@ -47,7 +50,7 @@ private:
      
 private:
     void VecInfo(const char* text, _float3* vec3, int iSize);
-
+    void ObjectPlace();
 public:
     static  CImWindow_ObjectTool* Create(ImGuiIO* pIO);
     virtual void Free(void) override;

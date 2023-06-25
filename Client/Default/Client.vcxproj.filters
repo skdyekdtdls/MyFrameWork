@@ -49,12 +49,6 @@
     <Filter Include="02. GameObject\Cube">
       <UniqueIdentifier>{3198cdde-d249-4ee9-93c5-d530941a16e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\Player">
-      <UniqueIdentifier>{97037014-9efd-49a3-8612-7273ea3b7474}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\Monster">
-      <UniqueIdentifier>{8e4eb307-a883-48ed-85a0-e80d476bfd64}</UniqueIdentifier>
-    </Filter>
     <Filter Include="96. IMGUI">
       <UniqueIdentifier>{8b86e764-1f25-4760-b652-1c6d5fc58765}</UniqueIdentifier>
     </Filter>
@@ -111,6 +105,12 @@
     </Filter>
     <Filter Include="96. IMGUI\03. ImVertex\filedialog">
       <UniqueIdentifier>{fc32de84-a432-44ac-896b-95c2f43a5d98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\Fiona">
+      <UniqueIdentifier>{8e4eb307-a883-48ed-85a0-e80d476bfd64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\ForkLift">
+      <UniqueIdentifier>{97037014-9efd-49a3-8612-7273ea3b7474}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -186,11 +186,11 @@
     <ClInclude Include="..\public\EditCamera.h">
       <Filter>96. IMGUI\02. EditCamera</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Player.h">
-      <Filter>02. GameObject\Player</Filter>
+    <ClInclude Include="..\public\ForkLift.h">
+      <Filter>02. GameObject\ForkLift</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Monster.h">
-      <Filter>02. GameObject\Monster</Filter>
+    <ClInclude Include="..\public\Fiona.h">
+      <Filter>02. GameObject\Fiona</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImMode.h">
       <Filter>96. IMGUI\01. ImWindow\98. ImMode</Filter>
@@ -304,11 +304,11 @@
     <ClCompile Include="..\private\EditCamera.cpp">
       <Filter>96. IMGUI\02. EditCamera</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Player.cpp">
-      <Filter>02. GameObject\Player</Filter>
+    <ClCompile Include="..\private\ForkLift.cpp">
+      <Filter>02. GameObject\ForkLift</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Monster.cpp">
-      <Filter>02. GameObject\Monster</Filter>
+    <ClCompile Include="..\private\Fiona.cpp">
+      <Filter>02. GameObject\Fiona</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImMode.cpp">
       <Filter>96. IMGUI\01. ImWindow\98. ImMode</Filter>
