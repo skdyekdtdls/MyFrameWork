@@ -37,9 +37,11 @@ private: /* Skeletal_Mesh */
 
 private: /* Obejct_Place */
     _bool   m_bCheck = { false };
+    _int    m_bRadioButton = -1;
+    char    m_szCurItemLabel[MAX_PATH] = "";
+    bool    open_popup = false;
 
 private: /* Transform */
-    
     string  strName = "dummy";
     _float3 vPos = { 0.f, 0.f, 0.f };
     _float3 vRot = { 0.f, 0.f, 0.f };

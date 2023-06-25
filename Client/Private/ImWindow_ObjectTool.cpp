@@ -210,11 +210,81 @@ void CImWindow_ObjectTool::ObjectPlace()
 	wstring tag;
 	PICK_DESC tTerrainPickDesc = pImMgr->GetTerrainPickDesc();
 	if (Static_Mesh_item_current != -1)
-		tag = L"Prototype_Gameobject_" + TO_WSTR(Static_Mesh_items[Static_Mesh_item_current]);
+		tag = L"Prototype_GameObject_" + TO_WSTR(Static_Mesh_items[Static_Mesh_item_current]);
 	else if(Skeletal_Mesh_item_current != -1)
-		tag = L"Prototype_Gameobject_" + TO_WSTR(Skeletal_Mesh_items[Skeletal_Mesh_item_current]);
+		tag = L"Prototype_GameObject_" + TO_WSTR(Skeletal_Mesh_items[Skeletal_Mesh_item_current]);
 	
-	//pGameInstance->Add_GameObject(LEVEL_IMGUI, tag.c_str(), )
+	ImGui::Begin("Select Layer");
+	int iCount = 0;
+	
+	for (_uint i = 0; i < pGameInstance->GetNumLayers(LEVEL_IMGUI); ++i)
+	{
+		iCount = 0;
+		for (auto& LayerPair : pGameInstance->GetLayers()[i])
+		{
+			char szTmp[MAX_PATH];
+			TO_CHAR(LayerPair.first, szTmp);
+			if (ImGui::RadioButton(szTmp, &m_bRadioButton, iCount)) {
+				strcpy_s(m_szCurItemLabel, szTmp);
+			}
+
+			iCount++;
+		}
+	}
+
+	ImGui::End();
+
+	if (!pImMgr->IsPicking())
+	{
+		Safe_Release(pImMgr);
+		Safe_Release(pGameInstance);
+		return;
+	}
+
+	if (0 == strcmp("", m_szCurItemLabel))
+	{
+		CONSOLE_MSG("Select any Layer");
+		Safe_Release(pImMgr);
+		Safe_Release(pGameInstance);
+		return;
+	}
+
+	PICK_DESC pTerrainDesc = pImMgr->GetTerrainPickDesc();
+	if (tTerrainPickDesc == PICK_DESC())
+	{
+		CONSOLE_MSG("Terrain is not picked");
+		Safe_Release(pImMgr);
+		Safe_Release(pGameInstance);
+		return;
+	}
+
+	if (-1 == Skeletal_Mesh_item_current && -1 == Static_Mesh_item_current)
+	{
+		CONSOLE_MSG("Select the static mesh or the skeletal mesh");
+		Safe_Release(pImMgr);
+		Safe_Release(pGameInstance);
+		return;
+	}
+
+	_tchar szTmp[MAX_PATH];
+	TO_WCHAR(m_szCurItemLabel, szTmp);
+
+	CGameObject::CLONE_DESC tCloneDesc;
+	tCloneDesc.vPosition = _float4(pTerrainDesc.vPickPos);
+	tCloneDesc.vPosition.w = 1.f;
+	CGameObject* pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, tag.c_str(), szTmp, &tCloneDesc);
+	CONSOLE_MSG("The Object Tool call \'Add_GameObject\'");
+	if (nullptr == pGameObject)
+	{
+		WCONSOLE_MSG("Tag         : " << tag.c_str());
+		CONSOLE_MSG("Can't Find GameObject From Prototypes");
+	}
+	else
+	{
+		WCONSOLE_MSG("Tag         : " << tag.c_str());
+		WCONSOLE_MSG("Layer       : " << szTmp);
+		CONSOLE_MSG("Position    : " << pTerrainDesc.vPickPos.x << " " << pTerrainDesc.vPickPos.y << " " << pTerrainDesc.vPickPos.z);
+	}
 
 	Safe_Release(pImMgr);
 	Safe_Release(pGameInstance);

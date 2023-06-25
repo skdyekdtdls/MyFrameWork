@@ -24,7 +24,9 @@ CEditCamera::CEditCamera(const CEditCamera& rhs)
 PICK_DESC CEditCamera::GetMinDistPickDesc()
 {
 	if (m_tPickDescs.empty())
+	{
 		return PICK_DESC();
+	}
 
 	m_tPickDescs.sort([](PICK_DESC& tSour, PICK_DESC& tDest)
 		{
@@ -135,8 +137,6 @@ void CEditCamera::Picking()
 		{
 			for (auto& GameObject : LayerPair.second->GetGameObjects())
 			{
-				if (dynamic_cast<CTerrain*>(GameObject))
-					continue;
 				PICK_DESC tPickDesc;
 				if (GameObject->Picked(tPickDesc, m_tMouseRay))
 				{

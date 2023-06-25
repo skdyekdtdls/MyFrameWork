@@ -15,6 +15,12 @@
 #define CONSOLE_MSG(_message) 
 #endif
 
+#ifdef _DEBUG
+#define WCONSOLE_MSG(_message) wcout << _message << endl;
+#else
+#define WCONSOLE_MSG(_message) 
+#endif
+
 #ifdef ENGINE_EXPORTS
 #define ENGINE_DLL _declspec(dllexport)
 #else
@@ -93,5 +99,5 @@ private:														\
 #define ZeroStruct(Desc) ZeroMemory((&Desc), (sizeof(Desc)))
 
 #define TO_WCHAR(Cha, Wcha) MultiByteToWideChar(CP_ACP, 0, Cha, MAX_PATH, Wcha, MAX_PATH)
-#define TO_CHAR(Wcha, Cha) WideCharToMultiByte(CP_APC, 0, Wcha, MAX_PATH, Cha, MAX_PATH, NULL, NULL)
+#define TO_CHAR(Wcha, Cha) WideCharToMultiByte(CP_ACP, 0, Wcha, MAX_PATH, Cha, MAX_PATH, NULL, NULL)
 

@@ -47,6 +47,13 @@ HRESULT ForkLift::Initialize(void* pArg)
 	m_tInfo.wstrKey = ProtoTag();
 	m_tInfo.ID = CPlayer_Id;
 
+	CLONE_DESC tCloneDesc;
+	ZeroStruct(tCloneDesc);
+	tCloneDesc.vPosition = _float4(0.f, 0.f, 0.f, 1.f);
+	if (nullptr != pArg)
+		tCloneDesc = *(CLONE_DESC*)pArg;
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
+
 	return S_OK;
 }
 
@@ -92,7 +99,7 @@ HRESULT ForkLift::Add_Components()
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxMesh", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_IMGUI , L"Prototype_Component_Model_Fiona", L"Com_Model", (CComponent**)&m_pModelCom), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_IMGUI , L"Prototype_Component_Model_ForkLift", L"Com_Model", (CComponent**)&m_pModelCom), E_FAIL);
 
 	// You can Add VIBuffer or Model Component
 	return S_OK;

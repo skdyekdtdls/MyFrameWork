@@ -5,6 +5,7 @@
 
 BEGIN(Client)
 class CImWindow;
+class CEditCamera;
 
 class CImWindow_Manager final : public CBase
 {

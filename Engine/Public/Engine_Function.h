@@ -85,3 +85,8 @@ static std::wstring MultiByteToWide(const std::string& multiByte_str)
 	return wide_str;
 }
 #define TO_WSTR(STR) MultiByteToWide(STR)
+
+static bool FloatEqual(float f1, float f2, float epsilon = std::numeric_limits<float>::epsilon())
+{
+	return abs(f1 - f2) <= epsilon;
+}

@@ -37,10 +37,10 @@ using namespace DirectX;
 using namespace Engine;
 namespace fs = std::filesystem;
 
+#include "Engine_Function.h"
 #include "Engine_Macro.h"
 #include "ReadFunction.h"
 #include "Engine_Struct.h"
-#include "Engine_Function.h"
 
 BEGIN(Engine)
 typedef unordered_map<const _tchar*, class CLayer*> LAYERS;
