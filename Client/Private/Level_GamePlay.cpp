@@ -77,8 +77,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	Safe_Release(pGameInstance);
 
 
-
-
 	return S_OK;
 }
 

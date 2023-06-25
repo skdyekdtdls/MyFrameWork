@@ -11,7 +11,7 @@ class CTexture;
 class CRenderer;
 class CTransform;
 class CVIBuffer_Terrain;
-class CNevigation;
+class CNavigation;
 END
 
 BEGIN(Client)

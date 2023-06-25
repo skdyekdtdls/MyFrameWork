@@ -55,7 +55,7 @@ namespace Engine
 
 	typedef struct tagPickDesc
 	{
-		XMFLOAT3 vPickPos;
+		XMFLOAT4 vPickPos = { 0.f, 0.f, 0.f, 1.f };
 		float	 fDist;
 		class CGameObject* pPickedObject = { nullptr };
 	}PICK_DESC;

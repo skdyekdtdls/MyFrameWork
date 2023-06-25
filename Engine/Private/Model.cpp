@@ -128,9 +128,23 @@ HRESULT CModel::Ready_Meshes(const SCENE& tScene, _fmatrix PivotMatrix)
 	return S_OK;
 }
 
-HRESULT CModel::LoadModel(const _tchar* pModelFilePath, SCENE& tScene)
+HRESULT CModel::LoadModel(const _tchar* pFileName, SCENE& tScene)
 {
-	HANDLE		hFile = CreateFile(pModelFilePath,		// 파일 경로와 이름을 명시
+	fs::path tmp = L"Fiona.dat";
+	fs::path FileName = tmp;
+	fs::path Stem = FileName.stem();
+
+	fs::path pModelFilePath = FindModelDirecotyPath("../../Resources/Skeletal_Mesh/", Stem);
+	if (pModelFilePath == fs::path())
+	{
+		pModelFilePath = FindModelDirecotyPath("../../Resources/Static_Mesh/", Stem);
+	}
+
+	pModelFilePath = FindDATFile(pModelFilePath);
+
+	//const _tchar* pModelFilePath;
+
+	HANDLE		hFile = CreateFile(pModelFilePath.wstring().c_str(),		// 파일 경로와 이름을 명시
 		GENERIC_READ,			// 파일 접근 모드(쓰기 전용), GENERIC_READ(읽기 전용)
 		NULL,					// 공유 방식, 파일이 열려 있는 상태에서 다른 프로세스가 오픈 할 때 허가하는 것에 대한 설정, NULL을 지정하면 공유하지 않겠다는 의미
 		NULL,					// 보안 속성, NULL인 경우 기본값으로 보안 상태를 설정
@@ -232,6 +246,43 @@ HRESULT CModel::Ready_Animations(const SCENE& tScene)
 	}
 
 	return S_OK;
+}
+
+fs::path CModel::FindModelDirecotyPath(fs::path ModelPath, fs::path Stem)
+{
+	fs::directory_iterator CurrentPathIter(ModelPath);
+
+	while (CurrentPathIter != fs::end(CurrentPathIter))
+	{
+		const fs::directory_entry& CurrentPathEntry = *CurrentPathIter;
+		// Static_Mesh
+		if (Stem == CurrentPathEntry.path().filename().stem())
+		{
+			return CurrentPathEntry.path();
+		}
+
+		++CurrentPathIter;
+	}
+	return fs::path();
+}
+
+fs::path CModel::FindDATFile(fs::path ModelPath)
+{
+	fs::directory_iterator CurrentPathIter(ModelPath);
+
+	while (CurrentPathIter != fs::end(CurrentPathIter))
+	{
+		const fs::directory_entry& CurrentPathEntry = *CurrentPathIter;
+		// Static_Mesh
+		if (".dat" == CurrentPathEntry.path().extension() || ".DAT" == CurrentPathEntry.path().extension())
+		{
+			return CurrentPathEntry.path();
+		}
+
+		++CurrentPathIter;
+	}
+
+	return fs::path();
 }
 
 CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pModelFilePath, _fmatrix PivotMatrix)

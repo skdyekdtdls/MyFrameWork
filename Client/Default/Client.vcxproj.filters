@@ -67,18 +67,6 @@
     <Filter Include="96. IMGUI\01. ImWindow">
       <UniqueIdentifier>{3df48032-fa95-43b1-bad1-309be2acdab8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="96. IMGUI\01. ImWindow\01. ImWindow_Demo">
-      <UniqueIdentifier>{9a6997b3-dc31-42aa-937e-1e07bf3bd6c2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="96. IMGUI\01. ImWindow\02. ImMode">
-      <UniqueIdentifier>{ac93cbdd-3359-43d8-9728-079d56d1aba1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="96. IMGUI\01. ImWindow\03. ImWindow_Transform">
-      <UniqueIdentifier>{7d682137-07bc-4bc1-ba90-d8d2b03136f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="96. IMGUI\01. ImWindow\04. ImWindow_Navigation">
-      <UniqueIdentifier>{f3114bc9-a430-49d1-8f85-e67ffce89155}</UniqueIdentifier>
-    </Filter>
     <Filter Include="96. IMGUI\02. EditCamera">
       <UniqueIdentifier>{eade0cab-4b16-472a-ab00-2f8994b484a6}</UniqueIdentifier>
     </Filter>
@@ -88,14 +76,41 @@
     <Filter Include="96. IMGUI\03. ImVertex">
       <UniqueIdentifier>{675ca7ed-4838-4cb9-a47f-76e4ca3b4996}</UniqueIdentifier>
     </Filter>
-    <Filter Include="96. IMGUI\01. ImWindow\05. ImWindow_SaveLoad">
-      <UniqueIdentifier>{def33324-2540-4ccc-a1ed-bc5d563df143}</UniqueIdentifier>
+    <Filter Include="96. IMGUI\01. ImWindow\99. ImWindow_Demo">
+      <UniqueIdentifier>{9a6997b3-dc31-42aa-937e-1e07bf3bd6c2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="96. IMGUI\01. ImWindow\07. ImWindow_MapTool">
+    <Filter Include="96. IMGUI\01. ImWindow\98. ImMode">
+      <UniqueIdentifier>{ac93cbdd-3359-43d8-9728-079d56d1aba1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. IMGUI\01. ImWindow\01. ImWindow_ObjectTool">
+      <UniqueIdentifier>{296bff4e-de67-4fee-8759-0a4a723de7ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. IMGUI\01. ImWindow\NewFilter1">
+      <UniqueIdentifier>{3423ab4a-f1bd-453a-a65e-e987f69cdd65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. IMGUI\01. ImWindow\02. ImWindow_MapTool">
       <UniqueIdentifier>{7857ea36-7826-4123-8501-f5c613895ef6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="96. IMGUI\01. ImWindow\06. ImWindow_ObjectTool">
-      <UniqueIdentifier>{296bff4e-de67-4fee-8759-0a4a723de7ab}</UniqueIdentifier>
+    <Filter Include="96. IMGUI\01. ImWindow\03. ImWindow_CameraTool">
+      <UniqueIdentifier>{5e92187a-c08c-46f5-9d74-4e2aea669f97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. IMGUI\01. ImWindow\04. ImWindow_AnimationTool">
+      <UniqueIdentifier>{1b8969e7-ca2d-473f-b3a4-bfcc00d93f3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. IMGUI\01. ImWindow\05. ImWindow_EffectTool">
+      <UniqueIdentifier>{2e7d3bde-8b63-4df4-b86b-ca8c6b5b3987}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. IMGUI\01. ImWindow\06. ImWindow_UITool">
+      <UniqueIdentifier>{958101a9-ea7e-464a-87a1-3a4793ced280}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. IMGUI\01. ImWindow\07. ImWindow_LightTool">
+      <UniqueIdentifier>{0e84a6ee-34e8-477c-ba75-8c4f33a5f78b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. IMGUI\01. ImWindow\08. ImWindow_SaveLoad">
+      <UniqueIdentifier>{def33324-2540-4ccc-a1ed-bc5d563df143}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. IMGUI\03. ImVertex\filedialog">
+      <UniqueIdentifier>{fc32de84-a432-44ac-896b-95c2f43a5d98}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -157,7 +172,7 @@
       <Filter>01. Levels\98. Imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImWindow_Demo.h">
-      <Filter>96. IMGUI\01. ImWindow\01. ImWindow_Demo</Filter>
+      <Filter>96. IMGUI\01. ImWindow\99. ImWindow_Demo</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImWindow.h">
       <Filter>96. IMGUI\01. ImWindow</Filter>
@@ -178,22 +193,40 @@
       <Filter>02. GameObject\Monster</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImMode.h">
-      <Filter>96. IMGUI\01. ImWindow\02. ImMode</Filter>
+      <Filter>96. IMGUI\01. ImWindow\98. ImMode</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImVertex.h">
       <Filter>96. IMGUI\03. ImVertex</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\ImWindow_Transform.h">
-      <Filter>96. IMGUI\01. ImWindow\03. ImWindow_Transform</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\ImWindow_Navigation.h">
-      <Filter>96. IMGUI\01. ImWindow\04. ImWindow_Navigation</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\ImWindow_SaveLoads.h">
-      <Filter>96. IMGUI\01. ImWindow\05. ImWindow_SaveLoad</Filter>
+      <Filter>96. IMGUI\01. ImWindow\08. ImWindow_SaveLoad</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ImWindow_ObjectTool.h">
-      <Filter>96. IMGUI\01. ImWindow\06. ImWindow_ObjectTool</Filter>
+      <Filter>96. IMGUI\01. ImWindow\01. ImWindow_ObjectTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ImWindow_MapTool.h">
+      <Filter>96. IMGUI\01. ImWindow\02. ImWindow_MapTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ImWindow_CameraTool.h">
+      <Filter>96. IMGUI\01. ImWindow\03. ImWindow_CameraTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ImWindow_AnimationTool.h">
+      <Filter>96. IMGUI\01. ImWindow\04. ImWindow_AnimationTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_UITool.h">
+      <Filter>96. IMGUI\01. ImWindow\06. ImWindow_UITool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_LightTool.h">
+      <Filter>96. IMGUI\01. ImWindow\07. ImWindow_LightTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_EffectTool.h">
+      <Filter>96. IMGUI\01. ImWindow\05. ImWindow_EffectTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGuiFileDialogConfig.h">
+      <Filter>96. IMGUI\03. ImVertex\filedialog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGuiFileDialog.h">
+      <Filter>96. IMGUI\03. ImVertex\filedialog</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -257,7 +290,7 @@
       <Filter>01. Levels\98. Imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImWindow_Demo.cpp">
-      <Filter>96. IMGUI\01. ImWindow\01. ImWindow_Demo</Filter>
+      <Filter>96. IMGUI\01. ImWindow\99. ImWindow_Demo</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImWindow.cpp">
       <Filter>96. IMGUI\01. ImWindow</Filter>
@@ -278,22 +311,37 @@
       <Filter>02. GameObject\Monster</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImMode.cpp">
-      <Filter>96. IMGUI\01. ImWindow\02. ImMode</Filter>
+      <Filter>96. IMGUI\01. ImWindow\98. ImMode</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ImVertex.cpp">
       <Filter>96. IMGUI\03. ImVertex</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\ImWindow_Transform.cpp">
-      <Filter>96. IMGUI\01. ImWindow\03. ImWindow_Transform</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\ImWindow_Navigation.cpp">
-      <Filter>96. IMGUI\01. ImWindow\04. ImWindow_Navigation</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\ImWindow_SaveLoads.cpp">
-      <Filter>96. IMGUI\01. ImWindow\05. ImWindow_SaveLoad</Filter>
+      <Filter>96. IMGUI\01. ImWindow\08. ImWindow_SaveLoad</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ImWindow_ObjectTool.cpp">
-      <Filter>96. IMGUI\01. ImWindow\06. ImWindow_ObjectTool</Filter>
+      <Filter>96. IMGUI\01. ImWindow\01. ImWindow_ObjectTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_MapTool.cpp">
+      <Filter>96. IMGUI\01. ImWindow\02. ImWindow_MapTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ImWindow_AnimationTool.cpp">
+      <Filter>96. IMGUI\01. ImWindow\04. ImWindow_AnimationTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_LightTool.cpp">
+      <Filter>96. IMGUI\01. ImWindow\07. ImWindow_LightTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_UITool.cpp">
+      <Filter>96. IMGUI\01. ImWindow\06. ImWindow_UITool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\IMGUI\ImWindow_EffectTool.cpp">
+      <Filter>96. IMGUI\01. ImWindow\05. ImWindow_EffectTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\IMGUI\ImWindow_CameraTool.cpp">
+      <Filter>96. IMGUI\01. ImWindow\03. ImWindow_CameraTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGuiFileDialog.cpp">
+      <Filter>96. IMGUI\03. ImVertex\filedialog</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

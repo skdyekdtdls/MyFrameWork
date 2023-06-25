@@ -68,7 +68,8 @@ private:
 	HRESULT Ready_Materials(const SCENE* tScene, const _tchar* pModelFilePath);
 	HRESULT Ready_Bones(const NODE * pNode, class CBone* pParent);
 	HRESULT Ready_Animations(const SCENE& tScene);
-
+	fs::path FindModelDirecotyPath(fs::path ModelPath, fs::path Stem);
+	fs::path FindDATFile(fs::path ModelPath);
 public:
 	static CModel* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const _tchar* pModelFilePath, _fmatrix PivotMatrix);
 	virtual CComponent* Clone(void* pArg);

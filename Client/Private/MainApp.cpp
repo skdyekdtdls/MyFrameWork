@@ -50,9 +50,7 @@ void CMainApp::Tick(_double TimeDelta)
 {
 	if (nullptr == m_pGameInstance)
 		return;
-#ifdef _DEBUG
-	CImWindow_Manager::GetInstance()->Tick();
-#endif
+
 	m_pGameInstance->Tick_Engine(TimeDelta);
 }
 

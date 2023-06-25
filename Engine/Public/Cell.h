@@ -9,7 +9,6 @@ class ENGINE_DLL CCell final : public CBase, public ISerializable
 public:
 	enum POINT { POINT_A, POINT_B, POINT_C, POINT_END };
 	enum NEIGHBOR { NEIGHBOR_AB, NEIGHBOR_BC, NEIGHBOR_CA, NEIGHBOR_END };
-
 private:
 	CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CCell(const CCell& rhs) = delete;

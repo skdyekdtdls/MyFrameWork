@@ -86,7 +86,7 @@ CGameObject* CGameInstance::Get_GameObject(_uint iLevelIndex, const _tchar* pLay
 	if (nullptr == m_pObject_Manager)
 		return nullptr;
 
-	CLayer* pLayer = m_pObject_Manager->Find_Layer(iLevelIndex, pLayerTag);
+	CLayer* pLayer = m_pObject_Manager->Find_LayerByName(iLevelIndex, pLayerTag);
 
 	if (nullptr == pLayer)
 		return nullptr;
@@ -96,6 +96,22 @@ CGameObject* CGameInstance::Get_GameObject(_uint iLevelIndex, const _tchar* pLay
 		return nullptr;
 
 	return pGameObject;
+}
+
+_uint CGameInstance::GetNumLayers(_uint iLevelIndex)
+{
+	if (nullptr == m_pObject_Manager)
+		return 0;
+
+	return m_pObject_Manager->GetNumLayers(iLevelIndex);
+}
+
+LAYERS* CGameInstance::GetLayers()
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+
+	return m_pObject_Manager->GetLayers();
 }
 
 void CGameInstance::Serialization(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)

@@ -20,26 +20,32 @@
 #include "DirectXTK/SpriteFont.h"
 
 
+
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 
 using namespace std;
 using namespace DirectX;
 
-
 #include <vector>
 #include <list>
 #include <unordered_map>
 #include <map>
 #include <algorithm>
-
+#include <filesystem>
 #include "Engine_Typedef.h"
 using namespace Engine;
+namespace fs = std::filesystem;
 
 #include "Engine_Macro.h"
 #include "ReadFunction.h"
 #include "Engine_Struct.h"
 #include "Engine_Function.h"
+
+BEGIN(Engine)
+typedef unordered_map<const _tchar*, class CLayer*> LAYERS;
+END
+
 #include "DirectXTK/DDSTextureLoader.h"
 #include "DirectXTK/WICTextureLoader.h"
 #include "Assimp_Struct.h"

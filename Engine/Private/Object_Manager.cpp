@@ -46,7 +46,7 @@ CGameObject* CObject_Manager::Add_GameObject(_uint iLevelIndex, const _tchar* pP
 		return nullptr;
 	}
 
-	CLayer* pLayer = Find_Layer(iLevelIndex, pLayerTag);
+	CLayer* pLayer = Find_LayerByName(iLevelIndex, pLayerTag);
 	if (nullptr == pLayer)
 	{
 		pLayer = CLayer::Create(pLayerTag);
@@ -72,7 +72,7 @@ void CObject_Manager::Clear_LevelResources(_uint iLevelIndex)
 
 const list<CGameObject*>& CObject_Manager::GetObjListOfLayer(const _tchar* pTag, _uint iLevelIndex)
 {
-	CLayer* pLayer = Find_Layer(iLevelIndex, pTag);
+	CLayer* pLayer = Find_LayerByName(iLevelIndex, pTag);
 	return pLayer->GetGameObjects();
 }
 
@@ -104,7 +104,7 @@ CGameObject* CObject_Manager::Find_Prototype(const _tchar* pPrototypeTag)
 	return pPrototypeKey->second;
 }
 
-CLayer* CObject_Manager::Find_Layer(_uint iLevelIndex, const _tchar* pLayerTag)
+CLayer* CObject_Manager::Find_LayerByName(_uint iLevelIndex, const _tchar* pLayerTag)
 {
 	auto pLayerKey = find_if(m_pLayers[iLevelIndex].begin(), m_pLayers[iLevelIndex].end(), CTag_Finder(pLayerTag));
 	
@@ -126,7 +126,6 @@ void CObject_Manager::Free()
 	}
 	Safe_Delete_Array(m_pLayers);
 	
-
 	for (auto& Pair : m_Prototypes)
 	{
 		Safe_Release(Pair.second);

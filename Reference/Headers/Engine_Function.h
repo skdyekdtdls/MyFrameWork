@@ -77,7 +77,7 @@ static std::string WideToMultiByte(const std::wstring& wide_str)
 #define TO_STR(WSTR) WideToMultiByte(WSTR)
 
 
-std::wstring MultiByteToWide(const std::string& multiByte_str)
+static std::wstring MultiByteToWide(const std::string& multiByte_str)
 {
 	int requiredSize = MultiByteToWideChar(CP_UTF8, 0, multiByte_str.c_str(), -1, NULL, 0);
 	std::wstring wide_str(requiredSize, 0);

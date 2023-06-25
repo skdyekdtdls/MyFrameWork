@@ -1,5 +1,6 @@
 #ifdef _DEBUG
 #include "..\Public\ImWindow.h"
+#include "EditCamera.h"
 
 CImWindow::CImWindow(ImGuiIO* pIO)
     : m_pIO(pIO)
@@ -10,8 +11,11 @@ CImWindow::CImWindow(ImGuiIO* pIO)
 
 HRESULT CImWindow::Initialize(void* pArg)
 {
-
     return S_OK;
+}
+
+void CImWindow::LateTick()
+{
 }
 
 void CImWindow::Free(void)

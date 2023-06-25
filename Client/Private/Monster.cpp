@@ -39,6 +39,7 @@ HRESULT CMonster::Initialize(void* pArg)
 
 	CLONE_DESC tCloneDesc;
 	ZeroStruct(tCloneDesc);
+	tCloneDesc.vPosition = _float4(0.f, 0.f, 0.f, 1.f);
 	if (nullptr != pArg)
 		tCloneDesc = *(CLONE_DESC*)pArg;
 	

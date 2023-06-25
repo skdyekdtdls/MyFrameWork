@@ -6,7 +6,6 @@
 BEGIN(Engine)
 class CGameInstance;
 class CRenderer;
-
 END
 
 BEGIN(Client) 

@@ -1,45 +1,107 @@
 #ifdef _DEBUG
 #include "..\Public\ImWindow_Manager.h"
+#include "GameInstance.h"
+#include "EditCamera.h"
 #include "ImWindow.h"
+
+#include "ImWindow_ObjectTool.h"
+#include "ImWindow_MapTool.h"
+#include "ImWindow_CameraTool.h"
+#include "ImWindow_AnimationTool.h"
+#include "ImWindow_EffectTool.h"
+#include "ImWindow_UITool.h"
+#include "ImWindow_LightTool.h"
+
 #include "ImWindow_Demo.h"
-#include "ImMode.h"
-#include "ImWindow_Transform.h"
-#include "ImWindow_Navigation.h"
 #include "ImWindow_SaveLoads.h"
+#include "ImMode.h"
+
 IMPLEMENT_SINGLETON(CImWindow_Manager)
 
 CImWindow_Manager::CImWindow_Manager()
 {
-}
-
-CImWindow* CImWindow_Manager::Get_ImWindow(const _tchar* tag)
-{
-    return Find_Window(tag);
-}
-
-MODE CImWindow_Manager::CurretMode()
-{
-    CImMode* pMode = static_cast<CImMode*>(Find_Window(L"CImMode"));
-    return pMode->m_eMode;
+    
 }
 
 HRESULT CImWindow_Manager::Initialize(ImGuiIO** pIO, ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
+    CGameInstance* pGameInstance = CGameInstance::GetInstance();
+    Safe_AddRef(pGameInstance);
     Initialize_Imgui(pIO, pDevice, pContext);
-    
-    Add_Window(L"CImWindow_Demo", CImWindow_Demo::Create(m_pIO));
-    Add_Window(L"CImMode", CImMode::Create(m_pIO));
-    Add_Window(L"CImWindow_Transform", CImWindow_Transform::Create(m_pIO));
-    Add_Window(L"CImWindow_Navigation", CImWindow_Navigation::Create(m_pIO));
-    Add_Window(L"CImWindow_SaveLoads", CImWindow_SaveLoads::Create(m_pIO));
-    Add_Window(L"CImWindow_ObjectTool", CImWindow_ObjectTool::Create(m_pIO));
+
+    m_pObjectTool = CImWindow_ObjectTool::Create(m_pIO);
+    m_pMapTool = CImWindow_MapTool::Create(m_pIO);
+    m_pCameraTool = CImWindow_CameraTool::Create(m_pIO);
+    m_pAnimationTool = CImWindow_AnimationTool::Create(m_pIO);
+    m_pEffectTool = CImWindow_EffectTool::Create(m_pIO);
+    m_pUITool = CImWindow_UITool::Create(m_pIO);
+    m_pLightTool = CImWindow_LightTool::Create(m_pIO);
+
+    m_pDemo =  CImWindow_Demo::Create(m_pIO);
+    m_pSaveLoads = CImWindow_SaveLoads::Create(m_pIO);
+    m_pImMode = CImMode::Create(m_pIO);
+
+    m_pImMode->Set_Mode(OBJ_TOOL_MODE);
+
+    Safe_Release(pGameInstance);
     return S_OK;
 }
 
 void CImWindow_Manager::Tick()
 {
-    for (auto ImWindow : m_ImWindows)
-        ImWindow.second->Tick();
+    if (m_bStart)
+    {
+        CGameInstance* pGameInstance = CGameInstance::GetInstance();
+        Safe_AddRef(pGameInstance);
+        m_pEditCamera = (CEditCamera*)pGameInstance->Get_GameObject(LEVEL_IMGUI, L"Layer_Camera", "EditCamera");
+        NULL_CHECK(m_pEditCamera);
+        Safe_Release(pGameInstance);
+        m_bStart = false;
+    }
+
+    if (m_pImMode->Get_Mode() != m_pImMode->Get_PreMode())
+    {
+        switch (m_pImMode->Get_Mode())
+        {
+        case OBJ_TOOL_MODE:
+            Set_Window(m_pObjectTool);
+            break;
+        case MAP_TOOL_MODE:
+            Set_Window(m_pMapTool);
+            break;
+        case CAMERA_TOOL_MODE:
+            Set_Window(m_pCameraTool);
+            break;
+        case ANIM_TOOL_MODE:
+            Set_Window(m_pAnimationTool);
+            break;
+        case EFFECT_TOOL_MODE:
+            Set_Window(m_pEffectTool);
+            break;
+        case UI_TOOL_MODE:
+            Set_Window(m_pUITool);
+            break;
+        case LIGHT_TOOL_MODE:
+            Set_Window(m_pLightTool);
+            break;
+        }
+
+        m_pImMode->Set_PreMode(m_pImMode->Get_Mode());
+    }
+
+    m_pCurrentImWindow->Tick();
+    m_pDemo->Tick();
+    m_pSaveLoads->Tick();
+    m_pImMode->Tick();
+}
+
+void CImWindow_Manager::LateTick()
+{
+    if(nullptr != m_pCurrentImWindow)
+        m_pCurrentImWindow->LateTick();
+    m_pDemo->LateTick();
+    m_pSaveLoads->LateTick();
+    m_pImMode->LateTick();
 }
 
 void CImWindow_Manager::Render()
@@ -57,19 +119,16 @@ void CImWindow_Manager::Render()
     }
 }
 
-HRESULT CImWindow_Manager::Add_Window(const _tchar* tag, CImWindow* pWindow)
+void CImWindow_Manager::Set_Mode(IMWIN_MODE eMode)
 {
-    if (nullptr == pWindow)
-        return E_FAIL;
+    m_pImMode->Set_Mode(eMode);
+    if (eMode == MAP_TOOL_MODE)
+        m_pMapTool->ResetClickCout();
+}
 
-    CImWindow* pImWindow = Find_Window(tag);
-
-    if (nullptr != pImWindow)
-        return E_FAIL;
-
-    m_ImWindows.emplace(tag, pWindow);
-
-    return S_OK;
+void CImWindow_Manager::Set_PreMode(IMWIN_MODE ePreMode)
+{
+    m_pImMode->Set_Mode(ePreMode);
 }
 
 void CImWindow_Manager::Initialize_Imgui(ImGuiIO** pIO, ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -113,20 +172,52 @@ void CImWindow_Manager::Initialize_Imgui(ImGuiIO** pIO, ID3D11Device* pDevice, I
     ImGui_ImplDX11_Init(pDevice, pContext);
 }
 
-CImWindow* CImWindow_Manager::Find_Window(const _tchar* tag)
+PICK_DESC CImWindow_Manager::GetMinDistPickDesc()
 {
-    auto iter = find_if(m_ImWindows.begin(), m_ImWindows.end(), CTag_Finder(tag));
+    return m_pEditCamera->GetMinDistPickDesc();
+}
 
-    if(iter == m_ImWindows.end())
-        return nullptr;
+PICK_DESC CImWindow_Manager::GetTerrainPickDesc()
+{
+    return m_pEditCamera->GetTerrainPickDesc();
+}
 
-    return iter->second;
+const _bool& CImWindow_Manager::IsPicking()
+{
+    if (nullptr == m_pEditCamera)
+        return false;
+    return m_pEditCamera->IsPicking();
+}
+
+void CImWindow_Manager::AddItems(const char* strItem)
+{
+    m_pMapTool->AddItems(strItem);
+}
+
+IMWIN_MODE CImWindow_Manager::Get_Mode()
+{
+    return m_pImMode->Get_Mode();
+}
+
+IMWIN_MODE CImWindow_Manager::Get_PreMode()
+{
+    return m_pImMode->Get_PreMode();
 }
 
 void CImWindow_Manager::Free(void)
 {
-    for (auto& ImWindow : m_ImWindows)
-        Safe_Release(ImWindow.second);
-    m_ImWindows.clear();
+    Safe_Release(m_pEditCamera);
+
+    Safe_Release(m_pObjectTool);
+    Safe_Release(m_pMapTool);
+    Safe_Release(m_pCameraTool);
+    Safe_Release(m_pAnimationTool);
+    Safe_Release(m_pEffectTool);
+    Safe_Release(m_pUITool);
+    Safe_Release(m_pLightTool);
+
+    Safe_Release(m_pDemo);
+    Safe_Release(m_pSaveLoads);
+    Safe_Release(m_pImMode);
 }
 #endif
