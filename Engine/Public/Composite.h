@@ -18,8 +18,10 @@ public:
 	virtual void Late_Tick(_double TimeDelta);
 	virtual HRESULT Render();
 
+
 	HRESULT Add_Component(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pComponentTag, _Inout_ CComponent** ppOut, void* pArg = nullptr);
 	CComponent* Get_Component(const _tchar* pComponent);
+	_bool HasTransformCom();
 private:
 	unordered_map<const _tchar*, CComponent*>	m_Components;
 

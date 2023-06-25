@@ -70,6 +70,17 @@ CComponent* CComposite::Get_Component(const _tchar* pComponent)
 	return iter->second;
 }
 
+_bool CComposite::HasTransformCom()
+{
+	for (auto& Pair : m_Components)
+	{
+		if (dynamic_cast<CTransform*>(Pair.second))
+			return true;
+	}
+	
+	return false;
+}
+
 void CComposite::Free()
 {
 	__super::Free();

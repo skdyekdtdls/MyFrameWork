@@ -9,8 +9,8 @@ namespace Engine
 
 		void Save(HANDLE hFile, DWORD& dwByte)
 		{
-			_uint iNameLength = wstrName.size() + 1;
-			_uint iNameKey = wstrKey.size() + 1;
+			_uint iNameLength = static_cast<_uint>(wstrName.size()) + 1;
+			_uint iNameKey = static_cast<_uint>(wstrKey.size()) + 1;
 
 			WriteVoid(&iNameLength, sizeof(_uint));
 			WriteVoid(&iNameKey, sizeof(_uint));
@@ -53,12 +53,27 @@ namespace Engine
 		_uint ID;
 	};
 
-	typedef struct tagPickDesc
+	struct PICK_DESC
 	{
-		XMFLOAT3 vPickPos;
+		bool operator==(const PICK_DESC& rhs) const {
+			if (vPickPos.x != rhs.vPickPos.x) return false;
+			if (vPickPos.y != rhs.vPickPos.y) return false;
+			if (vPickPos.z != rhs.vPickPos.z) return false;
+			if (vPickPos.w != rhs.vPickPos.w) return false;
+			if (!FloatEqual(fDist, rhs.fDist)) return false;
+			if (pPickedObject != rhs.pPickedObject) return false;
+
+			return true;
+		}
+
+		bool operator!=(const PICK_DESC& rhs) const {
+			return !(*this == rhs);
+		}
+
+		XMFLOAT4 vPickPos = { 0.f, 0.f, 0.f, 1.f };
 		float	 fDist;
 		class CGameObject* pPickedObject = { nullptr };
-	}PICK_DESC;
+	};
 
 	typedef struct tagGraphicDesc
 	{

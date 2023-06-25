@@ -1,4 +1,4 @@
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 
 #include "VIBuffer.h"
 #include "Client_Defines.h"

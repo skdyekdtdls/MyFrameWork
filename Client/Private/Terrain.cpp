@@ -1,8 +1,8 @@
 #include "Terrain.h"
 #include "GameInstance.h"
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 #include "ImWindow_Manager.h"
-#include "ImWindow_Navigation.h"
+#include "ImWindow_MapTool.h"
 #endif
 
 _uint CTerrain::CTerrain_Id = { 0 };
@@ -21,9 +21,6 @@ CTerrain::CTerrain(const CTerrain& rhs)
 HRESULT CTerrain::Initialize_Prototype()
 {
 	FAILED_CHECK_RETURN(__super::Initialize_Prototype(), E_FAIL);
-	
-
-
 
 	return S_OK;
 }
@@ -84,22 +81,24 @@ void CTerrain::AddCell(const _float3* vPoints)
 
 	m_pNavigationCom->AddCell(vPoints);
 
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
+
 	CImWindow_Manager* pImWinMgr = CImWindow_Manager::GetInstance();
 	Safe_AddRef(pImWinMgr);
-
-	CImWindow_Navigation* pImWinNavi = pImWinMgr->Get_ImWindow<CImWindow_Navigation>();
 	GetCellSize();
-	pImWinNavi->AddItems(to_string(GetCellSize() - 1).c_str());
+	pImWinMgr->AddItems(to_string(GetCellSize() - 1).c_str());
 	Safe_Release(pImWinMgr);
+
 #endif
 
 }
+
 _uint CTerrain::GetCellSize()
 {
 	return m_pNavigationCom->GetCellSize();
 }
-#ifdef _USE_IMGUI
+
+#ifdef _DEBUG
 _bool CTerrain::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 {
 	_bool bResult = { false };
@@ -126,13 +125,13 @@ _bool CTerrain::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 		XMStoreFloat3(&vIntersection, XMVector3TransformCoord(XMLoadFloat3(&vIntersection), XMLoadFloat4x4(&worldMatrix)));
 
 		tPickDesc.fDist = fMinDist;
-		tPickDesc.vPickPos = vIntersection;
+		tPickDesc.vPickPos = *(_float4*)&vIntersection;
 		tPickDesc.pPickedObject = this;
 	}
 	
 	return bResult;
 }
-#endif _USE_IMGUI
+#endif DEBUG
 
 HRESULT CTerrain::Add_Components()
 {	
@@ -179,8 +178,7 @@ HRESULT CTerrain::SetUp_ShaderResources()
 
 	Safe_Release(pGameInstance);
 
-	if (FAILED(m_pTextureCom[TYPE_DIFFUSE]->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture")))
-		return E_FAIL;
+	FAILED_CHECK_RETURN(m_pTextureCom[TYPE_DIFFUSE]->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture"), E_FAIL);
 
 	return S_OK;
 }
@@ -229,7 +227,6 @@ void CTerrain::Save(HANDLE hFile, DWORD& dwByte)
 	m_tInfo.Save(hFile, dwByte);
 	m_pTransformCom->Save(hFile, dwByte);
 	m_pNavigationCom->Save(hFile, dwByte);
-
 }
 
 void CTerrain::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)

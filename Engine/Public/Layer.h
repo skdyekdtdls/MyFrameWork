@@ -28,13 +28,14 @@ public:
 	const list<CGameObject*>& GetGameObjects() {
 		return m_pGameObjects;
 	}
+
 public:
 	HRESULT Add_GameObject(CGameObject * pGameObject);
 	void Tick(_double TimeDelta);
 	void Late_Tick(_double TimeDelta);
 	
 	CGameObject* FindByName(string strName);
-
+	void TraverseGameObjects(function<bool(CGameObject*)> func);
 private:
 	INFO			m_tInfo;
 	list<CGameObject*>	m_pGameObjects;

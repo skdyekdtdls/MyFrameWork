@@ -1,4 +1,4 @@
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 #pragma once
 #include "ImWindow.h"
 
@@ -10,11 +10,20 @@ protected:
     virtual ~CImMode() = default;
 
 public:
+    IMWIN_MODE Get_Mode() { return m_eMode; }
+    IMWIN_MODE Get_PreMode() { return m_ePreMode; }
+
+    void Set_Mode(IMWIN_MODE eMode);
+    void Set_PreMode(IMWIN_MODE ePreMode) { m_ePreMode = ePreMode; }
+
+
+public:
     virtual HRESULT Initialize(void* pArg = nullptr);
     virtual void Tick();
 
-public:
-    MODE    m_eMode = { MODE_END };
+private:
+    IMWIN_MODE    m_ePreMode = { MODE_END };
+    IMWIN_MODE    m_eMode = { MODE_END };
 
 public:
     static  CImMode* Create(ImGuiIO* pIO);

@@ -11,7 +11,7 @@ class CTexture;
 class CRenderer;
 class CTransform;
 class CVIBuffer_Terrain;
-class CNevigation;
+class CNavigation;
 END
 
 BEGIN(Client)
@@ -41,10 +41,10 @@ public:
 	virtual HRESULT Render() override;
 	void AddCell(const _float3* vPoints);
 	
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 public:
 	virtual _bool Picked(_Inout_ PICK_DESC& tPickDesc, const RAY& tRay) override;
-#endif _USE_IMGUI
+#endif DEBUG
 
 private:
 	CShader* m_pShaderCom = { nullptr };

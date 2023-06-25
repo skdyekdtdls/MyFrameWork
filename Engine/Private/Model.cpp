@@ -42,13 +42,13 @@ CModel::CModel(const CModel& rhs)
 	}
 }
 
-HRESULT CModel::Initialize_Prototype(const _tchar* pModelFilePath, _fmatrix PivotMatrix)
+HRESULT CModel::Initialize_Prototype(const _tchar* pTag, _fmatrix PivotMatrix)
 {
 	XMStoreFloat4x4(&m_PivotMatrix, PivotMatrix);
 
 	SCENE tScene;
-
-	FAILED_CHECK_RETURN(LoadModel(pModelFilePath, tScene), E_FAIL);
+	fs::path pModelFilePath;
+	FAILED_CHECK_RETURN(LoadModel(pTag, tScene, pModelFilePath), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Bones(tScene.m_RootNode, nullptr), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Meshes(tScene, PivotMatrix), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Materials(&tScene, pModelFilePath), E_FAIL);
@@ -128,9 +128,21 @@ HRESULT CModel::Ready_Meshes(const SCENE& tScene, _fmatrix PivotMatrix)
 	return S_OK;
 }
 
-HRESULT CModel::LoadModel(const _tchar* pModelFilePath, SCENE& tScene)
+HRESULT CModel::LoadModel(const _tchar* pFileName, SCENE& tScene, _Out_ fs::path& ModelFilePath)
 {
-	HANDLE		hFile = CreateFile(pModelFilePath,		// 파일 경로와 이름을 명시
+	fs::path FileName = pFileName;
+	fs::path Stem = FileName.stem();
+
+	fs::path pModelFilePath = FindModelDirecotyPath("../../Resources/Skeletal_Mesh/", Stem);
+	if (pModelFilePath == fs::path())
+	{
+		pModelFilePath = FindModelDirecotyPath("../../Resources/Static_Mesh/", Stem);
+	}
+
+	pModelFilePath = FindDATFile(pModelFilePath);
+	ModelFilePath = pModelFilePath;
+
+	HANDLE		hFile = CreateFile(pModelFilePath.wstring().c_str(),		// 파일 경로와 이름을 명시
 		GENERIC_READ,			// 파일 접근 모드(쓰기 전용), GENERIC_READ(읽기 전용)
 		NULL,					// 공유 방식, 파일이 열려 있는 상태에서 다른 프로세스가 오픈 할 때 허가하는 것에 대한 설정, NULL을 지정하면 공유하지 않겠다는 의미
 		NULL,					// 보안 속성, NULL인 경우 기본값으로 보안 상태를 설정
@@ -153,10 +165,10 @@ HRESULT CModel::LoadModel(const _tchar* pModelFilePath, SCENE& tScene)
 	CloseHandle(hFile);
 }
 
-HRESULT CModel::Ready_Materials(const SCENE* pScene, const _tchar* pwszModelFilePath)
+HRESULT CModel::Ready_Materials(const SCENE* pScene, fs::path pModelFilePath)
 {
-	char pModelFilePath[MAX_PATH];
-	WideCharToMultiByte(CP_ACP, 0, pwszModelFilePath, MAX_PATH, pModelFilePath, MAX_PATH, nullptr, nullptr);
+	//char pModelFilePath[MAX_PATH];
+	
 	/* 현재 모델에게 부여할 수 있는 재질(Diffuse, Normal, Specular etc) 텍스쳐의 갯수. */
 	m_iNumMaterials = pScene->m_NumMaterials;
 
@@ -174,7 +186,7 @@ HRESULT CModel::Ready_Materials(const SCENE* pScene, const _tchar* pwszModelFile
 
 			char		szDrive[MAX_PATH] = "";
 			char		szDirectory[MAX_PATH] = "";
-			_splitpath_s(pModelFilePath, szDrive, MAX_PATH, szDirectory, MAX_PATH, nullptr, 0, nullptr, 0);
+			_splitpath_s(pModelFilePath.string().c_str(), szDrive, MAX_PATH, szDirectory, MAX_PATH, nullptr, 0, nullptr, 0);
 
 			char		szFileName[MAX_PATH] = "";
 			char		szExt[MAX_PATH] = "";
@@ -232,6 +244,43 @@ HRESULT CModel::Ready_Animations(const SCENE& tScene)
 	}
 
 	return S_OK;
+}
+
+fs::path CModel::FindModelDirecotyPath(fs::path ModelPath, fs::path Stem)
+{
+	fs::directory_iterator CurrentPathIter(ModelPath);
+
+	while (CurrentPathIter != fs::end(CurrentPathIter))
+	{
+		const fs::directory_entry& CurrentPathEntry = *CurrentPathIter;
+		// Static_Mesh
+		if (Stem == CurrentPathEntry.path().filename().stem())
+		{
+			return CurrentPathEntry.path();
+		}
+
+		++CurrentPathIter;
+	}
+	return fs::path();
+}
+
+fs::path CModel::FindDATFile(fs::path ModelPath)
+{
+	fs::directory_iterator CurrentPathIter(ModelPath);
+
+	while (CurrentPathIter != fs::end(CurrentPathIter))
+	{
+		const fs::directory_entry& CurrentPathEntry = *CurrentPathIter;
+		// Static_Mesh
+		if (".dat" == CurrentPathEntry.path().extension() || ".DAT" == CurrentPathEntry.path().extension())
+		{
+			return CurrentPathEntry.path();
+		}
+
+		++CurrentPathIter;
+	}
+
+	return fs::path();
 }
 
 CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pModelFilePath, _fmatrix PivotMatrix)

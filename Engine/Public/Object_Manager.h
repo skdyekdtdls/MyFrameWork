@@ -10,6 +10,8 @@ class CObject_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CObject_Manager)
 public:
+	typedef unordered_map<const _tchar*, CLayer*> LAYERS;
+public:
 	CObject_Manager();
 	~CObject_Manager() = default;
 public:
@@ -17,8 +19,12 @@ public:
 	void Deserialization(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex);
 
 	const list<CGameObject*>& GetObjListOfLayer(const _tchar* pTag, _uint iLevelIndex = 1);
-	_uint GetNumLayers() {
-		return m_pLayers->size();
+	_uint GetNumLayers(_uint iLevelIndex) {
+		return m_pLayers[iLevelIndex].size();
+	}
+
+	LAYERS* GetLayers() {
+		return m_pLayers;
 	}
 
 public:
@@ -29,7 +35,7 @@ public:
 
 	void Tick(_double TimeDelta);
 	void Late_Tick(_double TimeDelta);
-	CLayer* Find_Layer(_uint iLevelIndex, const _tchar* pLayerTag);
+	CLayer* Find_LayerByName(_uint iLevelIndex, const _tchar* pLayerTag);
 
 private:
 	unordered_map<const _tchar*, CGameObject*> m_Prototypes;
@@ -37,7 +43,6 @@ private:
 private:
 	_uint	m_iNumLevels = { 0 };
 	unordered_map<const _tchar*, CLayer*>* m_pLayers = { nullptr };
-	typedef unordered_map<const _tchar*, CLayer*> LAYERS;
 
 private:
 	CGameObject* Find_Prototype(const _tchar* pPrototypeTag);

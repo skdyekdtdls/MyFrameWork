@@ -3,9 +3,9 @@
 #include "Level.h"
 #include "Level_Loading.h"
 
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 #include "ImWindow_Manager.h"
-#endif // _USE_IMGUI
+#endif // DEBUG
 
 CMainApp::CMainApp()
 	: m_pGameInstance(CGameInstance::GetInstance())
@@ -27,13 +27,13 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(m_pGameInstance->Initialize_Engine(LEVEL_END, GraphicDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
 
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 	CImWindow_Manager::GetInstance()->Initialize(&m_pIO, m_pDevice, m_pContext);
 #endif
 
 	if (FAILED(Ready_Prototype_Component_For_Static()))
 		return E_FAIL;
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 	if (FAILED(Open_Level(LEVEL_IMGUI)))
 		return E_FAIL;
 #else
@@ -42,6 +42,7 @@ HRESULT CMainApp::Initialize()
 #endif
 	if (FAILED(Ready_Gara()))
 		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -49,9 +50,7 @@ void CMainApp::Tick(_double TimeDelta)
 {
 	if (nullptr == m_pGameInstance)
 		return;
-#ifdef _USE_IMGUI
-	CImWindow_Manager::GetInstance()->Tick();
-#endif
+
 	m_pGameInstance->Tick_Engine(TimeDelta);
 }
 
@@ -68,7 +67,7 @@ HRESULT CMainApp::Render()
 	m_pGameInstance->Clear_DepthStencil_View();
 
 	m_pRenderer->Draw_RenderGroup();
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 	CImWindow_Manager::GetInstance()->Render();
 #endif
 	// TODO
@@ -184,9 +183,9 @@ void CMainApp::Free()
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 	CImWindow_Manager::DestroyInstance();
-#endif // _USE_IMGUI
+#endif // DEBUG
 
 	CGameInstance::Release_Engine();
 }

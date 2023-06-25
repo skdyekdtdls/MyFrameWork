@@ -77,12 +77,16 @@ static std::string WideToMultiByte(const std::wstring& wide_str)
 #define TO_STR(WSTR) WideToMultiByte(WSTR)
 
 
-std::wstring MultiByteToWide(const std::string& multiByte_str)
+static std::wstring MultiByteToWide(const std::string& multiByte_str)
 {
 	int requiredSize = MultiByteToWideChar(CP_UTF8, 0, multiByte_str.c_str(), -1, NULL, 0);
 	std::wstring wide_str(requiredSize, 0);
 	MultiByteToWideChar(CP_UTF8, 0, multiByte_str.c_str(), -1, &wide_str[0], requiredSize);
 	return wide_str;
 }
-
 #define TO_WSTR(STR) MultiByteToWide(STR)
+
+static bool FloatEqual(float f1, float f2, float epsilon = std::numeric_limits<float>::epsilon())
+{
+	return abs(f1 - f2) <= epsilon;
+}

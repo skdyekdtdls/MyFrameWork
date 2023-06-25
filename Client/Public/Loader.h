@@ -42,7 +42,9 @@ private:
 private:
 	HRESULT Loading_For_Logo();
 	HRESULT Loading_For_GamePlay();
+#ifdef _DEBUG
 	HRESULT Loading_For_IMGUI();
+#endif
 public:
 	static CLoader* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, LEVELID eNextLevel);
 	void Free() override;

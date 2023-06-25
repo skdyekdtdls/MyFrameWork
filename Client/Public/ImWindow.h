@@ -1,4 +1,4 @@
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 #pragma once
 
 #include "Client_Defines.h"
@@ -31,12 +31,14 @@ protected:
 
 public:
     _bool   m_IsShow;
-    _bool   m_bStart = { true };
+
 public:
     virtual HRESULT Initialize(void* pArg);
     virtual void Tick() = 0;
+    virtual void LateTick();
 
 protected:
+
     ImGuiIO* m_pIO = { nullptr };
 
 public:

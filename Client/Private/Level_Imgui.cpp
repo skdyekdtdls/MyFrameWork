@@ -1,12 +1,13 @@
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 #include "Level_Imgui.h"
 #include "GameInstance.h"
 #include "Camera_Free.h"
 #include "EditCamera.h"
 #include "Terrain.h"
 #include "Cube.h"
-#include "Player.h"
-#include "Monster.h"
+#include "ForkLift.h"
+#include "Fiona.h"
+#include "ImWindow_Manager.h"
 CLevel_Imgui::CLevel_Imgui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -34,12 +35,21 @@ HRESULT CLevel_Imgui::Initialize()
 
 void CLevel_Imgui::Tick(_double TimeDelta)
 {
+#ifdef _DEBUG
+	CImWindow_Manager::GetInstance()->Tick();
+#endif
+
 	__super::Tick(TimeDelta);
 }
 
 void CLevel_Imgui::Late_Tick(_double TimeDelta)
 {
+#ifdef _DEBUG
+	CImWindow_Manager::GetInstance()->LateTick();
+#endif
+
 	__super::Late_Tick(TimeDelta);
+
 	SetWindowText(g_hWnd, TEXT("게임 레벨입니다."));
 }
 
@@ -77,7 +87,7 @@ HRESULT CLevel_Imgui::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	Safe_AddRef(pGameInstance);
 
 	NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CTerrain::ProtoTag(), pLayerTag), E_FAIL);
-	//NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CPlayer::ProtoTag(), pLayerTag), E_FAIL);
+	//NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, ForkLift::ProtoTag(), pLayerTag), E_FAIL);
 
 	Safe_Release(pGameInstance);
 
@@ -91,16 +101,15 @@ HRESULT CLevel_Imgui::Ready_Layer_Camera(const _tchar* pLayerTag)
 
 	CEditCamera::EDIT_CAMERA_DESC Edit_Camera_Desc;
 
-	Edit_Camera_Desc.iData = { 0 };
-	Edit_Camera_Desc.CameraDesc.vEye = _float4(0.f, 20.f, -15.f, 1.f);
-	Edit_Camera_Desc.CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
-	Edit_Camera_Desc.CameraDesc.vUp = _float4(0.f, 1.f, 0.f, 0.f);
-	Edit_Camera_Desc.CameraDesc.fFovy = XMConvertToRadians(60.0f);
-	Edit_Camera_Desc.CameraDesc.fAspect = (_float)g_iWinSizeX / g_iWinSizeY;
-	Edit_Camera_Desc.CameraDesc.fNear = 0.2f;
-	Edit_Camera_Desc.CameraDesc.fFar = 300.f;
-	Edit_Camera_Desc.CameraDesc.TransformDesc.SpeedPerSec = 10.f;
-	Edit_Camera_Desc.CameraDesc.TransformDesc.RotationPerSec = XMConvertToRadians(90.0f);
+	Edit_Camera_Desc.vEye = _float4(0.f, 20.f, -15.f, 1.f);
+	Edit_Camera_Desc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
+	Edit_Camera_Desc.vUp = _float4(0.f, 1.f, 0.f, 0.f);
+	Edit_Camera_Desc.fFovy = XMConvertToRadians(60.0f);
+	Edit_Camera_Desc.fAspect = (_float)g_iWinSizeX / g_iWinSizeY;
+	Edit_Camera_Desc.fNear = 0.2f;
+	Edit_Camera_Desc.fFar = 300.f;
+	Edit_Camera_Desc.TransformDesc.SpeedPerSec = 10.f;
+	Edit_Camera_Desc.TransformDesc.RotationPerSec = XMConvertToRadians(90.0f);
 
 	NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CEditCamera::ProtoTag(), pLayerTag, &Edit_Camera_Desc), E_FAIL);
 
@@ -116,7 +125,7 @@ HRESULT CLevel_Imgui::Ready_Layer_Monster(const _tchar* pLayerTag)
 
 	for (size_t i = 0; i < 1; i++)
 	{
-		NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CMonster::ProtoTag(), pLayerTag), E_FAIL);
+		NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, Fiona::ProtoTag(), pLayerTag), E_FAIL);
 	}
 
 	Safe_Release(pGameInstance);

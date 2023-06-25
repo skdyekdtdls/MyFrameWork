@@ -1,7 +1,7 @@
 #include "..\public\Paser.h"
-#include "GameInstance.h"
 
-HRESULT CPaser::Pasing(fs::path ModelFilePath)
+
+HRESULT CPaser::Pasing(fs::path ModelFilePath, CModel::TYPE& Out)
 {
 	cout << "--------Searched .fbx file--------" << endl
 		<< "Path : " << ModelFilePath.string() << endl;
@@ -11,7 +11,6 @@ HRESULT CPaser::Pasing(fs::path ModelFilePath)
 	fs::path header = L".dat";
 	string fileName = stem.string() + header.string();
 	fs::path wstrModelPath = directoryPath / fileName;
-
 
 	// 파일이름 가져와서 경로만들기.
 	// 파일 개방
@@ -66,6 +65,8 @@ HRESULT CPaser::Pasing(fs::path ModelFilePath)
 
 	CloseHandle(hFile);
 	cout << "Completed generating .dat file" << endl << endl;
+
+	Out = eAnimType;
 	return S_OK;
 }
 

@@ -6,7 +6,6 @@
 BEGIN(Engine)
 class CGameInstance;
 class CRenderer;
-
 END
 
 BEGIN(Client) 
@@ -31,7 +30,7 @@ private:
 	CGameInstance* m_pGameInstance = { nullptr };
 	ID3D11Device* m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 	ImGuiIO* m_pIO = { nullptr };
 #endif
 public:

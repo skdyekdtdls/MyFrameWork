@@ -49,6 +49,9 @@ public: /* For Object_Manager*/
 	CGameObject* Add_GameObject(_uint iLevelIndex, const _tchar * pPrototypeTag, const _tchar * pLayerTag, void* pArg = nullptr);
 	void Clear_LevelResources(_uint iLevelIndex);
 	CGameObject* Get_GameObject(_uint iLevelIndex, const _tchar * pLayerTag, string strName);
+	_uint GetNumLayers(_uint iLevelIndex);
+	LAYERS* GetLayers();
+
 	void Serialization(HANDLE hFile, DWORD & dwByte, _uint iLevelIndex);
 	void Deserialization(HANDLE hFile, DWORD & dwByte, _uint iLevelIndex);
 
