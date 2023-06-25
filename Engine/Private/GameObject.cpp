@@ -68,16 +68,10 @@ _bool CGameObject::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 		return false;
 	_float3 vPosFloat3 = GetPosition();
 
-	_vector vRayOrigin = XMLoadFloat4(&tMouseRay.vRayOrigin);
-	_vector vRayDir = XMLoadFloat4(&tMouseRay.vRayDir);
-	vRayDir = XMVector3Normalize(vRayDir);
-
-	BoundingSphere* sphere = m_pPickCollider->GetBoundingSphere();
-
-	_float fDistance = FLT_MAX;
-
-	if (sphere->Intersects(vRayOrigin, vRayDir, fDistance)) {
-		tPickDesc.fDist = fDistance;
+	_float fDistance = { FLT_MAX };
+	if (m_pPickCollider->IntersectRay(fDistance, tMouseRay))
+	{
+		tPickDesc.fDist = fDistance; 
 		tPickDesc.vPickPos = *(_float4*)&vPosFloat3;
 		tPickDesc.pPickedObject = this;
 		return true;

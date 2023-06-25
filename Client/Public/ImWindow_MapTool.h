@@ -24,7 +24,6 @@ public:
         m_iClickCount = 0;
     }
 
-    void Set_Terrain(CTerrain* pTerrain);
     void AddItems(const char* strItem);
 
 private:
@@ -36,15 +35,17 @@ public:
     CImWindow_Manager* m_pImMgr = { nullptr };
     NAVI_MODE m_eNaviMode = { MODE_END };
     
-    CTerrain* m_pTerrain = { nullptr };
+private: /* Create_Mode */
     _float3 m_vClickPoint[CCell::POINT_END];
     int m_iClickCount = { 0 };
 
 private:
-    CTerrain* m_pCurTerrain = { nullptr };
-    int item_current = 0;
-    vector<std::string> items;
+    int Cell_Index_item_current = 0;
+    vector<std::string> Cell_Index_items;
     
+private:
+    _bool m_bStart = { true };
+
 public:
     static  CImWindow_MapTool* Create(ImGuiIO* pIO);
     virtual void Free(void) override;

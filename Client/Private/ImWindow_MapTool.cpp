@@ -26,6 +26,14 @@ HRESULT CImWindow_MapTool::Initialize(void* pArg)
 
 void CImWindow_MapTool::Tick()
 {
+	if (m_bStart)
+	{
+		// 터레인의 셀들을 가져와서 푸쉬백을 해준다.
+		for (size_t i = 0; i < m_pImMgr->GetCellNum(); ++i)
+			Cell_Index_items.push_back(to_string(i));
+		m_bStart = false;
+	}
+
 	CImWindow_Manager* pImManagerInstance = CImWindow_Manager::GetInstance();
 	Safe_AddRef(pImManagerInstance);
 
@@ -41,13 +49,14 @@ void CImWindow_MapTool::Tick()
 	ImGui::RadioButton("SELECT_CELL_MODE", (int*)&m_eNaviMode, SELECT_CELL_MODE);
 	// 선택된 아이템을 기억할 변수
 	
-	//ImGui::ListBox("Navigation Index", &item_current, VectorGetter, static_cast<void*>(&items),items.size(), 4);
-	ImGui::ListBox("listbox\n(single select)",
-		&item_current,
+	//ImGui::ListBox("Navigation Index", &Cell_Index_item_current, VectorGetter, static_cast<void*>(&Cell_Index_items),Cell_Index_items.size(), 4);
+	
+	ImGui::ListBox("Cell_Index\n(single select)",
+		&Cell_Index_item_current,
 		VectorGetter,
-		static_cast<void*>(&items),
-		items.size(),
-		8);
+		static_cast<void*>(&Cell_Index_items),
+		Cell_Index_items.size(),
+		20);
 
 	ImGui::End();
 
@@ -59,19 +68,9 @@ void CImWindow_MapTool::LateTick()
 	CreateTriangleStrip();
 }
 
-void CImWindow_MapTool::Set_Terrain(CTerrain* pTerrain)
-{
-	m_pCurTerrain = pTerrain;
-	items.clear();
-	for (_uint i = 0; i < m_pCurTerrain->GetCellSize(); ++i)
-	{
-		AddItems(to_string(i).c_str());
-	}
-}
-
 void CImWindow_MapTool::AddItems(const char* strItem)
 {
-	items.push_back(strItem);
+	Cell_Index_items.push_back(strItem);
 }
 
 void CImWindow_MapTool::Object_Place()
@@ -124,7 +123,7 @@ void CImWindow_MapTool::CreateTriangleStrip()
 		{
 			m_vClickPoint[m_iClickCount] = vPickPos;
 			m_iClickCount = 0;
-			m_pTerrain->AddCell(m_vClickPoint);
+			m_pImMgr->AddCell(m_vClickPoint);
 		}
 		else
 		{
@@ -149,7 +148,5 @@ CImWindow_MapTool* CImWindow_MapTool::Create(ImGuiIO* pIO)
 void CImWindow_MapTool::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pCurTerrain);
 }
 #endif

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Base.h"
+#include "GameObject.h"
 #include "ISerializable.h"
 BEGIN(Engine)
 
-class ENGINE_DLL CCell final : public CBase, public ISerializable
+class ENGINE_DLL CCell final : public CGameObject, public ISerializable
 {
 public:
 	enum POINT { POINT_A, POINT_B, POINT_C, POINT_END };
@@ -34,7 +34,7 @@ public:
 #ifdef _DEBUG
 public:
 	HRESULT Render();
-
+	_bool PickedCell(const RAY& tRay);
 #endif
 
 private:
@@ -49,6 +49,7 @@ private:
 #ifdef _DEBUG
 private:
 	class CVIBuffer_Cell* m_pVIBuffer = { nullptr };
+	vector<BoundingSphere>	m_BoundingSphereSpheres;
 #endif
 
 public:

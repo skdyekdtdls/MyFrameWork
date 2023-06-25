@@ -33,6 +33,8 @@ public: /* CImWindow_ObjectTool */
 
 public: /* CImWindow_MapTool */
     void AddItems(const char* strItem);
+    void AddCell(const _float3* vPoints);
+    _uint GetCellNum();
 public: /* CImWindow_CameraTool */
 
 public: /* CImWindow_AnimationTool */

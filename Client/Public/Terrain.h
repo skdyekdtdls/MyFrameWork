@@ -31,7 +31,7 @@ public:
 	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
 	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
 public:
-	_uint GetCellSize();
+	_uint GetCellNum();
 
 public:
 	HRESULT Initialize_Prototype();

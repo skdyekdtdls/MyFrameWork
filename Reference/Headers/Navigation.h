@@ -29,7 +29,7 @@ public:
 	virtual HRESULT Initialize_Prototype(const _tchar* pNavigationDataFiles);
 	virtual HRESULT Initialize(void* pArg) override;
 
-	_uint GetCellSize() {
+	_uint GetCellNum() {
 		return m_Cells.size();
 	}
 	void AddCell(const _float3* vPoints);

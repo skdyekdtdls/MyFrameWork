@@ -1,4 +1,5 @@
 #include "VIBuffer_Cell.h"
+#include "ColliderSphere.h"
 
 CVIBuffer_Cell::CVIBuffer_Cell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CVIBuffer(pDevice, pContext)
@@ -24,10 +25,10 @@ HRESULT CVIBuffer_Cell::Initialize_Prototype(const _float3* pPoints)
 	ZeroStruct(m_BufferDesc);
 
 	m_BufferDesc.ByteWidth = { m_iNumVertices * m_iStride };
-	m_BufferDesc.Usage = { D3D11_USAGE_DEFAULT };
+	m_BufferDesc.Usage = { D3D11_USAGE_DYNAMIC };
 	m_BufferDesc.BindFlags = { D3D11_BIND_VERTEX_BUFFER };
 	m_BufferDesc.StructureByteStride = { m_iStride };
-	m_BufferDesc.CPUAccessFlags = { 0 };
+	m_BufferDesc.CPUAccessFlags = { D3D11_CPU_ACCESS_WRITE };
 	m_BufferDesc.MiscFlags = { 0 };
 
 	VTXPOS* pVertices = new VTXPOS[m_iNumVertices];
@@ -71,6 +72,8 @@ HRESULT CVIBuffer_Cell::Initialize_Prototype(const _float3* pPoints)
 
 HRESULT CVIBuffer_Cell::Initialize(void* pArg)
 {
+
+
 	return S_OK;
 }
 

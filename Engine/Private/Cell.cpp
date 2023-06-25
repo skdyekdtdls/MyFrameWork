@@ -1,6 +1,7 @@
 #include "..\Public\Cell.h"
 
 #ifdef _DEBUG
+#include "ColliderSphere.h"
 #include "VIBuffer_Cell.h"
 #endif
 
@@ -28,6 +29,7 @@ void CCell::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 	ReadVoid(&m_vPoints[0], sizeof(_float3) * POINT_END);
 	ReadVoid(&m_iNeighborIndices[0], sizeof(_int) * NEIGHBOR_END);
 #ifdef _DEBUG
+	..
 	m_pVIBuffer = CVIBuffer_Cell::Create(m_pDevice, m_pContext, m_vPoints);
 #endif
 }
@@ -50,7 +52,10 @@ HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex)
 	}
 
 #ifdef _DEBUG
-	m_pVIBuffer = CVIBuffer_Cell::Create(m_pDevice, m_pContext, pPoints);
+
+//CColliderSphere::Clone();
+//	m_pColliderSpheres.push_back();
+//	m_pVIBuffer = CVIBuffer_Cell::Create(m_pDevice, m_pContext, pPoints);
 	if (nullptr == m_pVIBuffer)
 		return E_FAIL;
 #endif
@@ -116,6 +121,11 @@ HRESULT CCell::Render()
 	m_pVIBuffer->Render();
 
 	return S_OK;
+}
+
+_bool CCell::PickedCell(const RAY& tRay)
+{
+	return _bool();
 }
 
 #endif

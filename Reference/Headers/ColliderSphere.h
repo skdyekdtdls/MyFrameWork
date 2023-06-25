@@ -24,6 +24,9 @@ public:
 	HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual void Tick(_fmatrix TransformMatrix) override;
+
+	_bool IntersectRay(_float& fDist, const RAY& tMouseRay);
+
 #ifdef _DEBUG
 	virtual HRESULT Render() override;
 #endif

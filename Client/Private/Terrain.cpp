@@ -85,17 +85,17 @@ void CTerrain::AddCell(const _float3* vPoints)
 
 	CImWindow_Manager* pImWinMgr = CImWindow_Manager::GetInstance();
 	Safe_AddRef(pImWinMgr);
-	GetCellSize();
-	pImWinMgr->AddItems(to_string(GetCellSize() - 1).c_str());
+	GetCellNum();
+	pImWinMgr->AddItems(to_string(GetCellNum() - 1).c_str());
 	Safe_Release(pImWinMgr);
 
 #endif
 
 }
 
-_uint CTerrain::GetCellSize()
+_uint CTerrain::GetCellNum()
 {
-	return m_pNavigationCom->GetCellSize();
+	return m_pNavigationCom->GetCellNum();
 }
 
 #ifdef _DEBUG
