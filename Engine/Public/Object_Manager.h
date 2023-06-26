@@ -6,6 +6,7 @@
 BEGIN(Engine)
 class CGameObject;
 class CLayer;
+class CComponent;
 class CObject_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CObject_Manager)
@@ -17,6 +18,8 @@ public:
 public:
 	void Serialization(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex = 1);
 	void Deserialization(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex);
+	
+	CComponent* Get_ComponentOfClone(_uint iLevelIndex, const _tchar* pLayerTag, string pCloneObjName, const _tchar* pCloneComName);
 
 	const list<CGameObject*>& GetObjListOfLayer(const _tchar* pTag, _uint iLevelIndex = 1);
 	_uint GetNumLayers(_uint iLevelIndex) {

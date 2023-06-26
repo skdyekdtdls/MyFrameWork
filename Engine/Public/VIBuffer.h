@@ -16,6 +16,10 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual HRESULT Render();
 
+	ID3D11Buffer* GetVB() {
+		return m_pVB;
+	}
+
 protected:
 	ID3D11Buffer* m_pVB;
 	ID3D11Buffer* m_pIB;

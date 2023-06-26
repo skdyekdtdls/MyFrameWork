@@ -10,6 +10,7 @@ class CRenderer;
 class CTransform;
 class CModel;
 class CCollider;
+class CNavigation;
 END
 
 BEGIN(Client)
@@ -38,6 +39,7 @@ private:
 	CShader* m_pShaderCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
+	CNavigation* m_pNavigationCom = { nullptr };
 	CCollider* m_pColliderCom = { nullptr };
 
 public:
@@ -45,7 +47,10 @@ public:
 	HRESULT SetUp_ShaderResources();
 
 private:
-	static _uint CMonster_Id;
+	void KeyInput(_double& TimeDelta);
+	
+private:
+	static _uint Fiona_Id;
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_GameObject_Fiona"; }

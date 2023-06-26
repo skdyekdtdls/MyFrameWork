@@ -49,13 +49,6 @@ void CTerrain::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
-
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
-	
-
-
-	Safe_Release(pGameInstance);
 }
 
 HRESULT CTerrain::Render()
@@ -74,28 +67,6 @@ HRESULT CTerrain::Render()
 #endif
 
 	return S_OK;
-}
-void CTerrain::AddCell(const _float3* vPoints)
-{
-	NULL_CHECK(m_pNavigationCom);
-
-	m_pNavigationCom->AddCell(vPoints);
-
-#ifdef _DEBUG
-
-	CImWindow_Manager* pImWinMgr = CImWindow_Manager::GetInstance();
-	Safe_AddRef(pImWinMgr);
-	GetCellNum();
-	pImWinMgr->AddItems(to_string(GetCellNum() - 1).c_str());
-	Safe_Release(pImWinMgr);
-
-#endif
-
-}
-
-_uint CTerrain::GetCellNum()
-{
-	return m_pNavigationCom->GetCellNum();
 }
 
 #ifdef _DEBUG
@@ -131,6 +102,7 @@ _bool CTerrain::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 	
 	return bResult;
 }
+
 #endif DEBUG
 
 HRESULT CTerrain::Add_Components()

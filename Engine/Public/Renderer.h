@@ -24,6 +24,7 @@ public:
 	
 	void Add_RenderGroup(RENDERGROUP eRenderGroup, CGameObject* pGameObejct);
 	HRESULT Draw_RenderGroup();
+
 private:
 	list<CGameObject*> m_RenderObjects[RENDER_END];
 

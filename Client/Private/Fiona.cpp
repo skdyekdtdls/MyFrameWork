@@ -1,7 +1,7 @@
 #include "..\Public\Fiona.h"
 #include "GameInstance.h"
 
-_uint Fiona::CMonster_Id = 0;
+_uint Fiona::Fiona_Id = 0;
 
 Fiona::Fiona(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
@@ -32,10 +32,10 @@ HRESULT Fiona::Initialize(void* pArg)
 	if (FAILED(Add_Components()))
 		return E_FAIL;
 
-	++CMonster_Id;
-	m_tInfo.wstrName = TO_WSTR("Fiona" + to_string(CMonster_Id));
+	++Fiona_Id;
+	m_tInfo.wstrName = TO_WSTR("Fiona" + to_string(Fiona_Id));
 	m_tInfo.wstrKey = ProtoTag();
-	m_tInfo.ID = CMonster_Id;
+	m_tInfo.ID = Fiona_Id;
 
 	CLONE_DESC tCloneDesc;
 	ZeroStruct(tCloneDesc);
@@ -52,6 +52,8 @@ HRESULT Fiona::Initialize(void* pArg)
 void Fiona::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
+
+	KeyInput(TimeDelta);
 
 	m_pModelCom->Play_Animation(TimeDelta);
 
@@ -126,6 +128,9 @@ HRESULT Fiona::Add_Components()
 		, &TransformDesc), E_FAIL);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxAnimMesh", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
 	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Fiona", L"Com_Model", (CComponent**)&m_pModelCom), E_FAIL);
+	CNavigation::NAVIGATIONDESC tNavigationdesc;
+	tNavigationdesc.iCurrentIndex = { 0 };
+	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, CNavigation::ProtoTag(), L"Com_Navigation", (CComponent**)&m_pNavigationCom, &tNavigationdesc), E_FAIL);
 
 	Safe_Release(pGameInstance);
 	return S_OK;
@@ -147,10 +152,39 @@ HRESULT Fiona::SetUp_ShaderResources()
 
 	_float4 MyFloat4 = pGameInstance->Get_CamPosition();
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", &MyFloat4, sizeof(_float4)), E_FAIL);
-
+	
 	Safe_Release(pGameInstance);
 
 	return S_OK;
+}
+
+void Fiona::KeyInput(_double& TimeDelta)
+{
+	if (g_hWnd != ::GetFocus())
+		return;
+
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	if (pGameInstance->Get_DIKeyState(DIK_UPARROW))
+		m_pTransformCom->Go_Straight(TimeDelta, m_pNavigationCom);
+
+	if (pGameInstance->Get_DIKeyState(DIK_DOWNARROW))
+		m_pTransformCom->Go_Backward(TimeDelta, m_pNavigationCom);
+
+	if (pGameInstance->Get_DIKeyState(DIK_RIGHTARROW))
+		m_pTransformCom->Go_Right(TimeDelta, m_pNavigationCom);
+
+	if (pGameInstance->Get_DIKeyState(DIK_LEFTARROW))
+		m_pTransformCom->Go_Left(TimeDelta, m_pNavigationCom);
+
+	if (pGameInstance->Get_DIKeyState(DIK_E))
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), TimeDelta);
+
+	if (pGameInstance->Get_DIKeyState(DIK_Q))
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -TimeDelta);
+
+	Safe_Release(pGameInstance);
 }
 
 Fiona* Fiona::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -180,6 +214,8 @@ CGameObject* Fiona::Clone(void* pArg)
 void Fiona::Free()
 {
 	__super::Free();
+	--Fiona_Id;
+	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pShaderCom);

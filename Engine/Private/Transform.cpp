@@ -56,7 +56,7 @@ _float3 CTransform::Get_AulerDegree()
 	euler.x = XMConvertToDegrees(yaw);
 	euler.y = XMConvertToDegrees(pitch);
 	euler.z = XMConvertToDegrees(roll);
-	
+
 	//// Adjust the range from [-180, 180] to [0, 360]
 	if (euler.x < 0) euler.x += 360.0f;
 	if (euler.y < 0) euler.y += 360.0f;
@@ -102,45 +102,115 @@ void CTransform::Go_Straight(_double TimeDelta, CNavigation* pNavigation)
 	_vector		vPosition = Get_State(STATE_POSITION);
 	_vector		vLook = Get_State(STATE_LOOK);
 
-	vPosition += XMVector3Normalize(vLook) * m_TransformDesc.SpeedPerSec * TimeDelta;
+	_bool isMove = true; // 기본적으로 플레이어는 이동 상태로 가정합니다.
 
-	_bool isMove = { true };
+	if (pNavigation != nullptr)
+	{
+		isMove = pNavigation->is_Move(vPosition); // 네비게이션으로부터 이동 가능 여부를 확인합니다.
 
-	if (nullptr != pNavigation)
-		isMove = pNavigation->is_Move(vPosition);
+		if (false == isMove)
+		{
+			_float3 vContactNormal = pNavigation->ContactNormal(); // 충돌 법선을 가져옵니다.
+			// 법선이 유효하다면 슬라이딩 벡터를 계산합니다.
+			if (!Float3Equal(_float3(), vContactNormal))
+			{
+				_vector N = XMVector3Normalize(XMLoadFloat3(&vContactNormal)); // 충돌직선의 법선 벡터
+				_vector P = XMVector3Normalize(vLook); // 플레이어 이동벡터
+				_vector S = P - N * ((XMVector3Dot(P, N))); // 슬라이딩 벡터를 계산합니다.
+				
+				_vector NextPos = vPosition + S * m_TransformDesc.SpeedPerSec * TimeDelta; // 위치를 업데이트합니다.
+				NextPos -= N * 0.13f * TimeDelta; // 벽에 갇히지 않게 밀어냄
 
-	if(true == isMove)
+				// 슬라이딩 위치가 현재 삼각형을 벗어나면 새로운 검사를 진행한다.
+				if (false == pNavigation->is_Move(NextPos))
+				{
+					vContactNormal = pNavigation->ContactNormal();
+
+					if (!Float3Equal(_float3(), vContactNormal))
+					{
+						_vector N = XMVector3Normalize(XMLoadFloat3(&vContactNormal)); // 충돌직선의 법선 벡터
+						_vector P = XMVector3Normalize(vLook); // 플레이어 이동벡터
+						_vector S = P - N * ((XMVector3Dot(P, N))); // 슬라이딩 벡터를 계산합니다.
+
+						vPosition += S * m_TransformDesc.SpeedPerSec * TimeDelta; // 위치를 업데이트합니다.
+						vPosition -= N * 0.13f * TimeDelta; // 벽에 갇히지 않게 밀어냄
+					}
+				}
+				else
+					vPosition = NextPos; // 위치를 업데이트합니다.
+			}
+			else
+			{
+				isMove = false; // 법선이 유효하지 않다면 이동을 멈춥니다.
+			}
+		}
+		else
+		{
+			// 이동 가능한 경우, 이동 벡터를 계산하여 위치를 업데이트합니다.
+			vPosition += XMVector3Normalize(vLook) * m_TransformDesc.SpeedPerSec * TimeDelta;
+		}
+	}
+	else
+	{
+		// 네비게이션이 없는 경우, 이동 벡터를 계산하여 위치를 업데이트합니다.
+		vPosition += XMVector3Normalize(vLook) * m_TransformDesc.SpeedPerSec * TimeDelta;
+	}
+
+	// 이동 가능한 상태라면, 새로 계산한 위치를 설정합니다.
+	if (true == isMove)
+	{
 		Set_State(STATE_POSITION, vPosition);
+	}
 }
 
-void CTransform::Go_Backward(_double TimeDelta)
+void CTransform::Go_Backward(_double TimeDelta, CNavigation* pNavigation)
 {
 	_vector		vPosition = Get_State(STATE_POSITION);
 	_vector		vLook = Get_State(STATE_LOOK);
 
 	vPosition -= XMVector3Normalize(vLook) * m_TransformDesc.SpeedPerSec * TimeDelta;
 
-	Set_State(STATE_POSITION, vPosition);
+	_bool isMove = { true };
+
+	if (nullptr != pNavigation)
+	{
+		isMove = pNavigation->is_Move(vPosition);
+	}
+
+	if (true == isMove)
+		Set_State(STATE_POSITION, vPosition);
 }
 
-void CTransform::Go_Left(_double TimeDelta)
+void CTransform::Go_Left(_double TimeDelta, CNavigation* pNavigation)
 {
 	_vector		vPosition = Get_State(STATE_POSITION);
 	_vector		vRight = Get_State(STATE_RIGHT);
 
 	vPosition -= XMVector3Normalize(vRight) * m_TransformDesc.SpeedPerSec * TimeDelta;
 
-	Set_State(STATE_POSITION, vPosition);
+	_bool isMove = { true };
+
+	if (nullptr != pNavigation)
+		isMove = pNavigation->is_Move(vPosition);
+
+	if (true == isMove)
+		Set_State(STATE_POSITION, vPosition);
 }
 
-void CTransform::Go_Right(_double TimeDelta)
+void CTransform::Go_Right(_double TimeDelta, CNavigation* pNavigation)
 {
 	_vector		vPosition = Get_State(STATE_POSITION);
 	_vector		vRight = Get_State(STATE_RIGHT);
 
 	vPosition += XMVector3Normalize(vRight) * m_TransformDesc.SpeedPerSec * TimeDelta;
 
-	Set_State(STATE_POSITION, vPosition);
+	_bool isMove = { true };
+
+	if (nullptr != pNavigation)
+		isMove = pNavigation->is_Move(vPosition);
+
+	if (true == isMove)
+		Set_State(STATE_POSITION, vPosition);
 }
 
 void CTransform::Chase(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance)

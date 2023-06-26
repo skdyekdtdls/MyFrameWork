@@ -1,8 +1,8 @@
 #include "..\Public\Cell.h"
 
 #ifdef _DEBUG
-#include "ColliderSphere.h"
 #include "VIBuffer_Cell.h"
+#include "ColliderSphere.h"
 #endif
 
 CCell::CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -17,6 +17,7 @@ void CCell::Save(HANDLE hFile, DWORD& dwByte)
 {
 	WriteVoid(&m_iIndex, sizeof(_int));
 	WriteVoid(&m_vPoints[0], sizeof(_float3) * POINT_END);
+	WriteVoid(&m_vNormals[0], sizeof(_float3) * POINT_END);
 	WriteVoid(&m_iNeighborIndices[0], sizeof(_int) * NEIGHBOR_END);
 }
 
@@ -27,11 +28,50 @@ void CCell::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 #endif
 	ReadVoid(&m_iIndex, sizeof(_int));
 	ReadVoid(&m_vPoints[0], sizeof(_float3) * POINT_END);
+	ReadVoid(&m_vNormals[0], sizeof(_float3) * POINT_END);
 	ReadVoid(&m_iNeighborIndices[0], sizeof(_int) * NEIGHBOR_END);
 #ifdef _DEBUG
-	..
+	for (size_t i = 0; i < POINT_END; ++i)
+		m_pColliderSpheres.push_back(CColliderSphere::Create(m_pDevice, m_pContext));
 	m_pVIBuffer = CVIBuffer_Cell::Create(m_pDevice, m_pContext, m_vPoints);
 #endif
+}
+
+void CCell::Set_Point(POINT ePoint, const _float3* vPos)
+{
+	m_vPoints[ePoint] = *vPos;
+	CalcNormal();
+
+#ifdef _DEBUG
+	ID3D11Buffer* pVB = m_pVIBuffer->GetVB();
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	ZeroStruct(mappedResource);
+
+	// VIBuffer업데이트
+	m_pContext->Map(pVB, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &mappedResource);
+	VTXPOS* pVertices = reinterpret_cast<VTXPOS*>(mappedResource.pData);
+	pVertices[ePoint].vPosition = *vPos;
+	m_pContext->Unmap(pVB, 0);
+
+	// 콜라이더 위치 업데이트
+	_float4x4 TransformationFloat4x4;
+	XMStoreFloat4x4(&TransformationFloat4x4, XMMatrixIdentity());
+	memcpy(&TransformationFloat4x4.m[3][0], &m_vPoints[ePoint], sizeof(_float3));
+	m_pColliderSpheres[ePoint]->Tick(XMLoadFloat4x4(&TransformationFloat4x4));
+#endif
+}
+
+void CCell::CalcNormal()
+{
+	_vector vLine;
+	vLine = XMLoadFloat3(&m_vPoints[POINT_B]) - XMLoadFloat3(&m_vPoints[POINT_A]);
+	m_vNormals[NEIGHBOR_AB] = _float3(XMVectorGetZ(vLine) * -1.f, 0.f, XMVectorGetX(vLine));
+
+	vLine = XMLoadFloat3(&m_vPoints[POINT_C]) - XMLoadFloat3(&m_vPoints[POINT_B]);
+	m_vNormals[NEIGHBOR_BC] = _float3(XMVectorGetZ(vLine) * -1.f, 0.f, XMVectorGetX(vLine));
+
+	vLine = XMLoadFloat3(&m_vPoints[POINT_A]) - XMLoadFloat3(&m_vPoints[POINT_C]);
+	m_vNormals[NEIGHBOR_CA] = _float3(XMVectorGetZ(vLine) * -1.f, 0.f, XMVectorGetX(vLine));
 }
 
 HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex)
@@ -40,22 +80,13 @@ HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex)
 	{
 		memcpy(m_vPoints, pPoints, sizeof(_float3) * POINT_END);
 		m_iIndex = iIndex;
-		_vector vLine;
-		vLine = XMLoadFloat3(&m_vPoints[POINT_B]) - XMLoadFloat3(&m_vPoints[POINT_A]);
-		m_vNormals[NEIGHBOR_AB] = _float3(XMVectorGetZ(vLine) * -1.f, 0.f, XMVectorGetX(vLine));
-
-		vLine = XMLoadFloat3(&m_vPoints[POINT_C]) - XMLoadFloat3(&m_vPoints[POINT_B]);
-		m_vNormals[NEIGHBOR_BC] = _float3(XMVectorGetZ(vLine) * -1.f, 0.f, XMVectorGetX(vLine));
-
-		vLine = XMLoadFloat3(&m_vPoints[POINT_A]) - XMLoadFloat3(&m_vPoints[POINT_C]);
-		m_vNormals[NEIGHBOR_CA] = _float3(XMVectorGetZ(vLine) * -1.f, 0.f, XMVectorGetX(vLine));
+		CalcNormal();
 	}
 
 #ifdef _DEBUG
-
-//CColliderSphere::Clone();
-//	m_pColliderSpheres.push_back();
-//	m_pVIBuffer = CVIBuffer_Cell::Create(m_pDevice, m_pContext, pPoints);
+	for (size_t i = 0; i < POINT_END; ++i)
+		m_pColliderSpheres.push_back(CColliderSphere::Create(m_pDevice, m_pContext));
+	m_pVIBuffer = CVIBuffer_Cell::Create(m_pDevice, m_pContext, pPoints);
 	if (nullptr == m_pVIBuffer)
 		return E_FAIL;
 #endif
@@ -73,7 +104,7 @@ _bool CCell::Compare_Points(_fvector vSourPoint, _fvector vDestPoint)
 		if (true == XMVector3Equal(XMLoadFloat3(&m_vPoints[POINT_C]), vDestPoint))
 			return true;
 	}
-
+	
 	if (true == XMVector3Equal(XMLoadFloat3(&m_vPoints[POINT_B]), vSourPoint))
 	{
 		if (true == XMVector3Equal(XMLoadFloat3(&m_vPoints[POINT_C]), vDestPoint))
@@ -95,7 +126,7 @@ _bool CCell::Compare_Points(_fvector vSourPoint, _fvector vDestPoint)
 	return false;
 }
 
-_bool CCell::is_In(_fvector vPosition, _int* pNeighborIndex)
+_bool CCell::is_In(_fvector vPosition, _int* pNeighborIndex, NEIGHBOR& eNeighbor)
 {
 	for (size_t i = 0; i < NEIGHBOR_END; ++i)
 	{
@@ -104,6 +135,7 @@ _bool CCell::is_In(_fvector vPosition, _int* pNeighborIndex)
 
 		if (0 < XMVectorGetX(XMVector3Dot(vDir, vNormal)))
 		{
+			eNeighbor = static_cast<NEIGHBOR>(i);
 			*pNeighborIndex = m_iNeighborIndices[i];
 			return false;
 		}
@@ -113,8 +145,17 @@ _bool CCell::is_In(_fvector vPosition, _int* pNeighborIndex)
 }
 
 #ifdef _DEBUG
+HRESULT CCell::Render_ColliderSphere()
+{
+	for (auto* Collider : m_pColliderSpheres)
+	{
+		Collider->Render();
+	}
 
-HRESULT CCell::Render()
+	return S_OK;
+}
+
+HRESULT CCell::Render_VIBuffer()
 {
 	NULL_CHECK_RETURN(m_pVIBuffer, E_FAIL);
 
@@ -123,7 +164,45 @@ HRESULT CCell::Render()
 	return S_OK;
 }
 
-_bool CCell::PickedCell(const RAY& tRay)
+void CCell::UpdateColliderForVertex(POINT ePoint)
+{
+	_float4x4 TransformationFloat4x4;
+	XMStoreFloat4x4(&TransformationFloat4x4, XMMatrixIdentity());
+	memcpy(&TransformationFloat4x4.m[3][0], &m_vPoints[ePoint], sizeof(_float3));
+	m_pColliderSpheres[ePoint]->Tick(XMLoadFloat4x4(&TransformationFloat4x4));
+}
+
+void CCell::UpdateColliderForVertices()
+{
+	for (size_t i = 0; i < POINT_END; ++i)
+	{
+		_float4x4 TransformationFloat4x4;
+		XMStoreFloat4x4(&TransformationFloat4x4, XMMatrixIdentity());
+		memcpy(&TransformationFloat4x4.m[3][0], &m_vPoints[i], sizeof(_float3));
+		m_pColliderSpheres[i]->Tick(XMLoadFloat4x4(&TransformationFloat4x4));
+
+	}
+}
+
+_bool CCell::IsCellVertexPicked(CELL_PICK_DESC& tPickDesc, const RAY& tRay)
+{
+	for (size_t i = 0; i < POINT_END; ++i)
+	{
+		_float fDistance = { FLT_MAX };
+		if (m_pColliderSpheres[i]->IntersectRay(fDistance, tRay))
+		{
+			tPickDesc.vPickPos = *(_float4*)&m_vPoints[i];
+			tPickDesc.fDist = fDistance;
+			tPickDesc.pPickedCell = this;
+			tPickDesc.iVertexIndex = { (_int)i };
+			return true;
+		}
+	}
+
+	return false;
+}
+
+_bool CCell::IsCellPicked(CELL_PICK_DESC& tPickDesc, const RAY& tRay)
 {
 	return _bool();
 }
@@ -145,6 +224,9 @@ CCell* CCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const
 void CCell::Free()
 {
 #ifdef _DEBUG
+	for (auto& Collider : m_pColliderSpheres)
+		Safe_Release(Collider);
+	m_pColliderSpheres.clear();
 	Safe_Release(m_pVIBuffer);
 #endif
 

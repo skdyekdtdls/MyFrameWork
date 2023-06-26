@@ -58,7 +58,6 @@ HRESULT CLevel_Imgui::Render()
 	return S_OK;
 }
 
-
 HRESULT CLevel_Imgui::Ready_Lights()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();

@@ -25,10 +25,21 @@ HRESULT CVIBuffer_Cell::Initialize_Prototype(const _float3* pPoints)
 	ZeroStruct(m_BufferDesc);
 
 	m_BufferDesc.ByteWidth = { m_iNumVertices * m_iStride };
+#ifdef _DEBUG // 디버그 모드일때만 동적버퍼
 	m_BufferDesc.Usage = { D3D11_USAGE_DYNAMIC };
+#else
+	m_BufferDesc.Usage = { D3D11_USAGE_DEFAULT };
+#endif
+
 	m_BufferDesc.BindFlags = { D3D11_BIND_VERTEX_BUFFER };
 	m_BufferDesc.StructureByteStride = { m_iStride };
+
+#ifdef _DEBUG // 디버그 모드일때만 동적버퍼
 	m_BufferDesc.CPUAccessFlags = { D3D11_CPU_ACCESS_WRITE };
+#else
+	m_BufferDesc.CPUAccessFlags = { 0 };
+#endif
+
 	m_BufferDesc.MiscFlags = { 0 };
 
 	VTXPOS* pVertices = new VTXPOS[m_iNumVertices];

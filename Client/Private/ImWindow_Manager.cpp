@@ -2,7 +2,6 @@
 #include "..\Public\ImWindow_Manager.h"
 #include "GameInstance.h"
 #include "EditCamera.h"
-#include "Terrain.h"
 
 #include "ImWindow.h"
 
@@ -189,9 +188,9 @@ void CImWindow_Manager::AddCell(const _float3* vPoints)
     CGameInstance* pGameInstance = CGameInstance::GetInstance();
     Safe_AddRef(pGameInstance);
 
-    CTerrain* pTerrain = static_cast<CTerrain*>(pGameInstance->Get_GameObject(LEVEL_IMGUI, L"Layer_BackGround", "CTerrain1"));
+    CNavigation* pNavigation = static_cast<CNavigation*>(pGameInstance->Get_ComponentOfClone(LEVEL_IMGUI, L"Layer_BackGround", "CTerrain1", L"Com_Navigation"));
 
-    pTerrain->AddCell(vPoints);
+    pNavigation->AddCell(vPoints);
 
     Safe_Release(pGameInstance);
 }
@@ -201,11 +200,11 @@ _uint CImWindow_Manager::GetCellNum()
     CGameInstance* pGameInstance = CGameInstance::GetInstance();
     Safe_AddRef(pGameInstance);
 
-    CTerrain* pTerrain = static_cast<CTerrain*>(pGameInstance->Get_GameObject(LEVEL_IMGUI, L"Layer_BackGround", "CTerrain1"));
-
+    CNavigation* pNavigation = static_cast<CNavigation*>(pGameInstance->Get_ComponentOfClone(LEVEL_IMGUI, L"Layer_BackGround", "CTerrain1", L"Com_Navigation"));
+    
     Safe_Release(pGameInstance);
 
-    return  pTerrain->GetCellNum();
+    return  pNavigation->GetCellNum();
 }
 
 IMWIN_MODE CImWindow_Manager::Get_Mode()

@@ -24,7 +24,7 @@ public:
 	HRESULT Add_Prototype(_uint iLevelIndex, const _tchar* pPrototypeTag, CComponent* pCompoent);
 	CComponent* Clone_Component(_uint iLevelIndex, const _tchar* pPrototypeTag, void* pArg);
 	void Clear_LevelResources(_uint iLevelIndex);
-
+	CComponent* Get_ProtoComponent(_uint iLevelIndex, const _tchar * pProtoTag);
 private:
 	_uint m_iNumLevels = { 0 };
 	typedef unordered_map<const _tchar*, CComponent*> PROTOTYPES;

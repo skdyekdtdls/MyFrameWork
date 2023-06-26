@@ -49,6 +49,7 @@ public: /* For Object_Manager*/
 	CGameObject* Add_GameObject(_uint iLevelIndex, const _tchar * pPrototypeTag, const _tchar * pLayerTag, void* pArg = nullptr);
 	void Clear_LevelResources(_uint iLevelIndex);
 	CGameObject* Get_GameObject(_uint iLevelIndex, const _tchar * pLayerTag, string strName);
+	CComponent* Get_ComponentOfClone(_uint iLevelIndex, const _tchar * pLayerTag, string pCloneObjName, const _tchar * pCloneComName);
 	_uint GetNumLayers(_uint iLevelIndex);
 	LAYERS* GetLayers();
 
@@ -63,6 +64,7 @@ public: /* For Timer Manager */
 public: /* For Component Manager */
 	HRESULT Add_Prototype(_uint iLevelIndex, const _tchar * pPrototypeTag, CComponent * pPrototype);
 	CComponent* Clone_Component(_uint iLevelIndex, const _tchar * pPrototypeTag, void* pArg = nullptr);
+	CComponent* Get_ProtoComponent(_uint iLevelIndex, const _tchar * pProtoTag);
 
 public: /* For PipeLine */
 	_float4	Get_CamPosition() const;

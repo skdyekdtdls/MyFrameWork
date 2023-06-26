@@ -1,6 +1,7 @@
 #include "Object_Manager.h"
 #include "GameObject.h"
 #include "Layer.h"
+#include "Component.h"
 #include "Level_Manager.h"
 #include "Camera.h"
 IMPLEMENT_SINGLETON(CObject_Manager)
@@ -163,4 +164,15 @@ void CObject_Manager::Deserialization(HANDLE hFile, DWORD& dwByte, _uint iLevelI
 		m_pLayers[iLevelIndex].emplace(pLayer->GetLayerName(), pLayer);
 		pLayer->Load(hFile, dwByte, iLevelIndex);
 	}	
+}
+
+CComponent* CObject_Manager::Get_ComponentOfClone(_uint iLevelIndex, const _tchar* pLayerTag, string pCloneObjName, const _tchar* pCloneComName)
+{
+	CLayer* pLayer = Find_LayerByName(iLevelIndex, pLayerTag);
+	NULL_CHECK_RETURN(pLayer, nullptr);
+	CGameObject* pGameObject = pLayer->FindByName(pCloneObjName);
+	NULL_CHECK_RETURN(pGameObject, nullptr)
+	CComponent* pComponent = pGameObject->Get_Component(pCloneComName);
+	NULL_CHECK_RETURN(pComponent, nullptr)
+	return pComponent;
 }

@@ -7,6 +7,7 @@
 #include "Terrain.h"
 #include "ImWindow.h"
 #include "Fiona.h"
+#include "EditCamera.h"
 
 CImWindow_MapTool::CImWindow_MapTool(ImGuiIO* pIO)
 	: CImWindow(pIO)
@@ -45,7 +46,7 @@ void CImWindow_MapTool::Tick()
 		ZeroMemory(m_vClickPoint, sizeof(_float3) * CCell::POINT_END);
 	}
 	ImGui::SameLine();
-	ImGui::RadioButton("SELECT_POINT_MODE", (int*)&m_eNaviMode, SELECT_POINT_MODE); ImGui::SameLine();
+	ImGui::RadioButton("VERTEX_EDIT_MODE", (int*)&m_eNaviMode, VERTEX_EDIT_MODE); ImGui::SameLine();
 	ImGui::RadioButton("SELECT_CELL_MODE", (int*)&m_eNaviMode, SELECT_CELL_MODE);
 	// 선택된 아이템을 기억할 변수
 	
@@ -58,14 +59,31 @@ void CImWindow_MapTool::Tick()
 		Cell_Index_items.size(),
 		20);
 
+	VecInfo("Position", &vPos, 120);
 	ImGui::End();
+
+	switch (m_eNaviMode)
+	{
+	case CREATE_MODE:
+		CreateTriangleStrip();
+		break;
+	case VERTEX_EDIT_MODE:
+		Vertex_Edit();
+		break;
+	case SELECT_CELL_MODE:
+		break;
+	}
+
+	for (auto& CellPickDesc : tCellPickDesces)
+	{
+		CellPickDesc.pPickedCell->Set_Point(static_cast<CCell::POINT>(CellPickDesc.iVertexIndex), &vPos);
+	}
 
 	Safe_Release(pImManagerInstance);
 }
 
 void CImWindow_MapTool::LateTick()
 {
-	CreateTriangleStrip();
 }
 
 void CImWindow_MapTool::AddItems(const char* strItem)
@@ -73,37 +91,33 @@ void CImWindow_MapTool::AddItems(const char* strItem)
 	Cell_Index_items.push_back(strItem);
 }
 
-void CImWindow_MapTool::Object_Place()
-{
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
-
-
-	Fiona::CLONE_DESC tCloneDesc;
-	//CCube::CLONE_DESC tCloneDesc;
-	//tCloneDesc.vPosition = { *(_float4*)&tPickDesc.vPickPos };
-	//tCloneDesc.vPosition.w = 1.f;
-	pGameInstance->Add_GameObject(LEVEL_IMGUI, Fiona::ProtoTag(), L"Layer_BackGround", &tCloneDesc);
-
-	Safe_Release(pGameInstance);
-}
-
-void CImWindow_MapTool::Edit_Navigation_Mesh()
+void CImWindow_MapTool::Vertex_Edit()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	CImWindow_Manager* pImMgr = CImWindow_Manager::GetInstance();
-	Safe_AddRef(pImMgr);
 	Safe_AddRef(pGameInstance);
+	Safe_AddRef(pImMgr);
 
-	switch (m_eNaviMode)
+	if (!pImMgr->IsPicking())
 	{
-	case CREATE_MODE:
-		CreateTriangleStrip();
-		break;
-	case SELECT_POINT_MODE:
-		break;
-	case SELECT_CELL_MODE:
-		break;
+		Safe_Release(pImMgr);
+		Safe_Release(pGameInstance);
+		return;
+	}
+	tCellPickDesces.clear();
+	CEditCamera* pEditCamera = static_cast<CEditCamera*>(pGameInstance->Get_GameObject(LEVEL_IMGUI, L"Layer_Camera", "EditCamera"));
+	CNavigation* pNavigation = static_cast<CNavigation*>(pGameInstance->Get_ComponentOfClone(LEVEL_IMGUI, L"Layer_BackGround", "CTerrain1", L"Com_Navigation"));
+	RAY tMouseRay = pEditCamera->GetMouseRay();
+	
+	pNavigation->IsCellVertexPicked(tCellPickDesces, tMouseRay);
+	for (auto& CellPickDesc : tCellPickDesces)
+	{
+		CONSOLE_MSG("CellPtr : " << CellPickDesc.pPickedCell << "\t" << "VertexIndex : " << CellPickDesc.iVertexIndex);
+	}
+	
+	if (!tCellPickDesces.empty())
+	{
+		vPos = *(_float3*)&tCellPickDesces[0].vPickPos;
 	}
 
 	Safe_Release(pImMgr);
@@ -149,4 +163,33 @@ void CImWindow_MapTool::Free()
 {
 	__super::Free();
 }
+
+void CImWindow_MapTool::VecInfo(const char* text, _float3* vec3, int iSize)
+{
+	string label;
+	label = "##";
+	label.append(text);
+
+	ImVec2 textSize = ImGui::CalcTextSize(text);
+	ImGui::Text(text); ImGui::SameLine();
+	ImGui::Dummy(ImVec2(100 - textSize.x, 0.0f));  ImGui::SameLine();
+	ImGui::Text("x"); ImGui::SameLine();
+	ImGui::PushItemWidth(iSize);
+	label.append("0");
+	ImGui::DragFloat(label.c_str(), &vec3->x); ImGui::SameLine();
+	ImGui::PopItemWidth();
+
+	ImGui::Text("y"); ImGui::SameLine();
+	ImGui::PushItemWidth(iSize);
+	label.append("0");
+	ImGui::DragFloat(label.c_str(), &vec3->y); ImGui::SameLine();
+	ImGui::PopItemWidth();
+
+	ImGui::Text("z"); ImGui::SameLine();
+	ImGui::PushItemWidth(iSize);
+	label.append("0");
+	ImGui::DragFloat(label.c_str(), &vec3->z); ImGui::Spacing();  // 공백 추가
+	ImGui::PopItemWidth();
+}
+
 #endif
