@@ -54,7 +54,9 @@ void CImWindow_SaveLoads::Deserialization(const _tchar* pSaveFileName, _uint iLe
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 	HANDLE hFile = CreateFile(pSaveFileName, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-
+	
+	CRenderer* pRenderer = static_cast<CRenderer*>(pGameInstance->Get_ProtoComponent(LEVEL_STATIC, CRenderer::ProtoTag()));
+	pRenderer->Draw_RenderGroup();
 	if (0 == hFile)
 		assert(false);
 

@@ -112,6 +112,9 @@
     <Filter Include="00. Loader">
       <UniqueIdentifier>{f09b8893-2231-43e6-a92f-76f4e9bd1408}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\Clint">
+      <UniqueIdentifier>{f9294993-46ce-4f52-b991-34107ab7ea3b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -228,6 +231,9 @@
     <ClInclude Include="..\Public\ImGuiFileDialog.h">
       <Filter>96. IMGUI\03. ImVertex\filedialog</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Clint.h">
+      <Filter>02. GameObject\Clint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -342,6 +348,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\ImGuiFileDialog.cpp">
       <Filter>96. IMGUI\03. ImVertex\filedialog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Clint.cpp">
+      <Filter>02. GameObject\Clint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -90,3 +90,24 @@ static bool FloatEqual(float f1, float f2, float epsilon = std::numeric_limits<f
 {
 	return abs(f1 - f2) <= epsilon;
 }
+
+static bool Float3Equal(_float3 f1, _float3 f2, float epsilon = std::numeric_limits<float>::epsilon())
+{
+	if (!FloatEqual(f1.x, f2.x, epsilon)) return false;
+	if (!FloatEqual(f1.y, f2.y, epsilon)) return false;
+	if (!FloatEqual(f1.z, f2.z, epsilon)) return false;
+	return true;
+}
+
+bool IsPointOnLineSegment(FXMVECTOR A, FXMVECTOR B, FXMVECTOR P)
+{
+	DirectX::FXMVECTOR AB = DirectX::XMVectorSubtract(B, A);
+	DirectX::FXMVECTOR AP = DirectX::XMVectorSubtract(P, A);
+	DirectX::FXMVECTOR BP = DirectX::XMVectorSubtract(P, B);
+
+	float dotABAP = DirectX::XMVectorGetX(DirectX::XMVector3Dot(AB, AP));
+	float dotABAB = DirectX::XMVectorGetX(DirectX::XMVector3Dot(AB, AB));
+	float dotBAPB = DirectX::XMVectorGetX(DirectX::XMVector3Dot(DirectX::XMVectorNegate(AB), BP));
+
+	return (dotABAP >= 0.f && dotABAP <= dotABAB && dotBAPB >= 0.f);
+}

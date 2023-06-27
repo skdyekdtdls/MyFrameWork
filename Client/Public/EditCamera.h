@@ -31,7 +31,9 @@ public:
 	void AddPickDesc(PICK_DESC tPickDesc);
 	void DeletePickDescByPtr(CGameObject* pGameObject);
 	void ClearPickDesc();
-
+	const RAY& GetMouseRay() {
+		return m_tMouseRay;
+	}
 	// LateTick에서 사용할 것을 권함. 카메라의 픽 정보는 Tick에서 업데이트됨.
 	const _bool& IsPicking() {
 		return m_isPicking;

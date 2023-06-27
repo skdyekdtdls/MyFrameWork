@@ -74,10 +74,7 @@ void CImWindow_ObjectTool::Tick()
 		ObjectPlace();
 	}
 
-	//if (ImGui::Button("Open File Dialog"))
-	//{
-	//	ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".cpp,.h,.hpp", ".");
-	//}
+
 	//ShowFileDialog();
 
 	ImGui::Text("name : "); ImGui::SameLine();

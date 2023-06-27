@@ -185,6 +185,7 @@
     </ClInclude>
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
+    <ClInclude Include="..\public\Clint.h" />
     <ClInclude Include="..\Public\ImGuiFileDialog.h" />
     <ClInclude Include="..\Public\ImGuiFileDialogConfig.h" />
     <ClInclude Include="..\public\ImWindow_AnimationTool.h" />
@@ -284,6 +285,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\private\Clint.cpp" />
     <ClCompile Include="..\Private\ImGuiFileDialog.cpp" />
     <ClCompile Include="..\private\ImWindow_AnimationTool.cpp" />
     <ClCompile Include="..\Private\ImWindow_LightTool.cpp" />

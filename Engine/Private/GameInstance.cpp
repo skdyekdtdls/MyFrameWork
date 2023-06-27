@@ -98,6 +98,14 @@ CGameObject* CGameInstance::Get_GameObject(_uint iLevelIndex, const _tchar* pLay
 	return pGameObject;
 }
 
+CComponent* CGameInstance::Get_ComponentOfClone(_uint iLevelIndex, const _tchar* pLayerTag, string pCloneObjName, const _tchar* pCloneComName)
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+
+	return m_pObject_Manager->Get_ComponentOfClone(iLevelIndex, pLayerTag, pCloneObjName, pCloneComName);
+}
+
 _uint CGameInstance::GetNumLayers(_uint iLevelIndex)
 {
 	if (nullptr == m_pObject_Manager)
@@ -295,6 +303,14 @@ CComponent* CGameInstance::Clone_Component(_uint iLevelIndex, const _tchar* pPro
 		return nullptr;
 
 	return m_pComponent_Manager->Clone_Component(iLevelIndex, pPrototypeTag, pArg);
+}
+
+CComponent* CGameInstance::Get_ProtoComponent(_uint iLevelIndex, const _tchar* pProtoTag)
+{
+	if (nullptr == m_pComponent_Manager)
+		return nullptr;
+
+	return m_pComponent_Manager->Get_ProtoComponent(iLevelIndex, pProtoTag);
 }
 
 _float4 CGameInstance::Get_CamPosition() const

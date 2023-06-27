@@ -75,6 +75,36 @@ namespace Engine
 		class CGameObject* pPickedObject = { nullptr };
 	};
 
+	struct CELL_PICK_DESC
+	{
+		bool operator==(const CELL_PICK_DESC& rhs) const {
+			if (vPickPos.x != rhs.vPickPos.x) return false;
+			if (vPickPos.y != rhs.vPickPos.y) return false;
+			if (vPickPos.z != rhs.vPickPos.z) return false;
+			if (vPickPos.w != rhs.vPickPos.w) return false;
+			if (!FloatEqual(fDist, rhs.fDist)) return false;
+			if (pPickedCell != rhs.pPickedCell) return false;
+
+			return true;
+		}
+
+		bool operator!=(const CELL_PICK_DESC& rhs) const {
+			return !(*this == rhs);
+		}
+
+		XMFLOAT4 vPickPos = { 0.f, 0.f, 0.f, 1.f };
+		float	 fDist;
+		class CCell* pPickedCell = { nullptr };
+		_int	iVertexIndex = { -1 };
+	};
+
+	//struct VERTEX_PICK_DESC
+	//{
+	//	XMFLOAT4 vVertexPos = { 0.f, 0.f, 0.f, 1.f };
+	//	float	 fDist;
+	//	class CCell* pPickedCell = { nullptr };
+	//};
+
 	typedef struct tagGraphicDesc
 	{
 		enum WINMODE { WM_FULL, WM_WIN, WM_END };

@@ -58,6 +58,13 @@ void CComponent_Manager::Clear_LevelResources(_uint iLevelIndex)
 	m_pPrototypes[iLevelIndex].clear();
 }
 
+CComponent* CComponent_Manager::Get_ProtoComponent(_uint iLevelIndex, const _tchar* pProtoTag)
+{
+	CComponent* pProtoComponent = Find_Prototype(iLevelIndex, pProtoTag);
+	NULL_CHECK_RETURN(pProtoComponent, nullptr);
+	return pProtoComponent;
+}
+
 CComponent* CComponent_Manager::Find_Prototype(_uint iLevelIndex, const _tchar* pPrototypeTag)
 {
 	auto iter = find_if(m_pPrototypes[iLevelIndex].begin(), m_pPrototypes[iLevelIndex].end(), CTag_Finder(pPrototypeTag));

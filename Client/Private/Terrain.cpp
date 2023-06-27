@@ -49,13 +49,6 @@ void CTerrain::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
-
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
-	
-
-
-	Safe_Release(pGameInstance);
 }
 
 HRESULT CTerrain::Render()
@@ -74,28 +67,6 @@ HRESULT CTerrain::Render()
 #endif
 
 	return S_OK;
-}
-void CTerrain::AddCell(const _float3* vPoints)
-{
-	NULL_CHECK(m_pNavigationCom);
-
-	m_pNavigationCom->AddCell(vPoints);
-
-#ifdef _DEBUG
-
-	CImWindow_Manager* pImWinMgr = CImWindow_Manager::GetInstance();
-	Safe_AddRef(pImWinMgr);
-	GetCellSize();
-	pImWinMgr->AddItems(to_string(GetCellSize() - 1).c_str());
-	Safe_Release(pImWinMgr);
-
-#endif
-
-}
-
-_uint CTerrain::GetCellSize()
-{
-	return m_pNavigationCom->GetCellSize();
 }
 
 #ifdef _DEBUG
@@ -131,6 +102,7 @@ _bool CTerrain::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 	
 	return bResult;
 }
+
 #endif DEBUG
 
 HRESULT CTerrain::Add_Components()
@@ -226,13 +198,11 @@ void CTerrain::Save(HANDLE hFile, DWORD& dwByte)
 {
 	m_tInfo.Save(hFile, dwByte);
 	m_pTransformCom->Save(hFile, dwByte);
-	m_pNavigationCom->Save(hFile, dwByte);
 }
 
 void CTerrain::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 {
 	m_pTransformCom->Load(hFile, dwByte, iLevelIndex);
-	m_pNavigationCom->Load(hFile, dwByte, iLevelIndex);
 }
 
 

@@ -2,6 +2,7 @@
 #include "..\Public\ImWindow_Manager.h"
 #include "GameInstance.h"
 #include "EditCamera.h"
+
 #include "ImWindow.h"
 
 #include "ImWindow_ObjectTool.h"
@@ -180,6 +181,30 @@ const _bool& CImWindow_Manager::IsPicking()
 void CImWindow_Manager::AddItems(const char* strItem)
 {
     m_pMapTool->AddItems(strItem);
+}
+
+void CImWindow_Manager::AddCell(const _float3* vPoints)
+{
+    CGameInstance* pGameInstance = CGameInstance::GetInstance();
+    Safe_AddRef(pGameInstance);
+
+    CNavigation* pNavigation = static_cast<CNavigation*>(pGameInstance->Get_ComponentOfClone(LEVEL_IMGUI, L"Layer_BackGround", "CTerrain1", L"Com_Navigation"));
+
+    pNavigation->AddCell(vPoints);
+
+    Safe_Release(pGameInstance);
+}
+
+_uint CImWindow_Manager::GetCellNum()
+{
+    CGameInstance* pGameInstance = CGameInstance::GetInstance();
+    Safe_AddRef(pGameInstance);
+
+    CNavigation* pNavigation = static_cast<CNavigation*>(pGameInstance->Get_ComponentOfClone(LEVEL_IMGUI, L"Layer_BackGround", "CTerrain1", L"Com_Navigation"));
+    
+    Safe_Release(pGameInstance);
+
+    return  pNavigation->GetCellNum();
 }
 
 IMWIN_MODE CImWindow_Manager::Get_Mode()

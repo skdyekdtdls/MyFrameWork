@@ -30,8 +30,6 @@ public:
 	// ISerializable을(를) 통해 상속됨
 	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
 	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
-public:
-	_uint GetCellSize();
 
 public:
 	HRESULT Initialize_Prototype();
@@ -39,7 +37,6 @@ public:
 	virtual void Tick(_double TimeDelta) override;
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
-	void AddCell(const _float3* vPoints);
 	
 #ifdef _DEBUG
 public:

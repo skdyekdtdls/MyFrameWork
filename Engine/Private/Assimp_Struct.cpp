@@ -59,7 +59,7 @@ void META_DATA_ENTRY::Serialization(aiMetadataEntry* pAIMetadataEntry, HANDLE hF
 		break;
 	}
 	WriteVoid(&iSize, sizeof(iSize));
-	WriteVoid(&pAIMetadataEntry->mData, iSize);
+	//WriteVoid(&pAIMetadataEntry->mData, iSize);
 }
 
 bool META_DATA_ENTRY::Deserialization(HANDLE hFile, DWORD& dwByte)
@@ -68,8 +68,8 @@ bool META_DATA_ENTRY::Deserialization(HANDLE hFile, DWORD& dwByte)
 		return false;
 
 	ReadVoid(&m_eType, sizeof(E_META_DATA_TYPE));
+	
 	unsigned int iSize = 0;
-
 	switch (m_eType)
 	{
 	case _BOOL:
@@ -109,7 +109,7 @@ bool META_DATA_ENTRY::Deserialization(HANDLE hFile, DWORD& dwByte)
 
 	
 	ReadVoid(&iSize, sizeof(iSize));
-	ReadVoid(m_Data, iSize);
+	//ReadVoid(m_Data, iSize);
 	return true;
 }
 
@@ -229,7 +229,6 @@ bool NODE::Deserialization(HANDLE hFile, DWORD& dwByte)
 			ReadVoid(&m_Meshes[i], sizeof(m_Meshes[i]));
 		}
 	}
-
 
 	m_MetaData = new META_DATA;
 	if (!m_MetaData->Deserialization(hFile, dwByte))
@@ -918,6 +917,7 @@ QUAT_KEY::QUAT_KEY()
 	: m_Value{}
 {
 }
+
 
 QUAT_KEY::~QUAT_KEY()
 {

@@ -39,6 +39,22 @@ void CColliderSphere::Tick(_fmatrix TransformMatrix)
 
 	m_pBoudingSphere_Origin->Transform(*m_pBoudingSphere, TransformMatrix);
 }
+
+_bool CColliderSphere::IntersectRay(_float& fDist, const RAY& tMouseRay)
+{
+	_vector vRayOrigin = XMLoadFloat4(&tMouseRay.vRayOrigin);
+	_vector vRayDir = XMLoadFloat4(&tMouseRay.vRayDir);
+	vRayDir = XMVector3Normalize(vRayDir);
+	
+	if (m_pBoudingSphere->Intersects(vRayOrigin, vRayDir, fDist)) {
+
+		return true;
+	}
+
+	return false;
+}
+
+
 #ifdef _DEBUG
 HRESULT CColliderSphere::Render()
 {

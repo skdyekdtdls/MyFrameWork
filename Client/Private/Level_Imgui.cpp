@@ -8,6 +8,7 @@
 #include "ForkLift.h"
 #include "Fiona.h"
 #include "ImWindow_Manager.h"
+#include "Clint.h"
 CLevel_Imgui::CLevel_Imgui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -18,19 +19,11 @@ HRESULT CLevel_Imgui::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
-		return E_FAIL;
-
-	if (FAILED(Ready_Lights()))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_Monster(TEXT("Layer_Monster"))))
-		return E_FAIL;
-
-	return S_OK;
+	Ready_Lights();
+	Ready_Layer_Player(TEXT("Layer_Player"));
+	Ready_Layer_BackGround(TEXT("Layer_BackGround"));
+	Ready_Layer_Camera(TEXT("Layer_Camera"));
+	//Ready_Layer_Monster(TEXT("Layer_Monster"));
 }
 
 void CLevel_Imgui::Tick(_double TimeDelta)
@@ -58,8 +51,7 @@ HRESULT CLevel_Imgui::Render()
 	return S_OK;
 }
 
-
-HRESULT CLevel_Imgui::Ready_Lights()
+void CLevel_Imgui::Ready_Lights()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
@@ -74,27 +66,24 @@ HRESULT CLevel_Imgui::Ready_Lights()
 	LightDesc.vSpecular = { 1.f, 1.f, 1.f, 1.f };
 
 	if (FAILED(pGameInstance->Add_Lights(LightDesc)))
-		return E_FAIL;
+		return;
 
 	Safe_Release(pGameInstance);
 
-	return S_OK;
 }
 
-HRESULT CLevel_Imgui::Ready_Layer_BackGround(const _tchar* pLayerTag)
+void CLevel_Imgui::Ready_Layer_BackGround(const _tchar* pLayerTag)
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CTerrain::ProtoTag(), pLayerTag), E_FAIL);
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, CTerrain::ProtoTag(), pLayerTag));
 	//NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, ForkLift::ProtoTag(), pLayerTag), E_FAIL);
 
 	Safe_Release(pGameInstance);
-
-	return S_OK;
 }
 
-HRESULT CLevel_Imgui::Ready_Layer_Camera(const _tchar* pLayerTag)
+void CLevel_Imgui::Ready_Layer_Camera(const _tchar* pLayerTag)
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
@@ -111,26 +100,30 @@ HRESULT CLevel_Imgui::Ready_Layer_Camera(const _tchar* pLayerTag)
 	Edit_Camera_Desc.TransformDesc.SpeedPerSec = 10.f;
 	Edit_Camera_Desc.TransformDesc.RotationPerSec = XMConvertToRadians(90.0f);
 
-	NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, CEditCamera::ProtoTag(), pLayerTag, &Edit_Camera_Desc), E_FAIL);
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, CEditCamera::ProtoTag(), pLayerTag, &Edit_Camera_Desc));
 
 	Safe_Release(pGameInstance);
-
-	return S_OK;
 }
 
-HRESULT CLevel_Imgui::Ready_Layer_Monster(const _tchar* pLayerTag)
+void CLevel_Imgui::Ready_Layer_Monster(const _tchar* pLayerTag)
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	for (size_t i = 0; i < 1; i++)
-	{
-		NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, Fiona::ProtoTag(), pLayerTag), E_FAIL);
-	}
+
 
 	Safe_Release(pGameInstance);
+}
 
-	return S_OK;
+void CLevel_Imgui::Ready_Layer_Player(const _tchar* pLayerTag)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	//NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Clint::ProtoTag(), pLayerTag));
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Fiona::ProtoTag(), pLayerTag));
+
+	Safe_Release(pGameInstance);
 }
 
 CLevel_Imgui* CLevel_Imgui::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

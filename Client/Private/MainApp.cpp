@@ -40,8 +40,8 @@ HRESULT CMainApp::Initialize()
 	if(FAILED(Open_Level(LEVEL_LOGO)))
 		return E_FAIL;
 #endif
-	if (FAILED(Ready_Gara()))
-		return E_FAIL;
+	//if (FAILED(Ready_Gara()))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -132,24 +132,24 @@ HRESULT CMainApp::Ready_Gara()
 	if (0 == hFile)
 		return E_FAIL;
 
-	vPoints[0] = _float3(0.0f, 0.f, 5.f);
+	vPoints[2] = _float3(0.0f, 0.f, 5.f);
 	vPoints[1] = _float3(5.f, 0.f, 0.f);
-	vPoints[2] = _float3(0.f, 0.f, 0.f);
+	vPoints[0] = _float3(0.f, 0.f, 0.f);
 	WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
 
-	vPoints[0] = _float3(0.0f, 0.f, 5.f);
+	vPoints[2] = _float3(0.0f, 0.f, 5.f);
 	vPoints[1] = _float3(5.f, 0.f, 5.f);
-	vPoints[2] = _float3(5.f, 0.f, 0.f);
+	vPoints[0] = _float3(5.f, 0.f, 0.f);
 	WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
 
-	vPoints[0] = _float3(0.0f, 0.f, 10.0f);
+	vPoints[2] = _float3(0.0f, 0.f, 10.0f);
 	vPoints[1] = _float3(5.f, 0.f, 5.f);
-	vPoints[2] = _float3(0.f, 0.f, 5.f);
+	vPoints[0] = _float3(0.f, 0.f, 5.f);
 	WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
 
-	vPoints[0] = _float3(5.f, 0.f, 5.f);
+	vPoints[2] = _float3(5.f, 0.f, 5.f);
 	vPoints[1] = _float3(10.f, 0.f, 0.f);
-	vPoints[2] = _float3(5.f, 0.f, 0.f);
+	vPoints[0] = _float3(5.f, 0.f, 0.f);
 	WriteFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
 
 	CloseHandle(hFile);
