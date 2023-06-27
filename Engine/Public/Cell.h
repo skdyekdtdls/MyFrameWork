@@ -4,7 +4,7 @@
 #include "ISerializable.h"
 BEGIN(Engine)
 
-class ENGINE_DLL CCell final : public CBase, public ISerializable
+class ENGINE_DLL CCell final : public CBase
 {
 public:
 	enum POINT { POINT_A, POINT_B, POINT_C, POINT_END };
@@ -16,8 +16,7 @@ private:
 	virtual ~CCell() = default;
 
 public:
-	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
-	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
+	void Save(HANDLE hFile, DWORD& dwByte);
 
 public:
 	// 인덱스[0, 2]의 노말 벡터를 반환
@@ -65,6 +64,9 @@ public:
 
 	_bool IsCellVertexPicked(CELL_PICK_DESC& tPickDesc, const RAY& tRay);
 	_bool IsCellPicked(CELL_PICK_DESC& tPickDesc, const RAY& tRay);
+	
+	// 반시계 방향의 연결을 시계 방향연결로 바꾸는 함수.
+	void ClockWiseSort();
 #endif
 
 private:
@@ -77,6 +79,8 @@ private:
 	_int				m_iNeighborIndices[NEIGHBOR_END] = { -1, -1, -1 };
 
 #ifdef _DEBUG
+private:
+	void Release_Debug();
 private:
 	class vector<class CColliderSphere*> m_pColliderSpheres;
 	class CVIBuffer_Cell* m_pVIBuffer = { nullptr };

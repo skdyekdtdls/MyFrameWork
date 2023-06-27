@@ -198,13 +198,11 @@ void CTerrain::Save(HANDLE hFile, DWORD& dwByte)
 {
 	m_tInfo.Save(hFile, dwByte);
 	m_pTransformCom->Save(hFile, dwByte);
-	m_pNavigationCom->Save(hFile, dwByte);
 }
 
 void CTerrain::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 {
 	m_pTransformCom->Load(hFile, dwByte, iLevelIndex);
-	m_pNavigationCom->Load(hFile, dwByte, iLevelIndex);
 }
 
 

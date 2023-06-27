@@ -60,6 +60,33 @@ void CImWindow_MapTool::Tick()
 		20);
 
 	VecInfo("Position", &vPos, 120);
+
+
+	// display
+	if (ImGui::Button("Open File Dialog"))
+	{
+		ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".cpp, .dat", ".");
+	}
+	if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey"))
+	{
+		// action if OK
+		if (ImGuiFileDialog::Instance()->IsOk())
+		{
+			// 만약 위의 인자5번에서 여러가지 선택후 OK가 눌린경우 get selection
+			// 반환값은 map<string, string> (file path, file name) 형태로 반환
+			ImGuiFileDialog::Instance()->GetSelection();
+
+			
+			string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+			string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+			SaveNaviMesh(filePathName);
+			// action
+		}
+
+		// close
+		ImGuiFileDialog::Instance()->Close();
+	}
+
 	ImGui::End();
 
 	switch (m_eNaviMode)
@@ -74,11 +101,6 @@ void CImWindow_MapTool::Tick()
 		break;
 	}
 
-	for (auto& CellPickDesc : tCellPickDesces)
-	{
-		CellPickDesc.pPickedCell->Set_Point(static_cast<CCell::POINT>(CellPickDesc.iVertexIndex), &vPos);
-	}
-
 	Safe_Release(pImManagerInstance);
 }
 
@@ -91,12 +113,41 @@ void CImWindow_MapTool::AddItems(const char* strItem)
 	Cell_Index_items.push_back(strItem);
 }
 
+void CImWindow_MapTool::SaveNaviMesh(string filePathName)
+{
+	HANDLE hFile = CreateFile(TO_WSTR(filePathName).c_str(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	if (0 == hFile)
+	{
+		CONSOLE_MSG("파일 저장 실패");
+		CloseHandle(hFile);
+		return;
+	}
+
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	CEditCamera* pEditCamera = static_cast<CEditCamera*>(pGameInstance->Get_GameObject(LEVEL_IMGUI, L"Layer_Camera", "EditCamera"));
+	CNavigation* pNavigation = static_cast<CNavigation*>(pGameInstance->Get_ComponentOfClone(LEVEL_IMGUI, L"Layer_BackGround", "CTerrain1", L"Com_Navigation"));
+	
+	DWORD dwByte = { 0 };
+	pNavigation->Save(hFile, dwByte);
+
+
+	Safe_Release(pGameInstance);
+	CONSOLE_MSG("파일 저장 성공");
+	CloseHandle(hFile);
+}
+
 void CImWindow_MapTool::Vertex_Edit()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	CImWindow_Manager* pImMgr = CImWindow_Manager::GetInstance();
 	Safe_AddRef(pGameInstance);
 	Safe_AddRef(pImMgr);
+
+	for (auto& CellPickDesc : tCellPickDesces)
+	{
+		CellPickDesc.pPickedCell->Set_Point(static_cast<CCell::POINT>(CellPickDesc.iVertexIndex), &vPos);
+	}
 
 	if (!pImMgr->IsPicking())
 	{
@@ -126,24 +177,58 @@ void CImWindow_MapTool::Vertex_Edit()
 
 void CImWindow_MapTool::CreateTriangleStrip()
 {
+	CImWindow_Manager* pImMgr = CImWindow_Manager::GetInstance();
+	Safe_AddRef(pImMgr);
+
 	if (m_pImMgr->IsPicking())
 	{
-		PICK_DESC tPickDesc = m_pImMgr->GetTerrainPickDesc();
-		if (nullptr == tPickDesc.pPickedObject)
-			return;
+		CGameInstance* pGameInstance = CGameInstance::GetInstance();
+		Safe_AddRef(pGameInstance);
 
-		_float3 vPickPos = *(_float3*)&tPickDesc.vPickPos;
+		PICK_DESC tPickDesc = m_pImMgr->GetTerrainPickDesc();
+		CEditCamera* pEditCamera = static_cast<CEditCamera*>(pGameInstance->Get_GameObject(LEVEL_IMGUI, L"Layer_Camera", "EditCamera"));
+		CNavigation* pNavigation = static_cast<CNavigation*>(pGameInstance->Get_ComponentOfClone(LEVEL_IMGUI, L"Layer_BackGround", "CTerrain1", L"Com_Navigation"));
+		RAY tMouseRay = pEditCamera->GetMouseRay();
+		_float3 vPickPos;
+		tCellPickDesces.clear();
+		pNavigation->IsCellVertexPicked(tCellPickDesces, tMouseRay);
+
+		if (nullptr != tPickDesc.pPickedObject)
+		{
+			vPickPos = *(_float3*)&tPickDesc.vPickPos;
+		}
+
+		if (!tCellPickDesces.empty())
+		{
+			vPickPos = *(_float3*)&tCellPickDesces[0].vPickPos;
+			cout << tCellPickDesces.size();
+		}
+
+		if (nullptr == tPickDesc.pPickedObject && tCellPickDesces.empty())
+		{
+			Safe_Release(pGameInstance);
+			Safe_Release(pImMgr);
+			return;
+		}
+
 		if (m_iClickCount == 2)
 		{
 			m_vClickPoint[m_iClickCount] = vPickPos;
 			m_iClickCount = 0;
-			m_pImMgr->AddCell(m_vClickPoint);
+			pNavigation->AddCell(m_vClickPoint);
+			Cell_Index_items.clear();
+			for(size_t i = 0 ; i < pNavigation->GetCellNum(); ++i)
+				Cell_Index_items.push_back(to_string(i));
 		}
 		else
 		{
 			m_vClickPoint[m_iClickCount++] = vPickPos;
 		}
+
+		Safe_Release(pGameInstance);
 	}
+
+	Safe_Release(pImMgr);
 }
 
 CImWindow_MapTool* CImWindow_MapTool::Create(ImGuiIO* pIO)

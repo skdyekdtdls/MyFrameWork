@@ -25,7 +25,7 @@ public:
     }
 
     void AddItems(const char* strItem);
-
+    void SaveNaviMesh(string filePathName);
 private: /* VERTEX_EDIT_MODE */
     void VecInfo(const char* text, _float3* vec3, int iSize);
     void Vertex_Edit();
@@ -46,8 +46,11 @@ private:  /* VERTEX_EDIT_MODE */
     vector<std::string> Cell_Index_items;
     _float3 vPos;
     vector<CELL_PICK_DESC> tCellPickDesces; // 버텍스 정보도 들어옴
+
 private:
     _bool m_bStart = { true };
+
+    // 저장
 
 public:
     static  CImWindow_MapTool* Create(ImGuiIO* pIO);

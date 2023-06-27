@@ -24,29 +24,8 @@ CNavigation::CNavigation(const CNavigation& rhs)
 
 void CNavigation::Save(HANDLE hFile, DWORD& dwByte)
 {
-	WriteVoid(&m_tNaviDesc, sizeof(NAVIGATIONDESC));
-	_uint iSize = m_Cells.size();
-	WriteVoid(&iSize, sizeof(_uint));
-
 	for (auto& Cell : m_Cells)
 		Cell->Save(hFile, dwByte);
-}
-
-void CNavigation::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
-{
-	ReadVoid(&m_tNaviDesc, sizeof(NAVIGATIONDESC));
-	_uint iSize = { 0 };
-	ReadVoid(&iSize, sizeof(_uint));
-	m_Cells.reserve(iSize);
-	for (size_t i = 0; i < iSize; ++i)
-	{
-		AddCell(nullptr);
-		m_Cells[i]->Load(hFile, dwByte, iLevelIndex);
-	}
-#ifdef _DEBUG
-	UpdateCellsCollider();
-#endif
-	SetUp_Neighbors();
 }
 
 HRESULT CNavigation::Initialize_Prototype(const _tchar* pNavigationDataFiles)
@@ -71,7 +50,7 @@ HRESULT CNavigation::Initialize_Prototype(const _tchar* pNavigationDataFiles)
 			AddCell(vPoints);
 		}
 
-		
+
 		CloseHandle(hFile);
 	}
 
@@ -82,7 +61,7 @@ HRESULT CNavigation::Initialize_Prototype(const _tchar* pNavigationDataFiles)
 	m_pShader = CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Navigation.hlsl"), VTXPOS_DECL::Elements, VTXPOS_DECL::iNumElements);
 	NULL_CHECK_RETURN(m_pShader, E_FAIL);
 #endif // _DEBUG
-	
+
 	return S_OK;
 }
 
@@ -90,7 +69,7 @@ HRESULT CNavigation::Initialize(void* pArg)
 {
 	if (nullptr != pArg)
 		memmove(&m_tNaviDesc, pArg, sizeof(NAVIGATIONDESC));
-
+	SetUp_Neighbors();
 	return S_OK;
 }
 
@@ -100,14 +79,21 @@ void CNavigation::AddCell(const _float3* vPoints)
 	NULL_CHECK(pCell, E_FAIL);
 
 	m_Cells.push_back(pCell);
-	
+
+}
+
+_vector CNavigation::GetSlidingVector(_fvector vDir, _fvector vContactNormal)
+{
+	_vector N = XMVector3Normalize(vContactNormal); // 충돌직선의 법선 벡터
+	_vector P = XMVector3Normalize(vDir); // 플레이어 이동벡터
+	_vector S = P - N * XMVectorGetX(XMVector3Dot(P, N));
+	return S; // 슬라이딩 벡터를 계산합니다.
 }
 
 _bool CNavigation::is_Move(_fvector vPosition)
 {
 	_int iNeighborIndex = { -1 };
 	CCell::NEIGHBOR eNeighbor = { CCell::NEIGHBOR_END };
-	m_vContactNormal = _float3();
 	// 내적해서 내 위치가 셀 안에 있는지 판단
 	if (true == m_Cells[m_tNaviDesc.iCurrentIndex]->is_In(vPosition, &iNeighborIndex, eNeighbor))
 	{
@@ -120,17 +106,17 @@ _bool CNavigation::is_Move(_fvector vPosition)
 		{
 			while (true)
 			{
-				// 더 이상 이웃 인덱스를 찾을 수 없으면 무한루프 탈출
+				// 더 이상 이웃 인덱스가 존재하지 않으면 탈출
 				if (-1 == iNeighborIndex)
 					return false;
 
-				// 이웃인덱스 안으로 들어가면 무한루프 탈출
+				// 이웃인덱스를 찾으면 탈출
 				if (true == m_Cells[iNeighborIndex]->is_In(vPosition, &iNeighborIndex, eNeighbor))
 					break;
 			}
 			m_tNaviDesc.iCurrentIndex = iNeighborIndex;
 			return true;
-		} 
+		}
 	}
 
 	// 이웃이 없다면
@@ -251,6 +237,13 @@ void CNavigation::SetUp_Neighbors()
 	}
 }
 
+void CNavigation::Release_Cells()
+{
+	for (auto& pCell : m_Cells)
+		Safe_Release(pCell);
+	m_Cells.clear();
+}
+
 CNavigation* CNavigation::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pNavigationDataFiles)
 {
 	CNavigation* pInstance = new CNavigation(pDevice, pContext);
@@ -281,9 +274,8 @@ void CNavigation::Free()
 {
 	__super::Free();
 
-	for (auto& pCell : m_Cells)
-		Safe_Release(pCell);
-	m_Cells.clear();
+	Release_Cells();
+
 #ifdef _DEBUG
 	Safe_Release(m_pShader);
 #endif // _DEBUG

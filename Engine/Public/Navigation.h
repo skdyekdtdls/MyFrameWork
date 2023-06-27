@@ -3,7 +3,7 @@
 #include "ISerializable.h"
 BEGIN(Engine)
 
-class ENGINE_DLL CNavigation : public CComponent, public ISerializable
+class ENGINE_DLL CNavigation : public CComponent
 {
 public:
 	typedef struct tagNavigation
@@ -21,8 +21,7 @@ private:
 	virtual ~CNavigation() = default;
 
 public:
-	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
-	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
+	virtual void Save(HANDLE hFile, DWORD& dwByte);
 
 public:
 	// 네비게이션 .dat파일을 읽어서 셀을 추가한다.
@@ -44,6 +43,10 @@ public:
 		return m_vContactNormal;
 	}
 
+	// 이동 방향과 접촉한 선분의 노말벡터를 받아서 슬라이딩 벡터를 반환한다.
+	_vector GetSlidingVector(_fvector vLook, _fvector vContactNormal);
+
+	// 다음 위치로 움직일 수 있는지 검사. 이 함수가 호출되면 ContactNormal의 정보가 갱신된다.
 	_bool is_Move(_fvector vPosition);
 #ifdef _DEBUG
 	// _DEBUG 셰이더에 콜라이더 렌더 정보를 바인딩한다.(WVP, Color)
@@ -80,6 +83,7 @@ private:
 	void SetUp_Neighbors();
 
 public:
+	void Release_Cells();
 	static const _tchar* ProtoTag() { return L"Prototype_Component_CNavigation"; }
 	static CNavigation* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pNavigationDataFiles);
 	virtual CComponent* Clone(void* pArg) override;

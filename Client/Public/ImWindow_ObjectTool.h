@@ -20,7 +20,10 @@ private:
 public:
     virtual void Tick();
    
+    // 피킹한 객체를 저장하는 로직이다.
     void Set_GameObject(CGameObject* pGameObject);
+
+    // 안씀
     void ShowFileDialog();
 
 private: /* Static_Mesh */

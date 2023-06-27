@@ -8,6 +8,7 @@
 #include "Cube.h"
 #include "ForkLift.h"
 #include "Fiona.h"
+#include "Clint.h"
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext)
 	: m_pDevice(pDevice)
 	, m_pContext(pDeviceContext)
@@ -202,16 +203,20 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Model_ForkLift"),
 		CModel::Create(m_pDevice, m_pContext, TEXT("ForkLift.dat"), PivotMatrix)), E_FAIL);
 
+	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Model_Clint"),
+	//	CModel::Create(m_pDevice, m_pContext, TEXT("Clint.dat"), PivotMatrix)), E_FAIL);
+
 	lstrcpy(m_szLoading, TEXT("네비게이션정보 로딩 중."));
 	/* For.Prototype_COmpoentn_Navigation */
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CNavigation::ProtoTag(),
-		CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/Data/Navigation.dat"))), E_FAIL);
+		CNavigation::Create(m_pDevice, m_pContext, TEXT("../Bin/Data/Navigation/Navigation1.dat"))), E_FAIL);
 
 	Set_LoadingText(L"셰이더 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Shader_Navigation"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Navigation.hlsl")
 			, VTXPOS_DECL::Elements, VTXPOS_DECL::iNumElements)), E_FAIL);
-
+		
 	Set_LoadingText(L"충돌체 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CColliderSphere::ProtoTag(),
 		CColliderSphere::Create(m_pDevice, m_pContext)), E_FAIL);
@@ -224,6 +229,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CCube::ProtoTag(), CCube::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(ForkLift::ProtoTag(), ForkLift::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Fiona::ProtoTag(), Fiona::Create(m_pDevice, m_pContext)), E_FAIL);
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Clint::ProtoTag(), Clint::Create(m_pDevice, m_pContext)), E_FAIL);
 	Set_LoadingText(L"로딩 완료");
 
 	m_isFinished = true;
@@ -231,6 +237,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 	return S_OK;
 }
 #endif
+
 CLoader* CLoader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, LEVELID eNextLevel)
 {
 	CLoader* pInstance = new CLoader(pDevice, pDeviceContext);
