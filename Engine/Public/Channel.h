@@ -6,13 +6,17 @@ BEGIN(Engine)
 
 class CChannel final : public CBase
 {
-private:
+public:
 	CChannel();
 	virtual ~CChannel() = default;
 
 public:
-	HRESULT Initialize(const NODE_ANIM* pChannel, const CModel::BONES Bones);
-	void Invalidate_TransformationMatrix(CModel::BONES Bones, _double TimeAcc, _uint* pCurrentKeyFrameIndex);
+	void SaveAssimp(HANDLE hFile, DWORD& dwByte);
+	void LoadAssimp(HANDLE hFile, DWORD& dwByte);
+
+public:
+	HRESULT Initialize(const aiNodeAnim* pAIChannel, const CModel::BONES& Bones);
+	void Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeAcc, _uint* pCurrentKeyFrameIndex);
 
 private:
 	char				m_szName[MAX_PATH] = "";
@@ -21,7 +25,7 @@ private:
 	_uint				m_iBoneIndex = { 0 };
 
 public:
-	static CChannel* Create(const NODE_ANIM* pChannel, const CModel::BONES Bones);
+	static CChannel* Create(const aiNodeAnim* pAIChannel, const CModel::BONES& Bones);
 	virtual void Free() override;
 };
 

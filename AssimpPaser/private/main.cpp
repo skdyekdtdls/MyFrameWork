@@ -50,7 +50,7 @@ int main()
 
             folderName = ModelPathEntry.path().stem().string();
 
-            RenameFromModels(folderName, eAnimType);
+           RenameFromModels(folderName, eAnimType);
 
             ++ModelPathIter;
         }

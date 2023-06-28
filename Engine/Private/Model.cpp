@@ -42,24 +42,163 @@ CModel::CModel(const CModel& rhs)
 	}
 }
 
-HRESULT CModel::Initialize_Prototype(const _tchar* pTag, _fmatrix PivotMatrix)
+void CModel::SaveAssimp(HANDLE hFile, DWORD& dwByte)
 {
-	XMStoreFloat4x4(&m_PivotMatrix, PivotMatrix);
+	/* For.Bones*/
+	WriteVoid(&m_iNumBones, sizeof(_uint));
+	for (size_t i = 0; i < m_iNumBones; ++i)
+	{
+		m_Bones[i]->SaveAssimp(hFile, dwByte);
+	}
 
-	SCENE tScene;
-	fs::path pModelFilePath;
-	FAILED_CHECK_RETURN(LoadModel(pTag, tScene, pModelFilePath), E_FAIL);
-	FAILED_CHECK_RETURN(Ready_Bones(tScene.m_RootNode, nullptr), E_FAIL);
-	FAILED_CHECK_RETURN(Ready_Meshes(tScene, PivotMatrix), E_FAIL);
-	FAILED_CHECK_RETURN(Ready_Materials(&tScene, pModelFilePath), E_FAIL);
-	FAILED_CHECK_RETURN(Ready_Animations(tScene), E_FAIL);
+	// For. Meshes
+	WriteVoid(&m_iNumMeshes, sizeof(_uint));
+	for (size_t i = 0; i < m_iNumMeshes; ++i)
+	{
+		m_Meshes[i]->SaveAssimp(hFile, dwByte);
+	}
+
+	/* For.Materials */
+	WriteVoid(&m_iNumMaterials, sizeof(_uint));
+	for (size_t i = 0; i < m_iNumMaterials; ++i)
+	{
+		for (size_t j = 0; j < AI_TEXTURE_TYPE_MAX; ++j)
+		{
+			if (nullptr == m_Materials[i].pMtrlTexture[j])
+			{
+				WriteEnable(false);
+				continue;
+			}
+			WriteEnable(true);
+			m_Materials[i].pMtrlTexture[j]->SaveAssimp(hFile, dwByte);
+		}
+	}
+
+	/* For. Animations */
+	WriteVoid(&m_iCurrentAnimIndex, sizeof(_uint));
+	WriteVoid(&m_iNumAnimations, sizeof(_uint));
+	for (size_t i = 0; i < m_iNumAnimations; ++i)
+	{
+		m_Animations[i]->SaveAssimp(hFile, dwByte);
+	}
+}
+
+void CModel::LoadAssimp(const char* pFileName)
+{
+#ifdef _DEBUG
+	std::chrono::steady_clock::time_point start;
+	std::chrono::steady_clock::time_point end;
+	std::chrono::duration<double, std::milli> elapsed;
+#endif // _DEBUG
+
+	fs::path FileName = pFileName;
+	fs::path Stem = FileName.stem();
+
+	fs::path pModelFilePath = FindModelDirecotyPath("../../Resources/Skeletal_Mesh/", Stem);
+	if (pModelFilePath == fs::path())
+	{
+		pModelFilePath = FindModelDirecotyPath("../../Resources/Static_Mesh/", Stem);
+	}
+
+	pModelFilePath = FindDATFile(pModelFilePath);
+
+	HANDLE		hFile = CreateFile(pModelFilePath.wstring().c_str(),
+		GENERIC_READ,
+		NULL,
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		assert(false);
+		return;
+	}
+#ifdef _DEBUG
+	cout << "OpenFile : " << pModelFilePath.string() << endl;
+	start = std::chrono::high_resolution_clock::now();
+#endif
+	DWORD dwByte = 0;
+
+	ReadVoid(&m_eAnimType, sizeof(m_eAnimType));
+
+	/* For.Bones*/
+	ReadVoid(&m_iNumBones, sizeof(_uint));
+	m_Bones.resize(m_iNumBones);
+	for (size_t i = 0; i < m_iNumBones; ++i)
+	{
+		m_Bones[i] = new CBone();
+		m_Bones[i]->LoadAssimp(hFile, dwByte);
+	}
+
+	// For. Meshes
+	ReadVoid(&m_iNumMeshes, sizeof(_uint));
+	m_Meshes.resize(m_iNumMeshes);
+	for (size_t i = 0; i < m_iNumMeshes; ++i)
+	{
+		m_Meshes[i] = new CMesh(m_pDevice, m_pContext);
+		m_Meshes[i]->LoadAssimp(hFile, dwByte, m_eAnimType, XMLoadFloat4x4(&m_PivotMatrix));
+	}
+	
+	/* For.Materials */
+	ReadVoid(&m_iNumMaterials, sizeof(_uint));
+	m_Materials.resize(m_iNumMaterials);
+	for (size_t i = 0; i < m_iNumMaterials; ++i)
+	{
+		for (size_t j = 0; j < AI_TEXTURE_TYPE_MAX; ++j)
+		{
+			if (false == ReadEnable())
+				continue;
+			m_Materials[i].pMtrlTexture[j] = new CTexture(m_pDevice, m_pContext);
+			m_Materials[i].pMtrlTexture[j]->LoadAssimp(hFile, dwByte, m_eAnimType);
+		}
+	}
+
+	/* For. Animations */
+	ReadVoid(&m_iCurrentAnimIndex, sizeof(_uint));
+	ReadVoid(&m_iNumAnimations, sizeof(_uint));
+	m_Animations.resize(m_iNumAnimations);
+	for (size_t i = 0; i < m_iNumAnimations; ++i)
+	{
+		m_Animations[i] = new CAnimation();
+		m_Animations[i]->LoadAssimp(hFile, dwByte);
+	}
+
+	CloseHandle(hFile);
+#ifdef _DEBUG
+	end = std::chrono::high_resolution_clock::now();
+	elapsed = end - start;
+	std::cout << "Load Time Elapse : " << elapsed.count() << " ms\n";
+#endif // _DEBUG
+}
+
+HRESULT CModel::Initialize_Prototype(const aiScene* pAIScene, TYPE eType, fs::path pModelFilePath, _fmatrix PivotMatrix)
+{
+	_uint		iFlag = 0;
+
+	XMStoreFloat4x4(&m_PivotMatrix, PivotMatrix);
+	m_eAnimType = eType;
+	if (FAILED(Ready_Bones(pAIScene->mRootNode, nullptr)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Meshes(pAIScene, eType, PivotMatrix)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Materials(pAIScene, pModelFilePath)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Animations(pAIScene)))
+		return E_FAIL;
 
 	return S_OK;
 }
 
+
+
 HRESULT CModel::Initialize(void* pArg)
 {
-
+	
 	return S_OK;
 }
 
@@ -113,13 +252,30 @@ HRESULT CModel::Bind_BoneMatrices(CShader* pShader, const char* pConstantName, _
 	return S_OK;
 }
 
-HRESULT CModel::Ready_Meshes(const SCENE& tScene, _fmatrix PivotMatrix)
+HRESULT CModel::Ready_Bones(aiNode* pNode, CBone* pParent)
 {
-	m_iNumMeshes = tScene.m_NumMeshes;
+	CBone* pBone = CBone::Create(pNode, pParent, m_Bones.size());
+	
+	if (nullptr == pBone)
+		return E_FAIL;
+
+	m_Bones.push_back(pBone);
+
+	for (size_t i = 0; i < pNode->mNumChildren; ++i)
+	{
+		Ready_Bones(pNode->mChildren[i], pBone);
+	}
+	m_iNumBones = m_Bones.size();
+	return S_OK;
+}
+
+HRESULT CModel::Ready_Meshes(const aiScene* pScene, TYPE eType, _fmatrix PivotMatrix)
+{
+	m_iNumMeshes = pScene->mNumMeshes;
 
 	for (size_t i = 0; i < m_iNumMeshes; i++)
 	{
-		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eAnimType, m_Bones, &tScene.m_Meshes[i], PivotMatrix);
+		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, eType, m_Bones, pScene->mMeshes[i], PivotMatrix);
 		if (nullptr == pMesh)
 			return E_FAIL;
 
@@ -128,49 +284,13 @@ HRESULT CModel::Ready_Meshes(const SCENE& tScene, _fmatrix PivotMatrix)
 	return S_OK;
 }
 
-HRESULT CModel::LoadModel(const _tchar* pFileName, SCENE& tScene, _Out_ fs::path& ModelFilePath)
+HRESULT CModel::Ready_Materials(const aiScene* pScene, fs::path pModelFilePath)
 {
-	fs::path FileName = pFileName;
-	fs::path Stem = FileName.stem();
-
-	fs::path pModelFilePath = FindModelDirecotyPath("../../Resources/Skeletal_Mesh/", Stem);
-	if (pModelFilePath == fs::path())
-	{
-		pModelFilePath = FindModelDirecotyPath("../../Resources/Static_Mesh/", Stem);
-	}
-
-	pModelFilePath = FindDATFile(pModelFilePath);
-	ModelFilePath = pModelFilePath;
-
-	HANDLE		hFile = CreateFile(pModelFilePath.wstring().c_str(),		// 파일 경로와 이름을 명시
-		GENERIC_READ,			// 파일 접근 모드(쓰기 전용), GENERIC_READ(읽기 전용)
-		NULL,					// 공유 방식, 파일이 열려 있는 상태에서 다른 프로세스가 오픈 할 때 허가하는 것에 대한 설정, NULL을 지정하면 공유하지 않겠다는 의미
-		NULL,					// 보안 속성, NULL인 경우 기본값으로 보안 상태를 설정
-		OPEN_EXISTING,			// 생성 방식, 해당 파일을 열어서 작업을 할 것인지, 새로 만들 것인지 설정(CREATE_ALWAYS : 파일이 없다면 생성, 있다면 덮어쓰기, OPEN_EXISTING : 파일이 있을 경우에만 연다)
-		FILE_ATTRIBUTE_NORMAL,  // 파일 속성, FILE_ATTRIBUTE_NORMAL 아무런 속싱 없는 일반적인 파일 생성
-		NULL);					// 생성될 파일의 속성을 제공할 템플릿 파일, 안쓰니까 NULL
-
-	if (INVALID_HANDLE_VALUE == hFile)
-	{
-		assert(false);
-		return E_FAIL;
-	}
-	DWORD dwByte = { 0 };
-	//SCENE Scene;
-
-	ReadVoid(&m_eAnimType, sizeof(m_eAnimType));
 	
-	tScene.Deserialization(hFile, dwByte);
-	
-	CloseHandle(hFile);
-}
 
-HRESULT CModel::Ready_Materials(const SCENE* pScene, fs::path pModelFilePath)
-{
-	//char pModelFilePath[MAX_PATH];
-	
+
 	/* 현재 모델에게 부여할 수 있는 재질(Diffuse, Normal, Specular etc) 텍스쳐의 갯수. */
-	m_iNumMaterials = pScene->m_NumMaterials;
+	m_iNumMaterials = pScene->mNumMaterials;
 
 	for (size_t i = 0; i < m_iNumMaterials; i++)
 	{
@@ -179,9 +299,9 @@ HRESULT CModel::Ready_Materials(const SCENE* pScene, fs::path pModelFilePath)
 
 		for (size_t j = 0; j < AI_TEXTURE_TYPE_MAX; j++)
 		{
-			AI_STRING	strPath;
+			aiString	strPath;
 
-			if (false == pScene->m_Materials[i].GetTexture(TextureType(j), 0, &strPath))
+			if (FAILED(pScene->mMaterials[i]->GetTexture(aiTextureType(j), 0, &strPath)))
 				continue;
 
 			char		szDrive[MAX_PATH] = "";
@@ -190,7 +310,7 @@ HRESULT CModel::Ready_Materials(const SCENE* pScene, fs::path pModelFilePath)
 
 			char		szFileName[MAX_PATH] = "";
 			char		szExt[MAX_PATH] = "";
-			_splitpath_s(strPath.m_data, nullptr, 0, nullptr, 0, szFileName, MAX_PATH, szExt, MAX_PATH);
+			_splitpath_s(strPath.data, nullptr, 0, nullptr, 0, szFileName, MAX_PATH, szExt, MAX_PATH);
 
 			char		szFullPath[MAX_PATH] = "";
 			strcpy_s(szFullPath, szDrive);
@@ -198,8 +318,8 @@ HRESULT CModel::Ready_Materials(const SCENE* pScene, fs::path pModelFilePath)
 			strcat_s(szFullPath, szFileName);
 			strcat_s(szFullPath, szExt);
 
+			
 			_tchar		wszFullPath[MAX_PATH] = TEXT("");
-
 			MultiByteToWideChar(CP_ACP, 0, szFullPath, strlen(szFullPath),
 				wszFullPath, MAX_PATH);
 
@@ -214,29 +334,13 @@ HRESULT CModel::Ready_Materials(const SCENE* pScene, fs::path pModelFilePath)
 	return S_OK;
 }
 
-HRESULT CModel::Ready_Bones(const NODE* pNode, CBone* pParent)
+HRESULT CModel::Ready_Animations(const aiScene* pScene)
 {
-	CBone* pBone = CBone::Create(pNode, pParent, m_Bones.size());
-	if (nullptr == pBone)
-		return E_FAIL;
-
-	m_Bones.push_back(pBone);
-
-	for (size_t i = 0; i < pNode->m_NumChildren; ++i)
-	{
-		Ready_Bones(&pNode->m_Children[i], pBone);
-	}
-
-	return S_OK;
-}
-
-HRESULT CModel::Ready_Animations(const SCENE& tScene)
-{
-	m_iNumAnimations = tScene.m_NumAnimations;
+	m_iNumAnimations = pScene->mNumAnimations;
 
 	for (size_t i = 0; i < m_iNumAnimations; ++i)
 	{
-		CAnimation* pAnimation = CAnimation::Create(&tScene.m_Animations[i], nullptr, m_Bones);
+		CAnimation* pAnimation = CAnimation::Create(pScene->mAnimations[i], m_Bones);
 		if (nullptr == pAnimation)
 			return E_FAIL;
 
@@ -261,6 +365,7 @@ fs::path CModel::FindModelDirecotyPath(fs::path ModelPath, fs::path Stem)
 
 		++CurrentPathIter;
 	}
+
 	return fs::path();
 }
 
@@ -283,11 +388,18 @@ fs::path CModel::FindDATFile(fs::path ModelPath)
 	return fs::path();
 }
 
-CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pModelFilePath, _fmatrix PivotMatrix)
+CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _fmatrix PivotMatrix)
+{
+	CModel* pModel = new CModel(pDevice, pContext);
+	pModel->Set_PivotMatrix(PivotMatrix);
+	return pModel;
+}
+
+CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiScene* pAIScene, TYPE eType, const _tchar* pModelFilePath, _fmatrix PivotMatrix)
 {
 	CModel* pInstance = new CModel(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(pModelFilePath, PivotMatrix)))
+	if (FAILED(pInstance->Initialize_Prototype(pAIScene, eType, pModelFilePath, PivotMatrix)))
 	{
 		MSG_BOX("Failed to Created CModel");
 		Safe_Release(pInstance);

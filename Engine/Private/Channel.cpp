@@ -5,24 +5,47 @@ CChannel::CChannel()
 {
 }
 
-HRESULT CChannel::Initialize(const NODE_ANIM* pChannel, const CModel::BONES Bones)
+void CChannel::SaveAssimp(HANDLE hFile, DWORD& dwByte)
 {
-	strcpy_s(m_szName, pChannel->m_NodeName.m_data);
+	WriteVoid(&m_szName[0], sizeof(char) * MAX_PATH);
+	WriteVoid(&m_iNumKeyFrames, sizeof(_uint));
+
+	for(size_t i = 0 ; i < m_iNumKeyFrames; ++i)
+		WriteVoid(&m_KeyFrames[i], sizeof(KEYFRAME));
+
+	WriteVoid(&m_iBoneIndex, sizeof(_uint));
+}
+
+void CChannel::LoadAssimp(HANDLE hFile, DWORD& dwByte)
+{
+	ReadVoid(&m_szName[0], sizeof(char) * MAX_PATH);
+	ReadVoid(&m_iNumKeyFrames, sizeof(_uint));
+
+	m_KeyFrames.resize(m_iNumKeyFrames);
+	for (size_t i = 0; i < m_iNumKeyFrames; ++i)
+		ReadVoid(&m_KeyFrames[i], sizeof(KEYFRAME));
+
+	ReadVoid(&m_iBoneIndex, sizeof(_uint));
+}
+
+HRESULT CChannel::Initialize(const aiNodeAnim* pAIChannel, const CModel::BONES& Bones)
+{
+	strcpy_s(m_szName, pAIChannel->mNodeName.data);
 
 	// 모델이 들고 있는 같은 이름을 가진 뼈를 찾느다. 
 	auto	iter = find_if(Bones.begin(), Bones.end(), [&](CBone* pValue)
-	{
-		if (0 != strcmp(m_szName, pValue->Get_Name()))
 		{
-			++m_iBoneIndex;
-			return false;
-		}
-		else
-			return true;
-	});
+			if (0 != strcmp(m_szName, pValue->Get_Name()))
+			{
+				++m_iBoneIndex;
+				return false;
+			}
+			else
+				return true;
+		});
 
-	m_iNumKeyFrames = max(pChannel->m_NumScalingKeys, pChannel->m_NumRotationKeys);
-	m_iNumKeyFrames = max(m_iNumKeyFrames, pChannel->m_NumPositionKeys);
+	m_iNumKeyFrames = max(pAIChannel->mNumScalingKeys, pAIChannel->mNumRotationKeys);
+	m_iNumKeyFrames = max(m_iNumKeyFrames, pAIChannel->mNumPositionKeys);
 
 	_float3			vScale;
 	_float4			vRotation;
@@ -32,25 +55,25 @@ HRESULT CChannel::Initialize(const NODE_ANIM* pChannel, const CModel::BONES Bone
 	{
 		KEYFRAME				Keyframe;
 
-		if (pChannel->m_NumScalingKeys > i)
+		if (pAIChannel->mNumScalingKeys > i)
 		{
-			memcpy(&vScale, &pChannel->m_ScalingKeys[i].m_Value, sizeof(_float3));
-			Keyframe.Time = pChannel->m_ScalingKeys[i].m_Time;
+			memcpy(&vScale, &pAIChannel->mScalingKeys[i].mValue, sizeof(_float3));
+			Keyframe.Time = pAIChannel->mScalingKeys[i].mTime;
 		}
 
-		if (pChannel->m_NumRotationKeys > i)
+		if (pAIChannel->mNumRotationKeys > i)
 		{
-			vRotation.x = pChannel->m_RotationKeys[i].m_Value.x;
-			vRotation.y = pChannel->m_RotationKeys[i].m_Value.y;
-			vRotation.z = pChannel->m_RotationKeys[i].m_Value.z;
-			vRotation.w = pChannel->m_RotationKeys[i].m_Value.w;			
-			Keyframe.Time = pChannel->m_RotationKeys[i].m_Time;
+			vRotation.x = pAIChannel->mRotationKeys[i].mValue.x;
+			vRotation.y = pAIChannel->mRotationKeys[i].mValue.y;
+			vRotation.z = pAIChannel->mRotationKeys[i].mValue.z;
+			vRotation.w = pAIChannel->mRotationKeys[i].mValue.w;
+			Keyframe.Time = pAIChannel->mRotationKeys[i].mTime;
 		}
 
-		if (pChannel->m_NumPositionKeys > i)
+		if (pAIChannel->mNumPositionKeys > i)
 		{
-			memcpy(&vTranslation, &pChannel->m_PositionKeys[i].m_Value, sizeof(_float3));
-			Keyframe.Time = pChannel->m_PositionKeys[i].m_Time;
+			memcpy(&vTranslation, &pAIChannel->mPositionKeys[i].mValue, sizeof(_float3));
+			Keyframe.Time = pAIChannel->mPositionKeys[i].mTime;
 		}
 
 		Keyframe.vScale = vScale;
@@ -63,7 +86,7 @@ HRESULT CChannel::Initialize(const NODE_ANIM* pChannel, const CModel::BONES Bone
 	return S_OK;
 }
 
-void CChannel::Invalidate_TransformationMatrix(CModel::BONES Bones, _double TimeAcc, _uint* pCurrentKeyFrameIndex)
+void CChannel::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeAcc, _uint* pCurrentKeyFrameIndex)
 {
 	if (0.0 == TimeAcc)
 		*pCurrentKeyFrameIndex = 0;
@@ -108,11 +131,11 @@ void CChannel::Invalidate_TransformationMatrix(CModel::BONES Bones, _double Time
 	Bones[m_iBoneIndex]->Set_TransformationMatrix(TransformationMatrix);
 }
 
-CChannel * CChannel::Create(const NODE_ANIM* pChannel, const CModel::BONES Bones)
+CChannel* CChannel::Create(const aiNodeAnim* pAIChannel, const CModel::BONES& Bones)
 {
-	CChannel*	pInstance = new CChannel();
+	CChannel* pInstance = new CChannel();
 
-	if (FAILED(pInstance->Initialize(pChannel, Bones)))
+	if (FAILED(pInstance->Initialize(pAIChannel, Bones)))
 	{
 		MSG_BOX("Failed to Created CChannel");
 		Safe_Release(pInstance);

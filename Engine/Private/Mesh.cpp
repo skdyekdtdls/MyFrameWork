@@ -11,6 +11,120 @@ CMesh::CMesh(const CMesh& rhs)
 {
 }
 
+void CMesh::SaveAssimp(HANDLE hFile, DWORD& dwByte)
+{
+	__super::SaveAssimp(hFile, dwByte);
+
+	WriteVoid(&m_szName[0], sizeof(char) * MAX_PATH);
+	WriteVoid(&m_iMaterialIndex, sizeof(_uint));
+	WriteVoid(&m_iNumBones, sizeof(_uint));
+
+	for(size_t i = 0 ; i < m_iNumBones; ++i)
+		WriteVoid(&m_BoneIndices[i], sizeof(_uint));
+
+	SaveBuffers(hFile, dwByte);
+}
+
+void CMesh::LoadAssimp(HANDLE hFile, DWORD& dwByte, CModel::TYPE eType, _fmatrix PivotMatrix)
+{
+	__super::LoadAssimp(hFile, dwByte);
+
+	ReadVoid(&m_szName[0], sizeof(char) * MAX_PATH);
+	ReadVoid(&m_iMaterialIndex, sizeof(_uint));
+	ReadVoid(&m_iNumBones, sizeof(_uint));
+
+	m_BoneIndices.resize(m_iNumBones);
+	for (size_t i = 0; i < m_iNumBones; ++i)
+		ReadVoid(&m_BoneIndices[i], sizeof(_uint));
+
+	LoadBuffers(hFile, dwByte, eType, PivotMatrix);
+}
+
+void CMesh::SaveBuffers(HANDLE hFile, DWORD& dwByte)
+{
+	// -- VertexBuffer --
+	// 버텍스 버퍼 값 가져오기
+	ID3D11Buffer* VertexBuffer;
+	m_pVB->GetDesc(&m_BufferDesc);
+	WriteVoid(&m_BufferDesc, sizeof(m_BufferDesc));
+	m_BufferDesc.ByteWidth = { m_iNumVertices * m_iStride };
+	m_BufferDesc.Usage = { D3D11_USAGE_STAGING };
+	m_BufferDesc.CPUAccessFlags = { D3D11_CPU_ACCESS_READ };
+	m_BufferDesc.BindFlags = { 0 };
+	FAILED_CHECK(m_pDevice->CreateBuffer(&m_BufferDesc, nullptr, &VertexBuffer));
+	m_pContext->CopyResource(VertexBuffer, m_pVB);
+
+	// 데이터 쓰기
+	D3D11_MAPPED_SUBRESOURCE mappedVertexData;
+	m_pContext->Map(VertexBuffer, 0, D3D11_MAP_READ, 0, &mappedVertexData);
+	WriteVoid(mappedVertexData.pData, m_BufferDesc.ByteWidth);
+	m_pContext->Unmap(VertexBuffer, 0);
+
+	// 메모리 해제
+	Safe_Release(VertexBuffer);
+
+
+	// -- IndexBuffer --
+	// 인덱스 버퍼 값 가져오기
+	ID3D11Buffer* IndexBuffer;
+	ZeroStruct(m_BufferDesc);
+	m_pIB->GetDesc(&m_BufferDesc);
+	WriteVoid(&m_BufferDesc, sizeof(m_BufferDesc));
+	m_BufferDesc.Usage = D3D11_USAGE_STAGING;
+	m_BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+	m_BufferDesc.BindFlags = { 0 };
+	m_pDevice->CreateBuffer(&m_BufferDesc, nullptr, &IndexBuffer);
+	m_pContext->CopyResource(IndexBuffer, m_pIB);
+
+	// 데이터 쓰기
+	D3D11_MAPPED_SUBRESOURCE mappedIndexData;
+	m_pContext->Map(IndexBuffer, 0, D3D11_MAP_READ, 0, &mappedIndexData);
+	WriteVoid(mappedIndexData.pData, m_BufferDesc.ByteWidth);
+	m_pContext->Unmap(IndexBuffer, 0);
+
+	// 메모리 해제
+	Safe_Release(IndexBuffer);
+}
+
+void CMesh::LoadBuffers(HANDLE hFile, DWORD& dwByte, CModel::TYPE eType, _fmatrix PivotMatrix)
+{
+	// -- Vertex Buffer --
+	// 버텍스 버퍼 크기 만큼 읽음
+	ReadVoid(&m_BufferDesc, sizeof(m_BufferDesc));
+	void* Vertexbuffer = malloc(m_BufferDesc.ByteWidth);
+	ReadVoid(Vertexbuffer, m_BufferDesc.ByteWidth);
+
+	if (eType == CModel::TYPE_NONANIM)
+	{
+		auto pVertices = static_cast<VTXMESH*>(Vertexbuffer);
+		size_t vertexCount = m_BufferDesc.ByteWidth / sizeof(VTXMESH);
+		for (size_t i = 0; i < vertexCount; ++i)
+		{
+			XMStoreFloat3(&pVertices[i].vPosition,
+				XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vPosition), PivotMatrix));
+			XMStoreFloat3(&pVertices[i].vNormal,
+				XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vNormal), PivotMatrix));
+		}
+	}
+
+	ZeroStruct(m_SubResourceData);
+	m_SubResourceData.pSysMem = Vertexbuffer;
+
+	__super::Create_Buffer(&m_pVB);
+	free(Vertexbuffer);
+	// 624 0 2 0 0 0
+	// -- Index Buffer -- 
+	// 인덱스 버퍼 크기 만큼 읽음
+	ReadVoid(&m_BufferDesc, sizeof(m_BufferDesc));
+	void* IndexBuffer = malloc(m_BufferDesc.ByteWidth);
+	ReadVoid(IndexBuffer, m_BufferDesc.ByteWidth);
+
+	ZeroStruct(m_SubResourceData);
+	m_SubResourceData.pSysMem = IndexBuffer;
+	__super::Create_Buffer(&m_pIB);
+	free(IndexBuffer);
+}
+
 void CMesh::Get_Matrices(CModel::BONES Bones, _float4x4* pMatrices, _fmatrix PivotMatrix)
 {
 	_uint		iIndex = 0;
@@ -27,15 +141,15 @@ void CMesh::Get_Matrices(CModel::BONES Bones, _float4x4* pMatrices, _fmatrix Piv
 	}
 }
 
-HRESULT CMesh::Initialize_Prototype(CModel::TYPE eType, const CModel::BONES& Bones, const MESH* pAIMesh, _fmatrix PivotMatrix)
+HRESULT CMesh::Initialize_Prototype(CModel::TYPE eType, const CModel::BONES& Bones, const aiMesh* pAIMesh, _fmatrix PivotMatrix)
 {
-	m_iMaterialIndex = pAIMesh->m_MaterialIndex;
-	strcpy_s(m_szName, pAIMesh->m_Name.m_data);
+	m_iMaterialIndex = pAIMesh->mMaterialIndex;
+	strcpy_s(m_szName, pAIMesh->mName.data);
 	m_iNumVertexBuffers = { 1 };
 
-	m_iNumVertices = { pAIMesh->m_NumVertices };
+	m_iNumVertices = { pAIMesh->mNumVertices };
 	m_iIndexStride = { sizeof(_ulong) };
-	m_iNumIndices = { pAIMesh->m_NumFaces * 3 };
+	m_iNumIndices = { pAIMesh->mNumFaces * 3 };
 	m_eFormat = DXGI_FORMAT_R32_UINT;
 	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
@@ -65,11 +179,11 @@ HRESULT CMesh::Initialize_Prototype(CModel::TYPE eType, const CModel::BONES& Bon
 
 	_uint		iNumFaces = { 0 };
 
-	for (size_t i = 0; i < pAIMesh->m_NumFaces; i++)
+	for (size_t i = 0; i < pAIMesh->mNumFaces; i++)
 	{
-		pIndices[iNumFaces++] = pAIMesh->m_Faces[i].m_Indices[0];
-		pIndices[iNumFaces++] = pAIMesh->m_Faces[i].m_Indices[1];
-		pIndices[iNumFaces++] = pAIMesh->m_Faces[i].m_Indices[2];
+		pIndices[iNumFaces++] = pAIMesh->mFaces[i].mIndices[0];
+		pIndices[iNumFaces++] = pAIMesh->mFaces[i].mIndices[1];
+		pIndices[iNumFaces++] = pAIMesh->mFaces[i].mIndices[2];
 	}
 
 	ZeroMemory(&m_SubResourceData, sizeof m_SubResourceData);
@@ -88,7 +202,7 @@ HRESULT CMesh::Initialize(void* pArg)
 	return S_OK;
 }
 
-HRESULT CMesh::Ready_VertexBuffer_NonAnim(const MESH* pAIMesh, _fmatrix PivotMatrix)
+HRESULT CMesh::Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PivotMatrix)
 {
 	m_iStride = { sizeof(VTXMESH) };
 
@@ -106,16 +220,16 @@ HRESULT CMesh::Ready_VertexBuffer_NonAnim(const MESH* pAIMesh, _fmatrix PivotMat
 
 	for (size_t i = 0; i < m_iNumVertices; i++)
 	{
-		memcpy(&pVertices[i].vPosition, &pAIMesh->m_Vertices[i], sizeof(_float3));
+		memcpy(&pVertices[i].vPosition, &pAIMesh->mVertices[i], sizeof(_float3));
 		XMStoreFloat3(&pVertices[i].vPosition,
 			XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vPosition), PivotMatrix));
 
-		memcpy(&pVertices[i].vNormal, &pAIMesh->m_Normals[i], sizeof(_float3));
+		memcpy(&pVertices[i].vNormal, &pAIMesh->mNormals[i], sizeof(_float3));
 		XMStoreFloat3(&pVertices[i].vNormal,
 			XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vNormal), PivotMatrix));
 
-		memcpy(&pVertices[i].vTexCoord, &pAIMesh->m_TextureCoords[0][i], sizeof(_float2));
-		memcpy(&pVertices[i].vTangent, &pAIMesh->m_Tangents[i], sizeof(_float3));
+		memcpy(&pVertices[i].vTexCoord, &pAIMesh->mTextureCoords[0][i], sizeof(_float2));
+		memcpy(&pVertices[i].vTangent, &pAIMesh->mTangents[i], sizeof(_float3));
 	}
 
 	ZeroMemory(&m_SubResourceData, sizeof m_SubResourceData);
@@ -129,7 +243,7 @@ HRESULT CMesh::Ready_VertexBuffer_NonAnim(const MESH* pAIMesh, _fmatrix PivotMat
 
 }
 
-HRESULT CMesh::Ready_VertexBuffer_Anim(const MESH* pAIMesh, const CModel::BONES& Bones)
+HRESULT CMesh::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, const CModel::BONES& Bones)
 {
 	m_iStride = { sizeof(VTXANIMMESH) };
 
@@ -147,24 +261,24 @@ HRESULT CMesh::Ready_VertexBuffer_Anim(const MESH* pAIMesh, const CModel::BONES&
 
 	for (size_t i = 0; i < m_iNumVertices; i++)
 	{
-		memcpy(&pVertices[i].vPosition, &pAIMesh->m_Vertices[i], sizeof(_float3));
-		memcpy(&pVertices[i].vNormal, &pAIMesh->m_Normals[i], sizeof(_float3));
-		memcpy(&pVertices[i].vTexCoord, &pAIMesh->m_TextureCoords[0][i], sizeof(_float2));
-		memcpy(&pVertices[i].vTangent, &pAIMesh->m_Tangents[i], sizeof(_float3));
+		memcpy(&pVertices[i].vPosition, &pAIMesh->mVertices[i], sizeof(_float3));
+		memcpy(&pVertices[i].vNormal, &pAIMesh->mNormals[i], sizeof(_float3));
+		memcpy(&pVertices[i].vTexCoord, &pAIMesh->mTextureCoords[0][i], sizeof(_float2));
+		memcpy(&pVertices[i].vTangent, &pAIMesh->mTangents[i], sizeof(_float3));
 	}
 
-	m_iNumBones = pAIMesh->m_NumBones;
+	m_iNumBones = pAIMesh->mNumBones;
 
 	/* pAIMesh->mNumBones : 이 메시는 몇개의 뼈의 정보를 사용하는가. */
-	for (size_t i = 0; i < pAIMesh->m_NumBones; ++i)
+	for (size_t i = 0; i < pAIMesh->mNumBones; ++i)
 	{
-		BONE* pAIBone = &pAIMesh->m_Bones[i];
+		aiBone* pAIBone = pAIMesh->mBones[i];
 
 		_uint		iBoneIndex = 0;
 
 		auto	iter = find_if(Bones.begin(), Bones.end(), [&](CBone* pValue)
 			{
-				if (0 != strcmp(pAIBone->m_Name.m_data, pValue->Get_Name()))
+				if (0 != strcmp(pAIBone->mName.data, pValue->Get_Name()))
 				{
 					++iBoneIndex;
 					return false;
@@ -174,7 +288,7 @@ HRESULT CMesh::Ready_VertexBuffer_Anim(const MESH* pAIMesh, const CModel::BONES&
 			});
 
 		_float4x4		OffsetMatrix;
-		memcpy(&OffsetMatrix, &pAIBone->m_OffsetMatrix, sizeof(_float4x4));
+		memcpy(&OffsetMatrix, &pAIBone->mOffsetMatrix, sizeof(_float4x4));
 		XMStoreFloat4x4(&OffsetMatrix, XMMatrixTranspose(XMLoadFloat4x4(&OffsetMatrix)));
 
 		Bones[iBoneIndex]->Set_OffsetMatrix(OffsetMatrix);
@@ -182,33 +296,33 @@ HRESULT CMesh::Ready_VertexBuffer_Anim(const MESH* pAIMesh, const CModel::BONES&
 		m_BoneIndices.push_back(iBoneIndex);
 
 		/*pAIBone->mNumWeights : 이뼈는 몇개 정점에게 영향을 주니.  */
-		for (size_t j = 0; j < pAIBone->m_NumWeights; ++j)
+		for (size_t j = 0; j < pAIBone->mNumWeights; ++j)
 		{
 			/* AIVertexWeight : j번째 정점에게 영향을 주는정보. */
-			VERTEX_WEIGHT	AIVertexWeight = pAIBone->m_Weights[j];
+			aiVertexWeight	AIVertexWeight = pAIBone->mWeights[j];
 
-			if (0.0f == pVertices[AIVertexWeight.m_VertexId].vBlendWeights.x)
+			if (0.0f == pVertices[AIVertexWeight.mVertexId].vBlendWeights.x)
 			{
-				pVertices[AIVertexWeight.m_VertexId].vBlendIndices.x = i;
-				pVertices[AIVertexWeight.m_VertexId].vBlendWeights.x = AIVertexWeight.m_Weight;
+				pVertices[AIVertexWeight.mVertexId].vBlendIndices.x = i;
+				pVertices[AIVertexWeight.mVertexId].vBlendWeights.x = AIVertexWeight.mWeight;
 			}
 
-			else if (0.0f == pVertices[AIVertexWeight.m_VertexId].vBlendWeights.y)
+			else if (0.0f == pVertices[AIVertexWeight.mVertexId].vBlendWeights.y)
 			{
-				pVertices[AIVertexWeight.m_VertexId].vBlendIndices.y = i;
-				pVertices[AIVertexWeight.m_VertexId].vBlendWeights.y = AIVertexWeight.m_Weight;
+				pVertices[AIVertexWeight.mVertexId].vBlendIndices.y = i;
+				pVertices[AIVertexWeight.mVertexId].vBlendWeights.y = AIVertexWeight.mWeight;
 			}
 
-			else if (0.0f == pVertices[AIVertexWeight.m_VertexId].vBlendWeights.z)
+			else if (0.0f == pVertices[AIVertexWeight.mVertexId].vBlendWeights.z)
 			{
-				pVertices[AIVertexWeight.m_VertexId].vBlendIndices.z = i;
-				pVertices[AIVertexWeight.m_VertexId].vBlendWeights.z = AIVertexWeight.m_Weight;
+				pVertices[AIVertexWeight.mVertexId].vBlendIndices.z = i;
+				pVertices[AIVertexWeight.mVertexId].vBlendWeights.z = AIVertexWeight.mWeight;
 			}
 
-			else if (0.0f == pVertices[AIVertexWeight.m_VertexId].vBlendWeights.w)
+			else if (0.0f == pVertices[AIVertexWeight.mVertexId].vBlendWeights.w)
 			{
-				pVertices[AIVertexWeight.m_VertexId].vBlendIndices.w = i;
-				pVertices[AIVertexWeight.m_VertexId].vBlendWeights.w = AIVertexWeight.m_Weight;
+				pVertices[AIVertexWeight.mVertexId].vBlendIndices.w = i;
+				pVertices[AIVertexWeight.mVertexId].vBlendWeights.w = AIVertexWeight.mWeight;
 			}
 		}
 	}
@@ -240,6 +354,7 @@ HRESULT CMesh::Ready_VertexBuffer_Anim(const MESH* pAIMesh, const CModel::BONES&
 
 	if (FAILED(__super::Create_Buffer(&m_pVB)))
 		return E_FAIL;
+
 	Safe_Delete_Array(pVertices);
 
 
@@ -248,7 +363,7 @@ HRESULT CMesh::Ready_VertexBuffer_Anim(const MESH* pAIMesh, const CModel::BONES&
 	return S_OK;
 }
 
-CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eType, const CModel::BONES& Bones, const MESH* pAIMesh, _fmatrix PivotMatrix)
+CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eType, const CModel::BONES& Bones, const aiMesh* pAIMesh, _fmatrix PivotMatrix)
 {
 	CMesh* pInstance = new CMesh(pDevice, pContext);
 
@@ -272,8 +387,8 @@ CComponent* CMesh::Clone(void* pArg)
 	return pInstance;
 }
 
-
 void CMesh::Free()
 {
 	__super::Free();
+	m_BoneIndices.clear();
 }

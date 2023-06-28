@@ -6,12 +6,17 @@ BEGIN(Engine)
 
 class CBone final : public CBase
 {
-private:
+public:
 	CBone();
 	CBone(const CBone& rhs);
 	virtual ~CBone() = default;
 
+
 public:
+	void SaveAssimp(HANDLE hFile, DWORD& dwByte);
+	void LoadAssimp(HANDLE hFile, DWORD& dwByte);
+public:
+	 
 	const char* Get_Name() const {
 		return m_szName;
 	}
@@ -32,7 +37,7 @@ public:
 	}
 
 public:
-	HRESULT Initialize(const NODE* pNODE, CBone* pParent, _uint iIndex);
+	HRESULT Initialize(aiNode* pAINode, CBone* pParent, _uint iIndex);
 	void Invalidate_CombinedTransformationMatrix(const CModel::BONES& Bones);
 private:
 	char			m_szName[MAX_PATH] = "";
@@ -43,7 +48,7 @@ private:
 	_uint			m_iIndex = { 0 };
 
 public:
-	static CBone* Create(const NODE* pNODE, CBone* pParent, _uint iIndex);
+	static CBone* Create(aiNode* pAINode, CBone* pParent, _uint iIndex);
 	CBone* Clone();
 	virtual void Free() override;
 

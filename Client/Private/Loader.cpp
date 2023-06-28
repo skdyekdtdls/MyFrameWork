@@ -132,13 +132,13 @@ HRESULT CLoader::Loading_For_GamePlay()
 	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Model_clint_Skeleton"),
 	//	CModel::Create(m_pDevice, m_pContext, TEXT("../../Resources/Models/clint_Skeleton/clint_Skeleton.dat"), PivotMatrix)), E_FAIL);
 
-	PivotMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
+	/*PivotMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Model_Fiona"),
 		CModel::Create(m_pDevice, m_pContext, TEXT("Fiona.dat"), PivotMatrix)), E_FAIL);
 
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Model_ForkLift"),
-		CModel::Create(m_pDevice, m_pContext, TEXT("ForkLift.dat"), PivotMatrix)), E_FAIL);
+		CModel::Create(m_pDevice, m_pContext, TEXT("ForkLift.dat"), PivotMatrix)), E_FAIL);*/
 
 	lstrcpy(m_szLoading, TEXT("네비게이션정보 로딩 중."));
 	/* For.Prototype_COmpoentn_Navigation */
@@ -176,6 +176,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 	if (nullptr == m_pGameInstance)
 		return E_FAIL;
 	_matrix		PivotMatrix = XMMatrixIdentity();
+	CModel* pModel;
 
 	Set_LoadingText(L"텍스처 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Terrain"),
@@ -193,16 +194,29 @@ HRESULT CLoader::Loading_For_IMGUI()
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Cube::ProtoTag(),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext)), E_FAIL);
-
+	
 	Set_LoadingText(L"모델 로딩 중");
+	cout << "--- Clint ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Clint.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_Clint"), pModel), E_FAIL);
+
+	cout << "--- Fiona ---" << endl;
 	PivotMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Model_Fiona"),
-		CModel::Create(m_pDevice, m_pContext, TEXT("Fiona.dat"), PivotMatrix)), E_FAIL);
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Fiona.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_Fiona"), pModel), E_FAIL);
+	
 
+	cout << "--- ForkLift ---" << endl;
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Model_ForkLift"),
-		CModel::Create(m_pDevice, m_pContext, TEXT("ForkLift.dat"), PivotMatrix)), E_FAIL);
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("ForkLift.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_ForkLift"), pModel), E_FAIL);
 
+
+	//cout << "---클린트---" << endl;
 	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Model_Clint"),
 	//	CModel::Create(m_pDevice, m_pContext, TEXT("Clint.dat"), PivotMatrix)), E_FAIL);
@@ -229,7 +243,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CCube::ProtoTag(), CCube::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(ForkLift::ProtoTag(), ForkLift::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Fiona::ProtoTag(), Fiona::Create(m_pDevice, m_pContext)), E_FAIL);
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Clint::ProtoTag(), Clint::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Clint::ProtoTag(), Clint::Create(m_pDevice, m_pContext)), E_FAIL);
 	Set_LoadingText(L"로딩 완료");
 
 	m_isFinished = true;

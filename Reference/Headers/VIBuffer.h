@@ -12,6 +12,10 @@ protected:
 	virtual ~CVIBuffer() = default;
 
 public:
+	void SaveAssimp(HANDLE hFile, DWORD & dwByte);
+	void LoadAssimp(HANDLE hFile, DWORD & dwByte);
+
+public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual HRESULT Render();

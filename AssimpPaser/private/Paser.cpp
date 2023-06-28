@@ -47,7 +47,6 @@ HRESULT CPaser::Pasing(fs::path ModelFilePath, CModel::TYPE& Out)
 		cout << "Type : TYPE_ANIM" << endl;
 		eAnimType = CModel::TYPE::TYPE_ANIM;
 	}
-
 	
 	m_Importer.FreeScene();
 	
@@ -58,15 +57,37 @@ HRESULT CPaser::Pasing(fs::path ModelFilePath, CModel::TYPE& Out)
 	else
 		iFlag = aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
 	
-
 	m_pAIScene = m_Importer.ReadFile(ModelFilePath.string().c_str(), iFlag);
 	cout << "Starting the binary conversion." << endl;
-	SCENE::Serialization(m_pAIScene, hFile, dwByte);
 
+	// 모델 생성을 위한 임시 Device와 임시 DeviceContext
+	ID3D11Device* pDevice = { nullptr };
+	ID3D11DeviceContext* pContext = { nullptr };
+	D3D_FEATURE_LEVEL	FeatureLV;
+	D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, 0, nullptr, 0, D3D11_SDK_VERSION, &pDevice, &FeatureLV, &pContext);
+
+	// 모델 생성 후 세이브 할 정보만 뽑고 바로 삭제
+	CModel* pModel = CModel::Create(pDevice, pContext, m_pAIScene, eAnimType, wstrModelPath.wstring().c_str(), XMMatrixIdentity());
+	pModel->SaveAssimp(hFile, dwByte);
+	Safe_Release(pModel);
 	CloseHandle(hFile);
+
 	cout << "Completed generating .dat file" << endl << endl;
 
 	Out = eAnimType;
+	return S_OK;
+}
+
+HRESULT CPaser::WriteAnimData()
+{
+
+
+
+	return S_OK;
+}
+
+HRESULT CPaser::Ready_Bones(const aiNode* pNode, CBone* pParent)
+{
 	return S_OK;
 }
 

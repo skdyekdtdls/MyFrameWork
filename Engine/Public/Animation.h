@@ -14,13 +14,17 @@ BEGIN(Engine)
 
 class CAnimation final : public CBase
 {
-private:
+public:
 	CAnimation();
 	CAnimation(const CAnimation& rhs);
 	virtual ~CAnimation() = default;
 
 public:
-	HRESULT Initialize(const ANIMATION* pAnimation, const aiAnimation* pAIAnimation, const CModel::BONES& Bones);
+	void SaveAssimp(HANDLE hFile, DWORD& dwByte);
+	void LoadAssimp(HANDLE hFile, DWORD& dwByte);
+
+public:
+	HRESULT Initialize(const aiAnimation* pAIAnimation, const CModel::BONES& Bones);
 	void Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeDelta);
 
 private:
@@ -36,7 +40,7 @@ private:
 	_bool						m_isLoop = { false };
 
 public:
-	static CAnimation* Create(const ANIMATION* pAnimation, const aiAnimation* pAIAnimation, const CModel::BONES& Bones);
+	static CAnimation* Create(const aiAnimation* pAIAnimation, const CModel::BONES& Bones);
 	CAnimation* Clone();
 	virtual void Free();
 

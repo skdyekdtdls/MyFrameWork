@@ -22,18 +22,65 @@ CAnimation::CAnimation(const CAnimation& rhs)
 		Safe_AddRef(pChannel);
 }
 
-HRESULT CAnimation::Initialize(const ANIMATION* pAnimation, const aiAnimation* pAIAnimation, const CModel::BONES& Bones)
+void CAnimation::SaveAssimp(HANDLE hFile, DWORD& dwByte)
 {
-	strcpy_s(m_szName, pAnimation->m_Name.m_data);
+	WriteVoid(&m_szName[0], sizeof(char) * MAX_PATH);
+	WriteVoid(&m_iNumChannels, sizeof(_uint));
+	for (size_t i = 0; i < m_iNumChannels; ++i)
+	{
+		m_Channels[i]->SaveAssimp(hFile, dwByte);
+	}
 
-	m_Duration = pAnimation->m_Duration;
-	m_TickPerSecond = pAnimation->m_TicksPerSecond;
+	for (size_t i = 0; i < m_iNumChannels; ++i)
+	{
+		WriteVoid(&m_ChannelCurrentKeyFrames[i], sizeof(_uint));
+	}
+	WriteVoid(&m_Duration, sizeof(_double));
+	WriteVoid(&m_TickPerSecond, sizeof(_double));
+	WriteVoid(&m_TimeAcc, sizeof(_double));
 
-	m_iNumChannels = pAnimation->m_NumChannels;
+	WriteVoid(&m_isFinished, sizeof(_bool));
+	WriteVoid(&m_isLoop, sizeof(_bool));
+}
+
+void CAnimation::LoadAssimp(HANDLE hFile, DWORD& dwByte)
+{
+	ReadVoid(&m_szName[0], sizeof(char) * MAX_PATH);
+	ReadVoid(&m_iNumChannels, sizeof(_uint));
+
+	m_Channels.resize(m_iNumChannels);
+	for (size_t i = 0; i < m_iNumChannels; ++i)
+	{
+		m_Channels[i] = new CChannel;
+		m_Channels[i]->LoadAssimp(hFile, dwByte);
+	}
+
+	m_ChannelCurrentKeyFrames.resize(m_iNumChannels);
+	for (size_t i = 0; i < m_iNumChannels; ++i)
+	{
+		ReadVoid(&m_ChannelCurrentKeyFrames[i], sizeof(_uint));
+	}
+
+	ReadVoid(&m_Duration, sizeof(_double));
+	ReadVoid(&m_TickPerSecond, sizeof(_double));
+	ReadVoid(&m_TimeAcc, sizeof(_double));
+
+	ReadVoid(&m_isFinished, sizeof(_bool));
+	ReadVoid(&m_isLoop, sizeof(_bool));
+}
+
+HRESULT CAnimation::Initialize(const aiAnimation* pAIAnimation, const CModel::BONES& Bones)
+{
+	strcpy_s(m_szName, pAIAnimation->mName.data);
+
+	m_Duration = pAIAnimation->mDuration;
+	m_TickPerSecond = pAIAnimation->mTicksPerSecond;
+
+	m_iNumChannels = pAIAnimation->mNumChannels;
 
 	for (size_t i = 0; i < m_iNumChannels; i++)
 	{
-		CChannel* pChannel = CChannel::Create(&pAnimation->m_Channels[i], Bones);
+		CChannel* pChannel = CChannel::Create(pAIAnimation->mChannels[i], Bones);
 		if (nullptr == pChannel)
 			return E_FAIL;
 
@@ -74,11 +121,11 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 
 }
 
-CAnimation* CAnimation::Create(const ANIMATION* pAnimation, const aiAnimation* pAIAnimation, const CModel::BONES& Bones)
+CAnimation* CAnimation::Create(const aiAnimation* pAIAnimation, const CModel::BONES& Bones)
 {
 	CAnimation* pInstance = new CAnimation();
 
-	if (FAILED(pInstance->Initialize(pAnimation, pAIAnimation, Bones)))
+	if (FAILED(pInstance->Initialize(pAIAnimation, Bones)))
 	{
 		MSG_BOX("Failed to Created CAnimation");
 		Safe_Release(pInstance);
@@ -99,4 +146,3 @@ void CAnimation::Free()
 	m_Channels.clear();
 
 }
-
