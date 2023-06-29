@@ -19,6 +19,9 @@ BEGIN(Client)
 class Clint final : public CGameObject, public ISerializable
 {
 private:
+	enum ANIM_STATE { IDLE, RUN, SHOOT, STATE_END };
+
+private:
 	Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	Clint(const Clint& rhs);
 	virtual ~Clint() = default;
@@ -46,6 +49,15 @@ private: /* For. Component */
 	CNavigation* m_pNavigationCom = { nullptr };
 	CCollider* m_pColliderCom = { nullptr };
 	// Can declare VIBuffer or Model Com
+
+	ANIM_STATE m_eCurState = { STATE_END };
+	ANIM_STATE m_ePreState = { STATE_END };
+
+private:
+	void MoveUp(_double TimeDelta);
+	void MoveRight(_double TimeDelta);
+	void MoveLeft(_double TimeDelta);
+	void MoveDown(_double TimeDelta);
 
 private:
 	HRESULT Add_Components();

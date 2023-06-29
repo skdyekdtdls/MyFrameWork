@@ -44,7 +44,6 @@ private: /* CREATE_MODE */
 private:  /* VERTEX_EDIT_MODE */
     int Cell_Index_item_current = 0;
     vector<std::string> Cell_Index_items;
-    _float3 vPos;
     vector<CELL_PICK_DESC> tCellPickDesces; // 버텍스 정보도 들어옴
 
 private:

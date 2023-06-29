@@ -17,13 +17,24 @@ public:
 	_uint Get_NumMeshes() const {
 		return m_iNumMeshes;
 	}
+	class CAnimation* Get_Animation(int iIndex) {
+		if (iIndex >= m_iNumAnimations)
+			return nullptr;
 
+		return m_Animations[iIndex];
+	}
+
+	_uint Get_NumAnimation() {
+		return m_iNumAnimations;
+	}
+	
 public:
-	void Set_AnimIndex(_uint iAnimIndex) {
+	void Set_AnimByIndex(_uint iAnimIndex) {
 		if (iAnimIndex >= m_iNumAnimations)
 			return;
 		m_iCurrentAnimIndex = iAnimIndex;
 	}
+	void Set_AnimByName(const char* pName);
 
 	void Set_PivotMatrix(_fmatrix PivotMatrix) {
 		XMStoreFloat4x4(&m_PivotMatrix, PivotMatrix);

@@ -14,10 +14,16 @@ BEGIN(Engine)
 
 class CAnimation final : public CBase
 {
+	friend class CModel;
 public:
 	CAnimation();
 	CAnimation(const CAnimation& rhs);
 	virtual ~CAnimation() = default;
+
+public:
+	char* GetName() {
+		return m_szName;
+	}
 
 public:
 	void SaveAssimp(HANDLE hFile, DWORD& dwByte);
@@ -43,7 +49,6 @@ public:
 	static CAnimation* Create(const aiAnimation* pAIAnimation, const CModel::BONES& Bones);
 	CAnimation* Clone();
 	virtual void Free();
-
 
 };
 

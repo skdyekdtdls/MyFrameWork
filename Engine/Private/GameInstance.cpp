@@ -122,6 +122,14 @@ LAYERS* CGameInstance::GetLayers()
 	return m_pObject_Manager->GetLayers();
 }
 
+CGameObject* CGameInstance::Clone_GameObject(const _tchar* pPrototypeTag, void* pArg)
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+
+	return m_pObject_Manager->Clone_GameObject(pPrototypeTag, pArg);
+}
+
 void CGameInstance::Serialization(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 {
 	if (nullptr == m_pObject_Manager)

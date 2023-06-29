@@ -44,7 +44,7 @@ HRESULT Fiona::Initialize(void* pArg)
 		tCloneDesc = *(CLONE_DESC*)pArg;
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
 	
-	m_pModelCom->Set_AnimIndex(rand() % 10);
+	m_pModelCom->Set_AnimByIndex(rand() % 10);
 
 	return S_OK;
 }

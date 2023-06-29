@@ -61,7 +61,6 @@ void CImWindow_MapTool::Tick()
 
 	VecInfo("Position", &vPos, 120);
 
-
 	// display
 	if (ImGui::Button("Open File Dialog"))
 	{
@@ -78,8 +77,8 @@ void CImWindow_MapTool::Tick()
 			ImGuiFileDialog::Instance()->GetSelection();
 
 			
-			string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-			string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+			filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+			filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
 			SaveNaviMesh(filePathName);
 			// action
 		}

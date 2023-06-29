@@ -52,6 +52,7 @@ public: /* For Object_Manager*/
 	CComponent* Get_ComponentOfClone(_uint iLevelIndex, const _tchar * pLayerTag, string pCloneObjName, const _tchar * pCloneComName);
 	_uint GetNumLayers(_uint iLevelIndex);
 	LAYERS* GetLayers();
+	CGameObject* Clone_GameObject(const _tchar * pPrototypeTag, void* pArg);
 
 	void Serialization(HANDLE hFile, DWORD & dwByte, _uint iLevelIndex);
 	void Deserialization(HANDLE hFile, DWORD & dwByte, _uint iLevelIndex);

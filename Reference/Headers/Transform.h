@@ -11,6 +11,7 @@ class ENGINE_DLL CTransform final : public CComponent, public ISerializable
 {
 public:
 	enum STATE { STATE_RIGHT, STATE_UP, STATE_LOOK, STATE_POSITION, STATE_END };
+	enum DIRECTIOIN { DIR_NORTH, DIR_SOUTH, DIR_EAST, DIR_WEST, DIR_END };
 public:
 	typedef struct tagTransformDesc
 	{
@@ -75,6 +76,9 @@ public:
 	void Go_Backward(_double TimeDelta, class CNavigation* pNavigation = nullptr);
 	void Go_Left(_double TimeDelta, class CNavigation* pNavigation = nullptr);
 	void Go_Right(_double TimeDelta, class CNavigation* pNavigation = nullptr);
+
+	void Go_NSEW(_double TimeDelta, DIRECTIOIN eDirclass, CNavigation* pNavigation = nullptr);
+
 	void Chase(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance = 0.1f);
 	void LookAt(_fvector vTargetPosition);
 	void Rotation(_fvector vAxis, _float fRadian);

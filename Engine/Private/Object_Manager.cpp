@@ -115,6 +115,19 @@ CLayer* CObject_Manager::Find_LayerByName(_uint iLevelIndex, const _tchar* pLaye
 	return pLayerKey->second;
 }
 
+CGameObject* CObject_Manager::Clone_GameObject(const _tchar* pPrototypeTag, void* pArg)
+{
+	CGameObject* pPrototype = Find_Prototype(pPrototypeTag);
+	if (nullptr == pPrototype)
+		return nullptr;
+
+	CGameObject* pGameObject = pPrototype->Clone(pArg);
+	if (nullptr == pGameObject)
+		return nullptr;
+
+	return pGameObject;
+}
+
 void CObject_Manager::Free()
 {
 	for (_uint i = 0; i < m_iNumLevels; ++i)

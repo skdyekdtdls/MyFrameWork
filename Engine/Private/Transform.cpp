@@ -189,6 +189,62 @@ void CTransform::Go_Right(_double TimeDelta, CNavigation* pNavigation)
 		Set_State(STATE_POSITION, vPosition);
 }
 
+void CTransform::Go_NSEW(_double TimeDelta, DIRECTIOIN eDir, CNavigation* pNavigation)
+{
+	_vector		vPosition = Get_State(STATE_POSITION);
+	_vector		vLook;
+	switch (eDir)
+	{
+	case Engine::CTransform::DIR_NORTH:
+		vLook = XMVector3Normalize(XMVectorSet(0.f, 0.f, 1.f, 0.f));
+		break;
+	case Engine::CTransform::DIR_SOUTH:
+		vLook = XMVector3Normalize(XMVectorSet(0.f, 0.f, -1.f, 0.f));
+		break;
+	case Engine::CTransform::DIR_EAST:
+		vLook = XMVector3Normalize(XMVectorSet(1.f, 0.f, 0.f, 0.f));
+		break;
+	case Engine::CTransform::DIR_WEST:
+		vLook = XMVector3Normalize(XMVectorSet(-1.f, 0.f, 0.f, 0.f));
+		break;
+	}
+
+	_vector		vNextPosition = vPosition + XMVector3Normalize(vLook) * m_TransformDesc.SpeedPerSec * TimeDelta;
+	_vector		vDir = XMVector3Normalize(vLook) * m_TransformDesc.SpeedPerSec;
+	_bool		isMove = true; // 기본적으로 플레이어는 이동 상태로 가정합니다.
+
+	if (pNavigation != nullptr)
+	{	
+		if (true == (isMove = pNavigation->is_Move(vNextPosition))) // NonSliding
+		{
+			vPosition = vNextPosition; // 위치를 업데이트합니다.
+		}
+		else
+		{
+			while (false == isMove)
+			{
+				vNextPosition = vPosition;
+				vDir *= 0.6f;
+				_float3 vContactNormal = pNavigation->ContactNormal(); // 충돌 법선을 가져옵니다.
+				_vector vSlidingVector = pNavigation->GetSlidingVector(vDir, XMLoadFloat3(&vContactNormal));
+				vNextPosition += vSlidingVector * m_TransformDesc.SpeedPerSec * TimeDelta;
+				
+				isMove = pNavigation->is_Move(vNextPosition);
+			}
+			
+			vPosition = vNextPosition; // 위치를 업데이트합니다.
+		}
+	}
+	else
+		vPosition = vNextPosition;
+
+	// 이동 가능한 상태라면, 새로 계산한 위치를 설정합니다.
+	if (true == isMove)
+	{
+		Set_State(STATE_POSITION, vPosition);
+	}
+}
+
 void CTransform::Chase(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance)
 {
 	_vector		vPosition = Get_State(STATE_POSITION);

@@ -19,22 +19,6 @@ HRESULT CImWindow_ObjectTool::Initialize(void* pArg)
 {
 	if (__super::Initialize(pArg))
 		return E_FAIL;
-	
-	fs::path Static_Mesh_Folder = "../../Resources/Static_Mesh/";
-	fs::directory_iterator iter(Static_Mesh_Folder);
-	while (iter != fs::end(iter)) {
-		const fs::directory_entry& entry = *iter;
-		Static_Mesh_items.push_back(entry.path().filename().string());
-		iter++;
-	}
-
-	fs::path Skeletal_Mesh_Folder = "../../Resources/Skeletal_Mesh/";
-	fs::directory_iterator iter2(Skeletal_Mesh_Folder);
-	while (iter2 != fs::end(iter2)) {
-		const fs::directory_entry& entry = *iter2;
-		Skeletal_Mesh_items.push_back(entry.path().filename().string());
-		iter2++;
-	}
 
 	return S_OK;
 }
@@ -46,7 +30,7 @@ void CImWindow_ObjectTool::Tick()
 	Set_GameObject(pImMgr->GetMinDistPickDesc().pPickedObject);
 	ImGui::Begin("Transform");
 
-	//ImGui::ListBox("Navigation Index", &item_current, VectorGetter, static_cast<void*>(&items),items.size(), 4);
+	// 스테틱 폴더 리스트 박스
 	if (ImGui::ListBox("Static_Mesh##hidden\n(single select)",
 		&Static_Mesh_item_current,
 		VectorGetter,
@@ -54,10 +38,10 @@ void CImWindow_ObjectTool::Tick()
 		Static_Mesh_items.size(),
 		15))
 	{
-		Skeletal_Mesh_item_current = -1;
+		Skeletal_Mesh_item_current = -1; // 스켈레탈 누르면 스테틱 선택해제
 	}
 
-	//ImGui::ListBox("Navigation Index", &item_current, VectorGetter, static_cast<void*>(&items),items.size(), 4);
+	// 스켈레탈 폴더 리스트 박스.
 	if (ImGui::ListBox("Skeletal_Mesh##hidden\n(single select)",
 		&Skeletal_Mesh_item_current,
 		VectorGetter,
@@ -65,18 +49,17 @@ void CImWindow_ObjectTool::Tick()
 		Skeletal_Mesh_items.size(),
 		15))
 	{
-		Static_Mesh_item_current = -1;
+		Static_Mesh_item_current = -1; // 스테틱 누르면 스켈레탈 선택해제
 	}
 
+	// 객체 설치 기능
 	ImGui::Checkbox("Object_Place", &m_bCheck);
 	if (m_bCheck)
 	{
 		ObjectPlace();
 	}
 
-
-	//ShowFileDialog();
-
+	// 객체 트랜스폼 편집
 	ImGui::Text("name : "); ImGui::SameLine();
 	ImGui::Text(strName.c_str());
 	ImGui::Spacing();
@@ -101,6 +84,19 @@ void CImWindow_ObjectTool::Tick()
 
 	ImGui::End();
 	Safe_Release(pImMgr);
+}
+
+CImWindow_ObjectTool* CImWindow_ObjectTool::Create(ImGuiIO* pIO)
+{
+	CImWindow_ObjectTool* pInstance = new CImWindow_ObjectTool(pIO);
+
+	if (FAILED(pInstance->Initialize()))
+	{
+		MSG_BOX("Failed to Created CImWindow_ObjectTool");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 void CImWindow_ObjectTool::Set_GameObject(CGameObject* pGameObject)
@@ -135,68 +131,6 @@ void CImWindow_ObjectTool::Set_GameObject(CGameObject* pGameObject)
 	vScale = pTransform->Get_Scaled();
 }
 
-void CImWindow_ObjectTool::ShowFileDialog()
-{
-	// display
-	if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey"))
-	{
-		// action if OK
-		if (ImGuiFileDialog::Instance()->IsOk())
-		{
-			// 만약 위의 인자5번에서 여러가지 선택후 OK가 눌린경우 get selection
-			// 반환값은 map<string, string> (file path, file name) 형태로 반환
-			ImGuiFileDialog::Instance()->GetSelection();
-
-			 filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-			 filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-			// action
-		}
-
-		// close
-		ImGuiFileDialog::Instance()->Close();
-	}
-}
-
-CImWindow_ObjectTool* CImWindow_ObjectTool::Create(ImGuiIO* pIO)
-{
-	CImWindow_ObjectTool* pInstance = new CImWindow_ObjectTool(pIO);
-
-	if (FAILED(pInstance->Initialize()))
-	{
-		MSG_BOX("Failed to Created CImWindow_ObjectTool");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
-
-void CImWindow_ObjectTool::VecInfo(const char* text, _float3* vec3, int iSize)
-{
-	string label;
-	label = "##";
-	label.append(text);
-
-	ImVec2 textSize = ImGui::CalcTextSize(text);
-	ImGui::Text(text); ImGui::SameLine();
-	ImGui::Dummy(ImVec2(100 - textSize.x, 0.0f));  ImGui::SameLine();
-	ImGui::Text("x"); ImGui::SameLine();
-	ImGui::PushItemWidth(iSize);
-	label.append("0");
-	ImGui::DragFloat(label.c_str(), &vec3->x); ImGui::SameLine();
-	ImGui::PopItemWidth();
-
-	ImGui::Text("y"); ImGui::SameLine();
-	ImGui::PushItemWidth(iSize);
-	label.append("0");
-	ImGui::DragFloat(label.c_str(), &vec3->y); ImGui::SameLine();
-	ImGui::PopItemWidth();
-
-	ImGui::Text("z"); ImGui::SameLine();
-	ImGui::PushItemWidth(iSize);
-	label.append("0");
-	ImGui::DragFloat(label.c_str(), &vec3->z); ImGui::Spacing();  // 공백 추가
-	ImGui::PopItemWidth();
-}
 void CImWindow_ObjectTool::ObjectPlace()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
@@ -289,8 +223,6 @@ void CImWindow_ObjectTool::ObjectPlace()
 void CImWindow_ObjectTool::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pGameObject);
 }
 
 

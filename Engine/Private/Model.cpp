@@ -42,6 +42,23 @@ CModel::CModel(const CModel& rhs)
 	}
 }
 
+void CModel::Set_AnimByName(const char* pName)
+{
+	_int iIndex = 0;
+	for (auto& iter : m_Animations)
+	{
+		if (0 == strcmp(iter->m_szName, pName))
+		{
+			m_iCurrentAnimIndex = iIndex;
+			return;
+		}
+		++iIndex;
+	}
+#ifdef _DEBUG
+	CONSOLE_MSG("Can't find the anim index by name" << __LINE__);
+#endif
+}
+
 void CModel::SaveAssimp(HANDLE hFile, DWORD& dwByte)
 {
 	/* For.Bones*/
