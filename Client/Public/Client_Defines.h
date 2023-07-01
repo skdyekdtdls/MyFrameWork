@@ -16,6 +16,19 @@ namespace Client
 	const unsigned int g_iWinSizeY = 720;
 
 	enum LEVELID { LEVEL_STATIC, LEVEL_IMGUI, LEVEL_LOGO, LEVEL_GAMEPLAY, LEVEL_LOADING, LEVEL_END};
+	enum class CLINT_ANIM
+	{ 
+		DASH = 27,
+		DEATH = 29,
+		GRANADE = 50,
+		HIT = 53,
+		IDLE = 64,
+		MVP = 74,
+		RUN = 89,
+		SKILL_01 = 109,
+		SKILL_02 = 122,
+		WEAPONCHANGE = 152,
+	};
 
 }
 

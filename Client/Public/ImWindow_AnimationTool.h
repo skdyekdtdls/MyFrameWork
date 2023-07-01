@@ -17,10 +17,13 @@ public:
     virtual void LateTick() override;
     _bool ShowDummyObject();
     void ChangeDummyObject(CGameObject* pGameObject);
-protected:
+private:
     _int Animation_item_current = -1;
     vector<std::string> Animation_items;
     CAnimation* m_pAnimation = { nullptr };
+
+    _int Bone_item_current = -1;
+    vector<std::string> Bone_items;
 
     _bool m_isDummy = { false };
     CGameObject* m_pDummyObject = { nullptr };

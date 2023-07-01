@@ -35,7 +35,7 @@ HRESULT CChannel::Initialize(const aiNodeAnim* pAIChannel, const CModel::BONES& 
 	// 모델이 들고 있는 같은 이름을 가진 뼈를 찾느다. 
 	auto	iter = find_if(Bones.begin(), Bones.end(), [&](CBone* pValue)
 		{
-			if (0 != strcmp(m_szName, pValue->Get_Name()))
+			if (0 != strcmp(m_szName, pValue->GetName()))
 			{
 				++m_iBoneIndex;
 				return false;
@@ -89,13 +89,19 @@ HRESULT CChannel::Initialize(const aiNodeAnim* pAIChannel, const CModel::BONES& 
 void CChannel::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeAcc, _uint* pCurrentKeyFrameIndex)
 {
 	if (0.0 == TimeAcc)
-		*pCurrentKeyFrameIndex = 0;
+		*pCurrentKeyFrameIndex = { 0 };
 
-	KEYFRAME		LastKeyFrame = m_KeyFrames.back();
+	KEYFRAME LastKeyFrame = m_KeyFrames.back();
 
 	_float3			vScale;
 	_float4			vRotation;
 	_float3			vTranslation;
+
+	_matrix TransformationMatrix = XMMatrixIdentity();
+	_double Ratio = 0.0;
+
+	Ratio = (TimeAcc - m_KeyFrames[(*pCurrentKeyFrameIndex)].Time) /
+		(m_KeyFrames[(*pCurrentKeyFrameIndex) + 1].Time - m_KeyFrames[(*pCurrentKeyFrameIndex)].Time);
 
 	if (TimeAcc >= LastKeyFrame.Time)
 	{
@@ -103,7 +109,7 @@ void CChannel::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double Tim
 		vRotation = LastKeyFrame.vRotation;
 		vTranslation = LastKeyFrame.vTranslation;
 	}
-	else /* 현재 존재하는 키프레임의 상태를 좌우 키프레임정보를 이용하여 선형보간한다. */
+	else
 	{
 		while (TimeAcc >= m_KeyFrames[(*pCurrentKeyFrameIndex) + 1].Time)
 			++(*pCurrentKeyFrameIndex);
@@ -124,10 +130,45 @@ void CChannel::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double Tim
 		XMStoreFloat3(&vTranslation, XMVectorLerp(XMLoadFloat3(&vSourTranslation), XMLoadFloat3(&vDestTranslation), (_float)Ratio));
 	}
 
-	/* 진행된 시간에 맞는 뼈의 행렬을 만들어낸다. */
-	_matrix		TransformationMatrix = XMMatrixAffineTransformation(XMLoadFloat3(&vScale), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMLoadFloat4(&vRotation), XMLoadFloat3(&vTranslation));
+	// 애니메이션 전환 시 블랜딩을 하기 위해서 현재 상태 행렬의 키프레임 정보를 뼈에 기록한다.
+	KEYFRAME tCurKeyFrameState;
+	tCurKeyFrameState.vScale = vScale;
+	tCurKeyFrameState.vRotation = vRotation;
+	tCurKeyFrameState.vTranslation = vTranslation;
+	tCurKeyFrameState.Time = TimeAcc - m_KeyFrames[(*pCurrentKeyFrameIndex)].Time;
+	Bones[m_iBoneIndex]->Set_CurKeyFrameState(tCurKeyFrameState);
 
-	/* 같은 이름을 가진 모델이 들고 있는 뼈에게 전달해준다. */
+	// 상태 행렬을 만들기 위해서 계산한 SRT로부터 아핀변환을 한다.
+	TransformationMatrix = XMMatrixAffineTransformation(XMLoadFloat3(&vScale), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMLoadFloat4(&vRotation), XMLoadFloat3(&vTranslation));
+
+	// 상태 행렬을 뼈에 기록한다.
+	Bones[m_iBoneIndex]->Set_TransformationMatrix(TransformationMatrix);
+}
+
+void CChannel::InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _double TimeAcc)
+{
+	_double Ratio = TimeAcc / 0.2;
+
+	KEYFRAME FrontKeyFrame = m_KeyFrames.front();
+	KEYFRAME PrevKeyFrame = Bones[m_iBoneIndex]->Get_CurKeyFrameState();
+
+	_vector SourScale, DestScale;
+	_vector SourRotation, DestRotation;
+	_vector SourTranslation, DestTranslation;
+	// 이전 키프레임
+	SourScale = XMLoadFloat3(&PrevKeyFrame.vScale);
+	DestScale = XMLoadFloat3(&FrontKeyFrame.vScale);
+
+	SourRotation = XMLoadFloat4(&PrevKeyFrame.vRotation);
+	DestRotation = XMLoadFloat4(&FrontKeyFrame.vRotation);
+
+	SourTranslation = XMLoadFloat3(&PrevKeyFrame.vTranslation);
+	DestTranslation = XMLoadFloat3(&FrontKeyFrame.vTranslation);
+
+	_vector Scale = XMVectorLerp(SourScale, DestScale, Ratio);
+	_vector Rotation = XMQuaternionSlerp(SourRotation, DestRotation, Ratio);
+	_vector Translation = XMVectorLerp(SourTranslation, DestTranslation, Ratio);
+	_matrix TransformationMatrix = XMMatrixAffineTransformation(Scale, XMVectorZero(), Rotation, Translation);
 	Bones[m_iBoneIndex]->Set_TransformationMatrix(TransformationMatrix);
 }
 

@@ -14,9 +14,19 @@ public:
 	void SaveAssimp(HANDLE hFile, DWORD& dwByte);
 	void LoadAssimp(HANDLE hFile, DWORD& dwByte);
 
+	KEYFRAME Get_FrontKeyFrame() {
+		return m_KeyFrames.front();
+	}
+	_uint Get_BoneIndex() {
+		return m_iBoneIndex;
+	}
+	const char* GetName() {
+		return m_szName;
+	}
 public:
 	HRESULT Initialize(const aiNodeAnim* pAIChannel, const CModel::BONES& Bones);
 	void Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeAcc, _uint* pCurrentKeyFrameIndex);
+	void InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _double TimeAcc);
 
 private:
 	char				m_szName[MAX_PATH] = "";

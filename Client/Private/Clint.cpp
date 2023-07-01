@@ -1,6 +1,5 @@
 #include "Clint.h"
 #include "GameInstance.h"
-
 _uint Clint::Clint_Id = 0;
 
 /* Don't Forget Release for the VIBuffer or Model Component*/
@@ -12,7 +11,18 @@ Clint::Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 Clint::Clint(const Clint& rhs)
 	: CGameObject(rhs)
+	, m_eCurState(rhs.m_eCurState)
+	, m_ePreState(rhs.m_ePreState)
 {
+}
+
+void Clint::Set_AnimState(CLINT_ANIM eAnimState)
+{
+	if (m_eCurState == eAnimState)
+		return;
+
+	m_eCurState = eAnimState;
+	m_pModelCom->Set_AnimByIndex(static_cast<_uint>(eAnimState));
 }
 
 HRESULT Clint::Initialize_Prototype()
@@ -42,18 +52,43 @@ HRESULT Clint::Initialize(void* pArg)
 		tCloneDesc = *(CLONE_DESC*)pArg;
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
 
-	
 	return S_OK;
 }
 
 void Clint::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
-	KeyInput(TimeDelta);
-	m_pModelCom->Play_Animation(TimeDelta);
+
+	switch (m_eCurState)
+	{
+	case Client::CLINT_ANIM::DASH:
+		Dash_FSM(TimeDelta);
+		break;
+	case Client::CLINT_ANIM::DEATH:
+		break;
+	case Client::CLINT_ANIM::GRANADE:
+		break;
+	case Client::CLINT_ANIM::HIT:
+		break;
+	case Client::CLINT_ANIM::IDLE:
+		Idle_FSM(TimeDelta);
+		break;
+	case Client::CLINT_ANIM::MVP:
+		break;
+	case Client::CLINT_ANIM::RUN:
+		Run_FSM(TimeDelta);
+		break;
+	case Client::CLINT_ANIM::SKILL_01:
+		break;
+	case Client::CLINT_ANIM::SKILL_02:
+		break;
+	case Client::CLINT_ANIM::WEAPONCHANGE:
+		break;
+	default:
+		break;
+	}
+
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
-
-
 
 	// 	if(nullptr != m_pColliderCom)
 	//		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
@@ -62,6 +97,7 @@ void Clint::Tick(_double TimeDelta)
 void Clint::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
+	m_pModelCom->Play_Animation(TimeDelta);
 }
 
 HRESULT Clint::Render()
@@ -86,8 +122,8 @@ HRESULT Clint::Render()
 		m_pModelCom->Render(i);
 	}
 
-
 #ifdef _DEBUG
+	//m_pNavigationCom->Render_Navigation();
 	// if(nullptr != m_pColliderCom)
 	//	m_pColliderCom->Render();
 #endif
@@ -112,76 +148,107 @@ void Clint::KeyInput(_double& TimeDelta)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	
-	MoveUp(TimeDelta);
-	MoveRight(TimeDelta);
-	MoveLeft(TimeDelta);
-	MoveDown(TimeDelta);
+
+	//BasicAttack(TimeDelta);
 
 	Safe_Release(pGameInstance);
 }
 
-void Clint::MoveUp(_double TimeDelta)
+
+void Clint::Shoot_FSM(_double TimeDelta)
+{
+}
+
+void Clint::Run_FSM(_double TimeDelta)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+
+	Safe_Release(pGameInstance);
+
+	if (pGameInstance->Get_DIKeyState(DIK_W))
+	{
+		m_pTransformCom->Go_NSEW(TimeDelta, CTransform::DIR_NORTH, m_pNavigationCom);
+		m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(0.f));
+	}
+	else if (pGameInstance->Get_DIKeyState(DIK_A))
+	{
+		m_pTransformCom->Go_NSEW(TimeDelta, CTransform::DIR_WEST, m_pNavigationCom);
+		m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-90.f));
+	}
+	else if (pGameInstance->Get_DIKeyState(DIK_S))
+	{
+		m_pTransformCom->Go_NSEW(TimeDelta, CTransform::DIR_SOUTH, m_pNavigationCom);
+		m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.f));
+	}
+	else if (pGameInstance->Get_DIKeyState(DIK_D))
+	{
+		m_pTransformCom->Go_NSEW(TimeDelta, CTransform::DIR_EAST, m_pNavigationCom);
+		m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f));
+	}
+	else if (pGameInstance->Get_DIKeyState(DIK_SPACE))
+	{
+		Set_AnimState(CLINT_ANIM::DASH);
+	}
+	else
+	{
+		Set_AnimState(CLINT_ANIM::IDLE);
+	}
+
+	Safe_AddRef(pGameInstance);
+}
+
+void Clint::Idle_FSM(_double TimeDelta)
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	if (!pGameInstance->Get_DIKeyState(DIK_W))
+	if (pGameInstance->Get_DIKeyState(DIK_W))
 	{
-		Safe_Release(pGameInstance);
-		return;
+		m_pTransformCom->Go_NSEW(TimeDelta, CTransform::DIR_NORTH, m_pNavigationCom);
+		Set_AnimState(CLINT_ANIM::RUN);
+	}
+	else if (pGameInstance->Get_DIKeyState(DIK_A))
+	{
+		m_pTransformCom->Go_NSEW(TimeDelta, CTransform::DIR_WEST, m_pNavigationCom);
+		Set_AnimState(CLINT_ANIM::RUN);
+	}
+	else if (pGameInstance->Get_DIKeyState(DIK_S))
+	{
+		m_pTransformCom->Go_NSEW(TimeDelta, CTransform::DIR_SOUTH, m_pNavigationCom);
+		Set_AnimState(CLINT_ANIM::RUN);
+	}
+	else if (pGameInstance->Get_DIKeyState(DIK_D))
+	{
+		m_pTransformCom->Go_NSEW(TimeDelta, CTransform::DIR_EAST, m_pNavigationCom);
+		Set_AnimState(CLINT_ANIM::RUN);
+	}
+	else if (pGameInstance->Get_DIKeyState(DIK_SPACE))
+	{
+		Set_AnimState(CLINT_ANIM::DASH);
 	}
 
-	m_pTransformCom->Go_NSEW(TimeDelta, CTransform::DIR_NORTH, m_pNavigationCom);
-	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), TimeDelta);
 	Safe_Release(pGameInstance);
 }
 
-void Clint::MoveRight(_double TimeDelta)
+void Clint::Dash_FSM(_double TimeDelta)
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	if (!pGameInstance->Get_DIKeyState(DIK_D))
+	if (pGameInstance->Get_DIKeyState(DIK_W))
 	{
-		Safe_Release(pGameInstance);
-		return;
+		m_pTransformCom->Go_NSEW(TimeDelta, CTransform::DIR_NORTH, m_pNavigationCom);
+		Set_AnimState(CLINT_ANIM::RUN);
+	}
+	else if (m_pModelCom->IsAnimationFinished())
+	{
+		Set_AnimState(CLINT_ANIM::IDLE);
 	}
 
-	m_pTransformCom->Go_NSEW(TimeDelta, CTransform::DIR_EAST, m_pNavigationCom);
-	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), TimeDelta);
-	Safe_Release(pGameInstance);
-}
+	_float3 pos = m_pModelCom->Get_RootTranslation();
+	m_pTransformCom->RootMotion(TimeDelta, pos);
+	//m_pTransformCom->
 
-void Clint::MoveLeft(_double TimeDelta)
-{
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
-
-	if (!pGameInstance->Get_DIKeyState(DIK_A))
-	{
-		Safe_Release(pGameInstance);
-		return;
-	}
-
-	m_pTransformCom->Go_NSEW(TimeDelta, CTransform::DIR_WEST, m_pNavigationCom);
-	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), TimeDelta);
-	Safe_Release(pGameInstance);
-}
-
-void Clint::MoveDown(_double TimeDelta)
-{
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
-
-	if (!pGameInstance->Get_DIKeyState(DIK_S))
-	{
-		Safe_Release(pGameInstance);
-		return;
-	}
-
-	m_pTransformCom->Go_NSEW(TimeDelta, CTransform::DIR_SOUTH, m_pNavigationCom);
-	m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), TimeDelta);
 	Safe_Release(pGameInstance);
 }
 

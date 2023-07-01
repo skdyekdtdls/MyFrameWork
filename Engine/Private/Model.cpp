@@ -19,6 +19,8 @@ CModel::CModel(const CModel& rhs)
 	, m_iNumAnimations(rhs.m_iNumAnimations)
 	, m_PivotMatrix(rhs.m_PivotMatrix)
 	, m_eAnimType(rhs.m_eAnimType)
+	, m_RootIndex(rhs.m_RootIndex)
+	, m_InterTimeAcc(rhs.m_InterTimeAcc)
 {
 	/* 애니메이션의 경우, 각 복제된 객체들마다 사용하는 시간과 키프레임들의 현재 인덱스를
 	구분하여 사용해야할 필요가 있기때문에 깊은 복사. */
@@ -42,6 +44,55 @@ CModel::CModel(const CModel& rhs)
 	}
 }
 
+CAnimation* CModel::Get_AnimationByName(string strName)
+{
+	for (auto& Animation: m_Animations)
+	{
+		if (0 == strcmp(Animation->GetName(), strName.c_str()))
+		{
+			return Animation;
+		}
+	}
+	return nullptr;
+}
+
+#ifdef _DEBUG
+void CModel::CoutRootNodePos()
+{
+	_float3 pos = m_Bones[m_RootIndex]->GetTranslation();
+	cout << pos.x << "\t" << pos.y << "\t" << pos.z << endl;
+}
+_float3 CModel::Get_RootTranslation()
+{
+	if (-1 == m_RootIndex)
+		return _float3();
+
+	return m_Bones[m_RootIndex]->GetTranslation();
+}
+#endif
+
+CBone* CModel::GetBoneByName(string strName)
+{
+	for (auto& Bone : m_Bones)
+	{
+		if (0 == strcmp(Bone->GetName(), strName.c_str()))
+			return Bone;
+	}
+	return nullptr;
+}
+
+void CModel::Set_AnimByIndex(_uint iAnimIndex)
+{
+	if (iAnimIndex >= m_iNumAnimations)
+		return;
+
+	if (m_iCurrentAnimIndex == iAnimIndex)
+		return;
+
+	m_InterTimeAcc = 0.0;
+	m_iCurrentAnimIndex = iAnimIndex;
+}
+
 void CModel::Set_AnimByName(const char* pName)
 {
 	_int iIndex = 0;
@@ -49,7 +100,7 @@ void CModel::Set_AnimByName(const char* pName)
 	{
 		if (0 == strcmp(iter->m_szName, pName))
 		{
-			m_iCurrentAnimIndex = iIndex;
+			Set_AnimByIndex(iIndex);
 			return;
 		}
 		++iIndex;
@@ -57,6 +108,11 @@ void CModel::Set_AnimByName(const char* pName)
 #ifdef _DEBUG
 	CONSOLE_MSG("Can't find the anim index by name" << __LINE__);
 #endif
+}
+
+void CModel::Set_RootNode(_uint iBoneIndex)
+{
+	m_RootIndex = iBoneIndex;
 }
 
 void CModel::SaveAssimp(HANDLE hFile, DWORD& dwByte)
@@ -228,21 +284,47 @@ HRESULT CModel::Render(_uint iMeshIndex)
 
 void CModel::Play_Animation(_double TimeDelta)
 {
-	if (TYPE_NONANIM == m_eAnimType)
+	if (m_eAnimType == TYPE_NONANIM)
 		return;
 
-	/* 어떤 애니메이션을 재생하려고하는지?! */
-	/* 이 애니메이션은 어떤 뼈를 사용하는지?! */
-	/* 뼈들은 각각 어떤 상태(TransformationMatrix)를 취하고 있어야하는가?! */
-
-	/* 현재 애니메이션에서 사용하는 뼈들을 찾아서 해당 뼈들의 TransformationMatrix를 갱신한다. */
-	m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(m_Bones, TimeDelta);
-
-	/* 모델에 표현되어있는 모든 뼈들의 CombinedTransformationMatrix */
-	for (auto& pBone : m_Bones)
+	if (m_iPrevAnimIndex != m_iCurrentAnimIndex)
 	{
-		pBone->Invalidate_CombinedTransformationMatrix(m_Bones);
+		m_InterTimeAcc += TimeDelta;
+
+		if (m_InterTimeAcc > 0.2)
+		{
+			m_iPrevAnimIndex = m_iCurrentAnimIndex;
+			m_Animations[m_iCurrentAnimIndex]->Reset();
+		}
+		else
+		{
+			m_Animations[m_iCurrentAnimIndex]->InterAnimation_TransfomationMatrix(m_Bones, m_InterTimeAcc);
+		}
 	}
+	else
+	{
+		m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(m_Bones, TimeDelta);
+	}
+
+	for (auto& Bone : m_Bones)
+	{
+		Bone->Invalidate_CombinedTransformationMatrix(m_Bones);
+	}
+}
+
+_bool CModel::IsAnimationFinished()
+{
+	return (true == m_Animations[m_iCurrentAnimIndex]->IsFinished()) ? true : false;
+}
+
+void CModel::ResetAnimation(_int iIndex)
+{
+	if (iIndex < 0)
+	{
+		m_Animations[m_iCurrentAnimIndex]->Reset();
+		return;
+	}
+	m_Animations[iIndex]->Reset();
 }
 
 HRESULT CModel::Bind_Material(CShader* pShader, const char* pConstantName, _uint iMeshIndex, TextureType MaterialType)
@@ -303,9 +385,6 @@ HRESULT CModel::Ready_Meshes(const aiScene* pScene, TYPE eType, _fmatrix PivotMa
 
 HRESULT CModel::Ready_Materials(const aiScene* pScene, fs::path pModelFilePath)
 {
-	
-
-
 	/* 현재 모델에게 부여할 수 있는 재질(Diffuse, Normal, Specular etc) 텍스쳐의 갯수. */
 	m_iNumMaterials = pScene->mNumMaterials;
 
@@ -405,10 +484,11 @@ fs::path CModel::FindDATFile(fs::path ModelPath)
 	return fs::path();
 }
 
-CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _fmatrix PivotMatrix)
+CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _fmatrix PivotMatrix, _int RootIndex)
 {
 	CModel* pModel = new CModel(pDevice, pContext);
 	pModel->Set_PivotMatrix(PivotMatrix);
+	pModel->Set_RootNode(RootIndex);
 	return pModel;
 }
 

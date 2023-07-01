@@ -19,12 +19,12 @@ BEGIN(Client)
 class Clint final : public CGameObject, public ISerializable
 {
 private:
-	enum ANIM_STATE { IDLE, RUN, SHOOT, STATE_END };
-
-private:
 	Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	Clint(const Clint& rhs);
 	virtual ~Clint() = default;
+
+public:
+	void Set_AnimState(CLINT_ANIM eAnimState);
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -50,21 +50,22 @@ private: /* For. Component */
 	CCollider* m_pColliderCom = { nullptr };
 	// Can declare VIBuffer or Model Com
 
-	ANIM_STATE m_eCurState = { STATE_END };
-	ANIM_STATE m_ePreState = { STATE_END };
+private:
+	CLINT_ANIM m_eCurState = { CLINT_ANIM::IDLE };
+	CLINT_ANIM m_ePreState;
 
 private:
-	void MoveUp(_double TimeDelta);
-	void MoveRight(_double TimeDelta);
-	void MoveLeft(_double TimeDelta);
-	void MoveDown(_double TimeDelta);
+	static _uint Clint_Id;
+
+private:
+	void Shoot_FSM(_double TimeDelta);
+	void Run_FSM(_double TimeDelta);
+	void Idle_FSM(_double TimeDelta);
+	void Dash_FSM(_double TimeDelta);
 
 private:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();
-
-private:
-	static _uint Clint_Id;
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_GameObject_Clint"; }

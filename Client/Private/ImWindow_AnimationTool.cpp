@@ -4,7 +4,8 @@
 #include "ImWindow_Manager.h"
 #include "GameObject.h"
 #include "Animation.h"
-
+#include "Channel.h"
+#include "Bone.h"
 CImWindow_AnimationTool::CImWindow_AnimationTool(ImGuiIO* pIO)
 	: CImWindow(pIO)
 {
@@ -27,6 +28,8 @@ void CImWindow_AnimationTool::Tick()
 	Safe_AddRef(pGameInstance);
 
 	ImGui::Begin("Animation Tool");
+	ImGui::Columns(2, "mixed");
+	// 객체를 클릭하면 리스트 박스에 애니메이션 목록을 넣어준다.
 	if (ImGui::ListBox("Skeletal_Mesh##hidden\n(single select)",
 		&Skeletal_Mesh_item_current,
 		VectorGetter,
@@ -49,8 +52,10 @@ void CImWindow_AnimationTool::Tick()
 		ChangeDummyObject(pGameInstance->Clone_GameObject(TO_WSTR(tmp).c_str(), nullptr));
 	}
 
+	// 더미 체크박스
 	ImGui::Checkbox("Dummy", &m_isDummy);
 
+	// 애니메이션 리스트 박스
 	if (ImGui::ListBox("Animations ##hidden\n(single select)",
 		&Animation_item_current,
 		VectorGetter,
@@ -66,12 +71,48 @@ void CImWindow_AnimationTool::Tick()
 			{
 				CModel* pModel = static_cast<CModel*>(m_pDummyObject->Get_Component(L"Com_Model"));
 				pModel->Set_AnimByName(Animation_items[Animation_item_current].c_str());
-
+				
+				// 클릭한 애니메이션 항목 대하여 채널 리스트박스 정보를 갱신한다.
+				CAnimation* pAnimation = pModel->Get_AnimationByName(Animation_items[Animation_item_current]);
+				
+				if (-1 != Animation_item_current)
+				{
+					Bone_items.clear();
+					for (_uint i = 0; i < pAnimation->Get_NumChannels(); ++i)
+					{
+						CBone* pBone= pModel->GetBoneByIndex(i);
+						Bone_items.push_back(pBone->GetName());
+					}
+				}
 			}
 		}
 	}
+	// 현재 클릭된 애니메이션 인덱스를 표시
 	string CurIndex = "Current Anim Index : " + to_string(Animation_item_current);
 	ImGui::Text(CurIndex.c_str());
+
+	
+	// 열 나누기
+	ImGui::NextColumn();
+
+	// 채널 리스트 박스
+	if (ImGui::ListBox("Channels ##hidden\n(single select)",
+		&Bone_item_current,
+		VectorGetter,
+		static_cast<void*>(&Bone_items),
+		Bone_items.size(),
+		40))
+	{
+
+	}
+
+	// 현재 클릭된 애니메이션 인덱스를 표시
+	string CurChannelIndex = "Current Bone Index : " + to_string(Bone_item_current);
+	ImGui::Text(CurChannelIndex.c_str());
+
+	ImGui::Columns(1);
+
+
 
 	if (m_isDummy)
 	{

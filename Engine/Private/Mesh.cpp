@@ -278,7 +278,7 @@ HRESULT CMesh::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, const CModel::BONE
 
 		auto	iter = find_if(Bones.begin(), Bones.end(), [&](CBone* pValue)
 			{
-				if (0 != strcmp(pAIBone->mName.data, pValue->Get_Name()))
+				if (0 != strcmp(pAIBone->mName.data, pValue->GetName()))
 				{
 					++iBoneIndex;
 					return false;
@@ -336,7 +336,7 @@ HRESULT CMesh::Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, const CModel::BONE
 		// 모델이 들고 있는 같은 이름을 가진 뼈를 찾느다. 
 		auto	iter = find_if(Bones.begin(), Bones.end(), [&](CBone* pValue)
 			{
-				if (0 != strcmp(m_szName, pValue->Get_Name()))
+				if (0 != strcmp(m_szName, pValue->GetName()))
 				{
 					++iBoneIndex;
 					return false;

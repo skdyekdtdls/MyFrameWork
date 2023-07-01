@@ -24,14 +24,28 @@ public:
 	char* GetName() {
 		return m_szName;
 	}
+	_uint Get_NumChannels() {
+		return m_Channels.size();
+	}
 
+	// 채널주소를 반환, 시간 복잡도O(1)
+	class CChannel* Get_ChannelByIndex(_uint iIndex) {
+		return m_Channels[iIndex];
+	}
+	_bool IsFinished() {
+		return m_isFinished;
+	}
+	// 채널주소를 반환, 시간 복잡도O(n), 못찾으면 nullptr반환
+	class CChannel* Get_ChannelByName(string strName);
 public:
 	void SaveAssimp(HANDLE hFile, DWORD& dwByte);
 	void LoadAssimp(HANDLE hFile, DWORD& dwByte);
 
 public:
 	HRESULT Initialize(const aiAnimation* pAIAnimation, const CModel::BONES& Bones);
+	void Reset();
 	void Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeDelta);
+	void InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _double TimeAcc);
 
 private:
 	char						m_szName[MAX_PATH];

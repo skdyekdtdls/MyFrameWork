@@ -33,6 +33,7 @@ using namespace DirectX;
 #include <map>
 #include <algorithm>
 #include <filesystem>
+#include <queue>
 #include "Engine_Typedef.h"
 using namespace Engine;
 namespace fs = std::filesystem;

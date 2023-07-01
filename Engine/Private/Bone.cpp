@@ -34,6 +34,34 @@ void CBone::LoadAssimp(HANDLE hFile, DWORD& dwByte)
 	ReadVoid(&m_iIndex, sizeof(_uint));
 }
 
+_float3 CBone::GetScale()
+{
+	return _float3(XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&m_TransformationMatrix).r[0])),
+		XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&m_TransformationMatrix).r[1])),
+		XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&m_TransformationMatrix).r[2])));
+}
+
+_float4 CBone::GetQuaternion()
+{
+	// 스케일 요소를 제거한 행렬을 생성합니다.
+	_float4 quaternionFloat4;
+	_matrix rotationMatrix;
+	_float3 scale = GetScale();
+	rotationMatrix = XMMatrixScaling(1 / scale.x, 1 / scale.y, 1 / scale.z) * XMLoadFloat4x4(&m_TransformationMatrix);
+	_vector quaternion = XMQuaternionRotationMatrix(rotationMatrix);
+	XMStoreFloat4(&quaternionFloat4, quaternion);
+	return quaternionFloat4;
+}
+
+_float3 CBone::GetTranslation()
+{
+	cout << m_TransformationMatrix._43 << endl;
+	
+	return _float3(m_TransformationMatrix._41
+		, m_TransformationMatrix._42
+		, m_TransformationMatrix._43);
+}
+
 HRESULT CBone::Initialize(aiNode* pAINode, CBone* pParent, _uint iIndex)
 {
 	strcpy_s(m_szName, pAINode->mName.data);
@@ -55,8 +83,8 @@ void CBone::Invalidate_CombinedTransformationMatrix(const CModel::BONES& Bones)
 	}
 	else
 	{
-		XMStoreFloat4x4(&m_CombinedTransformationMatrix,
-			XMLoadFloat4x4(&m_TransformationMatrix) * XMLoadFloat4x4(&Bones[m_iParentIndex]->m_CombinedTransformationMatrix));
+		_float4x4 ParentTransformationMatrix = Bones[m_iParentIndex]->Get_CombinedTransformationMatrix();
+		XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMLoadFloat4x4(&m_TransformationMatrix) * XMLoadFloat4x4(&ParentTransformationMatrix));
 	}
 }
 

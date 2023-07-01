@@ -1,5 +1,5 @@
 #include "..\Public\Component.h"
-
+#include "GameObject.h"
 CComponent::CComponent(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: m_pDevice(pDevice)
 	, m_pContext(pContext)
@@ -25,6 +25,8 @@ HRESULT CComponent::Initialize_Prototype(void)
 
 HRESULT CComponent::Initialize(void* pArg)
 {
+	m_pOwner = ((COMPONENT_DESC*)pArg)->pOwner;
+
 	return S_OK;
 }
 

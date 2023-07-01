@@ -1,6 +1,5 @@
 #include "..\Public\Animation.h"
 #include "Channel.h"
-
 CAnimation::CAnimation()
 	: m_isLoop(true)
 {
@@ -20,6 +19,19 @@ CAnimation::CAnimation(const CAnimation& rhs)
 
 	for (auto& pChannel : m_Channels)
 		Safe_AddRef(pChannel);
+}
+
+
+
+CChannel* CAnimation::Get_ChannelByName(string strName)
+{
+	for (auto& Channel : m_Channels)
+	{
+		if (0 == strcmp(Channel->GetName(), strName.c_str()))
+			return Channel;
+	}
+
+	return nullptr;
 }
 
 void CAnimation::SaveAssimp(HANDLE hFile, DWORD& dwByte)
@@ -92,6 +104,16 @@ HRESULT CAnimation::Initialize(const aiAnimation* pAIAnimation, const CModel::BO
 	return S_OK;
 }
 
+void CAnimation::Reset()
+{
+	if (false == m_isLoop)
+		m_isFinished = false;
+
+	m_TimeAcc = 0.0;
+	for (auto& pChannelIndex : m_ChannelCurrentKeyFrames)
+		pChannelIndex = { 0 };
+}
+
 void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeDelta)
 {
 	m_TimeAcc += m_TickPerSecond * TimeDelta;
@@ -106,8 +128,6 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 			m_isFinished = true;
 	}
 
-
-
 	/* 현재 재생된 시간에 맞도록 모든 뼈의 상태를 키프레임정보를 기반으로하여 갱신한다. */
 	_uint		iChannelIndex = 0;
 	for (auto& pChannel : m_Channels)
@@ -117,8 +137,14 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 
 		pChannel->Invalidate_TransformationMatrix(Bones, m_TimeAcc, &m_ChannelCurrentKeyFrames[iChannelIndex++]);
 	}
+}
 
-
+void CAnimation::InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _double TimeAcc)
+{
+	for (auto Channel : m_Channels)
+	{
+		Channel->InterAnimation_TransfomationMatrix(Bones, TimeAcc);
+	}
 }
 
 CAnimation* CAnimation::Create(const aiAnimation* pAIAnimation, const CModel::BONES& Bones)

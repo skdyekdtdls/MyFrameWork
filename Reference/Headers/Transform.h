@@ -47,9 +47,11 @@ public:
 	_float4x4* Get_WorldFloat4x4Ptr() {
 		return &m_WorldMatrix;
 	}
+
 	_float4x4 Get_WorldFloat4x4() {
 		return m_WorldMatrix;
 	}
+
 	_matrix Get_WorldMatrix() {
 		return XMLoadFloat4x4(&m_WorldMatrix);
 	}
@@ -72,26 +74,30 @@ public:
 	virtual HRESULT Initialize(void* pArg);
 
 public:
+	void RootMotion(_double TimeDelta, _float3 vRootTranslation, class CNavigation* pNavigation = nullptr);
 	void Go_Straight(_double TimeDelta, class CNavigation* pNavigation = nullptr);
 	void Go_Backward(_double TimeDelta, class CNavigation* pNavigation = nullptr);
 	void Go_Left(_double TimeDelta, class CNavigation* pNavigation = nullptr);
 	void Go_Right(_double TimeDelta, class CNavigation* pNavigation = nullptr);
 
-	void Go_NSEW(_double TimeDelta, DIRECTIOIN eDirclass, CNavigation* pNavigation = nullptr);
+	void Go_NSEW(_double TimeDelta, DIRECTIOIN eDir, CNavigation* pNavigation = nullptr);
 
 	void Chase(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance = 0.1f);
 	void LookAt(_fvector vTargetPosition);
+
+	// 항등 상태를 기준으로 지정한 각만큼 회전시킨다.
 	void Rotation(_fvector vAxis, _float fRadian);
+
 	void Rotation(_fmatrix RotationMatrixX, _fmatrix RotationMatrixY, _fmatrix RotationMatrixZ);
 	void Turn(_fvector vAxis, _double TimeDelta);
+	void Turn(_fvector vAxis, _fvector vTargetVector, _double TimeDelta);
 	void Scaled(const _float3 & vScale);
 
 private:
 	TRANSFORMDESC			m_TransformDesc;
-
+	_float3					m_vRootStart;
 private:
 	_float4x4				m_WorldMatrix;
-
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_Component_Transform"; }
 	static CTransform* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);

@@ -56,7 +56,7 @@ void CImWindow_ObjectTool::Tick()
 	ImGui::Checkbox("Object_Place", &m_bCheck);
 	if (m_bCheck)
 	{
-		ObjectPlace();
+		ObjectPlace(); 
 	}
 
 	// °´Ã¼ Æ®·£½ºÆû ÆíÁý
