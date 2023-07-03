@@ -6,13 +6,13 @@ BEGIN(Engine)
 class ENGINE_DLL CNavigation : public CComponent
 {
 public:
-	typedef struct tagNavigation
+	typedef struct tagCNavigation : public tagComponentDesc
 	{
-		tagNavigation() : iCurrentIndex(-1) {}
-		explicit tagNavigation(_int _iCurrentIndex) : iCurrentIndex{ _iCurrentIndex } {}
+		tagCNavigation() : tagComponentDesc(), iCurrentIndex(-1) {}
+		explicit tagCNavigation(_int _iCurrentIndex) : iCurrentIndex{ _iCurrentIndex } {}
 
 		_int iCurrentIndex = { -1 };
-	}NAVIGATIONDESC;
+	}CNAVIGATION_DESC;
 
 private:
 	explicit CNavigation(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -70,7 +70,7 @@ public:
 
 private:
 	_float3 m_vContactNormal;
-	NAVIGATIONDESC	m_tNaviDesc;
+	CNAVIGATION_DESC	m_tNaviDesc;
 	vector<class CCell*>	m_Cells;
 
 #ifdef _DEBUG

@@ -83,6 +83,7 @@ HRESULT CVIBuffer_Rect::Initialize_Prototype()
 
 HRESULT CVIBuffer_Rect::Initialize(void* pArg)
 {
+	__super::Initialize(pArg);
 	return S_OK;
 }
 

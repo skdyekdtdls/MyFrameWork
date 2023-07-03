@@ -3,8 +3,9 @@
 #include "Bone.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "Transform.h"
 #include "Animation.h"
-
+#include "GameObject.h"
 CModel::CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComponent(pDevice, pContext)
 {
@@ -21,6 +22,8 @@ CModel::CModel(const CModel& rhs)
 	, m_eAnimType(rhs.m_eAnimType)
 	, m_RootIndex(rhs.m_RootIndex)
 	, m_InterTimeAcc(rhs.m_InterTimeAcc)
+	, m_RootMoveDistance(0.f)
+	, m_PrevMoveDistance(0.f)
 {
 	/* 애니메이션의 경우, 각 복제된 객체들마다 사용하는 시간과 키프레임들의 현재 인덱스를
 	구분하여 사용해야할 필요가 있기때문에 깊은 복사. */
@@ -62,14 +65,17 @@ void CModel::CoutRootNodePos()
 	_float3 pos = m_Bones[m_RootIndex]->GetTranslation();
 	cout << pos.x << "\t" << pos.y << "\t" << pos.z << endl;
 }
-_float3 CModel::Get_RootTranslation()
-{
-	if (-1 == m_RootIndex)
-		return _float3();
-
-	return m_Bones[m_RootIndex]->GetTranslation();
-}
 #endif
+
+_float3 CModel::GetPivotMatrixScale()
+{
+	_float3 scale;
+	scale.x = XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&m_PivotMatrix).r[0]));
+	scale.y = XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&m_PivotMatrix).r[1]));
+	scale.z = XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&m_PivotMatrix).r[2]));
+	
+	return scale;
+}
 
 CBone* CModel::GetBoneByName(string strName)
 {
@@ -89,6 +95,7 @@ void CModel::Set_AnimByIndex(_uint iAnimIndex)
 	if (m_iCurrentAnimIndex == iAnimIndex)
 		return;
 
+	m_Animations[iAnimIndex]->Reset();
 	m_InterTimeAcc = 0.0;
 	m_iCurrentAnimIndex = iAnimIndex;
 }
@@ -267,11 +274,10 @@ HRESULT CModel::Initialize_Prototype(const aiScene* pAIScene, TYPE eType, fs::pa
 	return S_OK;
 }
 
-
-
 HRESULT CModel::Initialize(void* pArg)
 {
-	
+	__super::Initialize(pArg);
+
 	return S_OK;
 }
 
@@ -286,7 +292,7 @@ void CModel::Play_Animation(_double TimeDelta)
 {
 	if (m_eAnimType == TYPE_NONANIM)
 		return;
-
+	
 	if (m_iPrevAnimIndex != m_iCurrentAnimIndex)
 	{
 		m_InterTimeAcc += TimeDelta;
@@ -306,6 +312,9 @@ void CModel::Play_Animation(_double TimeDelta)
 		m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(m_Bones, TimeDelta);
 	}
 
+	m_RootMoveDistance = m_Bones[m_RootIndex]->GetTransformationMatrix_43();
+	m_Bones[m_RootIndex]->FixBone();
+
 	for (auto& Bone : m_Bones)
 	{
 		Bone->Invalidate_CombinedTransformationMatrix(m_Bones);
@@ -314,7 +323,14 @@ void CModel::Play_Animation(_double TimeDelta)
 
 _bool CModel::IsAnimationFinished()
 {
-	return (true == m_Animations[m_iCurrentAnimIndex]->IsFinished()) ? true : false;
+	if (m_Animations[m_iCurrentAnimIndex]->IsFinished())
+	{
+		m_PrevMoveDistance = { 0.f };
+		m_RootMoveDistance = { 0.f };
+		return true;
+	}
+
+	return false;
 }
 
 void CModel::ResetAnimation(_int iIndex)
@@ -325,6 +341,17 @@ void CModel::ResetAnimation(_int iIndex)
 		return;
 	}
 	m_Animations[iIndex]->Reset();
+}
+
+void CModel::RootMotion(_double TimeDelta, CTransform::DIRECTION eDir)
+{
+	CTransform* pTransform = m_pOwner->GetComponent<CTransform>();
+	_float fLength = -m_RootMoveDistance - -m_PrevMoveDistance;
+
+	// 길이를 구해줘야한다.
+	pTransform->Go_Direction(TimeDelta, eDir, fLength);
+
+	m_PrevMoveDistance = m_RootMoveDistance;
 }
 
 HRESULT CModel::Bind_Material(CShader* pShader, const char* pConstantName, _uint iMeshIndex, TextureType MaterialType)

@@ -200,7 +200,7 @@ void CImWindow_ObjectTool::ObjectPlace()
 	_tchar szTmp[MAX_PATH];
 	TO_WCHAR(m_szCurItemLabel, szTmp);
 
-	CGameObject::CLONE_DESC tCloneDesc;
+	CGameObject::CGAMEOBJECT_DESC tCloneDesc;
 	tCloneDesc.vPosition = _float4(pTerrainDesc.vPickPos);
 	tCloneDesc.vPosition.w = 1.f;
 	CGameObject* pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, tag.c_str(), szTmp, &tCloneDesc);

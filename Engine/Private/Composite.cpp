@@ -70,6 +70,19 @@ CComponent* CComposite::Get_Component(const _tchar* pComponent)
 	return iter->second;
 }
 
+void CComposite::RemoveObjectByCallBack(std::function<bool(const CComponent&)> predicate)
+{
+	for (auto it = m_Components.begin(); it != m_Components.end(); ) {
+		if (predicate(*(it->second))) {
+			Safe_Release(it->second);
+			it = m_Components.erase(it);
+		}
+		else {
+			++it;
+		}
+	}
+}
+
 _bool CComposite::HasTransformCom()
 {
 	for (auto& Pair : m_Components)

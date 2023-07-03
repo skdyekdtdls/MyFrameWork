@@ -7,11 +7,13 @@ BEGIN(Engine)
 class ENGINE_DLL CCamera abstract : public CGameObject, public ISerializable
 {
 public:
-	typedef struct tagCameraDesc
+	typedef struct tagCameraDesc : public tagCGameObjectDesc
 	{
+		tagCameraDesc() : tagCGameObjectDesc() {};
+
 		_float4 vEye, vAt, vUp;
 		_float	fFovy, fAspect, fNear, fFar;
-		CTransform::TRANSFORMDESC TransformDesc;
+		CTransform::CTRANSFORM_DESC TransformDesc;
 	}CAMERADESC;
 
 protected:

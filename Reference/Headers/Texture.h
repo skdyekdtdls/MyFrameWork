@@ -6,6 +6,11 @@ BEGIN(Engine)
 class CShader;
 class ENGINE_DLL CTexture final : public CComponent
 {
+	public:
+	typedef struct tagCTextureDesc : public tagComponentDesc
+	{
+		tagCTextureDesc() : tagComponentDesc() {};
+	}CTEXTURE_DESC;
 public:
 	CTexture(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CTexture(const CTexture& rhs);

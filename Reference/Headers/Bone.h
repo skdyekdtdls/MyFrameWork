@@ -37,6 +37,9 @@ public:
 	_float4 GetQuaternion();
 	_float3 GetTranslation();
 
+	_float GetTransformationMatrix_43() {
+		return m_TransformationMatrix._43;
+	}
 	void Set_OffsetMatrix(const _float4x4& OffsetMatrix) {
 		m_OffsetMatrix = OffsetMatrix;
 	}
@@ -52,7 +55,7 @@ public:
 	KEYFRAME Get_CurKeyFrameState() {
 		return m_tCurKeyFrameState;
 	}
-
+	void FixBone();
 public:
 	HRESULT Initialize(aiNode* pAINode, CBone* pParent, _uint iIndex);
 	void Invalidate_CombinedTransformationMatrix(const CModel::BONES& Bones);

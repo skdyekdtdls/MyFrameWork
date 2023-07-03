@@ -7,6 +7,11 @@ class CGameObject;
 class ENGINE_DLL CRenderer final : public CComponent
 {
 public:
+	typedef struct tagCRendererDesc : public tagComponentDesc
+	{
+		tagCRendererDesc() : tagComponentDesc() {};
+	}CRENDERER_DESC;
+public:
 	enum RENDERGROUP { RENDER_PRIORITY, RENDER_NONBLEND, RENDER_NONLIGHT, RENDER_BLEND, RENDER_UI, RENDER_END };
 private:
 	CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

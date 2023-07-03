@@ -29,12 +29,12 @@ HRESULT CCube::Initialize(void* pArg)
 	if (FAILED(Add_Components()))
 		return E_FAIL;
 
-	CLONE_DESC tCloneDesc;
+	CGAMEOBJECT_DESC tCloneDesc;
 	ZeroStruct(tCloneDesc);
 
 	if (nullptr != pArg)
 	{
-		tCloneDesc = *static_cast<CLONE_DESC*>(pArg);
+		tCloneDesc = *static_cast<CGAMEOBJECT_DESC*>(pArg);
 		
 		_vector		vPosition = XMVectorSet(0.f, 0.f, 0.f, 1.f);
 		vPosition += XMLoadFloat4(&tCloneDesc.vPosition);
@@ -85,17 +85,19 @@ HRESULT CCube::Render()
 
 HRESULT CCube::Add_Components()
 {
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom), E_FAIL);
+	CRenderer::CRENDERER_DESC tRendererDesc; tRendererDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom, &tRendererDesc), E_FAIL)
 
-	CTransform::TRANSFORMDESC TransformDesc{ 7.0, XMConvertToRadians(90.f) };
+	CTransform::CTRANSFORM_DESC TransformDesc{ 7.0, XMConvertToRadians(90.f) }; TransformDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_IMGUI, CVIBuffer_Cube::ProtoTag(), L"Com_VIBuffer_Cube", (CComponent**)&m_pVIBufferCom), E_FAIL);
-	//FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxAnimMesh", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxCol", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
-	//FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxMesh", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
-	//FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxNorTex", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
-	//FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_Vtxtex", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
+
+	CVIBuffer_Cube::CVIBUFFER_CUBE_DESC tVibufferCubeDesc; tVibufferCubeDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_IMGUI, CVIBuffer_Cube::ProtoTag(), L"Com_VIBuffer_Cube", (CComponent**)&m_pVIBufferCom, &tVibufferCubeDesc), E_FAIL);
+
+	CShader::CSHADER_DESC tShaderDesc; tShaderDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxCol", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
+
 
 	return S_OK;
 }

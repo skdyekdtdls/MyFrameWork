@@ -69,6 +69,8 @@ HRESULT CShader::Initialize_Prototype(const _tchar* pShaderFilePath
 
 HRESULT CShader::Initilize(void* pArg)
 {
+	__super::Initialize(pArg);
+
 	return S_OK;
 }
 

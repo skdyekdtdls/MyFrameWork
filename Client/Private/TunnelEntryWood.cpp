@@ -38,9 +38,9 @@ HRESULT TunnelEntryWood::Initialize(void* pArg)
 	m_tInfo.wstrKey = ProtoTag();
 	m_tInfo.ID = TunnelEntryWood_Id;
 
-	CLONE_DESC tCloneDesc;
+	CGAMEOBJECT_DESC tCloneDesc;
 	if (nullptr != pArg)
-		tCloneDesc = *(CLONE_DESC*)pArg;
+		tCloneDesc = *(CGAMEOBJECT_DESC*)pArg;
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
 
 	return S_OK;
@@ -109,16 +109,21 @@ HRESULT TunnelEntryWood::Add_Components()
 	LEVELID eLevelID = static_cast<LEVELID>(pGameInstance->Get_NextLevelIndex());
 
 	/* For.Com_Renderer */
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom), E_FAIL);
+	CRenderer::CRENDERER_DESC tRendererDesc; tRendererDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom, &tRendererDesc), E_FAIL);
 
 	// no texture now, you have to add texture later
 
-	CTransform::TRANSFORMDESC TransformDesc{ 7.0, XMConvertToRadians(90.f) };
+	CTransform::CTRANSFORM_DESC TransformDesc{ 7.0, XMConvertToRadians(90.f) }; TransformDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
-	 FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxMesh", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
-	 FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_TunnelEntryWood", L"Com_Model", (CComponent**)&m_pModelCom), E_FAIL);
-	// CNavigation::NAVIGATIONDESC tNavigationdesc;
+
+	CShader::CSHADER_DESC tShaderDesc; tShaderDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxMesh", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
+
+	CModel::CMODEL_DESC tModelDesc; tModelDesc.pOwner = this;
+	 FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_TunnelEntryWood", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+	// CNavigation::CNAVIGATION_DESC tNavigationdesc;
 	// tNavigationdesc.iCurrentIndex = { 0 };
 	// FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, CNavigation::ProtoTag(), L"Com_Navigation", (CComponent**)&m_pNavigationCom, &tNavigationdesc), E_FAIL);
 

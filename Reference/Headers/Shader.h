@@ -6,6 +6,11 @@ BEGIN(Engine)
 
 class ENGINE_DLL CShader final : public CComponent
 {
+	public:
+	typedef struct tagCShaderDesc : public tagComponentDesc
+	{
+		tagCShaderDesc() : tagComponentDesc() {};
+	}CSHADER_DESC;
 protected:
 	CShader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CShader(const CShader& rhs);

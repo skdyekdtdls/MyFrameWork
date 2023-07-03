@@ -145,6 +145,7 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNu
 
 HRESULT CTexture::Initialize(void* pArg)
 {
+	__super::Initialize(pArg);
 	return S_OK;
 }
 

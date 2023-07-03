@@ -13,15 +13,13 @@ CAnimation::CAnimation(const CAnimation& rhs)
 	, m_TickPerSecond(rhs.m_TickPerSecond)
 	, m_TimeAcc(rhs.m_TimeAcc)
 	, m_isFinished(rhs.m_isFinished)
-	, m_isLoop(rhs.m_isLoop)
+	, m_isLoop(false)
 {
 	strcpy_s(m_szName, rhs.m_szName);
 
 	for (auto& pChannel : m_Channels)
 		Safe_AddRef(pChannel);
 }
-
-
 
 CChannel* CAnimation::Get_ChannelByName(string strName)
 {

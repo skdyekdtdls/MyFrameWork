@@ -169,6 +169,9 @@
     <Filter Include="02. GameObject\BackGround\WheelBarrow">
       <UniqueIdentifier>{c4af4775-2249-4581-80e7-829907cd8442}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\Clint\ClintAnimState">
+      <UniqueIdentifier>{eed5c57d-67f0-4b6c-9e18-2c1fcf6604d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -342,6 +345,18 @@
     <ClInclude Include="..\public\WheelBarrow.h">
       <Filter>02. GameObject\BackGround\WheelBarrow</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ClintAnimState.h">
+      <Filter>02. GameObject\Clint\ClintAnimState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ClintAnimIdle.h">
+      <Filter>02. GameObject\Clint\ClintAnimState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ClintAnimRun.h">
+      <Filter>02. GameObject\Clint\ClintAnimState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ClintAnimDash.h">
+      <Filter>02. GameObject\Clint\ClintAnimState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -513,6 +528,18 @@
     </ClCompile>
     <ClCompile Include="..\private\WheelBarrow.cpp">
       <Filter>02. GameObject\BackGround\WheelBarrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ClintAnimState.cpp">
+      <Filter>02. GameObject\Clint\ClintAnimState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ClintAnimIdle.cpp">
+      <Filter>02. GameObject\Clint\ClintAnimState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ClintAnimRun.cpp">
+      <Filter>02. GameObject\Clint\ClintAnimState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ClintAnimDash.cpp">
+      <Filter>02. GameObject\Clint\ClintAnimState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

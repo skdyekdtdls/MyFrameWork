@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Animation.h" />
+    <ClInclude Include="..\public\AnimState.h" />
     <ClInclude Include="..\Public\Assimp_Struct.h" />
     <ClInclude Include="..\Public\Base.h" />
     <ClInclude Include="..\public\Bone.h" />
@@ -67,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Animation.cpp" />
+    <ClCompile Include="..\private\AnimState.cpp" />
     <ClCompile Include="..\Private\Assimp_Struct.cpp" />
     <ClCompile Include="..\Private\Base.cpp" />
     <ClCompile Include="..\private\Bone.cpp" />

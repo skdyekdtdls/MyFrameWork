@@ -57,13 +57,12 @@ private:
 	_double						m_TimeAcc = { 0.0 };
 
 	_bool						m_isFinished = { false };
-	_bool						m_isLoop = { false };
+	_bool						m_isLoop;
 
 public:
 	static CAnimation* Create(const aiAnimation* pAIAnimation, const CModel::BONES& Bones);
 	CAnimation* Clone();
 	virtual void Free();
-
 };
 
 END

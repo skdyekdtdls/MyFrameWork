@@ -18,13 +18,19 @@ END
 BEGIN(Client)
 class Clint final : public CGameObject, public ISerializable
 {
+public:
+	typedef struct tagClintDesc : public tagCGameObjectDesc
+	{
+		tagClintDesc() : tagCGameObjectDesc() {}
+	}CLINT_DESC;
+
 private:
 	Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	Clint(const Clint& rhs);
 	virtual ~Clint() = default;
 
 public:
-	void Set_AnimState(CLINT_ANIM eAnimState);
+	void Set_ClintAnimState(CLINT_ANIM eClintAnim);
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -51,17 +57,11 @@ private: /* For. Component */
 	// Can declare VIBuffer or Model Com
 
 private:
-	CLINT_ANIM m_eCurState = { CLINT_ANIM::IDLE };
-	CLINT_ANIM m_ePreState;
-
+	vector<class ClintAnimState*> m_pClintAnimStates;
+	CLINT_ANIM	m_eClintAnimState = { CLINT_ANIM::IDLE };
+	
 private:
 	static _uint Clint_Id;
-
-private:
-	void Shoot_FSM(_double TimeDelta);
-	void Run_FSM(_double TimeDelta);
-	void Idle_FSM(_double TimeDelta);
-	void Dash_FSM(_double TimeDelta);
 
 private:
 	HRESULT Add_Components();

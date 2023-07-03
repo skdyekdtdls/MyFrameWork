@@ -97,6 +97,7 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype()
 
 HRESULT CVIBuffer_Cube::Initialize(void* pArg)
 {
+	__super::Initialize(pArg);
 	return S_OK;
 }
 

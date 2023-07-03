@@ -6,6 +6,11 @@ BEGIN(Engine)
 
 class ENGINE_DLL CVIBuffer_Cube final :	public CVIBuffer
 {
+public:
+	typedef struct tagCVIBuffer_CubeDesc : public tagCVIBufferDesc
+	{
+		tagCVIBuffer_CubeDesc() : tagCVIBufferDesc() {};
+	}CVIBUFFER_CUBE_DESC;
 private:
 	explicit CVIBuffer_Cube(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	explicit CVIBuffer_Cube(const CVIBuffer_Cube& rhs);

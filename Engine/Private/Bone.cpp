@@ -62,6 +62,11 @@ _float3 CBone::GetTranslation()
 		, m_TransformationMatrix._43);
 }
 
+void CBone::FixBone()
+{
+	m_TransformationMatrix._43 = 0.f;
+}
+
 HRESULT CBone::Initialize(aiNode* pAINode, CBone* pParent, _uint iIndex)
 {
 	strcpy_s(m_szName, pAINode->mName.data);

@@ -6,6 +6,11 @@ BEGIN(Engine)
 
 class ENGINE_DLL CVIBuffer abstract : public CComponent
 {
+public:
+	typedef struct tagCVIBufferDesc : public tagComponentDesc
+	{
+		tagCVIBufferDesc() : tagComponentDesc() {};
+	}CVIBUFFER_DESC;
 protected:
 	CVIBuffer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CVIBuffer(const CVIBuffer& rhs);

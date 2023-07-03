@@ -6,10 +6,11 @@ BEGIN(Engine)
 
 class ENGINE_DLL CColliderSphere final : public CCollider
 {
-	public:
-	typedef struct tagColliderSphereDesc : public tagColliderDesc {
+public:
+	typedef struct tagColliderSphereDesc : public tagCColliderDesc {
+		tagColliderSphereDesc() : tagCColliderDesc(), fRadius(1.f) {};
 		_float fRadius;
-	}COLLIDER_SPHERE_DESC;
+	}CCOLLIDER_SPHERE_DESC;
 private:
 	explicit CColliderSphere(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);
 	explicit CColliderSphere(const CColliderSphere& rhs);

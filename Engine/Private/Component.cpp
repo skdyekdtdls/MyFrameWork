@@ -25,7 +25,8 @@ HRESULT CComponent::Initialize_Prototype(void)
 
 HRESULT CComponent::Initialize(void* pArg)
 {
-	m_pOwner = ((COMPONENT_DESC*)pArg)->pOwner;
+	if(nullptr != pArg)
+		m_pOwner = ((COMPONENT_DESC*)pArg)->pOwner;
 
 	return S_OK;
 }

@@ -68,7 +68,7 @@ HRESULT CNavigation::Initialize_Prototype(const _tchar* pNavigationDataFiles)
 HRESULT CNavigation::Initialize(void* pArg)
 {
 	if (nullptr != pArg)
-		memmove(&m_tNaviDesc, pArg, sizeof(NAVIGATIONDESC));
+		memmove(&m_tNaviDesc, pArg, sizeof(CNAVIGATION_DESC));
 	SetUp_Neighbors();
 	return S_OK;
 }

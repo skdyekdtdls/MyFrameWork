@@ -111,3 +111,15 @@ bool IsPointOnLineSegment(FXMVECTOR A, FXMVECTOR B, FXMVECTOR P)
 
 	return (dotABAP >= 0.f && dotABAP <= dotABAB && dotBAPB >= 0.f);
 }
+
+#ifdef _DEBUG
+static void CoutVector(_fvector vector)
+{
+	cout << vector.m128_f32[0] << "\t" << vector.m128_f32[1] << "\t" << vector.m128_f32[2] << endl;
+}
+
+static void CoutFloat3(_float3 vector)
+{
+	cout << vector.x << "\t" << vector.y << "\t" << vector.z << endl;
+}
+#endif

@@ -8,6 +8,11 @@ BEGIN(Engine)
 class CMesh final : public CVIBuffer
 {
 public:
+	typedef struct tagCMeshDesc : public tagCVIBufferDesc
+	{
+		tagCMeshDesc() : tagCVIBufferDesc() {};
+	}CMESH_DESC;
+public:
 	CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CMesh(const CMesh& rhs);
 

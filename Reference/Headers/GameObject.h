@@ -10,10 +10,11 @@ class CColliderSphere;
 class ENGINE_DLL CGameObject : public CComposite
 {
 public:
-	typedef struct tagCloneDesc
+	typedef struct tagCGameObjectDesc : public tagCCompositeDesc
 	{
-		_float4 vPosition = { 0.f, 0.f, 0.f, 1.f };
-	}CLONE_DESC;
+		tagCGameObjectDesc() : tagCCompositeDesc(), vPosition(_float4(0.f, 0.f, 0.f, 1.f)){};
+		_float4 vPosition;
+	}CGAMEOBJECT_DESC;
 protected:
 	CGameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CGameObject(const CGameObject& rhs);
