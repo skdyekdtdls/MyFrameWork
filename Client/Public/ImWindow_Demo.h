@@ -6,12 +6,6 @@ BEGIN(Client)
 class CImWindow_Demo final : public CImWindow
 {
 public:
-    typedef struct Desc : public CImWindow::Desc
-    {
-        int b;
-    };
-
-public:
     _float4 clear_color = { 0.45f, 0.55f, 0.60f, 1.00f };
 
 protected:

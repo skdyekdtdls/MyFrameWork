@@ -13,9 +13,11 @@ class ENGINE_DLL CCollider abstract : public CComponent
 public:
 	enum TYPE { TYPE_SPHERE, TYPE_AABB, TYPE_OBB, TYPE_END };
 
-	typedef struct tagColliderDesc {
+	typedef struct tagCColliderDesc : public tagComponentDesc
+	{
+		tagCColliderDesc() : tagComponentDesc(), vCenter(_float3()) {};
 		_float3 vCenter;
-	}COLLIDER_DESC;
+	}CCOLLIDER_DESC;
 
 protected:
 	explicit CCollider(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);

@@ -5,6 +5,11 @@ BEGIN(Engine)
 
 class ENGINE_DLL CVIBuffer_Cell final : public CVIBuffer
 {
+public:
+	typedef struct tagCVIBuffer_CellDesc : public tagCVIBufferDesc
+	{
+		tagCVIBuffer_CellDesc() : tagCVIBufferDesc() {};
+	}CVIBUFFER_CELL_DESC;
 private:
 	explicit CVIBuffer_Cell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	explicit CVIBuffer_Cell(const CVIBuffer_Cell& rhs);

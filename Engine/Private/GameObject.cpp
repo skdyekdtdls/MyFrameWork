@@ -26,7 +26,7 @@ HRESULT CGameObject::Initialize(void* pArg)
 	FAILED_CHECK_RETURN(__super::Initialize(pArg), E_FAIL);
 
 #ifdef _DEBUG
-	CColliderSphere::COLLIDER_SPHERE_DESC tColliderSphereDesc;
+	CColliderSphere::CCOLLIDER_SPHERE_DESC tColliderSphereDesc;
 	tColliderSphereDesc.fRadius = { 0.5f };
 	tColliderSphereDesc.vCenter = { _float3(0.f, tColliderSphereDesc.fRadius * 1.f, 0.f) };
 	FAILED_CHECK_RETURN(__super::Add_Component(1, CColliderSphere::ProtoTag()

@@ -33,6 +33,7 @@ using namespace DirectX;
 #include <map>
 #include <algorithm>
 #include <filesystem>
+#include <queue>
 #include "Engine_Typedef.h"
 using namespace Engine;
 namespace fs = std::filesystem;
@@ -49,6 +50,8 @@ END
 #include "DirectXTK/DDSTextureLoader.h"
 #include "DirectXTK/WICTextureLoader.h"
 #include "Assimp_Struct.h"
+
+enum BODY { UPPER, LOWER, BODY_END };
 
 #ifdef _DEBUG
 

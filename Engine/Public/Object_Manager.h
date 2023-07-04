@@ -39,7 +39,7 @@ public:
 	void Tick(_double TimeDelta);
 	void Late_Tick(_double TimeDelta);
 	CLayer* Find_LayerByName(_uint iLevelIndex, const _tchar* pLayerTag);
-
+	class CGameObject* Clone_GameObject(const _tchar* pPrototypeTag, void* pArg);
 private:
 	unordered_map<const _tchar*, CGameObject*> m_Prototypes;
 

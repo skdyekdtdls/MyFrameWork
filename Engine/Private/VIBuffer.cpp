@@ -23,6 +23,28 @@ CVIBuffer::CVIBuffer(const CVIBuffer& rhs)
 	Safe_AddRef(m_pIB);
 }
 
+void CVIBuffer::SaveAssimp(HANDLE hFile, DWORD& dwByte)
+{
+	WriteVoid(&m_iStride, sizeof(_uint));
+	WriteVoid(&m_iNumVertices, sizeof(_uint));
+	WriteVoid(&m_iNumIndices, sizeof(_uint));
+	WriteVoid(&m_iIndexStride, sizeof(_uint));
+	WriteVoid(&m_eFormat, sizeof(DXGI_FORMAT));
+	WriteVoid(&m_iNumVertexBuffers, sizeof(_uint));
+	WriteVoid(&m_eTopology, sizeof(D3D11_PRIMITIVE_TOPOLOGY));
+}
+
+void CVIBuffer::LoadAssimp(HANDLE hFile, DWORD& dwByte)
+{
+	ReadVoid(&m_iStride, sizeof(_uint));
+	ReadVoid(&m_iNumVertices, sizeof(_uint));
+	ReadVoid(&m_iNumIndices, sizeof(_uint));
+	ReadVoid(&m_iIndexStride, sizeof(_uint));
+	ReadVoid(&m_eFormat, sizeof(DXGI_FORMAT));
+	ReadVoid(&m_iNumVertexBuffers, sizeof(_uint));
+	ReadVoid(&m_eTopology, sizeof(D3D11_PRIMITIVE_TOPOLOGY));
+}
+
 HRESULT CVIBuffer::Initialize_Prototype()
 {
 	return S_OK;
@@ -30,6 +52,7 @@ HRESULT CVIBuffer::Initialize_Prototype()
 
 HRESULT CVIBuffer::Initialize(void* pArg)
 {
+	__super::Initialize(pArg);
 	return S_OK;
 }
 

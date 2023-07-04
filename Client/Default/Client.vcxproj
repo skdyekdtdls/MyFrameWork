@@ -184,8 +184,19 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\public\BackGround.h" />
+    <ClInclude Include="..\public\BarrelBoxStool.h" />
+    <ClInclude Include="..\public\Bush01.h" />
+    <ClInclude Include="..\public\BushA.h" />
+    <ClInclude Include="..\public\BushB.h" />
+    <ClInclude Include="..\public\BushC.h" />
+    <ClInclude Include="..\public\Cage.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\public\Clint.h" />
+    <ClInclude Include="..\Public\ClintAnimDash.h" />
+    <ClInclude Include="..\public\ClintAnimIdle.h" />
+    <ClInclude Include="..\public\ClintAnimRun.h" />
+    <ClInclude Include="..\public\ClintAnimState.h" />
+    <ClInclude Include="..\Public\ClintModel.h" />
     <ClInclude Include="..\Public\ImGuiFileDialog.h" />
     <ClInclude Include="..\Public\ImGuiFileDialogConfig.h" />
     <ClInclude Include="..\public\ImWindow_AnimationTool.h" />
@@ -222,6 +233,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\ImWindow_UITool.h" />
+    <ClInclude Include="..\public\KemmekhBridgeA.h" />
+    <ClInclude Include="..\public\KemmekhBridgeD.h" />
+    <ClInclude Include="..\public\KemmekhBridgeF.h" />
     <ClInclude Include="..\public\Level_GamePlay.h" />
     <ClInclude Include="..\public\Level_Imgui.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -232,7 +246,16 @@
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\public\Fiona.h" />
     <ClInclude Include="..\public\ForkLift.h" />
+    <ClInclude Include="..\public\RailSupportA.h" />
+    <ClInclude Include="..\public\RailSupportB.h" />
+    <ClInclude Include="..\public\Rock.h" />
+    <ClInclude Include="..\public\SmallRockC.h" />
     <ClInclude Include="..\public\Terrain.h" />
+    <ClInclude Include="..\public\Tong.h" />
+    <ClInclude Include="..\public\TunnelEntryWood.h" />
+    <ClInclude Include="..\public\Wagon2.h" />
+    <ClInclude Include="..\public\WatchTowerLadder.h" />
+    <ClInclude Include="..\public\WheelBarrow.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
@@ -281,11 +304,22 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\private\BarrelBoxStool.cpp" />
+    <ClCompile Include="..\Private\Bush01.cpp" />
+    <ClCompile Include="..\private\BushA.cpp" />
+    <ClCompile Include="..\Private\BushB.cpp" />
+    <ClCompile Include="..\Private\BushC.cpp" />
+    <ClCompile Include="..\private\Cage.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\private\Clint.cpp" />
+    <ClCompile Include="..\Private\ClintAnimDash.cpp" />
+    <ClCompile Include="..\private\ClintAnimIdle.cpp" />
+    <ClCompile Include="..\private\ClintAnimRun.cpp" />
+    <ClCompile Include="..\private\ClintAnimState.cpp" />
+    <ClCompile Include="..\private\ClintModel.cpp" />
     <ClCompile Include="..\Private\ImGuiFileDialog.cpp" />
     <ClCompile Include="..\private\ImWindow_AnimationTool.cpp" />
     <ClCompile Include="..\Private\ImWindow_LightTool.cpp" />
@@ -321,6 +355,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\ImWindow_UITool.cpp" />
+    <ClCompile Include="..\private\KemmekhBridgeA.cpp" />
+    <ClCompile Include="..\Private\KemmekhBridgeD.cpp" />
+    <ClCompile Include="..\private\KemmekhBridgeF.cpp" />
     <ClCompile Include="..\private\Level_GamePlay.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
@@ -346,10 +383,19 @@
     </ClCompile>
     <ClCompile Include="..\private\Fiona.cpp" />
     <ClCompile Include="..\private\ForkLift.cpp" />
+    <ClCompile Include="..\private\RailSupportA.cpp" />
+    <ClCompile Include="..\private\RailSupportB.cpp" />
+    <ClCompile Include="..\private\Rock.cpp" />
+    <ClCompile Include="..\private\SmallRockC.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\private\Tong.cpp" />
+    <ClCompile Include="..\private\TunnelEntryWood.cpp" />
+    <ClCompile Include="..\private\Wagon2.cpp" />
+    <ClCompile Include="..\private\WatchTowerLadder.cpp" />
+    <ClCompile Include="..\private\WheelBarrow.cpp" />
     <ClCompile Include="Client.cpp" />
   </ItemGroup>
   <ItemGroup>

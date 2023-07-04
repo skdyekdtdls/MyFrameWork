@@ -26,7 +26,7 @@ HRESULT CColliderSphere::Initialize_Prototype()
 HRESULT CColliderSphere::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-	COLLIDER_SPHERE_DESC tColliderSphereDesc = *(COLLIDER_SPHERE_DESC*)pArg;
+	CCOLLIDER_SPHERE_DESC tColliderSphereDesc = *(CCOLLIDER_SPHERE_DESC*)pArg;
 	m_pBoudingSphere_Origin->Radius = tColliderSphereDesc.fRadius;
 	m_pBoudingSphere_Origin->Center = tColliderSphereDesc.vCenter;
 

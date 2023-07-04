@@ -101,24 +101,27 @@ HRESULT CBackGround::SetUp_ShaderResources()
 HRESULT CBackGround::Add_Components()
 {
 	/* For.Com_Renderer */
+	CRenderer::CRENDERER_DESC tRendererDesc; tRendererDesc.pOwner = this;
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Renderer")
-		, TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom)))
+		, TEXT("Com_Renderer"), (CComponent**)&m_pRendererCom, &tRendererDesc)))
 	{
 		assert(false);
 		return E_FAIL;
 	}
 
 	/* For.Com_VIBuffer_Rect */
+	CVIBuffer_Rect::CVIBUFFER_RECT_DESC tVIBufferRectDesc; tVIBufferRectDesc.pOwner = this;
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect")
-		, TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom)))
+		, TEXT("Com_VIBuffer"), (CComponent**)&m_pVIBufferCom, &tVIBufferRectDesc)))
 	{
 		assert(false);
 		return E_FAIL;
 	}
 
 	/* For.Com_Shader */
+	CShader::CSHADER_DESC tShaderDesc; tShaderDesc.pOwner = this;
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Vtxtex")
-		, TEXT("Com_Shader"), (CComponent**)&m_pShaderCom)))
+		, TEXT("Com_Shader"), (CComponent**)&m_pShaderCom, &tShaderDesc)))
 	{
 		assert(false);
 		return E_FAIL;
@@ -126,14 +129,15 @@ HRESULT CBackGround::Add_Components()
 
 	/* For.Com_Shader */
 	if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_Logo")
-		, TEXT("Com_Texture"), (CComponent**)&m_pTextureCom)))
+		, TEXT("Com_Texture"), (CComponent**)&m_pTextureCom, &tShaderDesc)))
 	{
 		assert(false);
 		return E_FAIL;
 	}
 
+	CTransform::CTRANSFORM_DESC TransformDesc{}; TransformDesc.pOwner = this;
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform")
-		, TEXT("Com_Transform"), (CComponent**)&m_pTransformCom)))
+		, TEXT("Com_Transform"), (CComponent**)&m_pTransformCom, &TransformDesc)))
 	{
 		assert(false);
 		return E_FAIL;

@@ -179,21 +179,21 @@ void CEditCamera::Key_Input(_double TimeDelta)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	if (pGameInstance->Get_DIKeyState(DIK_W))
+	if (pGameInstance->Get_DIKeyState(DIK_UPARROW))
 	{
 		m_pTransform->Go_Straight(TimeDelta);
 	}
-	if (pGameInstance->Get_DIKeyState(DIK_S))
+	if (pGameInstance->Get_DIKeyState(DIK_DOWNARROW))
 	{
 		m_pTransform->Go_Backward(TimeDelta);
 	}
-	if (pGameInstance->Get_DIKeyState(DIK_A))
-	{
-		m_pTransform->Go_Left(TimeDelta);
-	}
-	if (pGameInstance->Get_DIKeyState(DIK_D))
+	if (pGameInstance->Get_DIKeyState(DIK_RIGHTARROW))
 	{
 		m_pTransform->Go_Right(TimeDelta);
+	}
+	if (pGameInstance->Get_DIKeyState(DIK_LEFTARROW))
+	{
+		m_pTransform->Go_Left(TimeDelta);
 	}
 	Safe_Release(pGameInstance);
 }

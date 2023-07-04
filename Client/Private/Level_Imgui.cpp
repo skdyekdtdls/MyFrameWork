@@ -77,6 +77,7 @@ void CLevel_Imgui::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
+
 	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, CTerrain::ProtoTag(), pLayerTag));
 	//NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, ForkLift::ProtoTag(), pLayerTag), E_FAIL);
 
@@ -121,7 +122,7 @@ void CLevel_Imgui::Ready_Layer_Player(const _tchar* pLayerTag)
 	Safe_AddRef(pGameInstance);
 
 	//NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Clint::ProtoTag(), pLayerTag));
-	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Fiona::ProtoTag(), pLayerTag));
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Clint::ProtoTag(), pLayerTag));
 
 	Safe_Release(pGameInstance);
 }

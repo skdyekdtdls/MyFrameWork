@@ -4,6 +4,7 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 #include "ISerializable.h"
+#include "ClintModel.h"
 BEGIN(Engine)
 
 class CShader;
@@ -18,10 +19,19 @@ END
 BEGIN(Client)
 class Clint final : public CGameObject, public ISerializable
 {
+public:
+	typedef struct tagClintDesc : public tagCGameObjectDesc
+	{
+		tagClintDesc() : tagCGameObjectDesc() {}
+	}CLINT_DESC;
+
 private:
 	Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	Clint(const Clint& rhs);
 	virtual ~Clint() = default;
+
+public:
+	void Set_ClintAnimState(CLINT_ANIM eClintAnim, BODY eBody);
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -38,7 +48,7 @@ private:
 	void KeyInput(_double& TimeDelta);
 
 private: /* For. Component */
-	CModel* m_pModelCom = { nullptr };
+	ClintModel* m_pModelCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };
@@ -48,11 +58,15 @@ private: /* For. Component */
 	// Can declare VIBuffer or Model Com
 
 private:
-	HRESULT Add_Components();
-	HRESULT SetUp_ShaderResources();
-
+	vector<class ClintAnimState*> m_pClintAnimStates;
+	CLINT_ANIM	m_eClintAnimState = { CLINT_ANIM::IDLE };
+	
 private:
 	static _uint Clint_Id;
+
+private:
+	HRESULT Add_Components();
+	HRESULT SetUp_ShaderResources();
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_GameObject_Clint"; }

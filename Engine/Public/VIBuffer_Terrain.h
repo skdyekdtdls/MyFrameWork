@@ -6,6 +6,11 @@ BEGIN(Engine)
 
 class ENGINE_DLL CVIBuffer_Terrain final : public CVIBuffer
 {
+public:
+	typedef struct tagCVIBuffer_TerrainDesc : public tagCVIBufferDesc
+	{
+		tagCVIBuffer_TerrainDesc() : tagCVIBufferDesc() {};
+	}CVIBUFFER_TERRAIN_DESC;
 protected:
 	CVIBuffer_Terrain(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);
 	CVIBuffer_Terrain(const CVIBuffer_Terrain& rhs);

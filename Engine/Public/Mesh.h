@@ -7,11 +7,24 @@ BEGIN(Engine)
 
 class CMesh final : public CVIBuffer
 {
-private:
+public:
+	typedef struct tagCMeshDesc : public tagCVIBufferDesc
+	{
+		tagCMeshDesc() : tagCVIBufferDesc() {};
+	}CMESH_DESC;
+public:
 	CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CMesh(const CMesh& rhs);
 
 	virtual ~CMesh() = default;
+
+public:
+	void SaveAssimp(HANDLE hFile, DWORD& dwByte);
+	void LoadAssimp(HANDLE hFile, DWORD& dwByte, CModel::TYPE eType, _fmatrix PivotMatrix);
+
+private:
+	void SaveBuffers(HANDLE hFile, DWORD& dwByte);
+	void LoadBuffers(HANDLE hFile, DWORD& dwByte, CModel::TYPE eType, _fmatrix PivotMatrix);
 
 public:
 	_uint Get_MaterialIndex() const {
@@ -21,7 +34,7 @@ public:
 	void Get_Matrices(CModel::BONES Bones, _float4x4* pMatrices, _fmatrix PivotMatrix);
 
 public:
-	virtual HRESULT Initialize_Prototype(CModel::TYPE eType, const CModel::BONES& Bones, const MESH* pAIMesh, _fmatrix PivotMatrix);
+	virtual HRESULT Initialize_Prototype(CModel::TYPE eType, const CModel::BONES& Bones, const aiMesh* pAIMesh, _fmatrix PivotMatrix);
 	virtual HRESULT Initialize(void* pArg) override;
 
 private:
@@ -33,11 +46,11 @@ private:
 	vector<_uint>	m_BoneIndices; /* ∏µ®ø° ∑ŒµÂ«ÿ≥ı¿∫ ¿¸√ºª¿¿« ¿Œµ¶Ω∫. */
 
 private:
-	HRESULT Ready_VertexBuffer_NonAnim(const MESH* pAIMesh, _fmatrix PivotMatrix);
-	HRESULT Ready_VertexBuffer_Anim(const MESH* pAIMesh, const CModel::BONES& Bones);
+	HRESULT Ready_VertexBuffer_NonAnim(const aiMesh* pAIMesh, _fmatrix PivotMatrix);
+	HRESULT Ready_VertexBuffer_Anim(const aiMesh* pAIMesh, const CModel::BONES& Bones);
 
 public:
-	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eType, const CModel::BONES& Bones, const MESH* pAIMesh, _fmatrix PivotMatrix);
+	static CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eType, const CModel::BONES& Bones, const aiMesh* pAIMesh, _fmatrix PivotMatrix);
 	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free() override;
 };

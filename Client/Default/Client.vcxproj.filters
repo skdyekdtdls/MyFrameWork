@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="99. Headers">
-      <UniqueIdentifier>{7f29dc09-5d22-4a8c-bee2-2ba4da6fc61d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="98. Default">
       <UniqueIdentifier>{0c761fa6-36a1-4a7e-a66d-4e81a516077b}</UniqueIdentifier>
     </Filter>
@@ -22,29 +19,11 @@
     <Filter Include="01. Levels\99. Loading">
       <UniqueIdentifier>{1f3ff082-3df7-46f2-bc3f-9a6cb80e1940}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject">
-      <UniqueIdentifier>{7123b0cd-05a0-4042-bebc-7400b94a1f9d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\BackGround">
-      <UniqueIdentifier>{39d68aa7-c375-4c3b-9af5-70e0105c19f7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="97. ShaderFiles">
       <UniqueIdentifier>{59bcbf77-ae23-4a98-baaf-a5f0a37c90cf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\Camera">
-      <UniqueIdentifier>{64cee68d-feb5-4a45-8151-ee2d424ba2a8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\Camera\FreeCam">
-      <UniqueIdentifier>{d4edb7f4-4e6b-4c65-9b50-5f0be53b33b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\Terrain">
-      <UniqueIdentifier>{f002b723-511b-4b3c-aa44-e8f6b37d7d74}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Levels\98. Imgui">
       <UniqueIdentifier>{5d901690-a3cb-4630-8cdd-08f930725d02}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\Cube">
-      <UniqueIdentifier>{3198cdde-d249-4ee9-93c5-d530941a16e0}</UniqueIdentifier>
     </Filter>
     <Filter Include="96. IMGUI">
       <UniqueIdentifier>{8b86e764-1f25-4760-b652-1c6d5fc58765}</UniqueIdentifier>
@@ -103,17 +82,98 @@
     <Filter Include="96. IMGUI\03. ImVertex\filedialog">
       <UniqueIdentifier>{fc32de84-a432-44ac-896b-95c2f43a5d98}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\Fiona">
-      <UniqueIdentifier>{8e4eb307-a883-48ed-85a0-e80d476bfd64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\ForkLift">
-      <UniqueIdentifier>{97037014-9efd-49a3-8612-7273ea3b7474}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. Loader">
       <UniqueIdentifier>{f09b8893-2231-43e6-a92f-76f4e9bd1408}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\Clint">
+    <Filter Include="03. Components">
+      <UniqueIdentifier>{17e5cbc8-cad0-4120-99cc-d700d1b9bf7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects">
+      <UniqueIdentifier>{7123b0cd-05a0-4042-bebc-7400b94a1f9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround">
+      <UniqueIdentifier>{39d68aa7-c375-4c3b-9af5-70e0105c19f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\BarrelBoxStool">
+      <UniqueIdentifier>{975a9f9b-8836-4688-b78a-925a88330c2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\Bush01">
+      <UniqueIdentifier>{709d5c7f-9436-4be2-971d-b58e7e5e2b54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\BushA">
+      <UniqueIdentifier>{90ae0ea8-abc6-4d62-8e36-846aea1fa827}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\BushB">
+      <UniqueIdentifier>{37461de6-c090-4b23-843b-5c760fe9f435}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\BushC">
+      <UniqueIdentifier>{53b8949d-12e0-429d-a266-887803461abd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\Cage">
+      <UniqueIdentifier>{8b8c160c-0a81-4563-8665-ce5dc6e3a84c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\KemmekhBridgeA">
+      <UniqueIdentifier>{3b934821-617e-4ccb-8e4c-a9f82a80ac6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\KemmekhBridgeD">
+      <UniqueIdentifier>{158a2609-7a4b-4346-86e7-ec1cc8b2c6e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\KemmekhBridgeF">
+      <UniqueIdentifier>{9eec2fac-daf6-4b4c-ae12-8d3ab37a2fb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\RailSupportA">
+      <UniqueIdentifier>{f7b5552c-e680-4b27-b32c-b4fcfd1959f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\RailSupportB">
+      <UniqueIdentifier>{79d0c0b8-ee77-4b2e-825a-34ea39287b7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\Rock">
+      <UniqueIdentifier>{b107f6cd-92a3-49a3-8fbb-b535ced4cb8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SmallRockC">
+      <UniqueIdentifier>{1a7bf9eb-90fd-428c-baa5-61ae275093ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\Tong">
+      <UniqueIdentifier>{1db48a53-a916-4621-b1ae-fde20949e58b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\TunnelEntryWood">
+      <UniqueIdentifier>{a676f80a-4b09-4a35-b4af-fb31eeabdd0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\Wagon2">
+      <UniqueIdentifier>{b3a2ad9d-c64c-4b20-8b1d-b3e7ac39ecf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\WatchTowerLadder">
+      <UniqueIdentifier>{6f72d91d-06fd-454a-90de-3f8f9378a467}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\WheelBarrow">
+      <UniqueIdentifier>{c4af4775-2249-4581-80e7-829907cd8442}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Camera">
+      <UniqueIdentifier>{64cee68d-feb5-4a45-8151-ee2d424ba2a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Camera\FreeCam">
+      <UniqueIdentifier>{d4edb7f4-4e6b-4c65-9b50-5f0be53b33b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Terrain">
+      <UniqueIdentifier>{f002b723-511b-4b3c-aa44-e8f6b37d7d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Cube">
+      <UniqueIdentifier>{3198cdde-d249-4ee9-93c5-d530941a16e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Fiona">
+      <UniqueIdentifier>{8e4eb307-a883-48ed-85a0-e80d476bfd64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\ForkLift">
+      <UniqueIdentifier>{97037014-9efd-49a3-8612-7273ea3b7474}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Clint">
       <UniqueIdentifier>{f9294993-46ce-4f52-b991-34107ab7ea3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Clint\ClintAnimState">
+      <UniqueIdentifier>{eed5c57d-67f0-4b6c-9e18-2c1fcf6604d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Headers">
+      <UniqueIdentifier>{7f29dc09-5d22-4a8c-bee2-2ba4da6fc61d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -148,13 +208,13 @@
       <Filter>00. Loader</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BackGround.h">
-      <Filter>02. GameObject\BackGround</Filter>
+      <Filter>02. GameObjects\BackGround</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera_Free.h">
-      <Filter>02. GameObject\Camera\FreeCam</Filter>
+      <Filter>02. GameObjects\Camera\FreeCam</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Terrain.h">
-      <Filter>02. GameObject\Terrain</Filter>
+      <Filter>02. GameObjects\Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\IMGUI\imconfig.h">
       <Filter>96. IMGUI\99. imgui</Filter>
@@ -184,16 +244,16 @@
       <Filter>96. IMGUI\00. Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Cube.h">
-      <Filter>02. GameObject\Cube</Filter>
+      <Filter>02. GameObjects\Cube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\EditCamera.h">
       <Filter>96. IMGUI\02. EditCamera</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ForkLift.h">
-      <Filter>02. GameObject\ForkLift</Filter>
+      <Filter>02. GameObjects\ForkLift</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Fiona.h">
-      <Filter>02. GameObject\Fiona</Filter>
+      <Filter>02. GameObjects\Fiona</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImMode.h">
       <Filter>96. IMGUI\01. ImWindow\98. ImMode</Filter>
@@ -232,7 +292,76 @@
       <Filter>96. IMGUI\03. ImVertex\filedialog</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Clint.h">
-      <Filter>02. GameObject\Clint</Filter>
+      <Filter>02. GameObjects\Clint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BarrelBoxStool.h">
+      <Filter>02. GameObjects\BackGround\BarrelBoxStool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Bush01.h">
+      <Filter>02. GameObjects\BackGround\Bush01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BushA.h">
+      <Filter>02. GameObjects\BackGround\BushA</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BushB.h">
+      <Filter>02. GameObjects\BackGround\BushB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BushC.h">
+      <Filter>02. GameObjects\BackGround\BushC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\KemmekhBridgeA.h">
+      <Filter>02. GameObjects\BackGround\KemmekhBridgeA</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Cage.h">
+      <Filter>02. GameObjects\BackGround\Cage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\KemmekhBridgeD.h">
+      <Filter>02. GameObjects\BackGround\KemmekhBridgeD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\KemmekhBridgeF.h">
+      <Filter>02. GameObjects\BackGround\KemmekhBridgeF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RailSupportA.h">
+      <Filter>02. GameObjects\BackGround\RailSupportA</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RailSupportB.h">
+      <Filter>02. GameObjects\BackGround\RailSupportB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Rock.h">
+      <Filter>02. GameObjects\BackGround\Rock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SmallRockC.h">
+      <Filter>02. GameObjects\BackGround\SmallRockC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tong.h">
+      <Filter>02. GameObjects\BackGround\Tong</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TunnelEntryWood.h">
+      <Filter>02. GameObjects\BackGround\TunnelEntryWood</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Wagon2.h">
+      <Filter>02. GameObjects\BackGround\Wagon2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\WatchTowerLadder.h">
+      <Filter>02. GameObjects\BackGround\WatchTowerLadder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\WheelBarrow.h">
+      <Filter>02. GameObjects\BackGround\WheelBarrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ClintAnimState.h">
+      <Filter>02. GameObjects\Clint\ClintAnimState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ClintAnimIdle.h">
+      <Filter>02. GameObjects\Clint\ClintAnimState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ClintAnimRun.h">
+      <Filter>02. GameObjects\Clint\ClintAnimState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ClintAnimDash.h">
+      <Filter>02. GameObjects\Clint\ClintAnimState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ClintModel.h">
+      <Filter>03. Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -263,13 +392,13 @@
       <Filter>00. Loader</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BackGround.cpp">
-      <Filter>02. GameObject\BackGround</Filter>
+      <Filter>02. GameObjects\BackGround</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_Free.cpp">
-      <Filter>02. GameObject\Camera\FreeCam</Filter>
+      <Filter>02. GameObjects\Camera\FreeCam</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Terrain.cpp">
-      <Filter>02. GameObject\Terrain</Filter>
+      <Filter>02. GameObjects\Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\IMGUI\imgui.cpp">
       <Filter>96. IMGUI\99. imgui</Filter>
@@ -305,16 +434,16 @@
       <Filter>96. IMGUI\00. Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Cube.cpp">
-      <Filter>02. GameObject\Cube</Filter>
+      <Filter>02. GameObjects\Cube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\EditCamera.cpp">
       <Filter>96. IMGUI\02. EditCamera</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ForkLift.cpp">
-      <Filter>02. GameObject\ForkLift</Filter>
+      <Filter>02. GameObjects\ForkLift</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Fiona.cpp">
-      <Filter>02. GameObject\Fiona</Filter>
+      <Filter>02. GameObjects\Fiona</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImMode.cpp">
       <Filter>96. IMGUI\01. ImWindow\98. ImMode</Filter>
@@ -350,7 +479,76 @@
       <Filter>96. IMGUI\03. ImVertex\filedialog</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Clint.cpp">
-      <Filter>02. GameObject\Clint</Filter>
+      <Filter>02. GameObjects\Clint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BarrelBoxStool.cpp">
+      <Filter>02. GameObjects\BackGround\BarrelBoxStool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BushA.cpp">
+      <Filter>02. GameObjects\BackGround\BushA</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bush01.cpp">
+      <Filter>02. GameObjects\BackGround\Bush01</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BushB.cpp">
+      <Filter>02. GameObjects\BackGround\BushB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BushC.cpp">
+      <Filter>02. GameObjects\BackGround\BushC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\KemmekhBridgeA.cpp">
+      <Filter>02. GameObjects\BackGround\KemmekhBridgeA</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Cage.cpp">
+      <Filter>02. GameObjects\BackGround\Cage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\KemmekhBridgeD.cpp">
+      <Filter>02. GameObjects\BackGround\KemmekhBridgeD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\KemmekhBridgeF.cpp">
+      <Filter>02. GameObjects\BackGround\KemmekhBridgeF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RailSupportA.cpp">
+      <Filter>02. GameObjects\BackGround\RailSupportA</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RailSupportB.cpp">
+      <Filter>02. GameObjects\BackGround\RailSupportB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Rock.cpp">
+      <Filter>02. GameObjects\BackGround\Rock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SmallRockC.cpp">
+      <Filter>02. GameObjects\BackGround\SmallRockC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tong.cpp">
+      <Filter>02. GameObjects\BackGround\Tong</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TunnelEntryWood.cpp">
+      <Filter>02. GameObjects\BackGround\TunnelEntryWood</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Wagon2.cpp">
+      <Filter>02. GameObjects\BackGround\Wagon2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\WatchTowerLadder.cpp">
+      <Filter>02. GameObjects\BackGround\WatchTowerLadder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\WheelBarrow.cpp">
+      <Filter>02. GameObjects\BackGround\WheelBarrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ClintAnimState.cpp">
+      <Filter>02. GameObjects\Clint\ClintAnimState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ClintAnimIdle.cpp">
+      <Filter>02. GameObjects\Clint\ClintAnimState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ClintAnimRun.cpp">
+      <Filter>02. GameObjects\Clint\ClintAnimState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ClintAnimDash.cpp">
+      <Filter>02. GameObjects\Clint\ClintAnimState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ClintModel.cpp">
+      <Filter>03. Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

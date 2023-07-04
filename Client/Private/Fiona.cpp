@@ -37,14 +37,14 @@ HRESULT Fiona::Initialize(void* pArg)
 	m_tInfo.wstrKey = ProtoTag();
 	m_tInfo.ID = Fiona_Id;
 
-	CLONE_DESC tCloneDesc;
+	CGAMEOBJECT_DESC tCloneDesc;
 	ZeroStruct(tCloneDesc);
 	tCloneDesc.vPosition = _float4(0.f, 0.f, 0.f, 1.f);
 	if (nullptr != pArg)
-		tCloneDesc = *(CLONE_DESC*)pArg;
+		tCloneDesc = *(CGAMEOBJECT_DESC*)pArg;
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
 	
-	m_pModelCom->Set_AnimIndex(rand() % 10);
+	m_pModelCom->Set_AnimByIndex(rand() % 10);
 
 	return S_OK;
 }
@@ -119,16 +119,23 @@ HRESULT Fiona::Add_Components()
 	LEVELID eLevelID = static_cast<LEVELID>(pGameInstance->Get_NextLevelIndex());
 
 	/* For.Com_Renderer */
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom), E_FAIL);
+	CRenderer::CRENDERER_DESC tRendererDesc; tRendererDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom, &tRendererDesc), E_FAIL);
+
 
 	// no texture now, you have to add texture later
 
-	CTransform::TRANSFORMDESC TransformDesc{ 7.0, XMConvertToRadians(90.f) };
+	CTransform::CTRANSFORM_DESC TransformDesc{ 7.0, XMConvertToRadians(90.f) }; TransformDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxAnimMesh", L"Com_Shader", (CComponent**)&m_pShaderCom), E_FAIL);
-	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Fiona", L"Com_Model", (CComponent**)&m_pModelCom), E_FAIL);
-	CNavigation::NAVIGATIONDESC tNavigationdesc;
+
+	CShader::CSHADER_DESC tShaderDesc; tShaderDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxAnimMesh", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
+
+	CModel::CMODEL_DESC tModelDesc; tModelDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Fiona", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+
+	CNavigation::CNAVIGATION_DESC tNavigationdesc; tNavigationdesc.pOwner = this;
 	tNavigationdesc.iCurrentIndex = { 0 };
 	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, CNavigation::ProtoTag(), L"Com_Navigation", (CComponent**)&m_pNavigationCom, &tNavigationdesc), E_FAIL);
 

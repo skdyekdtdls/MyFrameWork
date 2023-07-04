@@ -1,7 +1,7 @@
 #include "..\Public\Transform.h"
 #include "Navigation.h"
-
-
+#include "GameObject.h"
+#include "Model.h"
 
 CTransform::CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComponent(pDevice, pContext)
@@ -13,6 +13,7 @@ CTransform::CTransform(const CTransform& rhs)
 	: CComponent(rhs)
 	, m_TransformDesc(rhs.m_TransformDesc)
 	, m_WorldMatrix(rhs.m_WorldMatrix)
+	, m_PrevWorldMatrix(rhs.m_PrevWorldMatrix)
 {
 }
 
@@ -79,6 +80,7 @@ void CTransform::Set_State(STATE _eState, _fvector _vState)
 
 	XMStoreFloat4(&vState, _vState);
 
+	memcpy(&m_PrevWorldMatrix.m[_eState][0], &m_WorldMatrix.m[_eState][0], sizeof vState);
 	memcpy(&m_WorldMatrix.m[_eState][0], &vState, sizeof vState);
 }
 
@@ -91,11 +93,15 @@ HRESULT CTransform::Initialize_Prototype()
 
 HRESULT CTransform::Initialize(void* pArg)
 {
+	__super::Initialize(pArg);
+
 	if (nullptr != pArg)
 		memmove(&m_TransformDesc, pArg, sizeof m_TransformDesc);
 
 	return S_OK;
 }
+
+
 
 void CTransform::Go_Straight(_double TimeDelta, CNavigation* pNavigation)
 {
@@ -107,7 +113,7 @@ void CTransform::Go_Straight(_double TimeDelta, CNavigation* pNavigation)
 	_bool		isMove = true; // 기본적으로 플레이어는 이동 상태로 가정합니다.
 
 	if (pNavigation != nullptr)
-	{	
+	{
 		if (true == (isMove = pNavigation->is_Move(vNextPosition))) // NonSliding
 		{
 			vPosition = vNextPosition; // 위치를 업데이트합니다.
@@ -122,10 +128,10 @@ void CTransform::Go_Straight(_double TimeDelta, CNavigation* pNavigation)
 				_float3 vContactNormal = pNavigation->ContactNormal(); // 충돌 법선을 가져옵니다.
 				_vector vSlidingVector = pNavigation->GetSlidingVector(vDir, XMLoadFloat3(&vContactNormal));
 				vNextPosition += vSlidingVector * m_TransformDesc.SpeedPerSec * TimeDelta;
-				
+
 				isMove = pNavigation->is_Move(vNextPosition);
 			}
-			
+
 			vPosition = vNextPosition; // 위치를 업데이트합니다.
 		}
 	}
@@ -187,6 +193,54 @@ void CTransform::Go_Right(_double TimeDelta, CNavigation* pNavigation)
 
 	if (true == isMove)
 		Set_State(STATE_POSITION, vPosition);
+}
+
+void CTransform::Go_Direction(_double TimeDelta, DIRECTION eDir, _float fLength)
+{
+	m_eCurDirection = eDir;
+	CNavigation* pNavigation = dynamic_cast<CNavigation*>(m_pOwner->Get_Component(L"Com_Navigation"));
+	_vector		vPosition = Get_State(STATE_POSITION);
+	_vector		vNextPosition = vPosition;
+	_vector		vDir = DirectionVector(eDir) * fLength * TimeDelta;
+	_bool		isMove = true; // 기본적으로 플레이어는 이동 상태로 가정합니다.
+
+	vNextPosition += vDir;
+	if (pNavigation != nullptr)
+	{
+		if (true == (isMove = pNavigation->is_Move(vNextPosition))) // NonSliding
+		{
+			vPosition = vNextPosition; // 위치를 업데이트합니다.
+			//vPosition -= XMVector3Normalize(XMLoadFloat3(&vContactNormal)) * 0.13f; // 벽에 갇히지 않게 밀어냄
+		}
+		else
+		{
+			while (false == isMove)
+			{
+				vNextPosition = vPosition;
+				vDir *= 0.6f;
+				_float3 vContactNormal = pNavigation->ContactNormal(); // 충돌 법선을 가져옵니다.
+				_vector vSlidingVector = pNavigation->GetSlidingVector(vDir, XMLoadFloat3(&vContactNormal));
+				vNextPosition += vSlidingVector * m_TransformDesc.SpeedPerSec * TimeDelta;
+
+				isMove = pNavigation->is_Move(vNextPosition);
+			}
+
+			vPosition = vNextPosition; // 위치를 업데이트합니다.
+		}
+	}
+	else
+		vPosition = vNextPosition;
+
+	// 이동 가능한 상태라면, 새로 계산한 위치를 설정합니다.
+	if (true == isMove)
+	{
+		Set_State(STATE_POSITION, vPosition);
+	}
+}
+
+void CTransform::Go_Direction(_double TimeDelta, DIRECTION eDir)
+{
+	Go_Direction(TimeDelta, eDir, m_TransformDesc.SpeedPerSec);
 }
 
 void CTransform::Chase(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance)
@@ -262,6 +316,17 @@ void CTransform::Turn(_fvector vAxis, _double TimeDelta)
 	Set_State(STATE_LOOK, XMVector3TransformNormal(vLook, RotationMatrix));
 }
 
+void CTransform::Turn(_fvector vAxis, _fvector vTargetVector, _double TimeDelta)
+{
+	_vector		vLook = Get_State(STATE_LOOK);
+
+	// 둘 사이의 각도를 구면보간
+	//_vector newDirection = XMQuaternionSlerp(, vTargetVector, TimeDelta);
+
+	// 생성된 방향벡터로 LookAt함수 이용해서 그 방향을 바라보게함.
+	//LookAt(newDirection);
+}
+
 void CTransform::Scaled(const _float3& vScale)
 {
 	Set_State(STATE_RIGHT,
@@ -270,6 +335,39 @@ void CTransform::Scaled(const _float3& vScale)
 		XMVector3Normalize(Get_State(STATE_UP)) * vScale.y);
 	Set_State(STATE_LOOK,
 		XMVector3Normalize(Get_State(STATE_LOOK)) * vScale.z);
+
+}
+
+_float3 CTransform::DeltaPosition()
+{
+	return _float3(m_WorldMatrix.m[STATE_POSITION][0] - m_PrevWorldMatrix.m[STATE_POSITION][0]
+	, m_WorldMatrix.m[STATE_POSITION][1] - m_PrevWorldMatrix.m[STATE_POSITION][1]
+	, m_WorldMatrix.m[STATE_POSITION][2] - m_PrevWorldMatrix.m[STATE_POSITION][2]);
+}
+
+_vector CTransform::DirectionVector(DIRECTION eDir)
+{
+	switch (eDir)
+	{
+	case DIR_N:
+		return XMVectorSet(0.f, 0.f, 1.f, 0.f);
+	case DIR_NE:
+		return XMVector3Normalize(XMVectorSet(1.f, 0.f, 1.f, 0.f));
+	case DIR_E:
+		return XMVectorSet(1.f, 0.f, 0.f, 0.f);
+	case DIR_SE:
+		return XMVector3Normalize(XMVectorSet(1.f, 0.f, -1.f, 0.f));
+	case DIR_S:
+		return XMVectorSet(0.f, 0.f, -1.f, 0.f);
+	case DIR_SW:
+		return XMVector3Normalize(XMVectorSet(-1.f, 0.f, -1.f, 0.f));
+	case DIR_W:
+		return XMVectorSet(-1.f, 0.f, 0.f, 0.f);
+	case DIR_NW:
+		return XMVector3Normalize(XMVectorSet(-1.f, 0.f, 1.f, 0.f));
+	default:
+		break;
+	}
 
 }
 

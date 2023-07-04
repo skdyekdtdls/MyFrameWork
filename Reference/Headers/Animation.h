@@ -12,16 +12,41 @@
 
 BEGIN(Engine)
 
-class CAnimation final : public CBase
+class ENGINE_DLL CAnimation final : public CBase
 {
-private:
+	friend class CModel;
+public:
 	CAnimation();
 	CAnimation(const CAnimation& rhs);
 	virtual ~CAnimation() = default;
 
 public:
-	HRESULT Initialize(const ANIMATION* pAnimation, const aiAnimation* pAIAnimation, const CModel::BONES& Bones);
-	void Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeDelta);
+	char* GetName() {
+		return m_szName;
+	}
+	_uint Get_NumChannels() {
+		return m_Channels.size();
+	}
+
+	// 채널주소를 반환, 시간 복잡도O(1)
+	class CChannel* Get_ChannelByIndex(_uint iIndex) {
+		return m_Channels[iIndex];
+	}
+	_bool IsFinished() {
+		return m_isFinished;
+	}
+	// 채널주소를 반환, 시간 복잡도O(n), 못찾으면 nullptr반환
+	class CChannel* Get_ChannelByName(string strName);
+
+public:
+	void SaveAssimp(HANDLE hFile, DWORD& dwByte);
+	void LoadAssimp(HANDLE hFile, DWORD& dwByte);
+
+public:
+	HRESULT Initialize(const aiAnimation* pAIAnimation, const CModel::BONES& Bones);
+	void Reset();
+	void Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeDelta, BODY eBody = BODY_END);
+	void InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _double TimeAcc, BODY eBody = BODY_END);
 
 private:
 	char						m_szName[MAX_PATH];
@@ -33,14 +58,12 @@ private:
 	_double						m_TimeAcc = { 0.0 };
 
 	_bool						m_isFinished = { false };
-	_bool						m_isLoop = { false };
+	_bool						m_isLoop;
 
 public:
-	static CAnimation* Create(const ANIMATION* pAnimation, const aiAnimation* pAIAnimation, const CModel::BONES& Bones);
+	static CAnimation* Create(const aiAnimation* pAIAnimation, const CModel::BONES& Bones);
 	CAnimation* Clone();
 	virtual void Free();
-
-
 };
 
 END

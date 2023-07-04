@@ -1,15 +1,24 @@
 #pragma once
 
 #include "Component.h"
-
+#include "Model.h"
 BEGIN(Engine)
 class CShader;
 class ENGINE_DLL CTexture final : public CComponent
 {
-private:
+	public:
+	typedef struct tagCTextureDesc : public tagComponentDesc
+	{
+		tagCTextureDesc() : tagComponentDesc() {};
+	}CTEXTURE_DESC;
+public:
 	CTexture(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CTexture(const CTexture& rhs);
 	virtual ~CTexture() = default;
+
+public:
+	void SaveAssimp(HANDLE hFile, DWORD & dwByte);
+	void LoadAssimp(HANDLE hFile, DWORD & dwByte, CModel::TYPE eType);
 
 public:
 	HRESULT Initialize_Prototype(const _tchar * pTextureFilePath, _uint iNumTextures);
@@ -21,6 +30,8 @@ public:
 
 private:
 	_uint	m_iNumTextures = { 0 };
+
+	vector<wstring> m_TextureFilePaths;
 	vector<ID3D11ShaderResourceView*> m_Textures;
 
 public:

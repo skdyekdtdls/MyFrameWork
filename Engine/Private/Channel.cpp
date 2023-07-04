@@ -5,24 +5,47 @@ CChannel::CChannel()
 {
 }
 
-HRESULT CChannel::Initialize(const NODE_ANIM* pChannel, const CModel::BONES Bones)
+void CChannel::SaveAssimp(HANDLE hFile, DWORD& dwByte)
 {
-	strcpy_s(m_szName, pChannel->m_NodeName.m_data);
+	WriteVoid(&m_szName[0], sizeof(char) * MAX_PATH);
+	WriteVoid(&m_iNumKeyFrames, sizeof(_uint));
+
+	for(size_t i = 0 ; i < m_iNumKeyFrames; ++i)
+		WriteVoid(&m_KeyFrames[i], sizeof(KEYFRAME));
+
+	WriteVoid(&m_iBoneIndex, sizeof(_uint));
+}
+
+void CChannel::LoadAssimp(HANDLE hFile, DWORD& dwByte)
+{
+	ReadVoid(&m_szName[0], sizeof(char) * MAX_PATH);
+	ReadVoid(&m_iNumKeyFrames, sizeof(_uint));
+
+	m_KeyFrames.resize(m_iNumKeyFrames);
+	for (size_t i = 0; i < m_iNumKeyFrames; ++i)
+		ReadVoid(&m_KeyFrames[i], sizeof(KEYFRAME));
+
+	ReadVoid(&m_iBoneIndex, sizeof(_uint));
+}
+
+HRESULT CChannel::Initialize(const aiNodeAnim* pAIChannel, const CModel::BONES& Bones)
+{
+	strcpy_s(m_szName, pAIChannel->mNodeName.data);
 
 	// 모델이 들고 있는 같은 이름을 가진 뼈를 찾느다. 
 	auto	iter = find_if(Bones.begin(), Bones.end(), [&](CBone* pValue)
-	{
-		if (0 != strcmp(m_szName, pValue->Get_Name()))
 		{
-			++m_iBoneIndex;
-			return false;
-		}
-		else
-			return true;
-	});
+			if (0 != strcmp(m_szName, pValue->GetName()))
+			{
+				++m_iBoneIndex;
+				return false;
+			}
+			else
+				return true;
+		});
 
-	m_iNumKeyFrames = max(pChannel->m_NumScalingKeys, pChannel->m_NumRotationKeys);
-	m_iNumKeyFrames = max(m_iNumKeyFrames, pChannel->m_NumPositionKeys);
+	m_iNumKeyFrames = max(pAIChannel->mNumScalingKeys, pAIChannel->mNumRotationKeys);
+	m_iNumKeyFrames = max(m_iNumKeyFrames, pAIChannel->mNumPositionKeys);
 
 	_float3			vScale;
 	_float4			vRotation;
@@ -32,25 +55,25 @@ HRESULT CChannel::Initialize(const NODE_ANIM* pChannel, const CModel::BONES Bone
 	{
 		KEYFRAME				Keyframe;
 
-		if (pChannel->m_NumScalingKeys > i)
+		if (pAIChannel->mNumScalingKeys > i)
 		{
-			memcpy(&vScale, &pChannel->m_ScalingKeys[i].m_Value, sizeof(_float3));
-			Keyframe.Time = pChannel->m_ScalingKeys[i].m_Time;
+			memcpy(&vScale, &pAIChannel->mScalingKeys[i].mValue, sizeof(_float3));
+			Keyframe.Time = pAIChannel->mScalingKeys[i].mTime;
 		}
 
-		if (pChannel->m_NumRotationKeys > i)
+		if (pAIChannel->mNumRotationKeys > i)
 		{
-			vRotation.x = pChannel->m_RotationKeys[i].m_Value.x;
-			vRotation.y = pChannel->m_RotationKeys[i].m_Value.y;
-			vRotation.z = pChannel->m_RotationKeys[i].m_Value.z;
-			vRotation.w = pChannel->m_RotationKeys[i].m_Value.w;			
-			Keyframe.Time = pChannel->m_RotationKeys[i].m_Time;
+			vRotation.x = pAIChannel->mRotationKeys[i].mValue.x;
+			vRotation.y = pAIChannel->mRotationKeys[i].mValue.y;
+			vRotation.z = pAIChannel->mRotationKeys[i].mValue.z;
+			vRotation.w = pAIChannel->mRotationKeys[i].mValue.w;
+			Keyframe.Time = pAIChannel->mRotationKeys[i].mTime;
 		}
 
-		if (pChannel->m_NumPositionKeys > i)
+		if (pAIChannel->mNumPositionKeys > i)
 		{
-			memcpy(&vTranslation, &pChannel->m_PositionKeys[i].m_Value, sizeof(_float3));
-			Keyframe.Time = pChannel->m_PositionKeys[i].m_Time;
+			memcpy(&vTranslation, &pAIChannel->mPositionKeys[i].mValue, sizeof(_float3));
+			Keyframe.Time = pAIChannel->mPositionKeys[i].mTime;
 		}
 
 		Keyframe.vScale = vScale;
@@ -63,16 +86,25 @@ HRESULT CChannel::Initialize(const NODE_ANIM* pChannel, const CModel::BONES Bone
 	return S_OK;
 }
 
-void CChannel::Invalidate_TransformationMatrix(CModel::BONES Bones, _double TimeAcc, _uint* pCurrentKeyFrameIndex)
+void CChannel::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeAcc, _uint* pCurrentKeyFrameIndex, BODY eBody)
 {
-	if (0.0 == TimeAcc)
-		*pCurrentKeyFrameIndex = 0;
+	if (BODY_END != eBody && Bones[m_iBoneIndex]->Get_Body() != eBody)
+		return;
 
-	KEYFRAME		LastKeyFrame = m_KeyFrames.back();
+	if (0.0 == TimeAcc)
+		*pCurrentKeyFrameIndex = { 0 };
+
+	KEYFRAME LastKeyFrame = m_KeyFrames.back();
 
 	_float3			vScale;
 	_float4			vRotation;
 	_float3			vTranslation;
+
+	_matrix TransformationMatrix = XMMatrixIdentity();
+	_double Ratio = 0.0;
+
+	Ratio = (TimeAcc - m_KeyFrames[(*pCurrentKeyFrameIndex)].Time) /
+		(m_KeyFrames[(*pCurrentKeyFrameIndex) + 1].Time - m_KeyFrames[(*pCurrentKeyFrameIndex)].Time);
 
 	if (TimeAcc >= LastKeyFrame.Time)
 	{
@@ -80,7 +112,7 @@ void CChannel::Invalidate_TransformationMatrix(CModel::BONES Bones, _double Time
 		vRotation = LastKeyFrame.vRotation;
 		vTranslation = LastKeyFrame.vTranslation;
 	}
-	else /* 현재 존재하는 키프레임의 상태를 좌우 키프레임정보를 이용하여 선형보간한다. */
+	else
 	{
 		while (TimeAcc >= m_KeyFrames[(*pCurrentKeyFrameIndex) + 1].Time)
 			++(*pCurrentKeyFrameIndex);
@@ -101,18 +133,56 @@ void CChannel::Invalidate_TransformationMatrix(CModel::BONES Bones, _double Time
 		XMStoreFloat3(&vTranslation, XMVectorLerp(XMLoadFloat3(&vSourTranslation), XMLoadFloat3(&vDestTranslation), (_float)Ratio));
 	}
 
-	/* 진행된 시간에 맞는 뼈의 행렬을 만들어낸다. */
-	_matrix		TransformationMatrix = XMMatrixAffineTransformation(XMLoadFloat3(&vScale), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMLoadFloat4(&vRotation), XMLoadFloat3(&vTranslation));
+	// 애니메이션 전환 시 블랜딩을 하기 위해서 현재 상태 행렬의 키프레임 정보를 뼈에 기록한다.
+	KEYFRAME tCurKeyFrameState;
+	tCurKeyFrameState.vScale = vScale;
+	tCurKeyFrameState.vRotation = vRotation;
+	tCurKeyFrameState.vTranslation = vTranslation;
+	tCurKeyFrameState.Time = TimeAcc - m_KeyFrames[(*pCurrentKeyFrameIndex)].Time;
+	Bones[m_iBoneIndex]->Set_CurKeyFrameState(tCurKeyFrameState);
 
-	/* 같은 이름을 가진 모델이 들고 있는 뼈에게 전달해준다. */
+	// 상태 행렬을 만들기 위해서 계산한 SRT로부터 아핀변환을 한다.
+	TransformationMatrix = XMMatrixAffineTransformation(XMLoadFloat3(&vScale), XMVectorSet(0.f, 0.f, 0.f, 1.f), XMLoadFloat4(&vRotation), XMLoadFloat3(&vTranslation));
+
+	// 상태 행렬을 뼈에 기록한다.
 	Bones[m_iBoneIndex]->Set_TransformationMatrix(TransformationMatrix);
 }
 
-CChannel * CChannel::Create(const NODE_ANIM* pChannel, const CModel::BONES Bones)
+void CChannel::InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _double TimeAcc, BODY eBody)
 {
-	CChannel*	pInstance = new CChannel();
+	if (BODY_END != eBody && Bones[m_iBoneIndex]->Get_Body() != eBody)
+		return;
 
-	if (FAILED(pInstance->Initialize(pChannel, Bones)))
+	_double Ratio = TimeAcc / 0.2;
+
+	KEYFRAME FrontKeyFrame = m_KeyFrames.front();
+	KEYFRAME PrevKeyFrame = Bones[m_iBoneIndex]->Get_CurKeyFrameState();
+
+	_vector SourScale, DestScale;
+	_vector SourRotation, DestRotation;
+	_vector SourTranslation, DestTranslation;
+	// 이전 키프레임
+	SourScale = XMLoadFloat3(&PrevKeyFrame.vScale);
+	DestScale = XMLoadFloat3(&FrontKeyFrame.vScale);
+
+	SourRotation = XMLoadFloat4(&PrevKeyFrame.vRotation);
+	DestRotation = XMLoadFloat4(&FrontKeyFrame.vRotation);
+
+	SourTranslation = XMLoadFloat3(&PrevKeyFrame.vTranslation);
+	DestTranslation = XMLoadFloat3(&FrontKeyFrame.vTranslation);
+
+	_vector Scale = XMVectorLerp(SourScale, DestScale, Ratio);
+	_vector Rotation = XMQuaternionSlerp(SourRotation, DestRotation, Ratio);
+	_vector Translation = XMVectorLerp(SourTranslation, DestTranslation, Ratio);
+	_matrix TransformationMatrix = XMMatrixAffineTransformation(Scale, XMVectorZero(), Rotation, Translation);
+	Bones[m_iBoneIndex]->Set_TransformationMatrix(TransformationMatrix);
+}
+
+CChannel* CChannel::Create(const aiNodeAnim* pAIChannel, const CModel::BONES& Bones)
+{
+	CChannel* pInstance = new CChannel();
+
+	if (FAILED(pInstance->Initialize(pAIChannel, Bones)))
 	{
 		MSG_BOX("Failed to Created CChannel");
 		Safe_Release(pInstance);

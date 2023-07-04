@@ -11,11 +11,13 @@ class ENGINE_DLL CTransform final : public CComponent, public ISerializable
 {
 public:
 	enum STATE { STATE_RIGHT, STATE_UP, STATE_LOOK, STATE_POSITION, STATE_END };
+	enum DIRECTION { DIR_N, DIR_NE, DIR_E, DIR_SE, DIR_S, DIR_SW, DIR_W, DIR_NW, DIR_END };
+
 public:
-	typedef struct tagTransformDesc
+	typedef struct tagCTransformDesc : public tagComponentDesc
 	{
-		tagTransformDesc() = default;
-		tagTransformDesc(_double _SpeedPerSec, _double _RoationPerSec)
+		tagCTransformDesc() : tagComponentDesc() {};
+		tagCTransformDesc(_double _SpeedPerSec, _double _RoationPerSec)
 		: SpeedPerSec { _SpeedPerSec }
 		, RotationPerSec { _RoationPerSec }
 		{
@@ -24,7 +26,7 @@ public:
 
 		_double		SpeedPerSec = { 0.0 };
 		_double		RotationPerSec = { 0.0 };
-	}TRANSFORMDESC;
+	}CTRANSFORM_DESC;
 
 private:
 	CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -37,6 +39,10 @@ public:
 	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
 
 public:
+	DIRECTION GetCurDirection() {
+		return m_eCurDirection;
+	}
+
 	_vector Get_State(STATE _eState) {
 		return XMLoadFloat4x4(&m_WorldMatrix).r[_eState];
 	}
@@ -46,23 +52,27 @@ public:
 	_float4x4* Get_WorldFloat4x4Ptr() {
 		return &m_WorldMatrix;
 	}
+
 	_float4x4 Get_WorldFloat4x4() {
 		return m_WorldMatrix;
 	}
+
 	_matrix Get_WorldMatrix() {
 		return XMLoadFloat4x4(&m_WorldMatrix);
 	}
 
 	void Set_State(STATE _eState, _fvector _vState);
+
 	_matrix Get_WorldMatrix_Inverse() const {
 		return XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_WorldMatrix));
 	}
 
-	void Set_Desc(const TRANSFORMDESC& TransformDesc) {
+	void Set_Desc(const CTRANSFORM_DESC& TransformDesc) {
 		m_TransformDesc = TransformDesc;
 	}
 
 	void Set_WorldMatrix(_fmatrix matWorldMatrix) {
+		memcpy(&m_PrevWorldMatrix, &m_WorldMatrix, sizeof(_float4x4));
 		XMStoreFloat4x4(&m_WorldMatrix, matWorldMatrix);
 	}
 
@@ -75,18 +85,33 @@ public:
 	void Go_Backward(_double TimeDelta, class CNavigation* pNavigation = nullptr);
 	void Go_Left(_double TimeDelta, class CNavigation* pNavigation = nullptr);
 	void Go_Right(_double TimeDelta, class CNavigation* pNavigation = nullptr);
+
+	void Go_Direction(_double TimeDelta, DIRECTION eDir, _float fLength);
+	void Go_Direction(_double TimeDelta, DIRECTION eDir);
+
 	void Chase(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance = 0.1f);
 	void LookAt(_fvector vTargetPosition);
+
+	// 항등 상태를 기준으로 지정한 각만큼 회전시킨다.
 	void Rotation(_fvector vAxis, _float fRadian);
+
 	void Rotation(_fmatrix RotationMatrixX, _fmatrix RotationMatrixY, _fmatrix RotationMatrixZ);
 	void Turn(_fvector vAxis, _double TimeDelta);
+	void Turn(_fvector vAxis, _fvector vTargetVector, _double TimeDelta);
 	void Scaled(const _float3 & vScale);
 
-private:
-	TRANSFORMDESC			m_TransformDesc;
+	// 이전 프레임과 현재 프레임 사이의 위치 변화율을 반환합니다.
+	_float3 DeltaPosition();
 
 private:
+	CTRANSFORM_DESC			m_TransformDesc;
+	DIRECTION				m_eCurDirection;
+private:
+	_float4x4				m_PrevWorldMatrix;
 	_float4x4				m_WorldMatrix;
+
+private:
+	_vector DirectionVector(DIRECTION eDir);
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_Component_Transform"; }

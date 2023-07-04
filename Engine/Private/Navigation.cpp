@@ -68,7 +68,7 @@ HRESULT CNavigation::Initialize_Prototype(const _tchar* pNavigationDataFiles)
 HRESULT CNavigation::Initialize(void* pArg)
 {
 	if (nullptr != pArg)
-		memmove(&m_tNaviDesc, pArg, sizeof(NAVIGATIONDESC));
+		memmove(&m_tNaviDesc, pArg, sizeof(CNAVIGATION_DESC));
 	SetUp_Neighbors();
 	return S_OK;
 }
@@ -113,7 +113,7 @@ _bool CNavigation::is_Move(_fvector vPosition)
 				// ÀÌ¿ôÀÎµ¦½º¸¦ Ã£À¸¸é Å»Ãâ
 				if (true == m_Cells[iNeighborIndex]->is_In(vPosition, &iNeighborIndex, eNeighbor))
 					break;
-			}
+			}	
 			m_tNaviDesc.iCurrentIndex = iNeighborIndex;
 			return true;
 		}
@@ -169,6 +169,7 @@ void CNavigation::UpdateCellCollider(_uint iIndex)
 HRESULT CNavigation::Render_Navigation()
 {
 	NULL_CHECK_RETURN(m_pShader, E_FAIL);
+
 	Set_ShaderResources();
 
 	m_pShader->Begin(0);

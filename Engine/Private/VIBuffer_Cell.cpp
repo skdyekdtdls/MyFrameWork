@@ -83,7 +83,7 @@ HRESULT CVIBuffer_Cell::Initialize_Prototype(const _float3* pPoints)
 
 HRESULT CVIBuffer_Cell::Initialize(void* pArg)
 {
-
+	__super::Initialize(pArg);
 
 	return S_OK;
 }

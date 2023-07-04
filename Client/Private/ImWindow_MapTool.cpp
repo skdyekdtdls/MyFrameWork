@@ -61,12 +61,12 @@ void CImWindow_MapTool::Tick()
 
 	VecInfo("Position", &vPos, 120);
 
-
 	// display
 	if (ImGui::Button("Open File Dialog"))
 	{
-		ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".cpp, .dat", ".");
+		ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", " .dat", "../../Client/Bin/Data/Navigation/");
 	}
+
 	if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey"))
 	{
 		// action if OK
@@ -77,8 +77,8 @@ void CImWindow_MapTool::Tick()
 			ImGuiFileDialog::Instance()->GetSelection();
 
 			
-			string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-			string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+			filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+			filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
 			SaveNaviMesh(filePathName);
 			// action
 		}
@@ -130,7 +130,6 @@ void CImWindow_MapTool::SaveNaviMesh(string filePathName)
 	
 	DWORD dwByte = { 0 };
 	pNavigation->Save(hFile, dwByte);
-
 
 	Safe_Release(pGameInstance);
 	CONSOLE_MSG("파일 저장 성공");
