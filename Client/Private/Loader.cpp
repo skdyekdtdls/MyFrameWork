@@ -6,6 +6,7 @@
 #include "EditCamera.h"
 #include "Terrain.h"
 #include "Cube.h"
+#include "ClintModel.h"
 #include "ForkLift.h"
 #include "Fiona.h"
 #include "Clint.h"
@@ -211,16 +212,16 @@ HRESULT CLoader::Loading_For_IMGUI()
 	Set_LoadingText(L"¸ðµ¨ ·Îµù Áß");
 	cout << "--- Clint ---" << endl;
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix, 3); pModel->LoadAssimp("Clint.dat");
+	ClintModel* pClintModel = ClintModel::Create(m_pDevice, m_pContext, PivotMatrix, 3); pClintModel->LoadAssimp("Clint.dat");
+	pClintModel->GroupingBones();
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-		, TEXT("Prototype_Component_Model_Clint"), pModel), E_FAIL);
+		, TEXT("Prototype_Component_Model_Clint"), pClintModel), E_FAIL);
 
 	cout << "--- Fiona ---" << endl;
 	PivotMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
 	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix, 1); pModel->LoadAssimp("Fiona.dat");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
 		, TEXT("Prototype_Component_Model_Fiona"), pModel), E_FAIL);
-	
 
 	cout << "--- ForkLift ---" << endl;
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));

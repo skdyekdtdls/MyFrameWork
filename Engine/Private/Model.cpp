@@ -87,7 +87,7 @@ CBone* CModel::GetBoneByName(string strName)
 	return nullptr;
 }
 
-void CModel::Set_AnimByIndex(_uint iAnimIndex)
+void CModel::Set_AnimByIndex(_uint iAnimIndex, BODY eBody)
 {
 	if (iAnimIndex >= m_iNumAnimations)
 		return;
@@ -277,7 +277,7 @@ HRESULT CModel::Initialize_Prototype(const aiScene* pAIScene, TYPE eType, fs::pa
 HRESULT CModel::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
+	
 	return S_OK;
 }
 
@@ -311,6 +311,7 @@ void CModel::Play_Animation(_double TimeDelta)
 	{
 		m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(m_Bones, TimeDelta);
 	}
+
 
 	m_RootMoveDistance = m_Bones[m_RootIndex]->GetTransformationMatrix_43();
 	m_Bones[m_RootIndex]->FixBone();

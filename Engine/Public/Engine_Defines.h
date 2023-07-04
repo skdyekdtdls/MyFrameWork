@@ -51,6 +51,8 @@ END
 #include "DirectXTK/WICTextureLoader.h"
 #include "Assimp_Struct.h"
 
+enum BODY { UPPER, LOWER, BODY_END };
+
 #ifdef _DEBUG
 
 #define _CRTDBG_MAP_ALLOC

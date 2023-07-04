@@ -13,7 +13,7 @@ CAnimation::CAnimation(const CAnimation& rhs)
 	, m_TickPerSecond(rhs.m_TickPerSecond)
 	, m_TimeAcc(rhs.m_TimeAcc)
 	, m_isFinished(rhs.m_isFinished)
-	, m_isLoop(false)
+	, m_isLoop(true)
 {
 	strcpy_s(m_szName, rhs.m_szName);
 
@@ -112,7 +112,7 @@ void CAnimation::Reset()
 		pChannelIndex = { 0 };
 }
 
-void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeDelta)
+void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeDelta, BODY eBody)
 {
 	m_TimeAcc += m_TickPerSecond * TimeDelta;
 
@@ -133,15 +133,15 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 		if (nullptr == pChannel)
 			return;
 
-		pChannel->Invalidate_TransformationMatrix(Bones, m_TimeAcc, &m_ChannelCurrentKeyFrames[iChannelIndex++]);
+		pChannel->Invalidate_TransformationMatrix(Bones, m_TimeAcc, &m_ChannelCurrentKeyFrames[iChannelIndex++], eBody);
 	}
 }
 
-void CAnimation::InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _double TimeAcc)
+void CAnimation::InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _double TimeAcc, BODY eBody)
 {
 	for (auto Channel : m_Channels)
 	{
-		Channel->InterAnimation_TransfomationMatrix(Bones, TimeAcc);
+		Channel->InterAnimation_TransfomationMatrix(Bones, TimeAcc, eBody);
 	}
 }
 
@@ -166,7 +166,6 @@ void CAnimation::Free()
 {
 	for (auto& pChannel : m_Channels)
 		Safe_Release(pChannel);
-
 	m_Channels.clear();
 
 }

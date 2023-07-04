@@ -10,6 +10,7 @@ CBone::CBone(const CBone& rhs)
 	, m_OffsetMatrix(rhs.m_OffsetMatrix)
 	, m_iParentIndex(rhs.m_iParentIndex)
 	, m_iIndex(rhs.m_iIndex)
+	, m_eBody(rhs.m_eBody)
 {
 	strcpy_s(m_szName, rhs.m_szName);
 }

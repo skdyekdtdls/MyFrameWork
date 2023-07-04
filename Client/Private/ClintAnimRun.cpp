@@ -17,7 +17,8 @@ HRESULT ClintAnimRun::Initialize(Clint* pOwner)
 
 void ClintAnimRun::Tick(_double TimeDelta)
 {
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	int a = 0;
+	/*CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 	CTransform* pTransform = m_pOwner->GetComponent<CTransform>();
 	CModel* pModel = m_pOwner->GetComponent<CModel>();
@@ -26,6 +27,7 @@ void ClintAnimRun::Tick(_double TimeDelta)
 		pTransform->Go_Direction(TimeDelta, CTransform::DIR_N);
 		pTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(0.f));
 	}
+
 	if (pGameInstance->Get_DIKeyState(DIK_A))
 	{
 		pTransform->Go_Direction(TimeDelta, CTransform::DIR_W);
@@ -63,10 +65,11 @@ void ClintAnimRun::Tick(_double TimeDelta)
 			pModel->RootMotion(TimeDelta, CTransform::DIR_E);
 		}
 
-		m_pOwner->Set_ClintAnimState(CLINT_ANIM::DASH);
+		m_pOwner->Set_ClintAnimState(CLINT_ANIM::DASH, UPPER);
+		m_pOwner->Set_ClintAnimState(CLINT_ANIM::DASH, LOWER);
 	}
 
-	Safe_Release(pGameInstance);
+	Safe_Release(pGameInstance);*/
 }
 
 void ClintAnimRun::Late_Tick(_double TimeDelta)

@@ -12,7 +12,7 @@
 
 BEGIN(Engine)
 
-class CAnimation final : public CBase
+class ENGINE_DLL CAnimation final : public CBase
 {
 	friend class CModel;
 public:
@@ -37,6 +37,7 @@ public:
 	}
 	// 채널주소를 반환, 시간 복잡도O(n), 못찾으면 nullptr반환
 	class CChannel* Get_ChannelByName(string strName);
+
 public:
 	void SaveAssimp(HANDLE hFile, DWORD& dwByte);
 	void LoadAssimp(HANDLE hFile, DWORD& dwByte);
@@ -44,8 +45,8 @@ public:
 public:
 	HRESULT Initialize(const aiAnimation* pAIAnimation, const CModel::BONES& Bones);
 	void Reset();
-	void Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeDelta);
-	void InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _double TimeAcc);
+	void Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeDelta, BODY eBody = BODY_END);
+	void InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _double TimeAcc, BODY eBody = BODY_END);
 
 private:
 	char						m_szName[MAX_PATH];

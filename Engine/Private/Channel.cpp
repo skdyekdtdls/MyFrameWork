@@ -86,8 +86,11 @@ HRESULT CChannel::Initialize(const aiNodeAnim* pAIChannel, const CModel::BONES& 
 	return S_OK;
 }
 
-void CChannel::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeAcc, _uint* pCurrentKeyFrameIndex)
+void CChannel::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeAcc, _uint* pCurrentKeyFrameIndex, BODY eBody)
 {
+	if (BODY_END != eBody && Bones[m_iBoneIndex]->Get_Body() != eBody)
+		return;
+
 	if (0.0 == TimeAcc)
 		*pCurrentKeyFrameIndex = { 0 };
 
@@ -145,8 +148,11 @@ void CChannel::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double Tim
 	Bones[m_iBoneIndex]->Set_TransformationMatrix(TransformationMatrix);
 }
 
-void CChannel::InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _double TimeAcc)
+void CChannel::InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _double TimeAcc, BODY eBody)
 {
+	if (BODY_END != eBody && Bones[m_iBoneIndex]->Get_Body() != eBody)
+		return;
+
 	_double Ratio = TimeAcc / 0.2;
 
 	KEYFRAME FrontKeyFrame = m_KeyFrames.front();

@@ -16,7 +16,6 @@ Clint::Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 Clint::Clint(const Clint& rhs)
 	: CGameObject(rhs)
 	, m_pClintAnimStates(rhs.m_pClintAnimStates)
-	, m_eClintAnimState(rhs.m_eClintAnimState)
 {
 	for (auto ClintAnimState : m_pClintAnimStates)
 		Safe_AddRef(ClintAnimState);
@@ -65,16 +64,16 @@ HRESULT Clint::Initialize(void* pArg)
 
 void Clint::Tick(_double TimeDelta)
 {
-	__super::Tick(TimeDelta);
+	//__super::Tick(TimeDelta);
 
 	// 현재 애니메이션 상태에 맞는 틱 호출
-	m_pClintAnimStates[static_cast<_uint>(m_eClintAnimState)]->Tick(TimeDelta);
+	m_pClintAnimStates[0]->Tick(TimeDelta);
 
 	// 렌더러 그룹에 추가
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
+	//m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 
 	// TransfomationMatirx의 값을 갱신하고 CombinedTransformationMatrix를 순차적으로 갱신
-	m_pModelCom->Play_Animation(TimeDelta);
+	//m_pModelCom->Play_Animation(TimeDelta);
 
 	// 	if(nullptr != m_pColliderCom)
 	//		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
@@ -82,10 +81,10 @@ void Clint::Tick(_double TimeDelta)
 
 void Clint::Late_Tick(_double TimeDelta)
 {
-	__super::Late_Tick(TimeDelta);
+	//__super::Late_Tick(TimeDelta);
 
-	// 현재 애니메이션 상태에 맞는 틱 호출
-	m_pClintAnimStates[static_cast<_uint>(m_eClintAnimState)]->Late_Tick(TimeDelta);
+	// 현재 애니메이션 상태에 맞는 레이트 틱 호출
+	//m_pClintAnimStates[(_uint)m_eClintAnimState]->Late_Tick(TimeDelta);
 }
 
 HRESULT Clint::Render()
@@ -93,22 +92,22 @@ HRESULT Clint::Render()
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
-	if (FAILED(SetUp_ShaderResources()))
-		return E_FAIL;
+	//if (FAILED(SetUp_ShaderResources()))
+	//	return E_FAIL;
 
-	_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
+	//_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
 
-	for (size_t i = 0; i < iNumMeshes; i++)
-	{
-		m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
+	//for (size_t i = 0; i < iNumMeshes; i++)
+	//{
+	//	m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
 
-		m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
-		// m_pModelCom->Bind_Material(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS);
+	//	m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
+	//	// m_pModelCom->Bind_Material(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS);
 
-		m_pShaderCom->Begin(0);
+	//	m_pShaderCom->Begin(0);
 
-		m_pModelCom->Render(i);
-	}
+	//	m_pModelCom->Render(i);
+	//}
 
 #ifdef _DEBUG
 	//m_pNavigationCom->Render_Navigation();
@@ -160,7 +159,7 @@ HRESULT Clint::Add_Components()
 	CShader::CSHADER_DESC tShaderDesc; tShaderDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxAnimMesh", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
 
-	CModel::CMODEL_DESC tModelDesc; tModelDesc.pOwner = this;
+	ClintModel::CLINT_MODEL_DESC tModelDesc; tModelDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Clint", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
 
 	CNavigation::CNAVIGATION_DESC tNavigationdesc; tNavigationdesc.pOwner = this;
@@ -190,42 +189,43 @@ HRESULT Clint::SetUp_ShaderResources()
 	return S_OK;
 }
 
-void Clint::Set_ClintAnimState(CLINT_ANIM eClintAnim)
+void Clint::Set_ClintAnimState(CLINT_ANIM eClintAnim, BODY eBody)
 {
-	m_eClintAnimState = eClintAnim;
+	if(BODY_END != eBody)
+		m_eClintAnimState = eClintAnim;
 
 	switch (eClintAnim)
 	{
 	case Client::CLINT_ANIM::DASH:
-		m_pModelCom->Set_AnimByIndex(27);
+		m_pModelCom->Set_AnimByIndex(27, eBody);
 		break;
-	case Client::CLINT_ANIM::DEATH:
-		m_pModelCom->Set_AnimByIndex(29);
-		break;
-	case Client::CLINT_ANIM::GRANADE:
-		m_pModelCom->Set_AnimByIndex(50);
-		break;
-	case Client::CLINT_ANIM::HIT:
-		m_pModelCom->Set_AnimByIndex(53);
-		break;
+	//case Client::CLINT_ANIM::DEATH:
+	//	m_pModelCom->Set_AnimByIndex(29);
+	//	break;
+	//case Client::CLINT_ANIM::GRANADE:
+	//	m_pModelCom->Set_AnimByIndex(50);
+	//	break;
+	//case Client::CLINT_ANIM::HIT:
+	//	m_pModelCom->Set_AnimByIndex(53);
+	//	break;
 	case Client::CLINT_ANIM::IDLE:
-		m_pModelCom->Set_AnimByIndex(64);
+		m_pModelCom->Set_AnimByIndex(64, eBody);
 		break;
-	case Client::CLINT_ANIM::MVP:
-		m_pModelCom->Set_AnimByIndex(74);
-		break;
+	//case Client::CLINT_ANIM::MVP:
+	//	m_pModelCom->Set_AnimByIndex(74);
+	//	break;
 	case Client::CLINT_ANIM::RUN:
-		m_pModelCom->Set_AnimByIndex(89);
+		m_pModelCom->Set_AnimByIndex(89, eBody);
 		break;
-	case Client::CLINT_ANIM::SKILL_01:
-		m_pModelCom->Set_AnimByIndex(109);
-		break;
-	case Client::CLINT_ANIM::SKILL_02:
-		m_pModelCom->Set_AnimByIndex(122);
-		break;
-	case Client::CLINT_ANIM::WEAPONCHANGE:
-		m_pModelCom->Set_AnimByIndex(152);
-		break;
+	//case Client::CLINT_ANIM::SKILL_01:
+	//	m_pModelCom->Set_AnimByIndex(109);
+	//	break;
+	//case Client::CLINT_ANIM::SKILL_02:
+	//	m_pModelCom->Set_AnimByIndex(122);
+	//	break;
+	//case Client::CLINT_ANIM::WEAPONCHANGE:
+	//	m_pModelCom->Set_AnimByIndex(152);
+	//	break;
 	default:
 		break;
 	}
@@ -259,8 +259,9 @@ void Clint::Free(void)
 {
 	__super::Free();
 
-	for (auto ClintAnimState : m_pClintAnimStates)
+	for (auto& ClintAnimState : m_pClintAnimStates)
 		Safe_Release(ClintAnimState);
+	m_pClintAnimStates.clear();
 
 	--Clint_Id;
 	Safe_Release(m_pNavigationCom);

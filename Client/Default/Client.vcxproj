@@ -196,6 +196,7 @@
     <ClInclude Include="..\public\ClintAnimIdle.h" />
     <ClInclude Include="..\public\ClintAnimRun.h" />
     <ClInclude Include="..\public\ClintAnimState.h" />
+    <ClInclude Include="..\Public\ClintModel.h" />
     <ClInclude Include="..\Public\ImGuiFileDialog.h" />
     <ClInclude Include="..\Public\ImGuiFileDialogConfig.h" />
     <ClInclude Include="..\public\ImWindow_AnimationTool.h" />
@@ -318,6 +319,7 @@
     <ClCompile Include="..\private\ClintAnimIdle.cpp" />
     <ClCompile Include="..\private\ClintAnimRun.cpp" />
     <ClCompile Include="..\private\ClintAnimState.cpp" />
+    <ClCompile Include="..\private\ClintModel.cpp" />
     <ClCompile Include="..\Private\ImGuiFileDialog.cpp" />
     <ClCompile Include="..\private\ImWindow_AnimationTool.cpp" />
     <ClCompile Include="..\Private\ImWindow_LightTool.cpp" />

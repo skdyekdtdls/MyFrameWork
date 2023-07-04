@@ -5,7 +5,7 @@
 #include "ISerializable.h"
 BEGIN(Engine)
 
-class ENGINE_DLL CModel final : public CComponent
+class ENGINE_DLL CModel : public CComponent
 {
 public:
 	typedef struct tagCModelDesc : public tagComponentDesc
@@ -14,7 +14,10 @@ public:
 	}CMODEL_DESC;
 public:
 	enum TYPE { TYPE_NONANIM, TYPE_ANIM, TYPE_END };
-private:
+
+public:
+	typedef vector<class CBone*>	BONES;
+protected:
 	CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CModel(const CModel& rhs);
 	virtual ~CModel() = default;
@@ -34,7 +37,8 @@ public:
 	void CoutRootNodePos();
 #endif
 
-	_float RootMoveDistance();
+public:
+	/* Getter */
 	_uint Get_NumAnimation() {
 		return m_iNumAnimations;
 	}
@@ -55,20 +59,18 @@ public:
 		return m_Bones[m_RootIndex];
 	}
 
-public:
-	void Set_AnimByIndex(_uint iAnimIndex);
+public: /* Setter */
+	virtual void Set_AnimByIndex(_uint iAnimIndex, BODY eBody = BODY_END);
 	void Set_AnimByName(const char* pName);
 
 	// 객체 프로토타입 만들 때 최초에 1번만 부른다.
 	void Set_RootNode(_uint iBoneIndex);
-	void Set_FixRootNode(_bool bFixRootNode) {
-		m_bFixRootNode = bFixRootNode;
-	}
 
 	void Set_PivotMatrix(_fmatrix PivotMatrix) {
 		XMStoreFloat4x4(&m_PivotMatrix, PivotMatrix);
 	}
 
+public: /* Assimp*/
 	void SaveAssimp(HANDLE hFile, DWORD & dwByte);
 	void LoadAssimp(const char* pFileName);
 
@@ -80,18 +82,19 @@ public:
 	virtual HRESULT Render(_uint iMeshIndex);
 
 public:
-	void Play_Animation(_double TimeDelta);
+	virtual void Play_Animation(_double TimeDelta);
 	_bool IsAnimationFinished();
 
 	// 인자로 아무것도 들어오지 않거나 음수가 들어오면 현재 애니메이션 리셋
 	void ResetAnimation(_int iIndex = -1);
 	void RootMotion(_double TimeDelta, CTransform::DIRECTION eDir);
+	_float RootMoveDistance();
 
 public:
 	HRESULT Bind_Material(class CShader* pShader, const char* pConstantName, _uint iMeshIndex, TextureType MaterialType);
 	HRESULT Bind_BoneMatrices(class CShader* pShader, const char* pConstantName, _uint iMeshIndex);
 
-public: /* For.Bones*/
+protected: /* For.Bones*/
 	_uint						m_iNumBones = { 0 };
 	vector<class CBone*>		m_Bones;
 
@@ -99,29 +102,26 @@ public: /* For.Bones*/
 	// Play_Animation의 순서가 애매하기 때문에 변수 선언했음.
 	_float						m_RootMoveDistance = { 0.f };
 	_float						m_PrevMoveDistance = { 0.f };
-	_bool						m_bFixRootNode = { false };
-public:
-	typedef vector<class CBone*>	BONES;
 
-private: /* For.Meshes  */
+protected: /* For.Meshes  */
 	_uint					m_iNumMeshes = { 0 };
 	vector<class CMesh*>	m_Meshes;
 
-private: /* For.Materials */
+protected: /* For.Materials */
 	_uint					m_iNumMaterials = { 0 };
 	vector<MESHMATERIAL>	m_Materials;
 
-private:
+protected:
 	_uint						m_iPrevAnimIndex = { 0 };
 	_uint						m_iCurrentAnimIndex = { 0 };
 	_uint						m_iNumAnimations = { 0 };
 	vector<class CAnimation*>	m_Animations;
 
-public:
+protected:
 	_float4x4		m_PivotMatrix;
 	TYPE			m_eAnimType = { TYPE_END };
 	_double			m_InterTimeAcc = { 0.0 };
-private:
+protected:
 	HRESULT LoadModel(const _tchar* pModelFilePath, _Inout_ SCENE& tScene, _Out_ fs::path& ModelFilePath, _fmatrix PivotMatrix);
 	fs::path FindModelDirecotyPath(fs::path ModelPath, fs::path Stem);
 	fs::path FindDATFile(fs::path ModelPath);

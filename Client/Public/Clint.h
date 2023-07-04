@@ -4,6 +4,7 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 #include "ISerializable.h"
+#include "ClintModel.h"
 BEGIN(Engine)
 
 class CShader;
@@ -30,7 +31,7 @@ private:
 	virtual ~Clint() = default;
 
 public:
-	void Set_ClintAnimState(CLINT_ANIM eClintAnim);
+	void Set_ClintAnimState(CLINT_ANIM eClintAnim, BODY eBody);
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -47,7 +48,7 @@ private:
 	void KeyInput(_double& TimeDelta);
 
 private: /* For. Component */
-	CModel* m_pModelCom = { nullptr };
+	ClintModel* m_pModelCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };

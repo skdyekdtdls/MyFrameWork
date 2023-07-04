@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "Clint.h"
 
+
 ClintAnimDash::ClintAnimDash(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: ClintAnimState(pDevice, pContext)
 {
@@ -20,17 +21,17 @@ void ClintAnimDash::Tick(_double TimeDelta)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	CModel* pModel = m_pOwner->GetComponent<CModel>();
+	ClintModel* pModel = m_pOwner->GetComponent<ClintModel>();
 	
 	if (pModel->IsAnimationFinished())
 	{
-		m_pOwner->Set_ClintAnimState(CLINT_ANIM::IDLE);
+		m_pOwner->Set_ClintAnimState(CLINT_ANIM::IDLE, LOWER);
+		m_pOwner->Set_ClintAnimState(CLINT_ANIM::IDLE, UPPER);
 	}
 
 	CTransform* pTransform = m_pOwner->GetComponent<CTransform>();
 	pModel->RootMotion(TimeDelta, pTransform->GetCurDirection());
 	
-
 	Safe_Release(pGameInstance);
 }
 

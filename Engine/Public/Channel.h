@@ -25,8 +25,8 @@ public:
 	}
 public:
 	HRESULT Initialize(const aiNodeAnim* pAIChannel, const CModel::BONES& Bones);
-	void Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeAcc, _uint* pCurrentKeyFrameIndex);
-	void InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _double TimeAcc);
+	void Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeAcc, _uint* pCurrentKeyFrameIndex, BODY eBody = BODY_END);
+	void InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _double TimeAcc, BODY eBody = BODY_END);
 
 private:
 	char				m_szName[MAX_PATH] = "";

@@ -8,7 +8,7 @@ ClintAnimState::ClintAnimState(ID3D11Device* pDevice, ID3D11DeviceContext* pCont
 
 HRESULT ClintAnimState::Initialize(Clint* pOwner)
 {
-	m_pOwner = pOwner;
+	//m_pOwner = pOwner;
 	return S_OK;
 }
 
