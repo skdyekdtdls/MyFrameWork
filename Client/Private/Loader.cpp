@@ -188,8 +188,6 @@ HRESULT CLoader::Loading_For_GamePlay()
 	return S_OK;
 }
 
-
-
 #ifdef _DEBUG
 HRESULT CLoader::Loading_For_IMGUI()
 {
@@ -213,6 +211,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 	cout << "--- Clint ---" << endl;
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 	ClintModel* pClintModel = ClintModel::Create(m_pDevice, m_pContext, PivotMatrix, 3); pClintModel->LoadAssimp("Clint.dat");
+	pClintModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/Clint/Animation.myanim"));
 	pClintModel->GroupingBones();
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
 		, TEXT("Prototype_Component_Model_Clint"), pClintModel), E_FAIL);

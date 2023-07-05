@@ -102,6 +102,13 @@ void ClintModel::Set_AnimByIndex(_uint iAnimIndex, BODY eBody)
 	if (m_iCurrentAnimIndex[(_int)eBody] == iAnimIndex)
 		return;
 
+	if (eBody >= BODY_END)
+	{
+		Set_AnimByIndex(iAnimIndex, UPPER);
+		Set_AnimByIndex(iAnimIndex, LOWER);
+		return;
+	}
+
 	m_Animationss[(_uint)eBody][iAnimIndex]->Reset();
 	m_InterTimeAcc[eBody] = 0.0;
 	m_iCurrentAnimIndex[(_int)eBody] = iAnimIndex;

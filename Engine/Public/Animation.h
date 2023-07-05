@@ -20,7 +20,7 @@ public:
 	CAnimation(const CAnimation& rhs);
 	virtual ~CAnimation() = default;
 
-public:
+public: // Getter
 	char* GetName() {
 		return m_szName;
 	}
@@ -38,9 +38,22 @@ public:
 	// 채널주소를 반환, 시간 복잡도O(n), 못찾으면 nullptr반환
 	class CChannel* Get_ChannelByName(string strName);
 
-public:
+	_double* GetTickPerSecondPtr() {
+		return &m_TickPerSecond;
+	}
+	_bool* GetIsLoopPtr() {
+		return &m_isLoop;
+	}
+
+public: // Setter
+
+public: /* For. Assimp */
 	void SaveAssimp(HANDLE hFile, DWORD& dwByte);
 	void LoadAssimp(HANDLE hFile, DWORD& dwByte);
+
+public: /* For. Client*/
+	void SaveData(HANDLE hFile, DWORD& dwByte);
+	void LoadData(HANDLE hFile, DWORD& dwByte);
 
 public:
 	HRESULT Initialize(const aiAnimation* pAIAnimation, const CModel::BONES& Bones);

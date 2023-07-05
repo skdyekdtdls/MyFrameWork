@@ -281,6 +281,30 @@ HRESULT CModel::Initialize(void* pArg)
 	return S_OK;
 }
 
+HRESULT CModel::Late_Initialize(const _tchar* pAnimFilePath)
+{
+	if (nullptr == pAnimFilePath)
+		return S_OK;
+
+	HANDLE		hFile = CreateFile(pAnimFilePath, GENERIC_READ, NULL, NULL,
+		OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		assert(false);
+		return E_FAIL;
+	}
+
+	DWORD dwByte = 0;
+
+	for (auto& pAnimation : m_Animations)
+		pAnimation->LoadData(hFile, dwByte);
+
+	CloseHandle(hFile);
+
+	return S_OK;
+}
+
 HRESULT CModel::Render(_uint iMeshIndex)
 {
 	m_Meshes[iMeshIndex]->Render();

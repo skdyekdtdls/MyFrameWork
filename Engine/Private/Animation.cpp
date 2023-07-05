@@ -13,7 +13,7 @@ CAnimation::CAnimation(const CAnimation& rhs)
 	, m_TickPerSecond(rhs.m_TickPerSecond)
 	, m_TimeAcc(rhs.m_TimeAcc)
 	, m_isFinished(rhs.m_isFinished)
-	, m_isLoop(true)
+	, m_isLoop(rhs.m_isLoop)
 {
 	strcpy_s(m_szName, rhs.m_szName);
 
@@ -143,6 +143,18 @@ void CAnimation::InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _doubl
 	{
 		Channel->InterAnimation_TransfomationMatrix(Bones, TimeAcc, eBody);
 	}
+}
+
+void CAnimation::SaveData(HANDLE hFile, DWORD& dwByte)
+{
+	WriteVoid(&m_TickPerSecond, sizeof(m_TickPerSecond));
+	WriteVoid(&m_isLoop, sizeof(m_isLoop));
+}
+
+void CAnimation::LoadData(HANDLE hFile, DWORD& dwByte)
+{
+	ReadVoid(&m_TickPerSecond, sizeof(m_TickPerSecond));
+	ReadVoid(&m_isLoop, sizeof(m_isLoop));
 }
 
 CAnimation* CAnimation::Create(const aiAnimation* pAIAnimation, const CModel::BONES& Bones)

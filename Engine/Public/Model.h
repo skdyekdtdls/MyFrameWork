@@ -70,14 +70,14 @@ public: /* Setter */
 		XMStoreFloat4x4(&m_PivotMatrix, PivotMatrix);
 	}
 
-public: /* Assimp*/
+public: /* For.Assimp*/
 	void SaveAssimp(HANDLE hFile, DWORD & dwByte);
 	void LoadAssimp(const char* pFileName);
 
 public:
 	virtual HRESULT Initialize_Prototype(const aiScene * pAIScene, TYPE eType, fs::path pModelFilePath, _fmatrix PivotMatrix);
 	virtual HRESULT Initialize(void* pArg);
-
+	HRESULT Late_Initialize(const _tchar* pAnimFilePath = nullptr);
 public:
 	virtual HRESULT Render(_uint iMeshIndex);
 

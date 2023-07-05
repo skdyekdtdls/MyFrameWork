@@ -17,8 +17,7 @@ HRESULT ClintAnimRun::Initialize(Clint* pOwner)
 
 void ClintAnimRun::Tick(_double TimeDelta)
 {
-	int a = 0;
-	/*CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 	CTransform* pTransform = m_pOwner->GetComponent<CTransform>();
 	CModel* pModel = m_pOwner->GetComponent<CModel>();
@@ -69,7 +68,7 @@ void ClintAnimRun::Tick(_double TimeDelta)
 		m_pOwner->Set_ClintAnimState(CLINT_ANIM::DASH, LOWER);
 	}
 
-	Safe_Release(pGameInstance);*/
+	Safe_Release(pGameInstance);
 }
 
 void ClintAnimRun::Late_Tick(_double TimeDelta)

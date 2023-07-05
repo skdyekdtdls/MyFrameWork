@@ -67,24 +67,24 @@ void Clint::Tick(_double TimeDelta)
 	//__super::Tick(TimeDelta);
 
 	// 현재 애니메이션 상태에 맞는 틱 호출
-	m_pClintAnimStates[0]->Tick(TimeDelta);
+	m_pClintAnimStates[(_int)m_eClintAnimState]->Tick(TimeDelta);
 
 	// 렌더러 그룹에 추가
-	//m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 
 	// TransfomationMatirx의 값을 갱신하고 CombinedTransformationMatrix를 순차적으로 갱신
-	//m_pModelCom->Play_Animation(TimeDelta);
+	m_pModelCom->Play_Animation(TimeDelta);
 
-	// 	if(nullptr != m_pColliderCom)
-	//		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
+	//if(nullptr != m_pColliderCom)
+	//	m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
 }
 
 void Clint::Late_Tick(_double TimeDelta)
 {
-	//__super::Late_Tick(TimeDelta);
+	__super::Late_Tick(TimeDelta);
 
 	// 현재 애니메이션 상태에 맞는 레이트 틱 호출
-	//m_pClintAnimStates[(_uint)m_eClintAnimState]->Late_Tick(TimeDelta);
+	m_pClintAnimStates[(_uint)m_eClintAnimState]->Late_Tick(TimeDelta);
 }
 
 HRESULT Clint::Render()
@@ -92,28 +92,29 @@ HRESULT Clint::Render()
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
-	//if (FAILED(SetUp_ShaderResources()))
-	//	return E_FAIL;
+	if (FAILED(SetUp_ShaderResources()))
+		return E_FAIL;
 
-	//_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
+	_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
 
-	//for (size_t i = 0; i < iNumMeshes; i++)
-	//{
-	//	m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
+	for (size_t i = 0; i < iNumMeshes; i++)
+	{
+		m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
 
-	//	m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
-	//	// m_pModelCom->Bind_Material(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS);
+		m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
+		// m_pModelCom->Bind_Material(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS);
 
-	//	m_pShaderCom->Begin(0);
+		m_pShaderCom->Begin(0);
 
-	//	m_pModelCom->Render(i);
-	//}
+		m_pModelCom->Render(i);
+	}
 
 #ifdef _DEBUG
 	//m_pNavigationCom->Render_Navigation();
-	// if(nullptr != m_pColliderCom)
-	//	m_pColliderCom->Render();
+	 if(nullptr != m_pColliderCom)
+		m_pColliderCom->Render();
 #endif
+	 return S_OK;
 }
 
 void Clint::Save(HANDLE hFile, DWORD& dwByte)
