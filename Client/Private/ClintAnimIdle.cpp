@@ -17,23 +17,7 @@ HRESULT ClintAnimIdle::Initialize(Clint* pOwner)
 
 void ClintAnimIdle::Tick(_double TimeDelta)
 {
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
 
-	if(pGameInstance->Get_DIKeyState(DIK_W) || pGameInstance->Get_DIKeyState(DIK_A) ||
-		pGameInstance->Get_DIKeyState(DIK_S) || pGameInstance->Get_DIKeyState(DIK_D))
-	{
-		m_pOwner->Set_ClintAnimState(CLINT_ANIM::RUN, UPPER);
-		m_pOwner->Set_ClintAnimState(CLINT_ANIM::RUN, LOWER);
-	}
-
-	if (pGameInstance->Get_DIKeyState(DIK_SPACE))
-	{
-		m_pOwner->Set_ClintAnimState(CLINT_ANIM::DASH, UPPER);
-		m_pOwner->Set_ClintAnimState(CLINT_ANIM::DASH, LOWER);
-	}
-
-	Safe_Release(pGameInstance);
 }
 
 void ClintAnimIdle::Late_Tick(_double TimeDelta)

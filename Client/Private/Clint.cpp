@@ -1,9 +1,6 @@
 #include "Clint.h"
 #include "GameInstance.h"
-#include "ClintAnimState.h"
-#include "ClintAnimIdle.h"
-#include "ClintAnimRun.h"
-#include "ClintAnimDash.h"
+
 _uint Clint::Clint_Id = 0;
 
 /* Don't Forget Release for the VIBuffer or Model Component*/
@@ -15,21 +12,15 @@ Clint::Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 Clint::Clint(const Clint& rhs)
 	: CGameObject(rhs)
-	, m_pClintAnimStates(rhs.m_pClintAnimStates)
+	, m_eCurAnimState(rhs.m_eCurAnimState)
 {
-	for (auto ClintAnimState : m_pClintAnimStates)
-		Safe_AddRef(ClintAnimState);
+
 }
 
 HRESULT Clint::Initialize_Prototype()
 {
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
-
-	m_pClintAnimStates.resize(static_cast<_int>(CLINT_ANIM::CLINT_ANIM_END));
-	m_pClintAnimStates[static_cast<_uint>(CLINT_ANIM::IDLE)] = ClintAnimIdle::Create(m_pDevice, m_pContext, this);
-	m_pClintAnimStates[static_cast<_uint>(CLINT_ANIM::RUN)] = ClintAnimRun::Create(m_pDevice, m_pContext, this);
-	m_pClintAnimStates[static_cast<_uint>(CLINT_ANIM::DASH)] = ClintAnimDash::Create(m_pDevice, m_pContext, this);
 
 	return S_OK;
 }
@@ -41,13 +32,6 @@ HRESULT Clint::Initialize(void* pArg)
 
 	if (FAILED(Add_Components()))
 		return E_FAIL;
-
-	// 원본에서 결정하면 컴포넌트가 없으므로 클론에서 소유자를 결정해줘야함.
-	for (auto& ClintAnimState : m_pClintAnimStates)
-	{
-		if (ClintAnimState)
-			ClintAnimState->Set_Owner(this);
-	}
 
 	++Clint_Id;
 	m_tInfo.wstrName = TO_WSTR("Clint" + to_string(Clint_Id));
@@ -66,11 +50,10 @@ void Clint::Tick(_double TimeDelta)
 {
 	//__super::Tick(TimeDelta);
 
-	// 현재 애니메이션 상태에 맞는 틱 호출
-	m_pClintAnimStates[(_int)m_eClintAnimState]->Tick(TimeDelta);
-
 	// 렌더러 그룹에 추가
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
+
+	ClintAnimFSM(TimeDelta);
 
 	// TransfomationMatirx의 값을 갱신하고 CombinedTransformationMatrix를 순차적으로 갱신
 	m_pModelCom->Play_Animation(TimeDelta);
@@ -83,8 +66,6 @@ void Clint::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
 
-	// 현재 애니메이션 상태에 맞는 레이트 틱 호출
-	m_pClintAnimStates[(_uint)m_eClintAnimState]->Late_Tick(TimeDelta);
 }
 
 HRESULT Clint::Render()
@@ -128,7 +109,131 @@ void Clint::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 	m_pTransformCom->Load(hFile, dwByte, iLevelIndex);
 }
 
-void Clint::KeyInput(_double& TimeDelta)
+void Clint::ClintAnimFSM(_double TimeDelta)
+{
+	switch (m_eCurAnimState)
+	{
+	case Client::CLINT_ANIM::IDLE:
+		Idle_Node(TimeDelta);
+		break;
+	case Client::CLINT_ANIM::DASH:
+		Dash_Node(TimeDelta);
+		break;
+	case Client::CLINT_ANIM::DEATH:
+		break;
+	case Client::CLINT_ANIM::GRANADE:
+		break;
+	case Client::CLINT_ANIM::HIT:
+		break;
+	case Client::CLINT_ANIM::MVP:
+		break;
+	case Client::CLINT_ANIM::RUN:
+		Run_Node(TimeDelta);
+		break;
+	case Client::CLINT_ANIM::SKILL_01:
+		break;
+	case Client::CLINT_ANIM::SKILL_02:
+		break;
+	case Client::CLINT_ANIM::WEAPONCHANGE:
+		break;
+	default:
+		break;
+	}
+}
+
+void Clint::Idle_Node(_double TimeDelta)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	if (pGameInstance->Get_DIKeyState(DIK_W) || pGameInstance->Get_DIKeyState(DIK_A) ||
+		pGameInstance->Get_DIKeyState(DIK_S) || pGameInstance->Get_DIKeyState(DIK_D))
+	{
+		Set_ClintAnimState(CLINT_ANIM::RUN, UPPER);
+		Set_ClintAnimState(CLINT_ANIM::RUN, LOWER);
+	}
+
+	if (pGameInstance->Get_DIKeyState(DIK_SPACE))
+	{
+		Set_ClintAnimState(CLINT_ANIM::DASH, UPPER);
+		Set_ClintAnimState(CLINT_ANIM::DASH, LOWER);
+	}
+
+	Safe_Release(pGameInstance);
+}
+
+void Clint::Run_Node(_double TimeDelta)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	if (pGameInstance->Get_DIKeyState(DIK_W))
+	{
+		m_pTransformCom->Go_Direction(TimeDelta, CTransform::DIR_N);
+		m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(0.f));
+	}
+
+	if (pGameInstance->Get_DIKeyState(DIK_A))
+	{
+		m_pTransformCom->Go_Direction(TimeDelta, CTransform::DIR_W);
+		m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-90.f));
+	}
+
+	if (pGameInstance->Get_DIKeyState(DIK_S))
+	{
+		m_pTransformCom->Go_Direction(TimeDelta, CTransform::DIR_S);
+		m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.f));
+	}
+
+	if (pGameInstance->Get_DIKeyState(DIK_D))
+	{
+		m_pTransformCom->Go_Direction(TimeDelta, CTransform::DIR_E);
+		m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f));
+	}
+
+	if (pGameInstance->Get_DIKeyState(DIK_SPACE))
+	{
+		if (pGameInstance->Get_DIKeyState(DIK_W))
+		{
+			m_pModelCom->RootMotion(TimeDelta, CTransform::DIR_N);
+		}
+		else if (pGameInstance->Get_DIKeyState(DIK_A))
+		{
+			m_pModelCom->RootMotion(TimeDelta, CTransform::DIR_W);
+		}
+		else if (pGameInstance->Get_DIKeyState(DIK_S))
+		{
+			m_pModelCom->RootMotion(TimeDelta, CTransform::DIR_S);
+		}
+		else if (pGameInstance->Get_DIKeyState(DIK_D))
+		{
+			m_pModelCom->RootMotion(TimeDelta, CTransform::DIR_E);
+		}
+
+		Set_ClintAnimState(CLINT_ANIM::DASH, UPPER);
+		Set_ClintAnimState(CLINT_ANIM::DASH, LOWER);
+	}
+
+	Safe_Release(pGameInstance);
+}
+
+void Clint::Dash_Node(_double TimeDelta)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	if (m_pModelCom->IsAnimationFinished())
+	{
+		Set_ClintAnimState(CLINT_ANIM::IDLE, LOWER);
+		Set_ClintAnimState(CLINT_ANIM::IDLE, UPPER);
+	}
+
+	m_pModelCom->RootMotion(TimeDelta, m_pTransformCom->GetCurDirection());
+
+	Safe_Release(pGameInstance);
+}
+
+void Clint::KeyInput(_double TimeDelta)
 {
 	if (g_hWnd != ::GetFocus())
 		return;
@@ -193,7 +298,7 @@ HRESULT Clint::SetUp_ShaderResources()
 void Clint::Set_ClintAnimState(CLINT_ANIM eClintAnim, BODY eBody)
 {
 	if(BODY_END != eBody)
-		m_eClintAnimState = eClintAnim;
+		m_eCurAnimState = eClintAnim;
 
 	switch (eClintAnim)
 	{
@@ -259,10 +364,6 @@ CGameObject* Clint::Clone(void* pArg)
 void Clint::Free(void)
 {
 	__super::Free();
-
-	for (auto& ClintAnimState : m_pClintAnimStates)
-		Safe_Release(ClintAnimState);
-	m_pClintAnimStates.clear();
 
 	--Clint_Id;
 	Safe_Release(m_pNavigationCom);

@@ -45,7 +45,14 @@ public:
 	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
 
 private:
-	void KeyInput(_double& TimeDelta);
+	void KeyInput(_double TimeDelta);
+
+private: /* For. Clint FSM*/
+	void ClintAnimFSM(_double TimeDelta);
+
+	void Idle_Node(_double TimeDelta);
+	void Run_Node(_double TimeDelta);
+	void Dash_Node(_double TimeDelta);
 
 private: /* For. Component */
 	ClintModel* m_pModelCom = { nullptr };
@@ -58,9 +65,8 @@ private: /* For. Component */
 	// Can declare VIBuffer or Model Com
 
 private:
-	vector<class ClintAnimState*> m_pClintAnimStates;
-	CLINT_ANIM	m_eClintAnimState = { CLINT_ANIM::IDLE };
-	
+	CLINT_ANIM	m_eCurAnimState = { CLINT_ANIM::IDLE };
+
 private:
 	static _uint Clint_Id;
 

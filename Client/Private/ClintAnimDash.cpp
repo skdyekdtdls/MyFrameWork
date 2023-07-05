@@ -18,21 +18,7 @@ HRESULT ClintAnimDash::Initialize(Clint* pOwner)
 
 void ClintAnimDash::Tick(_double TimeDelta)
 {
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
-
-	ClintModel* pModel = m_pOwner->GetComponent<ClintModel>();
 	
-	if (pModel->IsAnimationFinished())
-	{
-		m_pOwner->Set_ClintAnimState(CLINT_ANIM::IDLE, LOWER);
-		m_pOwner->Set_ClintAnimState(CLINT_ANIM::IDLE, UPPER);
-	}
-
-	CTransform* pTransform = m_pOwner->GetComponent<CTransform>();
-	pModel->RootMotion(TimeDelta, pTransform->GetCurDirection());
-	
-	Safe_Release(pGameInstance);
 }
 
 void ClintAnimDash::Late_Tick(_double TimeDelta)
