@@ -18,13 +18,18 @@ private:
 	explicit ClintModel(const ClintModel& rhs);
 	virtual ~ClintModel() = default;
 
+public: /* Getter*/
+	//virtual class CBone* GetBoneByIndex(_uint iIndex) override;
+
 public:
 	void GroupingBones();
 	virtual HRESULT Initialize(void* pArg) override;
 	void Set_AnimByIndex(_uint iAnimIndex, BODY eBody);
 
 public:
+	virtual void ResetAnimation(_int iIndex = -1, BODY eBody = UPPER) override;
 	virtual void Play_Animation(_double TimeDelta) override;
+	virtual _bool IsAnimationFinished(BODY eBody) override;
 
 private:
 	_uint				m_iCurrentAnimIndex[BODY_END];

@@ -24,8 +24,13 @@ public: // Getter
 	char* GetName() {
 		return m_szName;
 	}
+
 	_uint Get_NumChannels() {
 		return m_Channels.size();
+	}
+
+	_float Get_Duration() {
+		return m_Duration;
 	}
 
 	// 채널주소를 반환, 시간 복잡도O(1)
@@ -60,6 +65,14 @@ public:
 	void Reset();
 	void Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeDelta, BODY eBody = BODY_END);
 	void InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _double TimeAcc, BODY eBody = BODY_END);
+	
+	// 타임라인 관리 함수들
+	HRESULT Add_TimeLineEvent(const _tchar* pTag, TIMELINE_EVENT timeLineEvent);
+	void Delete_TimeLineEvent(const _tchar* pTag);
+	const TIMELINE_EVENT* Get_TimeLineEvent(const _tchar* pTag);
+
+private:
+	TIMELINE_EVENT* Find_TimeLine(const _tchar* pTag);
 
 private:
 	char						m_szName[MAX_PATH];
@@ -72,6 +85,9 @@ private:
 
 	_bool						m_isFinished = { false };
 	_bool						m_isLoop;
+	_uint						m_iCurKeyFrame = { 0 };
+
+	unordered_map<const _tchar*, TIMELINE_EVENT>	m_TimeLineEvents;
 
 public:
 	static CAnimation* Create(const aiAnimation* pAIAnimation, const CModel::BONES& Bones);

@@ -192,10 +192,11 @@
     <ClInclude Include="..\public\Cage.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\public\Clint.h" />
-    <ClInclude Include="..\Public\ClintAnimDash.h" />
-    <ClInclude Include="..\public\ClintAnimIdle.h" />
-    <ClInclude Include="..\public\ClintAnimRun.h" />
-    <ClInclude Include="..\public\ClintAnimState.h" />
+    <ClInclude Include="..\Public\ClintDash.h" />
+    <ClInclude Include="..\public\ClintIdle.h" />
+    <ClInclude Include="..\public\ClintRun.h" />
+    <ClInclude Include="..\public\ClintShoot.h" />
+    <ClInclude Include="..\public\ClintState.h" />
     <ClInclude Include="..\Public\ClintModel.h" />
     <ClInclude Include="..\Public\ImGuiFileDialog.h" />
     <ClInclude Include="..\Public\ImGuiFileDialogConfig.h" />
@@ -246,6 +247,7 @@
     <ClInclude Include="..\Public\MainApp.h" />
     <ClInclude Include="..\public\Fiona.h" />
     <ClInclude Include="..\public\ForkLift.h" />
+    <ClInclude Include="..\public\Pistola.h" />
     <ClInclude Include="..\public\RailSupportA.h" />
     <ClInclude Include="..\public\RailSupportB.h" />
     <ClInclude Include="..\public\Rock.h" />
@@ -315,10 +317,11 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\private\Clint.cpp" />
-    <ClCompile Include="..\Private\ClintAnimDash.cpp" />
-    <ClCompile Include="..\private\ClintAnimIdle.cpp" />
-    <ClCompile Include="..\private\ClintAnimRun.cpp" />
-    <ClCompile Include="..\private\ClintAnimState.cpp" />
+    <ClCompile Include="..\Private\ClintDash.cpp" />
+    <ClCompile Include="..\private\ClintIdle.cpp" />
+    <ClCompile Include="..\private\ClintRun.cpp" />
+    <ClCompile Include="..\private\ClintShoot.cpp" />
+    <ClCompile Include="..\private\ClintState.cpp" />
     <ClCompile Include="..\private\ClintModel.cpp" />
     <ClCompile Include="..\Private\ImGuiFileDialog.cpp" />
     <ClCompile Include="..\private\ImWindow_AnimationTool.cpp" />
@@ -383,6 +386,7 @@
     </ClCompile>
     <ClCompile Include="..\private\Fiona.cpp" />
     <ClCompile Include="..\private\ForkLift.cpp" />
+    <ClCompile Include="..\private\Pistola.cpp" />
     <ClCompile Include="..\private\RailSupportA.cpp" />
     <ClCompile Include="..\private\RailSupportB.cpp" />
     <ClCompile Include="..\private\Rock.cpp" />

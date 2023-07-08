@@ -200,7 +200,6 @@ void CImWindow_MapTool::CreateTriangleStrip()
 		if (!tCellPickDesces.empty())
 		{
 			vPickPos = *(_float3*)&tCellPickDesces[0].vPickPos;
-			cout << tCellPickDesces.size();
 		}
 
 		if (nullptr == tPickDesc.pPickedObject && tCellPickDesces.empty())

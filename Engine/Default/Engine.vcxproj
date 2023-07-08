@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Animation.h" />
-    <ClInclude Include="..\public\AnimState.h" />
     <ClInclude Include="..\Public\Assimp_Struct.h" />
     <ClInclude Include="..\Public\Base.h" />
     <ClInclude Include="..\public\Bone.h" />
@@ -43,6 +42,7 @@
     <ClInclude Include="..\Public\Graphic_Device.h" />
     <ClInclude Include="..\public\Input_Device.h" />
     <ClInclude Include="..\Public\ISerializable.h" />
+    <ClInclude Include="..\Public\IStateMachine.h" />
     <ClInclude Include="..\public\Layer.h" />
     <ClInclude Include="..\public\Level.h" />
     <ClInclude Include="..\public\Level_Manager.h" />
@@ -68,7 +68,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Animation.cpp" />
-    <ClCompile Include="..\private\AnimState.cpp" />
     <ClCompile Include="..\Private\Assimp_Struct.cpp" />
     <ClCompile Include="..\Private\Base.cpp" />
     <ClCompile Include="..\private\Bone.cpp" />

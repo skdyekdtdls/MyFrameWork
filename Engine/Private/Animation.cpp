@@ -14,6 +14,8 @@ CAnimation::CAnimation(const CAnimation& rhs)
 	, m_TimeAcc(rhs.m_TimeAcc)
 	, m_isFinished(rhs.m_isFinished)
 	, m_isLoop(rhs.m_isLoop)
+	, m_iCurKeyFrame(rhs.m_iCurKeyFrame)
+	, m_TimeLineEvents(rhs.m_TimeLineEvents)
 {
 	strcpy_s(m_szName, rhs.m_szName);
 
@@ -107,7 +109,8 @@ void CAnimation::Reset()
 	if (false == m_isLoop)
 		m_isFinished = false;
 
-	m_TimeAcc = 0.0;
+	m_iCurKeyFrame = { 0 };
+	m_TimeAcc = { 0.0 };
 	for (auto& pChannelIndex : m_ChannelCurrentKeyFrames)
 		pChannelIndex = { 0 };
 }
@@ -124,6 +127,8 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 		}
 		else
 			m_isFinished = true;
+
+		m_iCurKeyFrame = 0;
 	}
 
 	/* 현재 재생된 시간에 맞도록 모든 뼈의 상태를 키프레임정보를 기반으로하여 갱신한다. */
@@ -135,6 +140,17 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 
 		pChannel->Invalidate_TransformationMatrix(Bones, m_TimeAcc, &m_ChannelCurrentKeyFrames[iChannelIndex++], eBody);
 	}
+
+	if (0 == strcmp(m_szName, "Clint_basic_shoot") && FloatEqual(m_TimeAcc, 30.0, TimeDelta))
+		cout << "적중 : " << m_TimeAcc << endl;
+
+	// 나중에는 상체만 실행하던지, 하체만 실행하던지, 아니면 상속을하던지 고쳐야함.
+	for (auto& Pair : m_TimeLineEvents)
+	{
+		// 시간값이 일치하면 실행한다.
+		if (FloatEqual(Pair.second.first, m_TimeAcc, TimeDelta))
+			Pair.second.second();
+	}
 }
 
 void CAnimation::InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _double TimeAcc, BODY eBody)
@@ -143,6 +159,36 @@ void CAnimation::InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _doubl
 	{
 		Channel->InterAnimation_TransfomationMatrix(Bones, TimeAcc, eBody);
 	}
+}
+
+HRESULT CAnimation::Add_TimeLineEvent(const _tchar* pTag, TIMELINE_EVENT timeLineEvent)
+{
+	if (timeLineEvent.first > m_Duration)
+		return E_FAIL;
+
+	m_TimeLineEvents.emplace(pTag, timeLineEvent);
+
+	return S_OK;
+}
+
+void CAnimation::Delete_TimeLineEvent(const _tchar* pTag)
+{
+	m_TimeLineEvents.erase(pTag);
+}
+
+const TIMELINE_EVENT* CAnimation::Get_TimeLineEvent(const _tchar* pTag)
+{
+	return Find_TimeLine(pTag);
+}
+
+TIMELINE_EVENT* CAnimation::Find_TimeLine(const _tchar* pTag)
+{
+	auto iter = find_if(m_TimeLineEvents.begin(), m_TimeLineEvents.end(), CTag_Finder(pTag));
+	
+	if (iter == m_TimeLineEvents.end())
+		return nullptr;
+
+	return &(iter->second);
 }
 
 void CAnimation::SaveData(HANDLE hFile, DWORD& dwByte)
@@ -179,5 +225,5 @@ void CAnimation::Free()
 	for (auto& pChannel : m_Channels)
 		Safe_Release(pChannel);
 	m_Channels.clear();
-
+	m_TimeLineEvents.clear();
 }

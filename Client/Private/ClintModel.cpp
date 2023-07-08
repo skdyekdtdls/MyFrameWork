@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "GameObject.h"
 #include "Clint.h"
+
 ClintModel::ClintModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CModel(pDevice, pContext)
 {
@@ -19,7 +20,6 @@ ClintModel::ClintModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 	for (size_t i = 0; i < (size_t)BODY::BODY_END; ++i)
 		m_InterTimeAcc[i] = { 0.0 };
-
 }
 
 ClintModel::ClintModel(const ClintModel& rhs)
@@ -33,6 +33,8 @@ ClintModel::ClintModel(const ClintModel& rhs)
 
 	for (size_t i = 0; i < (size_t)BODY::BODY_END; ++i)
 		m_InterTimeAcc[i] = rhs.m_InterTimeAcc[i];
+
+
 
 	for (size_t i = 0; i < (size_t)BODY::BODY_END; ++i)
 	{
@@ -91,6 +93,11 @@ void ClintModel::GroupingBones()
 HRESULT ClintModel::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
+
+	Add_TimeLineEvent("Clint_basic_shoot", L"Test", TIMELINE_EVENT(30.0, [this]() {
+		m_Animationss[UPPER][5]->Reset();
+		}));
+
 	return S_OK;
 }
 
@@ -112,6 +119,16 @@ void ClintModel::Set_AnimByIndex(_uint iAnimIndex, BODY eBody)
 	m_Animationss[(_uint)eBody][iAnimIndex]->Reset();
 	m_InterTimeAcc[eBody] = 0.0;
 	m_iCurrentAnimIndex[(_int)eBody] = iAnimIndex;
+}
+
+void ClintModel::ResetAnimation(_int iIndex, BODY eBody)
+{
+	if (iIndex < 0)
+	{
+		m_Animationss[eBody][m_iCurrentAnimIndex[eBody]]->Reset();
+		return;
+	}
+	m_Animationss[eBody][iIndex]->Reset();
 }
 
 void ClintModel::Play_Animation(_double TimeDelta)
@@ -151,6 +168,18 @@ void ClintModel::Play_Animation(_double TimeDelta)
 	}
 }
 
+_bool ClintModel::IsAnimationFinished(BODY eBody)
+{
+	if (m_Animationss[eBody][m_iCurrentAnimIndex[eBody]]->IsFinished())
+	{
+		m_PrevMoveDistance = { 0.f };
+		m_RootMoveDistance = { 0.f };
+		return true;
+	}
+
+	return false;
+}
+
 ClintModel* ClintModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _fmatrix PivotMatrix, _int RootIndex)
 {
 	ClintModel* pModel = new ClintModel(pDevice, pContext);
@@ -185,4 +214,3 @@ void ClintModel::Free()
 		m_Animationss[i].clear();
 	}
 }
-

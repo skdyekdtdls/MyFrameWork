@@ -45,6 +45,7 @@ namespace fs = std::filesystem;
 
 BEGIN(Engine)
 typedef unordered_map<const _tchar*, class CLayer*> LAYERS;
+typedef pair <_double, function<void()> > TIMELINE_EVENT;
 END
 
 #include "DirectXTK/DDSTextureLoader.h"

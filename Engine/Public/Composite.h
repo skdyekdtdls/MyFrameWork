@@ -24,6 +24,7 @@ public:
 	virtual HRESULT Render();
 
 	HRESULT Add_Component(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pComponentTag, _Inout_ CComponent** ppOut, void* pArg);
+	HRESULT Add_Composite(const _tchar* pPrototypeTag, const _tchar* pComponentTag, _Inout_ CComponent** ppOut, void* pArg);
 	CComponent* Get_Component(const _tchar* pComponent);
 
 	template <typename T>

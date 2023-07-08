@@ -48,15 +48,19 @@ public:
 	}
 
 	// 시간복잡도 O(1)
-	class CBone* GetBoneByIndex(_uint iIndex) {
+	virtual class CBone* GetBoneByIndex(_uint iIndex) {
 		return m_Bones[iIndex];
 	}
+
 	_float3 GetPivotMatrixScale();
 	// 시간복잡도 O(n)
-	class CBone* GetBoneByName(string strName);
+	virtual class CBone* GetBoneByName(string strName);
 	class CBone* GetRootNode() {
 		if (-1 == m_RootIndex) return nullptr;
 		return m_Bones[m_RootIndex];
+	}
+	_float4x4 GetPivotMatrix() {
+		return m_PivotMatrix;
 	}
 
 public: /* Setter */
@@ -77,22 +81,26 @@ public: /* For.Assimp*/
 public:
 	virtual HRESULT Initialize_Prototype(const aiScene * pAIScene, TYPE eType, fs::path pModelFilePath, _fmatrix PivotMatrix);
 	virtual HRESULT Initialize(void* pArg);
-	HRESULT Late_Initialize(const _tchar* pAnimFilePath = nullptr);
+	HRESULT Late_Initialize(const _tchar* pAnimFilePath);
 public:
 	virtual HRESULT Render(_uint iMeshIndex);
 
 public:
 	virtual void Play_Animation(_double TimeDelta);
-	_bool IsAnimationFinished();
+	virtual _bool IsAnimationFinished(BODY eBody);
 
 	// 인자로 아무것도 들어오지 않거나 음수가 들어오면 현재 애니메이션 리셋
-	void ResetAnimation(_int iIndex = -1);
+	virtual void ResetAnimation(_int iIndex = -1, BODY eBody = UPPER);
 	void RootMotion(_double TimeDelta, CTransform::DIRECTION eDir);
-	_float RootMoveDistance();
 
 public:
 	HRESULT Bind_Material(class CShader* pShader, const char* pConstantName, _uint iMeshIndex, TextureType MaterialType);
 	HRESULT Bind_BoneMatrices(class CShader* pShader, const char* pConstantName, _uint iMeshIndex);
+
+public:
+	virtual HRESULT Add_TimeLineEvent(string strAnimName, const _tchar* pTag, TIMELINE_EVENT tTimeLineEvent);
+	void Delete_TimeLineEvent(string strAnimName, const _tchar* pTag);
+	const TIMELINE_EVENT* Get_TimeLineEvent(string strAnimName, const _tchar* pTag);
 
 protected: /* For.Bones*/
 	_uint						m_iNumBones = { 0 };
@@ -121,6 +129,7 @@ protected:
 	_float4x4		m_PivotMatrix;
 	TYPE			m_eAnimType = { TYPE_END };
 	_double			m_InterTimeAcc = { 0.0 };
+
 protected:
 	HRESULT LoadModel(const _tchar* pModelFilePath, _Inout_ SCENE& tScene, _Out_ fs::path& ModelFilePath, _fmatrix PivotMatrix);
 	fs::path FindModelDirecotyPath(fs::path ModelPath, fs::path Stem);

@@ -118,7 +118,6 @@ _bool CCell::is_In(_fvector vPosition, _int* pNeighborIndex, NEIGHBOR& eNeighbor
 		if (0 < XMVectorGetX(XMVector3Dot(vDir, vNormal)))
 		{
 			eNeighbor = static_cast<NEIGHBOR>(i);
-			cout << "ÀÌ¿ô ÀÎµ¦½º : " << m_iNeighborIndices[i] << endl;
 			*pNeighborIndex = m_iNeighborIndices[i];
 			return false;
 		}

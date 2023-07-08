@@ -1,7 +1,0 @@
-#pragma once
-
-namespace Engine
-{
-	enum POINT { POINT_A, POINT_B, POINT_C, POINT_END };
-	enum NEIGHBOR { NEIGHBOR_AB, NEIGHBOR_BC, NEIGHBOR_CA, NEIGHBOR_END };
-}
