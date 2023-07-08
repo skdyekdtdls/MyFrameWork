@@ -1,48 +1,53 @@
-#include "..\Public\ClintAnimRun.h"
+#include "..\Public\ClintRun.h"
 #include "GameInstance.h"
 #include "Clint.h"
 
-ClintAnimRun::ClintAnimRun(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	: ClintAnimState(pDevice, pContext)
+ClintRun::ClintRun(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, Clint* pClint)
+	: ClintState(pDevice, pContext, pClint)
 {
-
 }
 
-HRESULT ClintAnimRun::Initialize(Clint* pOwner)
+void ClintRun::OnStateEnter()
 {
-	__super::Initialize(pOwner);
-
-	return S_OK;
+	__super::OnStateEnter();
+	SetAnimIndex(CLINT_ANIM_RUN, UPPER);
+	SetAnimIndex(CLINT_ANIM_RUN, LOWER);
 }
 
-void ClintAnimRun::Tick(_double TimeDelta)
+void ClintRun::OnStateTick(_double TimeDelta)
 {
+	__super::OnStateTick(TimeDelta);
+
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
-	CTransform* pTransform = m_pOwner->GetComponent<CTransform>();
-	CModel* pModel = m_pOwner->GetComponent<CModel>();
+	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
+	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
+
+	pModel->Set_AnimByIndex(CLINT_ANIM_RUN, UPPER);
+	pModel->Set_AnimByIndex(CLINT_ANIM_RUN, LOWER);
 	if (pGameInstance->Get_DIKeyState(DIK_W))
 	{
 		pTransform->Go_Direction(TimeDelta, CTransform::DIR_N);
 		pTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(0.f));
 	}
-
-	if (pGameInstance->Get_DIKeyState(DIK_A))
+	else if (pGameInstance->Get_DIKeyState(DIK_A))
 	{
 		pTransform->Go_Direction(TimeDelta, CTransform::DIR_W);
 		pTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-90.f));
 	}
-
-	if(pGameInstance->Get_DIKeyState(DIK_S))
+	else if (pGameInstance->Get_DIKeyState(DIK_S))
 	{
 		pTransform->Go_Direction(TimeDelta, CTransform::DIR_S);
 		pTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.f));
 	}
-
-	if (pGameInstance->Get_DIKeyState(DIK_D))
+	else if (pGameInstance->Get_DIKeyState(DIK_D))
 	{
 		pTransform->Go_Direction(TimeDelta, CTransform::DIR_E);
 		pTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f));
+	}
+	else
+	{
+		m_pOwner->TransitionTo(L"ClintIdle");
 	}
 
 	if (pGameInstance->Get_DIKeyState(DIK_SPACE))
@@ -64,31 +69,27 @@ void ClintAnimRun::Tick(_double TimeDelta)
 			pModel->RootMotion(TimeDelta, CTransform::DIR_E);
 		}
 
-		m_pOwner->Set_ClintAnimState(CLINT_ANIM::DASH, UPPER);
-		m_pOwner->Set_ClintAnimState(CLINT_ANIM::DASH, LOWER);
+		m_pOwner->TransitionTo(L"ClintDash");
+	}
+	else if (pGameInstance->Get_DIMouseState(CInput_Device::DIMK_LBUTTON))
+	{
+		m_pOwner->TransitionTo(L"ClintShoot");
 	}
 
 	Safe_Release(pGameInstance);
 }
 
-void ClintAnimRun::Late_Tick(_double TimeDelta)
+void ClintRun::OnStateExit()
 {
+	__super::OnStateExit();
 }
 
-ClintAnimRun* ClintAnimRun::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, Clint* pClint)
+ClintRun* ClintRun::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, Clint* pClint)
 {
-	ClintAnimRun* pInstance = new ClintAnimRun(pDevice, pContext);
-
-	if (pInstance->Initialize(pClint))
-	{
-		MSG_BOX("Failed to Create ClintAnimRun");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
+	return new ClintRun(pDevice, pContext, pClint);
 }
 
-void ClintAnimRun::Free()
+void ClintRun::Free()
 {
 	__super::Free();
 }

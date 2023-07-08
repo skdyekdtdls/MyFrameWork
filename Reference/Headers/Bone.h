@@ -27,6 +27,10 @@ public: /* Getter */
 		return m_CombinedTransformationMatrix;
 	}
 
+	const _float4x4* Get_CombinedTransformationMatrixPtr() const {
+		return &m_CombinedTransformationMatrix;
+	}
+
 	_int GetParentIndex() {
 		return m_iParentIndex;
 	}
@@ -57,7 +61,15 @@ public: /* Getter */
 		return m_eBody;
 	}
 
+	_bool IsCombined() {
+		return m_bCombined;
+	}
 public:/* Setter */
+
+	void SetCombined() {
+		m_bCombined = true;
+	}
+
 	void Set_Body(BODY eBody) {
 		m_eBody = eBody;
 	}
@@ -96,6 +108,7 @@ private:
 	_float4x4		m_TransformationMatrix;
 	KEYFRAME		m_tCurKeyFrameState;
 
+	_bool			m_bCombined = { false };
 	_float4x4		m_CombinedTransformationMatrix;
 	_float4x4		m_OffsetMatrix;
 	_int			m_iParentIndex = { -1 };

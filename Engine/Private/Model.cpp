@@ -323,8 +323,9 @@ void CModel::Play_Animation(_double TimeDelta)
 
 		if (m_InterTimeAcc > 0.2)
 		{
+			m_Animations[m_iPrevAnimIndex]->m_isFinished = true;
 			m_iPrevAnimIndex = m_iCurrentAnimIndex;
-			m_Animations[m_iCurrentAnimIndex]->Reset();
+			m_Animations[m_iCurrentAnimIndex]->Reset(); // 현재 시작하려는 애니메이션을 준비한다.
 		}
 		else
 		{
@@ -336,19 +337,18 @@ void CModel::Play_Animation(_double TimeDelta)
 		m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(m_Bones, TimeDelta);
 	}
 
-
 	m_RootMoveDistance = m_Bones[m_RootIndex]->GetTransformationMatrix_43();
 	m_Bones[m_RootIndex]->FixBone();
-
+	
 	for (auto& Bone : m_Bones)
 	{
 		Bone->Invalidate_CombinedTransformationMatrix(m_Bones);
 	}
 }
 
-_bool CModel::IsAnimationFinished()
+_bool CModel::IsAnimationFinished(BODY eBody)
 {
-	if (m_Animations[m_iCurrentAnimIndex]->IsFinished())
+	if (m_Animations[m_iPrevAnimIndex]->IsFinished())
 	{
 		m_PrevMoveDistance = { 0.f };
 		m_RootMoveDistance = { 0.f };
@@ -358,7 +358,7 @@ _bool CModel::IsAnimationFinished()
 	return false;
 }
 
-void CModel::ResetAnimation(_int iIndex)
+void CModel::ResetAnimation(_int iIndex, BODY eBody)
 {
 	if (iIndex < 0)
 	{
@@ -401,6 +401,36 @@ HRESULT CModel::Bind_BoneMatrices(CShader* pShader, const char* pConstantName, _
 	pShader->Bind_Matrices(pConstantName, BoneMatrices, 256);
 
 	return S_OK;
+}
+
+HRESULT CModel::Add_TimeLineEvent(string strAnimName, const _tchar* pTag, TIMELINE_EVENT tTimeLineEvent)
+{
+	CAnimation* pAnimation = Get_AnimationByName(strAnimName);
+	if (nullptr == pAnimation)
+		return E_FAIL;
+
+	pAnimation->Add_TimeLineEvent(pTag, tTimeLineEvent);
+
+	return S_OK;
+}
+
+void CModel::Delete_TimeLineEvent(string strAnimName, const _tchar* pTag)
+{
+	CAnimation* pAnimation = Get_AnimationByName(strAnimName);
+	if (nullptr == pAnimation)
+		return;
+
+	pAnimation->Delete_TimeLineEvent(pTag);
+}
+
+const TIMELINE_EVENT* CModel::Get_TimeLineEvent(string strAnimName, const _tchar* pTag)
+{
+	CAnimation* pAnimation = Get_AnimationByName(strAnimName);
+	
+	if (nullptr == pAnimation)
+		return nullptr;
+
+	return pAnimation->Get_TimeLineEvent(pTag);
 }
 
 HRESULT CModel::Ready_Bones(aiNode* pNode, CBone* pParent)

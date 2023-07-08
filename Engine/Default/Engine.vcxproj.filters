@@ -118,9 +118,6 @@
     <ClCompile Include="..\Private\ColliderSphere.cpp">
       <Filter>01. Utility\03. Components\Collider\ColliderSphere</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\AnimState.cpp">
-      <Filter>98. Interface\State</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Graphic_Device.h">
@@ -258,8 +255,8 @@
     <ClInclude Include="..\Public\ColliderSphere.h">
       <Filter>01. Utility\03. Components\Collider\ColliderSphere</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\AnimState.h">
-      <Filter>98. Interface\State</Filter>
+    <ClInclude Include="..\Public\IStateMachine.h">
+      <Filter>98. Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -397,9 +394,6 @@
     </Filter>
     <Filter Include="01. Utility\03. Components\Collider\ColliderOBB">
       <UniqueIdentifier>{7641eb8b-06d5-4ca7-9be5-e3905a9df8c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="98. Interface\State">
-      <UniqueIdentifier>{2c84aa1c-64de-41d4-b949-703b07286c17}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

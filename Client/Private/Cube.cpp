@@ -40,8 +40,6 @@ HRESULT CCube::Initialize(void* pArg)
 		vPosition += XMLoadFloat4(&tCloneDesc.vPosition);
 		m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPosition);
 		
-		static int count = 0;
-		cout << ++count << endl;
 	}
 	
 	return S_OK;

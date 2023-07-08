@@ -1,5 +1,6 @@
 #include "..\Public\Composite.h"
 #include "GameInstance.h"
+#include "GameObject.h"
 
 CComposite::CComposite(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComponent(pDevice, pContext)
@@ -54,6 +55,26 @@ HRESULT CComposite::Add_Component(_uint iLevelIndex, const _tchar* pPrototypeTag
 	*ppOut = pComponent;
 
 	Safe_AddRef(pComponent);
+
+	Safe_Release(pGameInstance);
+
+	return S_OK;
+}
+
+HRESULT CComposite::Add_Composite(const _tchar* pPrototypeTag, const _tchar* pComponentTag, CComponent** ppOut, void* pArg)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	CGameObject* pComposite = pGameInstance->Clone_GameObject(pPrototypeTag, pArg);
+	if (nullptr == pComposite)
+		return E_FAIL;
+
+	m_Components.emplace(pComponentTag, pComposite);
+
+	*ppOut = pComposite;
+
+	Safe_AddRef(pComposite);
 
 	Safe_Release(pGameInstance);
 

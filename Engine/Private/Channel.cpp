@@ -86,10 +86,10 @@ HRESULT CChannel::Initialize(const aiNodeAnim* pAIChannel, const CModel::BONES& 
 	return S_OK;
 }
 
-void CChannel::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeAcc, _uint* pCurrentKeyFrameIndex, BODY eBody)
+_uint CChannel::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeAcc, _uint* pCurrentKeyFrameIndex, BODY eBody)
 {
 	if (BODY_END != eBody && Bones[m_iBoneIndex]->Get_Body() != eBody)
-		return;
+		return 0;
 
 	if (0.0 == TimeAcc)
 		*pCurrentKeyFrameIndex = { 0 };
@@ -146,6 +146,8 @@ void CChannel::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double Tim
 
 	// 상태 행렬을 뼈에 기록한다.
 	Bones[m_iBoneIndex]->Set_TransformationMatrix(TransformationMatrix);
+
+	return *pCurrentKeyFrameIndex;
 }
 
 void CChannel::InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _double TimeAcc, BODY eBody)

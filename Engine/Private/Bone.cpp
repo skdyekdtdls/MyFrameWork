@@ -2,6 +2,9 @@
 
 CBone::CBone()
 {
+	XMStoreFloat4x4(&m_TransformationMatrix, XMMatrixIdentity());
+	XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMMatrixIdentity());
+	XMStoreFloat4x4(&m_OffsetMatrix, XMMatrixIdentity());
 }
 
 CBone::CBone(const CBone& rhs)
@@ -56,8 +59,6 @@ _float4 CBone::GetQuaternion()
 
 _float3 CBone::GetTranslation()
 {
-	cout << m_TransformationMatrix._43 << endl;
-	
 	return _float3(m_TransformationMatrix._41
 		, m_TransformationMatrix._42
 		, m_TransformationMatrix._43);
@@ -92,6 +93,7 @@ void CBone::Invalidate_CombinedTransformationMatrix(const CModel::BONES& Bones)
 		_float4x4 ParentTransformationMatrix = Bones[m_iParentIndex]->Get_CombinedTransformationMatrix();
 		XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMLoadFloat4x4(&m_TransformationMatrix) * XMLoadFloat4x4(&ParentTransformationMatrix));
 	}
+
 }
 
 CBone* CBone::Create(aiNode* pAINode, CBone* pParent, _uint iIndex)
