@@ -5,6 +5,7 @@
 #include "ClintRun.h"
 #include "ClintDash.h"
 #include "ClintShoot.h"
+#include "Animation.h"
 _uint Clint::Clint_Id = 0;
 
 /* Don't Forget Release for the VIBuffer or Model Component*/
@@ -51,6 +52,15 @@ HRESULT Clint::Initialize(void* pArg)
 	Add_State(L"ClintShoot", ClintShoot::Create(m_pDevice, m_pContext, this));
 	TransitionTo(L"ClintIdle");
 
+	// 노티파이.
+	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"Test", TIMELINE_EVENT(24.0, [this]() {
+		cout << "사운드 재생" << endl;
+		}));
+
+	// 총쏘기 지속시간을 조정.
+	CAnimation* pAnimation = m_pModelCom->GetAnimationByName("Clint_basic_shoot", UPPER);
+	pAnimation->SetDuration(25.0);
+
 	CGAMEOBJECT_DESC tCloneDesc;
 	if (nullptr != pArg)
 		tCloneDesc = *(CGAMEOBJECT_DESC*)pArg;
@@ -70,7 +80,8 @@ void Clint::Tick(_double TimeDelta)
 		m_pCurState->OnStateTick(TimeDelta);
 
 	// TransfomationMatirx의 값을 갱신하고 CombinedTransformationMatrix를 순차적으로 갱신
-	m_pModelCom->Play_Animation(TimeDelta);
+	m_pModelCom->Play_Animation(TimeDelta, LOWER);
+	m_pModelCom->Play_Animation(TimeDelta, UPPER);
 
 	if(nullptr != m_pColliderCom)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
@@ -160,7 +171,7 @@ HRESULT Clint::Add_Components()
 	CShader::CSHADER_DESC tShaderDesc; tShaderDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxAnimMesh", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
 
-	ClintModel::CLINT_MODEL_DESC tModelDesc; tModelDesc.pOwner = this;
+	CModel::CMODEL_DESC tModelDesc; tModelDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Clint", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
 
 	CNavigation::CNAVIGATION_DESC tNavigationdesc; tNavigationdesc.pOwner = this;

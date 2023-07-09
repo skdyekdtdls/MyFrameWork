@@ -1,7 +1,7 @@
 #include "..\Public\ClintDash.h"
 #include "GameInstance.h"
 #include "Clint.h"
-#include "ClintModel.h"
+#include "Model.h"
 
 ClintDash::ClintDash(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, Clint* pClint)
 	: ClintState(pDevice, pContext, pClint)
@@ -12,8 +12,8 @@ void ClintDash::OnStateEnter()
 {
 	__super::OnStateEnter();
 
-	m_pOwner->GetComponent<ClintModel>()->Set_AnimByIndex(CLINT_ANIM_DASH, UPPER);
-	m_pOwner->GetComponent<ClintModel>()->Set_AnimByIndex(CLINT_ANIM_DASH, LOWER);
+	m_pOwner->GetComponent<CModel>()->Set_AnimByIndex(CLINT_ANIM_DASH, UPPER);
+	m_pOwner->GetComponent<CModel>()->Set_AnimByIndex(CLINT_ANIM_DASH, LOWER);
 }
 
 void ClintDash::OnStateTick(_double TimeDelta)
@@ -25,7 +25,7 @@ void ClintDash::OnStateTick(_double TimeDelta)
 	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
 	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
 
-	if (pModel->IsAnimationFinished(UPPER))
+	if (pModel->IsAnimationFinished(LOWER))
 	{
 		m_pOwner->TransitionTo(L"ClintIdle");
 	}

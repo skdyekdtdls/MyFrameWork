@@ -64,8 +64,8 @@ public: /* Getter */
 	_bool IsCombined() {
 		return m_bCombined;
 	}
-public:/* Setter */
 
+public:/* Setter */
 	void SetCombined() {
 		m_bCombined = true;
 	}

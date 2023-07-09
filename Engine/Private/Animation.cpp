@@ -73,7 +73,7 @@ void CAnimation::LoadAssimp(HANDLE hFile, DWORD& dwByte)
 		ReadVoid(&m_ChannelCurrentKeyFrames[i], sizeof(_uint));
 	}
 
-	ReadVoid(&m_Duration, sizeof(_double));
+	ReadVoid(&m_Duration, sizeof(_double)); 
 	ReadVoid(&m_TickPerSecond, sizeof(_double));
 	ReadVoid(&m_TimeAcc, sizeof(_double));
 
@@ -106,9 +106,7 @@ HRESULT CAnimation::Initialize(const aiAnimation* pAIAnimation, const CModel::BO
 
 void CAnimation::Reset()
 {
-	if (false == m_isLoop)
-		m_isFinished = false;
-
+	m_isFinished = false;
 	m_iCurKeyFrame = { 0 };
 	m_TimeAcc = { 0.0 };
 	for (auto& pChannelIndex : m_ChannelCurrentKeyFrames)

@@ -1,6 +1,6 @@
 #include "Pistola.h"
 #include "GameInstance.h"
-#include "ClintModel.h"
+#include "Model.h"
 #include "Bone.h"
 _uint Pistola::Pistola_Id = 0;
 
@@ -45,7 +45,7 @@ HRESULT Pistola::Initialize(void* pArg)
 	
 	PISTOLA_DESC tPistolaDesc = *static_cast<PISTOLA_DESC*>(pArg);
 
-	ClintModel* pModel = m_pOwner->GetComponent<ClintModel>();
+	CModel* pModel = m_pOwner->GetComponent<CModel>();
 	CTransform* pParentTransform = m_pOwner->GetComponent<CTransform>();
 	CBone* pBone = pModel->GetBoneByName(tPistolaDesc.pAttachedBoneName); // hand_r, hand_l
 	
