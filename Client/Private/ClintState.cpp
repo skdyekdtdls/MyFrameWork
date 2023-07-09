@@ -24,7 +24,7 @@ void ClintState::OnStateExit()
 
 void ClintState::SetAnimIndex(CLINT_ANIM eClintAnim, BODY eBody)
 {
-	static_cast<ClintModel*>(m_pOwner->Get_Component(L"Com_Model"))->Set_AnimByIndex(eClintAnim, eBody);
+	static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"))->Set_AnimByIndex(eClintAnim, eBody);
 }
 
 void ClintState::Free()

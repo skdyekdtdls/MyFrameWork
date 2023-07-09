@@ -9,6 +9,9 @@
 CModel::CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComponent(pDevice, pContext)
 {
+	ZeroMemory(m_iPrevAnimIndex, sizeof(_uint) * BODY_END);
+	ZeroMemory(m_iCurrentAnimIndex, sizeof(_uint) * BODY_END);
+	ZeroMemory(m_InterTimeAcc, sizeof(_double) * BODY_END);
 }
 
 CModel::CModel(const CModel& rhs)
@@ -21,15 +24,23 @@ CModel::CModel(const CModel& rhs)
 	, m_PivotMatrix(rhs.m_PivotMatrix)
 	, m_eAnimType(rhs.m_eAnimType)
 	, m_RootIndex(rhs.m_RootIndex)
-	, m_InterTimeAcc(rhs.m_InterTimeAcc)
 	, m_RootMoveDistance(0.f)
 	, m_PrevMoveDistance(0.f)
 {
+	for (size_t i = 0; i < BODY_END; ++i)
+	{
+		m_InterTimeAcc[i] = rhs.m_InterTimeAcc[i];
+		m_iPrevAnimIndex[i] = rhs.m_iPrevAnimIndex[i];
+		m_iCurrentAnimIndex[i] = rhs.m_iCurrentAnimIndex[i];
+	}
+
 	/* 애니메이션의 경우, 각 복제된 객체들마다 사용하는 시간과 키프레임들의 현재 인덱스를
 	구분하여 사용해야할 필요가 있기때문에 깊은 복사. */
-	for (auto& pOriginalAnimation : rhs.m_Animations)
-		m_Animations.push_back(pOriginalAnimation->Clone());
-
+	for (size_t i = 0; i < BODY_END; ++i)
+	{
+		for (auto& pOriginalAnimation : rhs.m_Animations[i])
+			m_Animations[i].push_back(pOriginalAnimation->Clone());
+	}
 	/* 각 복제된 객체들마다 서로 다른 형태의 뼈 상태를 만들어줘야했기때문에 깊은 복사를 했다. */
 	for (auto& pOriginalBone : rhs.m_Bones)
 	{
@@ -47,9 +58,9 @@ CModel::CModel(const CModel& rhs)
 	}
 }
 
-CAnimation* CModel::Get_AnimationByName(string strName)
+CAnimation* CModel::GetAnimationByName(string strName, BODY eBody)
 {
-	for (auto& Animation: m_Animations)
+	for (auto& Animation : m_Animations[eBody])
 	{
 		if (0 == strcmp(Animation->GetName(), strName.c_str()))
 		{
@@ -73,7 +84,7 @@ _float3 CModel::GetPivotMatrixScale()
 	scale.x = XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&m_PivotMatrix).r[0]));
 	scale.y = XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&m_PivotMatrix).r[1]));
 	scale.z = XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&m_PivotMatrix).r[2]));
-	
+
 	return scale;
 }
 
@@ -92,18 +103,18 @@ void CModel::Set_AnimByIndex(_uint iAnimIndex, BODY eBody)
 	if (iAnimIndex >= m_iNumAnimations)
 		return;
 
-	if (m_iCurrentAnimIndex == iAnimIndex)
+	if (m_iCurrentAnimIndex[eBody] == iAnimIndex)
 		return;
 
-	m_Animations[iAnimIndex]->Reset();
-	m_InterTimeAcc = 0.0;
-	m_iCurrentAnimIndex = iAnimIndex;
+	m_Animations[eBody][iAnimIndex]->Reset();
+	m_InterTimeAcc[eBody] = 0.0;
+	m_iCurrentAnimIndex[eBody] = iAnimIndex;
 }
 
-void CModel::Set_AnimByName(const char* pName)
+void CModel::Set_AnimByName(const char* pName, BODY eBody)
 {
 	_int iIndex = 0;
-	for (auto& iter : m_Animations)
+	for (auto& iter : m_Animations[eBody])
 	{
 		if (0 == strcmp(iter->m_szName, pName))
 		{
@@ -159,7 +170,7 @@ void CModel::SaveAssimp(HANDLE hFile, DWORD& dwByte)
 	WriteVoid(&m_iNumAnimations, sizeof(_uint));
 	for (size_t i = 0; i < m_iNumAnimations; ++i)
 	{
-		m_Animations[i]->SaveAssimp(hFile, dwByte);
+		m_Animations[LOWER][i]->SaveAssimp(hFile, dwByte);
 	}
 }
 
@@ -220,7 +231,7 @@ void CModel::LoadAssimp(const char* pFileName)
 		m_Meshes[i] = new CMesh(m_pDevice, m_pContext);
 		m_Meshes[i]->LoadAssimp(hFile, dwByte, m_eAnimType, XMLoadFloat4x4(&m_PivotMatrix));
 	}
-	
+
 	/* For.Materials */
 	ReadVoid(&m_iNumMaterials, sizeof(_uint));
 	m_Materials.resize(m_iNumMaterials);
@@ -238,11 +249,11 @@ void CModel::LoadAssimp(const char* pFileName)
 	/* For. Animations */
 	ReadVoid(&m_iCurrentAnimIndex, sizeof(_uint));
 	ReadVoid(&m_iNumAnimations, sizeof(_uint));
-	m_Animations.resize(m_iNumAnimations);
+	m_Animations[LOWER].resize(m_iNumAnimations);
 	for (size_t i = 0; i < m_iNumAnimations; ++i)
 	{
-		m_Animations[i] = new CAnimation();
-		m_Animations[i]->LoadAssimp(hFile, dwByte);
+		m_Animations[LOWER][i] = new CAnimation();
+		m_Animations[LOWER][i]->LoadAssimp(hFile, dwByte);
 	}
 
 	CloseHandle(hFile);
@@ -277,7 +288,7 @@ HRESULT CModel::Initialize_Prototype(const aiScene* pAIScene, TYPE eType, fs::pa
 HRESULT CModel::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-	
+
 	return S_OK;
 }
 
@@ -297,7 +308,7 @@ HRESULT CModel::Late_Initialize(const _tchar* pAnimFilePath)
 
 	DWORD dwByte = 0;
 
-	for (auto& pAnimation : m_Animations)
+	for (auto& pAnimation : m_Animations[LOWER])
 		pAnimation->LoadData(hFile, dwByte);
 
 	CloseHandle(hFile);
@@ -312,34 +323,38 @@ HRESULT CModel::Render(_uint iMeshIndex)
 	return S_OK;
 }
 
-void CModel::Play_Animation(_double TimeDelta)
+void CModel::Play_Animation(_double TimeDelta, BODY eBody)
 {
 	if (m_eAnimType == TYPE_NONANIM)
 		return;
-	
-	if (m_iPrevAnimIndex != m_iCurrentAnimIndex)
-	{
-		m_InterTimeAcc += TimeDelta;
 
-		if (m_InterTimeAcc > 0.2)
+	if (m_iPrevAnimIndex[eBody] != m_iCurrentAnimIndex[eBody])
+	{
+		m_InterTimeAcc[eBody] += TimeDelta;
+
+		if (m_InterTimeAcc[eBody] > 0.2)
 		{
-			m_Animations[m_iPrevAnimIndex]->m_isFinished = true;
-			m_iPrevAnimIndex = m_iCurrentAnimIndex;
-			m_Animations[m_iCurrentAnimIndex]->Reset(); // 현재 시작하려는 애니메이션을 준비한다.
+			m_Animations[eBody][m_iPrevAnimIndex[eBody]]->m_isFinished = true;
+			m_iPrevAnimIndex[eBody] = m_iCurrentAnimIndex[eBody];
+			m_Animations[eBody][m_iCurrentAnimIndex[eBody]]->Reset(); // 현재 시작하려는 애니메이션을 준비한다.
 		}
 		else
 		{
-			m_Animations[m_iCurrentAnimIndex]->InterAnimation_TransfomationMatrix(m_Bones, m_InterTimeAcc);
+			m_Animations[eBody][m_iCurrentAnimIndex[eBody]]->InterAnimation_TransfomationMatrix(m_Bones, m_InterTimeAcc[eBody], eBody);
 		}
 	}
 	else
 	{
-		m_Animations[m_iCurrentAnimIndex]->Invalidate_TransformationMatrix(m_Bones, TimeDelta);
+		m_Animations[eBody][m_iCurrentAnimIndex[eBody]]->Invalidate_TransformationMatrix(m_Bones, TimeDelta, eBody);
 	}
 
-	m_RootMoveDistance = m_Bones[m_RootIndex]->GetTransformationMatrix_43();
-	m_Bones[m_RootIndex]->FixBone();
+	if (LOWER == eBody)
+	{
+		m_RootMoveDistance = m_Bones[m_RootIndex]->GetTransformationMatrix_43();
+		m_Bones[m_RootIndex]->FixBone();
+	}
 	
+
 	for (auto& Bone : m_Bones)
 	{
 		Bone->Invalidate_CombinedTransformationMatrix(m_Bones);
@@ -348,7 +363,7 @@ void CModel::Play_Animation(_double TimeDelta)
 
 _bool CModel::IsAnimationFinished(BODY eBody)
 {
-	if (m_Animations[m_iPrevAnimIndex]->IsFinished())
+	if (m_Animations[eBody][m_iPrevAnimIndex[eBody]]->IsFinished())
 	{
 		m_PrevMoveDistance = { 0.f };
 		m_RootMoveDistance = { 0.f };
@@ -358,14 +373,64 @@ _bool CModel::IsAnimationFinished(BODY eBody)
 	return false;
 }
 
+void CModel::GroupingBones()
+{
+	// 본인을 포함하여 ik_hand_root(7)의 자식들은 전부 상체로간다, spine_01(12)자식들은 상체
+	// 본인을 포함하여 ik_foot_root(4)의 자식들은 전부 하체로간다, thigh_l(88)자식들은 하체, thigh_r(94)자식들은 하체
+
+	for (auto& Bone : m_Bones)
+	{
+		CBone* pBone = Bone;
+		_uint iBoneIndex = pBone->GetIndex();
+
+		// 뼈가 ik_hand_root(7)이거나 spine_01(12)이면 상체
+		if (7 == iBoneIndex || 11 == iBoneIndex || 12 == iBoneIndex)
+		{
+			Bone->Set_Body(UPPER);
+			continue;
+		}
+
+		// 뼈가 ik_foot_root(4)이거나 thigh_l(88) 이거나 thigh_r(94)이면 하체
+		if (3 == iBoneIndex || 4 == iBoneIndex || 88 == iBoneIndex || 94 == iBoneIndex)
+		{
+			Bone->Set_Body(LOWER);
+			continue;
+		}
+
+		while (pBone->HasParent()) // 부모 뼈가 있으면 루프
+		{
+			_uint iParentIndex = pBone->GetParentIndex();
+
+			// 부모가 ik_hand_root(7)이거나 spine_01(12)이면 상체
+			if (7 == iParentIndex || 12 == iParentIndex)
+			{
+				Bone->Set_Body(UPPER);
+				break;
+			}
+
+			// 부모가 ik_foot_root(4)이거나 thigh_l(88) 이거나 thigh_r(94)이면 하체
+			if (4 == iParentIndex || 88 == iParentIndex || 94 == iParentIndex)
+			{
+				Bone->Set_Body(LOWER);
+				break;
+			}
+
+			pBone = m_Bones[iParentIndex];
+		}
+	}
+
+	for (auto& pAnimation : m_Animations[LOWER])
+		m_Animations[UPPER].push_back(pAnimation->Clone());
+}
+
 void CModel::ResetAnimation(_int iIndex, BODY eBody)
 {
 	if (iIndex < 0)
 	{
-		m_Animations[m_iCurrentAnimIndex]->Reset();
+		m_Animations[eBody][m_iCurrentAnimIndex[eBody]]->Reset();
 		return;
 	}
-	m_Animations[iIndex]->Reset();
+	m_Animations[eBody][iIndex]->Reset();
 }
 
 void CModel::RootMotion(_double TimeDelta, CTransform::DIRECTION eDir)
@@ -403,9 +468,9 @@ HRESULT CModel::Bind_BoneMatrices(CShader* pShader, const char* pConstantName, _
 	return S_OK;
 }
 
-HRESULT CModel::Add_TimeLineEvent(string strAnimName, const _tchar* pTag, TIMELINE_EVENT tTimeLineEvent)
+HRESULT CModel::Add_TimeLineEvent(string strAnimName, const _tchar* pTag, TIMELINE_EVENT tTimeLineEvent, BODY eBody)
 {
-	CAnimation* pAnimation = Get_AnimationByName(strAnimName);
+	CAnimation* pAnimation = GetAnimationByName(strAnimName);
 	if (nullptr == pAnimation)
 		return E_FAIL;
 
@@ -414,19 +479,19 @@ HRESULT CModel::Add_TimeLineEvent(string strAnimName, const _tchar* pTag, TIMELI
 	return S_OK;
 }
 
-void CModel::Delete_TimeLineEvent(string strAnimName, const _tchar* pTag)
+void CModel::Delete_TimeLineEvent(string strAnimName, const _tchar* pTag, BODY eBody)
 {
-	CAnimation* pAnimation = Get_AnimationByName(strAnimName);
+	CAnimation* pAnimation = GetAnimationByName(strAnimName);
 	if (nullptr == pAnimation)
 		return;
 
 	pAnimation->Delete_TimeLineEvent(pTag);
 }
 
-const TIMELINE_EVENT* CModel::Get_TimeLineEvent(string strAnimName, const _tchar* pTag)
+const TIMELINE_EVENT* CModel::Get_TimeLineEvent(string strAnimName, const _tchar* pTag, BODY eBody)
 {
-	CAnimation* pAnimation = Get_AnimationByName(strAnimName);
-	
+	CAnimation* pAnimation = GetAnimationByName(strAnimName);
+
 	if (nullptr == pAnimation)
 		return nullptr;
 
@@ -436,7 +501,7 @@ const TIMELINE_EVENT* CModel::Get_TimeLineEvent(string strAnimName, const _tchar
 HRESULT CModel::Ready_Bones(aiNode* pNode, CBone* pParent)
 {
 	CBone* pBone = CBone::Create(pNode, pParent, m_Bones.size());
-	
+
 	if (nullptr == pBone)
 		return E_FAIL;
 
@@ -496,7 +561,7 @@ HRESULT CModel::Ready_Materials(const aiScene* pScene, fs::path pModelFilePath)
 			strcat_s(szFullPath, szFileName);
 			strcat_s(szFullPath, szExt);
 
-			
+
 			_tchar		wszFullPath[MAX_PATH] = TEXT("");
 			MultiByteToWideChar(CP_ACP, 0, szFullPath, strlen(szFullPath),
 				wszFullPath, MAX_PATH);
@@ -522,7 +587,7 @@ HRESULT CModel::Ready_Animations(const aiScene* pScene)
 		if (nullptr == pAnimation)
 			return E_FAIL;
 
-		m_Animations.push_back(pAnimation);
+		m_Animations[LOWER].push_back(pAnimation);
 	}
 
 	return S_OK;
@@ -620,8 +685,12 @@ void CModel::Free()
 
 	m_Bones.clear();
 
-	for (auto& pAnimation : m_Animations)
-		Safe_Release(pAnimation);
+	for (size_t i = 0; i < BODY_END; ++i)
+	{
+		for (auto& pAnimation : m_Animations[i])
+			Safe_Release(pAnimation);
 
-	m_Animations.clear();
+		m_Animations[i].clear();
+	}
+
 }

@@ -51,7 +51,9 @@ public: // Getter
 	}
 
 public: // Setter
-
+	void SetDuration(_double Duration) {
+		m_Duration = Duration;
+	}
 public: /* For. Assimp */
 	void SaveAssimp(HANDLE hFile, DWORD& dwByte);
 	void LoadAssimp(HANDLE hFile, DWORD& dwByte);

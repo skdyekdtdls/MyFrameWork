@@ -43,7 +43,7 @@ void CImWindow_AnimationTool::Tick()
 		Animation_items.clear();
 		for (size_t i = 0; i < pModelProto->Get_NumAnimation(); ++i)
 		{
-			string tmp = pModelProto->Get_Animation(i)->GetName();
+			string tmp = pModelProto->GetAnimationByIndex(i)->GetName();
 			Animation_items.push_back(tmp);
 		}
 
@@ -73,7 +73,7 @@ void CImWindow_AnimationTool::Tick()
 				pModel->Set_AnimByName(Animation_items[Animation_item_current].c_str());
 				
 				// 클릭한 애니메이션 항목 대하여 채널 리스트박스 정보를 갱신한다.
-				m_pAnimation = pModel->Get_AnimationByName(Animation_items[Animation_item_current]);
+				m_pAnimation = pModel->GetAnimationByName(Animation_items[Animation_item_current]);
 				
 				if (-1 != Animation_item_current)
 				{
@@ -231,7 +231,7 @@ void CImWindow_AnimationTool::SaveAnimationData()
 	CModel* pModel = m_pDummyObject->GetComponent<CModel>();
 	for (size_t i = 0; i < pModel->Get_NumAnimation(); ++i)
 	{
-		CAnimation* pAnimation = pModel->Get_Animation(i);
+		CAnimation* pAnimation = pModel->GetAnimationByIndex(i);
 		pAnimation->SaveData(hFile, dwByte);
 	}
 
@@ -263,7 +263,7 @@ void CImWindow_AnimationTool::LoadAnimationData()
 	CModel* pModel = m_pDummyObject->GetComponent<CModel>();
 	for (size_t i = 0; i < pModel->Get_NumAnimation(); ++i)
 	{
-		CAnimation* pAnimation = pModel->Get_Animation(i);
+		CAnimation* pAnimation = pModel->GetAnimationByIndex(i);
 		pAnimation->LoadData(hFile, dwByte);
 	}
 

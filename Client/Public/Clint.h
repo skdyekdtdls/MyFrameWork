@@ -4,7 +4,7 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 #include "ISerializable.h"
-#include "ClintModel.h"
+#include "Model.h"
 
 BEGIN(Engine)
 
@@ -51,7 +51,7 @@ public:
 	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
 
 private: /* For. Component */
-	ClintModel* m_pModelCom = { nullptr };
+	CModel* m_pModelCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };

@@ -52,7 +52,7 @@ END
 #include "DirectXTK/WICTextureLoader.h"
 #include "Assimp_Struct.h"
 
-enum BODY { UPPER, LOWER, BODY_END };
+enum BODY { LOWER, UPPER, BODY_END };
 
 #ifdef _DEBUG
 

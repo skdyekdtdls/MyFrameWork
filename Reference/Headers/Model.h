@@ -26,13 +26,13 @@ public:
 	_uint Get_NumMeshes() const {
 		return m_iNumMeshes;
 	}
-	class CAnimation* Get_Animation(int iIndex) {
+	class CAnimation* GetAnimationByIndex(int iIndex, BODY eBody = LOWER) {
 		if (iIndex >= m_iNumAnimations)
 			return nullptr;
 
-		return m_Animations[iIndex];
+		return m_Animations[eBody][iIndex];
 	}
-	CAnimation* Get_AnimationByName(string strName);
+	CAnimation* GetAnimationByName(string strName, BODY eBody = LOWER);
 #ifdef _DEBUG
 	void CoutRootNodePos();
 #endif
@@ -64,8 +64,8 @@ public:
 	}
 
 public: /* Setter */
-	virtual void Set_AnimByIndex(_uint iAnimIndex, BODY eBody = BODY_END);
-	void Set_AnimByName(const char* pName);
+	virtual void Set_AnimByIndex(_uint iAnimIndex, BODY eBody = LOWER);
+	void Set_AnimByName(const char* pName, BODY eBody = LOWER);
 
 	// 객체 프로토타입 만들 때 최초에 1번만 부른다.
 	void Set_RootNode(_uint iBoneIndex);
@@ -86,11 +86,12 @@ public:
 	virtual HRESULT Render(_uint iMeshIndex);
 
 public:
-	virtual void Play_Animation(_double TimeDelta);
-	virtual _bool IsAnimationFinished(BODY eBody);
+	virtual void Play_Animation(_double TimeDelta, BODY eBody = LOWER);
+	virtual _bool IsAnimationFinished(BODY eBody = LOWER);
+	void GroupingBones();
 
 	// 인자로 아무것도 들어오지 않거나 음수가 들어오면 현재 애니메이션 리셋
-	virtual void ResetAnimation(_int iIndex = -1, BODY eBody = UPPER);
+	virtual void ResetAnimation(_int iIndex = -1, BODY eBody = LOWER);
 	void RootMotion(_double TimeDelta, CTransform::DIRECTION eDir);
 
 public:
@@ -98,9 +99,9 @@ public:
 	HRESULT Bind_BoneMatrices(class CShader* pShader, const char* pConstantName, _uint iMeshIndex);
 
 public:
-	virtual HRESULT Add_TimeLineEvent(string strAnimName, const _tchar* pTag, TIMELINE_EVENT tTimeLineEvent);
-	void Delete_TimeLineEvent(string strAnimName, const _tchar* pTag);
-	const TIMELINE_EVENT* Get_TimeLineEvent(string strAnimName, const _tchar* pTag);
+	virtual HRESULT Add_TimeLineEvent(string strAnimName, const _tchar* pTag, TIMELINE_EVENT tTimeLineEvent, BODY eBody = LOWER);
+	void Delete_TimeLineEvent(string strAnimName, const _tchar* pTag, BODY eBody = LOWER);
+	const TIMELINE_EVENT* Get_TimeLineEvent(string strAnimName, const _tchar* pTag, BODY eBody = LOWER);
 
 protected: /* For.Bones*/
 	_uint						m_iNumBones = { 0 };
@@ -120,15 +121,15 @@ protected: /* For.Materials */
 	vector<MESHMATERIAL>	m_Materials;
 
 protected:
-	_uint						m_iPrevAnimIndex = { 0 };
-	_uint						m_iCurrentAnimIndex = { 0 };
+	_uint						m_iPrevAnimIndex[BODY_END];
+	_uint						m_iCurrentAnimIndex[BODY_END];
 	_uint						m_iNumAnimations = { 0 };
-	vector<class CAnimation*>	m_Animations;
+	vector<class CAnimation*>	m_Animations[BODY_END];
 
 protected:
 	_float4x4		m_PivotMatrix;
 	TYPE			m_eAnimType = { TYPE_END };
-	_double			m_InterTimeAcc = { 0.0 };
+	_double			m_InterTimeAcc[BODY_END];
 
 protected:
 	HRESULT LoadModel(const _tchar* pModelFilePath, _Inout_ SCENE& tScene, _Out_ fs::path& ModelFilePath, _fmatrix PivotMatrix);
