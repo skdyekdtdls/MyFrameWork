@@ -5,8 +5,9 @@
 #include "Object_Manager.h"
 #include "Timer_Manager.h"
 #include "Component_Manager.h"
+#include "Frustum.h"
 #include "Layer.h"
-
+#include "CollisionMgr.h"
 IMPLEMENT_SINGLETON(CGameInstance)
 
 CGameInstance::CGameInstance()
@@ -16,12 +17,16 @@ CGameInstance::CGameInstance()
 	, m_pTimer_Manager(CTimer_Manager::GetInstance())
 	, m_pComponent_Manager(CComponent_Manager::GetInstance())
 	, m_pPipeLine(CPipeLine::GetInstance())
+	, m_pFrustum(Frustum::GetInstance())
 	, m_pInput_Device(CInput_Device::GetInstance())
 	, m_pLight_Manager(CLight_Manager::GetInstance())
+	, m_pCollision_Manager(CollisionMgr::GetInstance())
 {
+	Safe_AddRef(m_pCollision_Manager);
 	Safe_AddRef(m_pLight_Manager);
 	Safe_AddRef(m_pInput_Device);
 	Safe_AddRef(m_pPipeLine);
+	Safe_AddRef(m_pFrustum);
 	Safe_AddRef(m_pGraphic_Device);
 	Safe_AddRef(m_pLevel_Manager);
 	Safe_AddRef(m_pObject_Manager);
@@ -50,6 +55,7 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHICDESC& Gr
 		return E_FAIL;
 
 	m_pLight_Manager->Initialize(*ppDevice, *ppDeviceContext);
+	m_pFrustum->Initialize();
 
 	return S_OK;
 }
@@ -65,6 +71,7 @@ void CGameInstance::Tick_Engine(_double TimeDelta)
 	m_pInput_Device->Update_DInput();
 	m_pObject_Manager->Tick(TimeDelta);
 	m_pPipeLine->Tick();
+	m_pFrustum->Tick();
 	m_pObject_Manager->Late_Tick(TimeDelta);
 
 	m_pLevel_Manager->Tick(TimeDelta);
@@ -79,6 +86,14 @@ void CGameInstance::Clear_LevelResources(_uint iLevelIndex)
 
 	m_pObject_Manager->Clear_LevelResources(iLevelIndex);
 	m_pComponent_Manager->Clear_LevelResources(iLevelIndex);
+}
+
+CLayer* CGameInstance::Find_LayerByName(_uint iLevelIndex, const _tchar* pLayerTag)
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+
+	return m_pObject_Manager->Find_LayerByName(iLevelIndex, pLayerTag);
 }
 
 CGameObject* CGameInstance::Get_GameObject(_uint iLevelIndex, const _tchar* pLayerTag, string strName)
@@ -271,7 +286,13 @@ CGameObject* CGameInstance::Add_GameObject(_uint iLevelIndex, const _tchar* pPro
 	return m_pObject_Manager->Add_GameObject(iLevelIndex, pPrototypeTag, pLayerTag, pArg);
 }
 
+HRESULT CGameInstance::Delete_GameObject(_uint iLevelIndex, const _tchar* pLayerTag, string strName)
+{
+	if (nullptr == m_pObject_Manager)
+		return E_FAIL;
 
+	return m_pObject_Manager->Delete_GameObject(iLevelIndex, pLayerTag, strName);
+}
 
 _double CGameInstance::Get_Timer(const _tchar* pTimerTag)
 {
@@ -366,6 +387,14 @@ _float4x4 CGameInstance::Get_TransformFloat4x4_Inverse(CPipeLine::D3DTRANSFORMST
 	return m_pPipeLine->Get_TransformFloat4x4_Inverse(eTransformState);
 }
 
+_bool CGameInstance::isIn_WorldSpace(_fvector vWorldPos, _float fRange)
+{
+	if (nullptr == m_pFrustum)
+		return false;
+
+	return m_pFrustum->isIn_WorldSpace(vWorldPos, fRange);
+}
+
 const CLight::LIGHTDESC* CGameInstance::Get_Light(_uint iIndex)
 {
 	if(nullptr == m_pLight_Manager)
@@ -382,6 +411,14 @@ HRESULT CGameInstance::Add_Lights(const CLight::LIGHTDESC& LightDesc)
 	return m_pLight_Manager->Add_Lights(LightDesc);
 }
 
+//void CGameInstance::Add_ColliderGroup(list<CCollider*> Colliders, COLLGROUP eCollGroup, TEAM eTeam)
+//{
+//	if (nullptr == m_pCollision_Manager)
+//		return;
+//
+//	m_pCollision_Manager->Add_Colliders(Colliders, eCollGroup, eTeam);
+//}
+
 void CGameInstance::Release_Engine()
 {
 	CTimer_Manager::DestroyInstance();
@@ -391,14 +428,18 @@ void CGameInstance::Release_Engine()
 	CLight_Manager::DestroyInstance();
 	CLevel_Manager::DestroyInstance();
 	CGraphic_Device::DestroyInstance();
+	Frustum::DestroyInstance();
 	CPipeLine::DestroyInstance();
+	CollisionMgr::DestroyInstance();
 	CGameInstance::DestroyInstance();
 }
 
 void CGameInstance::Free()
 {
+	Safe_Release(m_pCollision_Manager);
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pInput_Device);
+	Safe_Release(m_pFrustum);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pObject_Manager);

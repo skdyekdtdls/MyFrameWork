@@ -16,7 +16,6 @@ BEGIN(Client)
 class Pistola final : public CGameObject, public ISerializable
 {
 public:
-	
 	typedef struct tagPistolaDesc : public tagCGameObjectDesc
 	{
 		tagPistolaDesc() : tagCGameObjectDesc() {}
@@ -35,6 +34,8 @@ public:
 	virtual void Tick(_double TimeDelta) override;
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
+	
+	void Attack(_fvector vLook);
 
 public:
 	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
@@ -53,12 +54,15 @@ private: /* ºÎ¸ð²¨ */
 	const _float4x4* m_pParentWorldMatrix;
 	_float4x4	m_WorldMatrix;
 	
+	list<class ClintBasicBullet*> m_Bullets;
 
-	_bool m_bStart = { true };
 private:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();
-
+	
+	void AttachingWeapon();
+	void PushBackBullet(ClintBasicBullet* pClintBasicBullet);
+	void ReleaseIf(function<bool(class ClintBasicBullet* pClintBasicBullet)> func);
 private:
 	static _uint Pistola_Id;
 

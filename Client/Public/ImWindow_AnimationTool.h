@@ -33,9 +33,7 @@ private:
     // 더미 설정
     _bool m_isDummy = { false };
     CGameObject* m_pDummyObject = { nullptr };
-
 private:
-
 
 private:
     void SaveAnimationData();

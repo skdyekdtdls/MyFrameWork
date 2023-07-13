@@ -57,6 +57,22 @@ HRESULT CLayer::Add_GameObject(CGameObject* pGameObject)
 	return S_OK;
 }
 
+HRESULT CLayer::Delete_GameObject(string strName)
+{
+	for (auto iter = m_pGameObjects.begin(); iter != m_pGameObjects.end();)
+	{
+		if (strName == (*iter)->Get_Name())
+		{
+			Safe_Release(*iter);
+			iter = m_pGameObjects.erase(iter);
+			return S_OK;
+		}
+		else
+			++iter;
+	}
+	return E_FAIL;
+}
+
 void CLayer::Tick(_double TimeDelta)
 {
 	for (auto& GameObject : m_pGameObjects)

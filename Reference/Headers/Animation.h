@@ -50,6 +50,10 @@ public: // Getter
 		return &m_isLoop;
 	}
 
+	_int* GetNextIndexPtr() {
+		return &m_iNextIndex;
+	}
+
 public: // Setter
 	void SetDuration(_double Duration) {
 		m_Duration = Duration;
@@ -88,6 +92,7 @@ private:
 	_bool						m_isFinished = { false };
 	_bool						m_isLoop;
 	_uint						m_iCurKeyFrame = { 0 };
+	_int						m_iNextIndex = { -1 };
 
 	unordered_map<const _tchar*, TIMELINE_EVENT>	m_TimeLineEvents;
 

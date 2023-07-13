@@ -5,16 +5,20 @@
 #include "VIBuffer_Rect.h"
 #include "VIBuffer_Terrain.h"
 #include "VIBuffer_Cube.h"
+#include "VIBuffer_Ray.h"
 #include "Texture.h"
 #include "Transform.h"
 #include "Model.h"
 #include "Navigation.h"
 #include "ColliderSphere.h"
+#include "ColliderAABB.h"
+#include "Raycast.h"
 
 BEGIN(Engine)
 class ENGINE_DLL CComponent_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CComponent_Manager)
+
 public:
 	CComponent_Manager();
 	~CComponent_Manager() = default;

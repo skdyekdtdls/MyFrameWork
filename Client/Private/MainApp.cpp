@@ -2,7 +2,7 @@
 #include "GameInstance.h"
 #include "Level.h"
 #include "Level_Loading.h"
-
+#include "ClientInstance.h"
 #ifdef _DEBUG
 #include "ImWindow_Manager.h"
 #endif // DEBUG
@@ -113,6 +113,15 @@ HRESULT CMainApp::Ready_Prototype_Component_For_Static()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
 		CTransform::Create(m_pDevice, m_pContext)), E_FAIL);
 
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, CColliderAABB::ProtoTag(),
+		CColliderAABB::Create(m_pDevice, m_pContext)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, CColliderSphere::ProtoTag(),
+		CColliderSphere::Create(m_pDevice, m_pContext)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, Raycast::ProtoTag(),
+		Raycast::Create(m_pDevice, m_pContext)), E_FAIL);
+
 	Safe_AddRef(m_pRenderer);
 
 	return S_OK;
@@ -186,6 +195,6 @@ void CMainApp::Free()
 #ifdef _DEBUG
 	CImWindow_Manager::DestroyInstance();
 #endif // DEBUG
-
+	ClientInstance::DestroyInstance();
 	CGameInstance::Release_Engine();
 }

@@ -6,7 +6,7 @@ BEGIN(Engine)
 
 class ENGINE_DLL CVIBuffer_Rect final : public CVIBuffer
 {
-	public:
+public:
 	typedef struct tagCVIBuffer_RectDesc : public tagCVIBufferDesc
 	{
 		tagCVIBuffer_RectDesc() : tagCVIBufferDesc() {};

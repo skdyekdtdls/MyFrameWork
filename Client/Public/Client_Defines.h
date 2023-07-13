@@ -1,6 +1,7 @@
 #pragma once
 #include <windows.h>
-
+#include "Client_Enum.h"
+#include "ClientInstance.h"
 #ifdef _DEBUG
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include "imgui.h"
@@ -14,34 +15,6 @@ namespace Client
 {
 	const unsigned int g_iWinSizeX = 1280;
 	const unsigned int g_iWinSizeY = 720;
-
-	enum LEVELID { LEVEL_STATIC, LEVEL_IMGUI, LEVEL_LOGO, LEVEL_GAMEPLAY, LEVEL_LOADING, LEVEL_END};
-
-	enum class CLINT_STATE
-	{ 
-		IDLE,// = 64,
-		DASH,// = 27,
-		DEATH,// = 29,
-		SHOOT, 
-		GRANADE,// = 50,
-		HIT,// = 53,
-		MVP,// = 74,
-		RUN,// = 89,
-		SKILL_01,// = 109,
-		SKILL_02,// = 122,
-		WEAPONCHANGE,// = 152,
-		STATE_END
-	};
-
-	enum CLINT_ANIM
-	{
-		CLINT_ANIM_SHOOT = 5,
-		CLINT_ANIM_DASH = 27,
-		CLINT_ANIM_IDLE = 64,
-		CLINT_ANIM_RUN = 89,
-		CLINT_ANIM_WEAPONCHHANGE = 152,
-	};
-
 }
 
 extern HINSTANCE g_hInst;

@@ -5,12 +5,14 @@
 CGameObject::CGameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComposite(pDevice, pContext)
 	, m_tInfo()
+	, m_bDead(false)
 {
 }
 
 CGameObject::CGameObject(const CGameObject& rhs)
 	: CComposite(rhs)
 	, m_tInfo()
+	, m_bDead(false)
 {
 }
 
@@ -29,7 +31,7 @@ HRESULT CGameObject::Initialize(void* pArg)
 	CColliderSphere::CCOLLIDER_SPHERE_DESC tColliderSphereDesc;
 	tColliderSphereDesc.fRadius = { 0.5f };
 	tColliderSphereDesc.vCenter = { _float3(0.f, tColliderSphereDesc.fRadius * 1.f, 0.f) };
-	FAILED_CHECK_RETURN(__super::Add_Component(1, CColliderSphere::ProtoTag()
+	FAILED_CHECK_RETURN(__super::Add_Component(0, CColliderSphere::ProtoTag()
 		, L"Com_PickCollider", (CComponent**)&m_pPickCollider, &tColliderSphereDesc), E_FAIL);
 #endif //  _DEBUG
 
@@ -53,12 +55,17 @@ void CGameObject::Tick(_double TimeDelta)
 	CTransform* pTransform = static_cast<CTransform*>(Get_Component(L"Com_Transform"));
 
 	NULL_CHECK(m_pPickCollider)
-	m_pPickCollider->Tick(pTransform->Get_WorldMatrix());
+		m_pPickCollider->Tick(pTransform->Get_WorldMatrix());
 #endif
 }
 
 void CGameObject::Late_Tick(_double TimeDelta)
 {
+}
+
+void CGameObject::OnCollision(CCollider::COLLISION_INFO* pCollisionInfo)
+{
+
 }
 
 #ifdef _DEBUG
@@ -86,6 +93,11 @@ _bool CGameObject::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 _float CGameObject::GetPickSphereRadius()
 {
 	return m_pPickCollider->GetBoundingSphere()->Radius;
+}
+
+void CGameObject::ReleaseFreePickCollider()
+{
+	Safe_Release(m_pPickCollider);
 }
 #endif
 

@@ -25,6 +25,7 @@ private:
 	_uint			m_iNumVerticesX = { 0 };
 	_uint			m_iNumVerticesZ = { 0 };
 	VTXPOSNORTEX*	m_pVertices = { nullptr };
+
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_Component_VIBuffer_Terrain"; }
 	static CVIBuffer_Terrain* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const _tchar * pHeightMap);

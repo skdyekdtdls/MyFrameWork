@@ -373,47 +373,79 @@ _bool CModel::IsAnimationFinished(BODY eBody)
 	return false;
 }
 
-void CModel::GroupingBones()
+void CModel::GroupingBones(vector<_uint>& upper, vector<_uint>& lower)
 {
-	// 본인을 포함하여 ik_hand_root(7)의 자식들은 전부 상체로간다, spine_01(12)자식들은 상체
-	// 본인을 포함하여 ik_foot_root(4)의 자식들은 전부 하체로간다, thigh_l(88)자식들은 하체, thigh_r(94)자식들은 하체
+	if (upper.empty())
+	{
+		for (auto& Bone : m_Bones)
+		{
+			Bone->Set_Body(LOWER);
+		}
+		return;
+	}
 
 	for (auto& Bone : m_Bones)
 	{
 		CBone* pBone = Bone;
 		_uint iBoneIndex = pBone->GetIndex();
+		_bool isContinue = { false };
 
 		// 뼈가 ik_hand_root(7)이거나 spine_01(12)이면 상체
-		if (7 == iBoneIndex || 11 == iBoneIndex || 12 == iBoneIndex)
+		for (auto& upperIndex : upper)
 		{
-			Bone->Set_Body(UPPER);
-			continue;
+			if (upperIndex == iBoneIndex)
+			{
+				Bone->Set_Body(UPPER);
+				isContinue = true;
+				break;
+			}
 		}
+		if (isContinue)
+			continue;
 
 		// 뼈가 ik_foot_root(4)이거나 thigh_l(88) 이거나 thigh_r(94)이면 하체
-		if (3 == iBoneIndex || 4 == iBoneIndex || 88 == iBoneIndex || 94 == iBoneIndex)
+		for (auto& lowerIndex : lower)
 		{
-			Bone->Set_Body(LOWER);
-			continue;
+			if (lowerIndex == iBoneIndex)
+			{
+				Bone->Set_Body(LOWER);
+				isContinue = true;
+				break;
+			}
 		}
+		if (isContinue)
+			continue;
 
 		while (pBone->HasParent()) // 부모 뼈가 있으면 루프
 		{
 			_uint iParentIndex = pBone->GetParentIndex();
+			_bool isBreak = { false };
 
-			// 부모가 ik_hand_root(7)이거나 spine_01(12)이면 상체
-			if (7 == iParentIndex || 12 == iParentIndex)
+			// 부모가 상체면 자식도 상체
+			for (auto& upperIndex : upper)
 			{
-				Bone->Set_Body(UPPER);
-				break;
+				if (upperIndex == iParentIndex)
+				{
+					Bone->Set_Body(UPPER);
+					isBreak = true;
+					break;
+				}
 			}
+			if (isBreak)
+				break;
 
 			// 부모가 ik_foot_root(4)이거나 thigh_l(88) 이거나 thigh_r(94)이면 하체
-			if (4 == iParentIndex || 88 == iParentIndex || 94 == iParentIndex)
+			for (auto& lowerIndex : lower)
 			{
-				Bone->Set_Body(LOWER);
-				break;
+				if (lowerIndex == iParentIndex)
+				{
+					Bone->Set_Body(LOWER);
+					isBreak = true;
+					break;
+				}
 			}
+			if (isBreak)
+				break;
 
 			pBone = m_Bones[iParentIndex];
 		}
@@ -470,7 +502,7 @@ HRESULT CModel::Bind_BoneMatrices(CShader* pShader, const char* pConstantName, _
 
 HRESULT CModel::Add_TimeLineEvent(string strAnimName, const _tchar* pTag, TIMELINE_EVENT tTimeLineEvent, BODY eBody)
 {
-	CAnimation* pAnimation = GetAnimationByName(strAnimName);
+	CAnimation* pAnimation = GetAnimationByName(strAnimName, eBody);
 	if (nullptr == pAnimation)
 		return E_FAIL;
 
@@ -530,6 +562,22 @@ HRESULT CModel::Ready_Meshes(const aiScene* pScene, TYPE eType, _fmatrix PivotMa
 	return S_OK;
 }
 
+fs::path CModel::find_file_in_dir(const fs::path& dir_path, const fs::path& file_name) {
+	fs::recursive_directory_iterator dir(dir_path), end;
+
+	while (dir != end)
+	{
+		if (dir->path().filename() == file_name)
+		{
+			return dir->path();
+			std::cout << "File found: " << dir->path() << '\n';
+			break;
+		}
+		++dir;
+	}
+	return fs::path();
+}
+
 HRESULT CModel::Ready_Materials(const aiScene* pScene, fs::path pModelFilePath)
 {
 	/* 현재 모델에게 부여할 수 있는 재질(Diffuse, Normal, Specular etc) 텍스쳐의 갯수. */
@@ -547,26 +595,30 @@ HRESULT CModel::Ready_Materials(const aiScene* pScene, fs::path pModelFilePath)
 			if (FAILED(pScene->mMaterials[i]->GetTexture(aiTextureType(j), 0, &strPath)))
 				continue;
 
-			char		szDrive[MAX_PATH] = "";
-			char		szDirectory[MAX_PATH] = "";
-			_splitpath_s(pModelFilePath.string().c_str(), szDrive, MAX_PATH, szDirectory, MAX_PATH, nullptr, 0, nullptr, 0);
+			//char		szDrive[MAX_PATH] = "";
+			//char		szDirectory[MAX_PATH] = "";
+			//_splitpath_s(pModelFilePath.string().c_str(), szDrive, MAX_PATH, szDirectory, MAX_PATH, nullptr, 0, nullptr, 0);
+			////_splitpath_s(strPath.data, szDrive, MAX_PATH, szDirectory, MAX_PATH, nullptr, 0, nullptr, 0);
+
+			char		szStem[MAX_PATH] = "";
+			char		szExt[MAX_PATH] = "";
+			_splitpath_s(strPath.data, nullptr, 0, nullptr, 0, szStem, MAX_PATH, szExt, MAX_PATH);
 
 			char		szFileName[MAX_PATH] = "";
-			char		szExt[MAX_PATH] = "";
-			_splitpath_s(strPath.data, nullptr, 0, nullptr, 0, szFileName, MAX_PATH, szExt, MAX_PATH);
+			//strcpy_s(szFullPath, szDrive);
+			//strcat_s(szFullPath, szDirectory);
+			strcat_s(szFileName, szStem);
+			strcat_s(szFileName, szExt);
 
-			char		szFullPath[MAX_PATH] = "";
-			strcpy_s(szFullPath, szDrive);
-			strcat_s(szFullPath, szDirectory);
-			strcat_s(szFullPath, szFileName);
-			strcat_s(szFullPath, szExt);
-
+			fs::path fsFileName = szFileName;
+			fs::path base_dir = "C:\\KillSquad\\Game\\";
+			fs::path fsFullPath = find_file_in_dir(base_dir, fsFileName);
 
 			_tchar		wszFullPath[MAX_PATH] = TEXT("");
-			MultiByteToWideChar(CP_ACP, 0, szFullPath, strlen(szFullPath),
+			MultiByteToWideChar(CP_ACP, 0, szFileName, strlen(szFileName),
 				wszFullPath, MAX_PATH);
 
-			MeshMaterial.pMtrlTexture[j] = CTexture::Create(m_pDevice, m_pContext, wszFullPath, 1);
+			MeshMaterial.pMtrlTexture[j] = CTexture::Create(m_pDevice, m_pContext, fsFullPath.wstring().c_str(), 1);
 			if (nullptr == MeshMaterial.pMtrlTexture[j])
 				return E_FAIL;
 		}

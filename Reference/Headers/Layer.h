@@ -29,13 +29,21 @@ public:
 		return m_pGameObjects;
 	}
 
+	auto Begin() {
+		return m_pGameObjects.begin();
+	}
+
+	auto End() {
+		return m_pGameObjects.end();
+	}
+
 public:
 	HRESULT Add_GameObject(CGameObject * pGameObject);
+	HRESULT Delete_GameObject(string strName);
 	void Tick(_double TimeDelta);
 	void Late_Tick(_double TimeDelta);
 	
 	CGameObject* FindByName(string strName);
-	void TraverseGameObjects(function<bool(CGameObject*)> func);
 private:
 	INFO			m_tInfo;
 	list<CGameObject*>	m_pGameObjects;

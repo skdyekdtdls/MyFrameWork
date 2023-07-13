@@ -139,14 +139,11 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 		pChannel->Invalidate_TransformationMatrix(Bones, m_TimeAcc, &m_ChannelCurrentKeyFrames[iChannelIndex++], eBody);
 	}
 
-	if (0 == strcmp(m_szName, "Clint_basic_shoot") && FloatEqual(m_TimeAcc, 30.0, TimeDelta))
-		cout << "적중 : " << m_TimeAcc << endl;
-
 	// 나중에는 상체만 실행하던지, 하체만 실행하던지, 아니면 상속을하던지 고쳐야함.
 	for (auto& Pair : m_TimeLineEvents)
 	{
 		// 시간값이 일치하면 실행한다.
-		if (FloatEqual(Pair.second.first, m_TimeAcc, TimeDelta))
+		if (FloatEqual(Pair.second.first, m_TimeAcc, TimeDelta * 1.5))
 			Pair.second.second();
 	}
 }
@@ -193,12 +190,14 @@ void CAnimation::SaveData(HANDLE hFile, DWORD& dwByte)
 {
 	WriteVoid(&m_TickPerSecond, sizeof(m_TickPerSecond));
 	WriteVoid(&m_isLoop, sizeof(m_isLoop));
+	WriteVoid(&m_iNextIndex, sizeof(m_iNextIndex));
 }
 
 void CAnimation::LoadData(HANDLE hFile, DWORD& dwByte)
 {
 	ReadVoid(&m_TickPerSecond, sizeof(m_TickPerSecond));
 	ReadVoid(&m_isLoop, sizeof(m_isLoop));
+	ReadVoid(&m_iNextIndex, sizeof(m_iNextIndex));
 }
 
 CAnimation* CAnimation::Create(const aiAnimation* pAIAnimation, const CModel::BONES& Bones)

@@ -49,7 +49,7 @@ namespace Engine
 		}
 
 		wstring wstrName;
-		wstring wstrKey;
+		wstring wstrKey; // 객체의 ProtoTag값을 들고 있고, 세이브 로드에 사용된다.
 		_uint ID;
 	};
 

@@ -1,4 +1,5 @@
 #include "ColliderSphere.h"
+#include "ColliderAABB.h"
 
 CColliderSphere::CColliderSphere(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCollider(pDevice, pContext)
@@ -18,7 +19,7 @@ HRESULT CColliderSphere::Initialize_Prototype()
 	__super::Initialize_Prototype();
 	m_pBoudingSphere_Origin = new BoundingSphere(_float3(0.f, 0.f, 0.f), 0.5f);
 	m_pBoudingSphere = new BoundingSphere(_float3(0.f, 0.f, 0.f), 0.5f);
-	m_eTYPE = TYPE_SPHERE;
+	m_eType = TYPE_SPHERE;
 
 	return S_OK;
 }
@@ -54,11 +55,25 @@ _bool CColliderSphere::IntersectRay(_float& fDist, const RAY& tMouseRay)
 	return false;
 }
 
+_bool CColliderSphere::Intersect(CCollider* pOtherCollider)
+{
+	m_isColl = { false };
+	switch (pOtherCollider->GetType())
+	{
+	case TYPE_SPHERE:
+		m_isColl = m_pBoudingSphere->Intersects(*static_cast<CColliderSphere*>(pOtherCollider)->GetBoundingSphere());
+		break;
+	case TYPE_AABB:
+		m_isColl = m_pBoudingSphere->Intersects(*static_cast<CColliderAABB*>(pOtherCollider)->GetBoundingBox());
+		break;
+	}
+	return m_isColl;
+}
 
 #ifdef _DEBUG
 HRESULT CColliderSphere::Render()
 {
-	SetupResources();
+	__super::SetupResources();
 
 	__super::Begin();
 

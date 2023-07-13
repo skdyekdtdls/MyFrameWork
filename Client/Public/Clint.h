@@ -1,30 +1,32 @@
-
 #pragma once
 
 #include "Client_Defines.h"
 #include "GameObject.h"
 #include "ISerializable.h"
-#include "Model.h"
+
 
 BEGIN(Engine)
 
 class CShader;
-class CTexture;
 class CRenderer;
 class CTransform;
 class CModel;
 class CCollider;
 class CNavigation;
+class Raycast;
 END
 
 BEGIN(Client)
 class Pistola;
-class ClintState;
+template <typename OWNER, typename ANIM_ENUM>
+class StateContext;
 END
 
 BEGIN(Client)
+
 class Clint final : public CGameObject, public ISerializable
 {
+	typedef StateContext<Clint, CLINT_ANIM> ClintState;
 public:
 	typedef struct tagClintDesc : public tagCGameObjectDesc
 	{
@@ -37,14 +39,15 @@ private:
 	virtual ~Clint() = default;
 
 public:
-	void TransitionTo(const _tchar* pTag);
-
-public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual void Tick(_double TimeDelta) override;
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
+
+public:
+	_vector GetPosition();
+	_vector GetLook();
 
 public:
 	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
@@ -53,24 +56,19 @@ public:
 private: /* For. Component */
 	CModel* m_pModelCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
-	CTexture* m_pTextureCom = { nullptr };
+	CCollider* m_pColliderCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CNavigation* m_pNavigationCom = { nullptr };
-	CCollider* m_pColliderCom = { nullptr };
 	Pistola* m_pPistolaComL = { nullptr };
 	Pistola* m_pPistolaComR = { nullptr };
-
-private:
-	unordered_map<const _tchar*, ClintState*> m_pClintStates;
-	ClintState*	m_pCurState = { nullptr };
+	Raycast* m_pRaycastCom = { nullptr };
+	ClintState* m_pStateContextCom = { nullptr };
 
 private:
 	static _uint Clint_Id;
 
 private:
-	void Add_State(const _tchar* pTag, ClintState* pState);
-	ClintState* Find_State(const _tchar* pTag);
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();
 

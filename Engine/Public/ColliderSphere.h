@@ -1,4 +1,3 @@
-
 #pragma once
 #include "Collider.h"
 
@@ -11,6 +10,7 @@ public:
 		tagColliderSphereDesc() : tagCColliderDesc(), fRadius(1.f) {};
 		_float fRadius;
 	}CCOLLIDER_SPHERE_DESC;
+
 private:
 	explicit CColliderSphere(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);
 	explicit CColliderSphere(const CColliderSphere& rhs);
@@ -27,7 +27,7 @@ public:
 	virtual void Tick(_fmatrix TransformMatrix) override;
 
 	_bool IntersectRay(_float& fDist, const RAY& tMouseRay);
-
+	virtual _bool Intersect(CCollider* pOtherCollider) override;
 #ifdef _DEBUG
 	virtual HRESULT Render() override;
 #endif
@@ -36,7 +36,7 @@ private:
 	_float m_fRadius;
 	BoundingSphere* m_pBoudingSphere_Origin = { nullptr };
 	BoundingSphere* m_pBoudingSphere = { nullptr };
-
+	
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_Component_CColliderSphere"; }
 	static CColliderSphere* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);

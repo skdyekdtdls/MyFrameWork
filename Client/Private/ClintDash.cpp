@@ -1,10 +1,14 @@
 #include "..\Public\ClintDash.h"
 #include "GameInstance.h"
 #include "Clint.h"
-#include "Model.h"
 
-ClintDash::ClintDash(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, Clint* pClint)
-	: ClintState(pDevice, pContext, pClint)
+ClintDash::ClintDash(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: StateMachine<Clint, CLINT_ANIM>(pDevice, pContext)
+{
+}
+
+ClintDash::ClintDash(const ClintDash& rhs)
+	: StateMachine<Clint, CLINT_ANIM>(rhs)
 {
 }
 
@@ -27,7 +31,7 @@ void ClintDash::OnStateTick(_double TimeDelta)
 
 	if (pModel->IsAnimationFinished(LOWER))
 	{
-		m_pOwner->TransitionTo(L"ClintIdle");
+		m_pStateContext->TransitionTo(L"ClintIdle");
 	}
 
 	pModel->RootMotion(TimeDelta, pTransform->GetCurDirection());
@@ -40,9 +44,15 @@ void ClintDash::OnStateExit()
 	__super::OnStateExit();
 }
 
-ClintDash* ClintDash::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, Clint* pClint)
+StateMachine<Clint, CLINT_ANIM>* ClintDash::Clone(void* pArg)
 {
-	return new ClintDash(pDevice, pContext, pClint);
+	__super::Initialize(pArg);
+	return new ClintDash(*this);
+}
+
+ClintDash* ClintDash::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	return new ClintDash(pDevice, pContext);
 }
 
 void ClintDash::Free()
