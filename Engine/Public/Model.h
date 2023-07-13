@@ -88,7 +88,7 @@ public:
 public:
 	virtual void Play_Animation(_double TimeDelta, BODY eBody = LOWER);
 	virtual _bool IsAnimationFinished(BODY eBody = LOWER);
-	void GroupingBones();
+	void GroupingBones(vector<_uint>& upper, vector<_uint>& lower);
 
 	// 인자로 아무것도 들어오지 않거나 음수가 들어오면 현재 애니메이션 리셋
 	virtual void ResetAnimation(_int iIndex = -1, BODY eBody = LOWER);
@@ -148,6 +148,8 @@ public:
 	static CModel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiScene* pAIScene, TYPE eType, const _tchar* pModelFilePath, _fmatrix PivotMatrix);
 	virtual CComponent* Clone(void* pArg);
 	virtual void Free() override;
+
+	fs::path find_file_in_dir(const fs::path& dir_path, const fs::path& file_name);
 };
 
 END

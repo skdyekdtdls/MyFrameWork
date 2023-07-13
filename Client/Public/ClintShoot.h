@@ -1,11 +1,15 @@
 #pragma once
-#include "ClintState.h"
+
+#include "Client_Defines.h"
+#include "StateMachine.h"
 
 BEGIN(Client)
-class ClintShoot final : public ClintState
+class Clint;
+class ClintShoot final : public StateMachine<Clint, CLINT_ANIM>
 {
 private:
-	ClintShoot(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, Clint* pClint);
+	ClintShoot(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	ClintShoot(const ClintShoot& rhs);
 	virtual ~ClintShoot() = default;
 
 public:
@@ -14,7 +18,10 @@ public:
 	virtual void OnStateExit() override;
 
 public:
-	static ClintShoot* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, Clint * pClint);
+	static const _tchar* Tag() { return L"ClintShoot"; }
+	static ClintShoot* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);
+	virtual StateMachine<Clint, CLINT_ANIM>* Clone(void* pArg) override;
 	virtual void Free() override;
 };
+
 END

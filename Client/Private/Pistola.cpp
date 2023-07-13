@@ -2,6 +2,8 @@
 #include "GameInstance.h"
 #include "Model.h"
 #include "Bone.h"
+#include "ClintBasicBullet.h"
+
 _uint Pistola::Pistola_Id = 0;
 
 /* Don't Forget Release for the VIBuffer or Model Component*/
@@ -63,29 +65,26 @@ void Pistola::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
 
+	// 렌더그룹 추가
 	if(nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 
-	// 	if(nullptr != m_pColliderCom)
-	//		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
+	AttachingWeapon();
+
+	ReleaseIf([](ClintBasicBullet* pClintBasicBullet) {
+		return pClintBasicBullet->GetDead();
+		});
+
+	for (auto& Bullet : m_Bullets)
+		Bullet->Tick(TimeDelta);
 }
 
 void Pistola::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
 
-	_matrix BoneMatrix;
-
-	BoneMatrix = XMLoadFloat4x4(&m_OffsetMatrix) *
-		XMLoadFloat4x4(m_pCombindTransformationMatrix) *
-		XMLoadFloat4x4(&m_PivotMatrix);
-
-	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
-	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
-	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
-
-	XMStoreFloat4x4(&m_WorldMatrix, m_pTransformCom->Get_WorldMatrix() *
-		BoneMatrix * XMLoadFloat4x4(m_pParentWorldMatrix));
+	for (auto& Bullet : m_Bullets)
+		Bullet->Late_Tick(TimeDelta);
 }
 
 HRESULT Pistola::Render()
@@ -119,6 +118,22 @@ HRESULT Pistola::Render()
 #endif
 }
 
+void Pistola::Attack(_fvector vLook)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	ClintBasicBullet::CLINT_BASIC_BULLET_DESC tClintBasicBulletDesc;
+
+	tClintBasicBulletDesc.pOwner = this;
+	tClintBasicBulletDesc.vLook = vLook;
+	XMStoreFloat4(&tClintBasicBulletDesc.vPosition, XMLoadFloat4x4(&m_WorldMatrix).r[3]);
+
+	CGameObject* pBullet = pGameInstance->Clone_GameObject(ClintBasicBullet::ProtoTag(), &tClintBasicBulletDesc);
+	PushBackBullet(static_cast<ClintBasicBullet*>(pBullet));
+	Safe_Release(pGameInstance);
+}
+
 void Pistola::Save(HANDLE hFile, DWORD& dwByte)
 {
 	m_tInfo.Save(hFile, dwByte);
@@ -139,7 +154,6 @@ HRESULT Pistola::Add_Components()
 	/* For.Com_Renderer */
 	CRenderer::CRENDERER_DESC tRendererDesc; tRendererDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom, &tRendererDesc), E_FAIL);
-	// no texture now, you have to add texture later
 
 	CTransform::CTRANSFORM_DESC TransformDesc{ 7.0, XMConvertToRadians(720.f) }; TransformDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
@@ -172,6 +186,41 @@ HRESULT Pistola::SetUp_ShaderResources()
 	Safe_Release(pGameInstance);
 
 	return S_OK;
+}
+
+void Pistola::PushBackBullet(ClintBasicBullet* pClintBasicBullet)
+{
+	m_Bullets.push_back(pClintBasicBullet);
+}
+
+void Pistola::AttachingWeapon()
+{
+	_matrix BoneMatrix;
+
+	BoneMatrix = XMLoadFloat4x4(&m_OffsetMatrix) *
+		XMLoadFloat4x4(m_pCombindTransformationMatrix) *
+		XMLoadFloat4x4(&m_PivotMatrix);
+
+	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+
+	XMStoreFloat4x4(&m_WorldMatrix, m_pTransformCom->Get_WorldMatrix() *
+		BoneMatrix * XMLoadFloat4x4(m_pParentWorldMatrix));
+}
+
+void Pistola::ReleaseIf(function<bool(ClintBasicBullet* pClintBasicBullet)> func)
+{
+	for (auto iter = m_Bullets.begin(); iter != m_Bullets.end();)
+	{
+		if (func(*iter))
+		{
+			Safe_Release(*iter);
+			iter = m_Bullets.erase(iter);
+		}
+		else
+			++iter;
+	}
 }
 
 Pistola* Pistola::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -208,4 +257,7 @@ void Pistola::Free(void)
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pRendererCom);
 	/* Don't Forget Release for the VIBuffer or Model Component*/
+
+	for (auto& Bullet : m_Bullets)
+		Safe_Release(Bullet);
 }

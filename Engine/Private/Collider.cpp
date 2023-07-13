@@ -11,6 +11,7 @@ CCollider::CCollider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 CCollider::CCollider(const CCollider& rhs)
 	: CComponent(rhs)
+	, m_eType(rhs.m_eType)
 #ifdef _DEBUG
 	, m_pBatch(rhs.m_pBatch)
 	, m_pEffect(rhs.m_pEffect)
@@ -46,6 +47,10 @@ HRESULT CCollider::Initialize_Prototype()
 
 HRESULT CCollider::Initialize(void* pArg)
 {
+	if (nullptr == pArg)
+		return S_OK;
+
+	__super::Initialize(pArg);
 
 	return S_OK;
 }
@@ -89,53 +94,7 @@ void CCollider::End()
 }
 #endif
 
-_bool CCollider::Intersect(const CCollider* pCollider)
-{
-	m_isColl = { false };
 
-	switch (m_eTYPE)
-	{
-	case Engine::CCollider::TYPE_SPHERE:
-		m_isColl = IntersectSphere(pCollider);
-		break;
-	case Engine::CCollider::TYPE_AABB:
-		break;
-	case Engine::CCollider::TYPE_OBB:
-		break;
-	case Engine::CCollider::TYPE_END:
-		break;
-	default:
-		break;
-	}
-
-	return m_isColl;
-}
-
-_bool CCollider::IntersectSphere(const CCollider* pCollider)
-{
-	BoundingSphere* pMyBoudingSphere = static_cast<const CColliderSphere*>(this)->GetBoundingSphere();
-	_bool bResult = { false };
-
-	switch (pCollider->m_eTYPE)
-	{
-	case Engine::CCollider::TYPE_SPHERE:
-	{
-		BoundingSphere* pOtherBoudingSphere = static_cast<const CColliderSphere*>(pCollider)->GetBoundingSphere();
-		bResult = pMyBoudingSphere->Intersects(*pOtherBoudingSphere);
-	}
-	break;
-	case Engine::CCollider::TYPE_AABB:
-		break;
-	case Engine::CCollider::TYPE_OBB:
-		break;
-	case Engine::CCollider::TYPE_END:
-		break;
-	default:
-		break;
-	}
-
-	return bResult;
-}
 
 void CCollider::Free()
 {

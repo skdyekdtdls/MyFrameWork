@@ -2,8 +2,13 @@
 #include "GameInstance.h"
 #include "Clint.h"
 
-ClintRun::ClintRun(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, Clint* pClint)
-	: ClintState(pDevice, pContext, pClint)
+ClintRun::ClintRun(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: StateMachine<Clint, CLINT_ANIM>(pDevice, pContext)
+{
+}
+
+ClintRun::ClintRun(const ClintRun& rhs)
+	: StateMachine<Clint, CLINT_ANIM>(rhs)
 {
 }
 
@@ -47,7 +52,7 @@ void ClintRun::OnStateTick(_double TimeDelta)
 	}
 	else
 	{
-		m_pOwner->TransitionTo(L"ClintIdle");
+		m_pStateContext->TransitionTo(L"ClintIdle");
 	}
 
 	if (pGameInstance->Get_DIKeyState(DIK_SPACE))
@@ -69,11 +74,11 @@ void ClintRun::OnStateTick(_double TimeDelta)
 			pModel->RootMotion(TimeDelta, CTransform::DIR_E);
 		}
 
-		m_pOwner->TransitionTo(L"ClintDash");
+		m_pStateContext->TransitionTo(L"ClintDash");
 	}
 	else if (pGameInstance->Get_DIMouseState(CInput_Device::DIMK_LBUTTON))
 	{
-		m_pOwner->TransitionTo(L"ClintShoot");
+		m_pStateContext->TransitionTo(L"ClintShoot");
 	}
 
 	Safe_Release(pGameInstance);
@@ -84,9 +89,15 @@ void ClintRun::OnStateExit()
 	__super::OnStateExit();
 }
 
-ClintRun* ClintRun::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, Clint* pClint)
+StateMachine<Clint, CLINT_ANIM>* ClintRun::Clone(void* pArg)
 {
-	return new ClintRun(pDevice, pContext, pClint);
+	__super::Initialize(pArg);
+	return new ClintRun(*this);
+}
+
+ClintRun* ClintRun::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	return new ClintRun(pDevice, pContext);
 }
 
 void ClintRun::Free()

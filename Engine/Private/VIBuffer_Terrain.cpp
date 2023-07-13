@@ -35,7 +35,6 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap) // Áö±
 
 	CloseHandle(hFile);
 
-
 	m_iNumVertexBuffers = { 1 };
 	m_iStride = { sizeof(VTXPOSNORTEX) };
 	m_iNumVertices = { m_iNumVerticesX * m_iNumVerticesZ };
@@ -43,7 +42,6 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap) // Áö±
 	m_iNumIndices = { (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2 * 3 };
 	m_eFormat = { DXGI_FORMAT_R32_UINT };
 	m_eTopology = { D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST };
-
 
 #pragma region VERTEX_BUFFER
 

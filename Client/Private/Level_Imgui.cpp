@@ -23,7 +23,7 @@ HRESULT CLevel_Imgui::Initialize()
 	Ready_Layer_Player(TEXT("Layer_Player"));
 	Ready_Layer_BackGround(TEXT("Layer_BackGround"));
 	Ready_Layer_Camera(TEXT("Layer_Camera"));
-	//Ready_Layer_Monster(TEXT("Layer_Monster"));
+	Ready_Layer_Monster(TEXT("Layer_Monster"));
 }
 
 void CLevel_Imgui::Tick(_double TimeDelta)
@@ -111,8 +111,6 @@ void CLevel_Imgui::Ready_Layer_Monster(const _tchar* pLayerTag)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-
-
 	Safe_Release(pGameInstance);
 }
 
@@ -121,7 +119,6 @@ void CLevel_Imgui::Ready_Layer_Player(const _tchar* pLayerTag)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	//NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Clint::ProtoTag(), pLayerTag));
 	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Clint::ProtoTag(), pLayerTag));
 
 	Safe_Release(pGameInstance);

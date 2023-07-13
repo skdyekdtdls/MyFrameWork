@@ -11,6 +11,7 @@ class ENGINE_DLL CShader final : public CComponent
 	{
 		tagCShaderDesc() : tagComponentDesc() {};
 	}CSHADER_DESC;
+
 protected:
 	CShader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CShader(const CShader& rhs);
@@ -29,6 +30,7 @@ public:
 	HRESULT Bind_RawValue(const _char * pConstantName, const void* pValue, _uint iLength);
 	HRESULT Bind_ShaderResource(const _char * pConstantName, ID3D11ShaderResourceView * pSRV);
 	HRESULT Bind_ShaderResources(const _char * pConstantName, ID3D11ShaderResourceView * *ppSRVArray, _uint iNumTexture);
+
 private:
 	_uint	m_iNumPasses = { 0 };
 	vector<ID3D11InputLayout*>	m_InputLayouts;

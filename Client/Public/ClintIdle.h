@@ -1,12 +1,14 @@
 #pragma once
-
-#include "ClintState.h"
+#include "Client_Defines.h"
+#include "StateMachine.h"
 
 BEGIN(Client)
-class ClintIdle final : public ClintState
+class Clint;
+class ClintIdle final : public StateMachine<Clint, CLINT_ANIM>
 {
 private:
-	ClintIdle(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, Clint* pClint);
+	ClintIdle(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	ClintIdle(const ClintIdle& rhs);
 	virtual ~ClintIdle() = default;
 
 public:
@@ -16,7 +18,8 @@ public:
 
 public:
 	static const _tchar* Tag() { return L"ClintIdle"; }
-	static ClintIdle* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, Clint* pClint);
+	static ClintIdle* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual StateMachine<Clint, CLINT_ANIM>* Clone(void* pArg) override;
 	virtual void Free() override;
 };
 

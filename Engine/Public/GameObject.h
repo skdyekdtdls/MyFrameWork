@@ -37,9 +37,16 @@ public:
 public:
 	virtual _bool Picked(_Inout_ PICK_DESC& tPickDesc, const RAY& tMouseRay);
 	_float GetPickSphereRadius();
+	void ReleaseFreePickCollider();
 #endif
 
 	_float3 GetPosition();
+	virtual void SetDead() {
+		m_bDead = true;
+	}
+	virtual _bool GetDead() {
+		return m_bDead;
+	}
 
 public:
 	virtual CGameObject* Clone(void* pArg) override = 0;
@@ -47,6 +54,7 @@ public:
 
 protected:
 	INFO m_tInfo;
+	_bool m_bDead;
 
 #ifdef _DEBUG
 	CColliderSphere* m_pPickCollider = { nullptr };

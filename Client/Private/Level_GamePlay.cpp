@@ -69,11 +69,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, CTerrain::ProtoTag(), pLayerTag)))
 		return E_FAIL;
 
-	for (size_t i = 0; i < 1; i++)
-	{
-		NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, Fiona::ProtoTag(), pLayerTag), E_FAIL);
-	}
-
 	Safe_Release(pGameInstance);
 
 

@@ -34,10 +34,7 @@ void CTexture::SaveAssimp(HANDLE hFile, DWORD& dwByte)
 void CTexture::LoadAssimp(HANDLE hFile, DWORD& dwByte, CModel::TYPE eType)
 {
 	// 원본 경로를 Skeletal_Mesh, Static_Mesh로 나누어서 경로를 가공해준다.
-	fs::path baseDir("../../Resources/");
-	fs::path subDir = (eType == CModel::TYPE_ANIM) ? "Skeletal_Mesh/" : "Static_Mesh/";
 	fs::path fullpath;
-	fs::path ParentPathName;
 
 	ReadVoid(&m_iNumTextures, sizeof(_uint));
 	m_TextureFilePaths.resize(m_iNumTextures);
@@ -51,11 +48,8 @@ void CTexture::LoadAssimp(HANDLE hFile, DWORD& dwByte, CModel::TYPE eType)
 
 		temp[size] = '\0'; // ensure the string is null-terminated
 		fullpath  = temp.data();
-		ParentPathName = fullpath.parent_path().filename();
-		baseDir /= subDir;
-		baseDir /= ParentPathName;
-		baseDir /= fullpath.filename();
-		m_TextureFilePaths[i] = baseDir;
+
+		m_TextureFilePaths[i] = fullpath;
 	}
 
 	// png같은 파일들을 .dds 파일로 만들어 주는 코드
@@ -105,8 +99,6 @@ HRESULT CTexture::Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNu
 	m_iNumTextures = iNumTextures;
 	m_Textures.reserve(m_iNumTextures);
 	
-
-
 	for (_uint i = 0; i < m_iNumTextures; ++i)
 	{
 		ID3D11ShaderResourceView* pSRV = { nullptr };

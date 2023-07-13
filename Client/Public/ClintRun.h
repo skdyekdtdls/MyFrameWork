@@ -1,12 +1,18 @@
 #pragma once
-
-#include "ClintState.h"
+#include "Client_Defines.h"
+#include "StateMachine.h"
 
 BEGIN(Client)
-class ClintRun final : public ClintState
+class Clint;
+class ClintRun final : public StateMachine<Clint, CLINT_ANIM>
 {
+	typedef struct tagClintRunDesc : public tagStateMachineDesc
+	{
+		tagClintRunDesc() : tagStateMachineDesc() {}
+	}CLINT_RUN_DESC;
 private:
-	ClintRun(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, Clint* pClint);
+	ClintRun(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	ClintRun(const ClintRun& rhs);
 	virtual ~ClintRun() = default;
 
 public:
@@ -15,7 +21,9 @@ public:
 	virtual void OnStateExit() override;
 
 public:
-	static ClintRun* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, Clint* pClint);
+	static const _tchar* Tag() { return L"ClintRun"; }
+	static ClintRun* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual StateMachine<Clint, CLINT_ANIM>* Clone(void* pArg);
 	virtual void Free() override;
 };
 

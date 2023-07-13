@@ -118,6 +118,15 @@
     <ClCompile Include="..\Private\ColliderSphere.cpp">
       <Filter>01. Utility\03. Components\Collider\ColliderSphere</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\ColliderAABB.cpp">
+      <Filter>01. Utility\03. Components\Collider\ColliderAABB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Ray.cpp">
+      <Filter>01. Utility\03. Components\VIBuffer\Ray</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Raycast.cpp">
+      <Filter>01. Utility\03. Components\Collider\Raycast</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Graphic_Device.h">
@@ -258,6 +267,15 @@
     <ClInclude Include="..\Public\IStateMachine.h">
       <Filter>98. Interface</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ColliderAABB.h">
+      <Filter>01. Utility\03. Components\Collider\ColliderAABB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Ray.h">
+      <Filter>01. Utility\03. Components\VIBuffer\Ray</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Raycast.h">
+      <Filter>01. Utility\03. Components\Collider\Raycast</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -394,6 +412,15 @@
     </Filter>
     <Filter Include="01. Utility\03. Components\Collider\ColliderOBB">
       <UniqueIdentifier>{7641eb8b-06d5-4ca7-9be5-e3905a9df8c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\VIBuffer\Ray">
+      <UniqueIdentifier>{4050028a-8095-412e-b168-806caf5e41f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\Collider\Raycast">
+      <UniqueIdentifier>{f819a212-5619-45fe-96d6-9a2924acae43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\StateContext">
+      <UniqueIdentifier>{786db06f-d245-4282-8d4d-a62416b67471}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

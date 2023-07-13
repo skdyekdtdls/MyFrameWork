@@ -183,6 +183,10 @@
     <ClInclude Include="..\IMGUI\imgui_internal.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\Alien_prawn.h" />
+    <ClInclude Include="..\public\Alien_prawnAttack.h" />
+    <ClInclude Include="..\public\Alien_prawnIdle.h" />
+    <ClInclude Include="..\public\Alien_prawnRun.h" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\BarrelBoxStool.h" />
     <ClInclude Include="..\public\Bush01.h" />
@@ -191,12 +195,13 @@
     <ClInclude Include="..\public\BushC.h" />
     <ClInclude Include="..\public\Cage.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
+    <ClInclude Include="..\public\ClientInstance.h" />
+    <ClInclude Include="..\Public\Client_Enum.h" />
     <ClInclude Include="..\public\Clint.h" />
     <ClInclude Include="..\Public\ClintDash.h" />
     <ClInclude Include="..\public\ClintIdle.h" />
     <ClInclude Include="..\public\ClintRun.h" />
     <ClInclude Include="..\public\ClintShoot.h" />
-    <ClInclude Include="..\public\ClintState.h" />
     <ClInclude Include="..\Public\ClintModel.h" />
     <ClInclude Include="..\Public\ImGuiFileDialog.h" />
     <ClInclude Include="..\Public\ImGuiFileDialogConfig.h" />
@@ -245,13 +250,14 @@
     <ClInclude Include="..\public\Level_Logo.h" />
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\Public\MainApp.h" />
-    <ClInclude Include="..\public\Fiona.h" />
-    <ClInclude Include="..\public\ForkLift.h" />
     <ClInclude Include="..\public\Pistola.h" />
+    <ClInclude Include="..\public\ClintBasicBullet.h" />
     <ClInclude Include="..\public\RailSupportA.h" />
     <ClInclude Include="..\public\RailSupportB.h" />
     <ClInclude Include="..\public\Rock.h" />
     <ClInclude Include="..\public\SmallRockC.h" />
+    <ClInclude Include="..\Public\StateContext.h" />
+    <ClInclude Include="..\Public\StateMachine.h" />
     <ClInclude Include="..\public\Terrain.h" />
     <ClInclude Include="..\public\Tong.h" />
     <ClInclude Include="..\public\TunnelEntryWood.h" />
@@ -302,6 +308,10 @@
     </ClCompile>
     <ClCompile Include="..\IMGUI\ImWindow_CameraTool.cpp" />
     <ClCompile Include="..\IMGUI\ImWindow_EffectTool.cpp" />
+    <ClCompile Include="..\Private\Alien_prawn.cpp" />
+    <ClCompile Include="..\private\Alien_prawnAttack.cpp" />
+    <ClCompile Include="..\private\Alien_prawnIdle.cpp" />
+    <ClCompile Include="..\private\Alien_prawnRun.cpp" />
     <ClCompile Include="..\private\BackGround.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
@@ -316,12 +326,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\private\ClientInstance.cpp" />
     <ClCompile Include="..\private\Clint.cpp" />
     <ClCompile Include="..\Private\ClintDash.cpp" />
     <ClCompile Include="..\private\ClintIdle.cpp" />
     <ClCompile Include="..\private\ClintRun.cpp" />
     <ClCompile Include="..\private\ClintShoot.cpp" />
-    <ClCompile Include="..\private\ClintState.cpp" />
     <ClCompile Include="..\private\ClintModel.cpp" />
     <ClCompile Include="..\Private\ImGuiFileDialog.cpp" />
     <ClCompile Include="..\private\ImWindow_AnimationTool.cpp" />
@@ -384,9 +394,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\private\Fiona.cpp" />
-    <ClCompile Include="..\private\ForkLift.cpp" />
     <ClCompile Include="..\private\Pistola.cpp" />
+    <ClCompile Include="..\private\ClintBasicBullet.cpp" />
     <ClCompile Include="..\private\RailSupportA.cpp" />
     <ClCompile Include="..\private\RailSupportB.cpp" />
     <ClCompile Include="..\private\Rock.cpp" />

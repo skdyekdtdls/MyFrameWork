@@ -1,24 +1,23 @@
 #include "Clint.h"
 #include "GameInstance.h"
+#include "StateContext.h"
 #include "Pistola.h"
 #include "ClintIdle.h"
 #include "ClintRun.h"
 #include "ClintDash.h"
 #include "ClintShoot.h"
 #include "Animation.h"
-_uint Clint::Clint_Id = 0;
 
-/* Don't Forget Release for the VIBuffer or Model Component*/
+_uint Clint::Clint_Id = 0;
 
 Clint::Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
+	
 }
 
 Clint::Clint(const Clint& rhs)
 	: CGameObject(rhs)
-	, m_pClintStates(rhs.m_pClintStates)
-	, m_pCurState(rhs.m_pCurState)
 {
 
 }
@@ -27,7 +26,6 @@ HRESULT Clint::Initialize_Prototype()
 {
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
-
 
 	return S_OK;
 }
@@ -45,17 +43,24 @@ HRESULT Clint::Initialize(void* pArg)
 	m_tInfo.wstrKey = ProtoTag();
 	m_tInfo.ID = Clint_Id;
 
-	// 상태 초기화
-	Add_State(L"ClintIdle", ClintIdle::Create(m_pDevice, m_pContext, this));
-	Add_State(L"ClintRun",  ClintRun::Create(m_pDevice, m_pContext, this));
-	Add_State(L"ClintDash", ClintDash::Create(m_pDevice, m_pContext, this));
-	Add_State(L"ClintShoot", ClintShoot::Create(m_pDevice, m_pContext, this));
-	TransitionTo(L"ClintIdle");
-
 	// 노티파이.
-	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"Test", TIMELINE_EVENT(24.0, [this]() {
-		cout << "사운드 재생" << endl;
+	_double AttackInterval = { 12.0 };
+	_double Start = { 1.0 };
+	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"RShoot1", TIMELINE_EVENT(Start, [this]() {
+		m_pPistolaComL->Attack(GetLook());
 		}));
+	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"LShoot1", TIMELINE_EVENT(Start += AttackInterval, [this]() {
+		m_pPistolaComR->Attack(GetLook());
+		}));
+	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"RShoot2", TIMELINE_EVENT(Start += AttackInterval, [this]() {
+		m_pPistolaComL->Attack(GetLook());
+		}));
+	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"LShoot2", TIMELINE_EVENT(Start += AttackInterval, [this]() {
+		m_pPistolaComR->Attack(GetLook());
+		}));
+
+	if(nullptr != m_pStateContextCom)
+		m_pStateContextCom->TransitionTo(L"ClintIdle");
 
 	// 총쏘기 지속시간을 조정.
 	CAnimation* pAnimation = m_pModelCom->GetAnimationByName("Clint_basic_shoot", UPPER);
@@ -73,11 +78,8 @@ void Clint::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
 
-	// 렌더러 그룹에 추가
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
-
-	if (nullptr != m_pCurState)
-		m_pCurState->OnStateTick(TimeDelta);
+	if(nullptr != m_pStateContextCom)
+		m_pStateContextCom->Tick(TimeDelta);
 
 	// TransfomationMatirx의 값을 갱신하고 CombinedTransformationMatrix를 순차적으로 갱신
 	m_pModelCom->Play_Animation(TimeDelta, LOWER);
@@ -91,11 +93,20 @@ void Clint::Tick(_double TimeDelta)
 		m_pPistolaComL->Tick(TimeDelta);
 		m_pPistolaComR->Tick(TimeDelta);
 	}
+
+	if (nullptr != m_pRaycastCom)
+	{
+		m_pRaycastCom->Tick(m_pTransformCom->Get_State(CTransform::STATE_POSITION),
+			m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+	}
 }
 
 void Clint::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
+
+	// 렌더러 그룹에 추가
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 
 	if (nullptr != m_pPistolaComL && nullptr != m_pPistolaComR)
 	{
@@ -125,13 +136,25 @@ HRESULT Clint::Render()
 
 		m_pModelCom->Render(i);
 	}
-
+	
 #ifdef _DEBUG
 	//m_pNavigationCom->Render_Navigation();
 	 if(nullptr != m_pColliderCom)
 		m_pColliderCom->Render();
+	 if (nullptr != m_pRaycastCom)
+		 m_pRaycastCom->Render();
 #endif
 	 return S_OK;
+}
+
+_vector Clint::GetPosition()
+{
+	return m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+}
+
+_vector Clint::GetLook()
+{
+	return m_pTransformCom->Get_State(CTransform::STATE_LOOK);
 }
 
 void Clint::Save(HANDLE hFile, DWORD& dwByte)
@@ -143,14 +166,6 @@ void Clint::Save(HANDLE hFile, DWORD& dwByte)
 void Clint::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 {
 	m_pTransformCom->Load(hFile, dwByte, iLevelIndex);
-}
-
-void Clint::Add_State(const _tchar* pTag, ClintState* pState)
-{
-	if (nullptr != Find_State(pTag))
-		assert(false);
-
-	m_pClintStates.emplace(pTag, pState);
 }
 
 HRESULT Clint::Add_Components()
@@ -185,18 +200,24 @@ HRESULT Clint::Add_Components()
 	tPistolaDesc.pAttachedBoneName = "Prop1";
 	FAILED_CHECK_RETURN(__super::Add_Composite(Pistola::ProtoTag(), L"Com_Pistola_R", (CComponent**)&m_pPistolaComR, &tPistolaDesc), E_FAIL);
 
+	CColliderAABB::CCOLLIDER_AABB_DESC tColliderAABBDesc;
+	tColliderAABBDesc.pOwner = this;
+	tColliderAABBDesc.Extents = _float3(0.3f, 1.f, 0.3f);
+	tColliderAABBDesc.vCenter = _float3(-0.15f, tColliderAABBDesc.Extents.y, 0.f);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CColliderAABB::ProtoTag(), L"Com_BodyColl", (CComponent**)&m_pColliderCom, &tColliderAABBDesc), E_FAIL);
+
+	Raycast::RAYCAST_DESC tRaycastDesc;
+	tRaycastDesc.pOwner = this;
+	tRaycastDesc.vCenter = _float3(0.15f, 1.f, 0.f);
+	tRaycastDesc.fLength = { 1.f };
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, Raycast::ProtoTag(), L"Com_RaycastTest", (CComponent**)&m_pRaycastCom, &tRaycastDesc), E_FAIL);
 	Safe_Release(pGameInstance);
+	
+	ClintState::STATE_CONTEXT_DESC tStateContextDesc;
+	tStateContextDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, TEXT("Prototype_Component_ClintState"), L"Com_ClintState", (CComponent**)&m_pStateContextCom, &tStateContextDesc), E_FAIL);
+	
 	return S_OK;
-}
-
-ClintState* Clint::Find_State(const _tchar* pTag)
-{
-	auto iter = find_if(m_pClintStates.begin(), m_pClintStates.end(), CTag_Finder(pTag));
-
-	if (iter == m_pClintStates.end())
-		return nullptr;
-
-	return iter->second;
 }
 
 HRESULT Clint::SetUp_ShaderResources()
@@ -216,15 +237,6 @@ HRESULT Clint::SetUp_ShaderResources()
 	Safe_Release(pGameInstance);
 
 	return S_OK;
-}
-
-void Clint::TransitionTo(const _tchar* pTag)
-{
-	if(nullptr != m_pCurState)
-		m_pCurState->OnStateExit();
-	m_pCurState = Find_State(pTag);
-	NULL_CHECK_RETURN(m_pCurState);
-	m_pCurState->OnStateEnter();
 }
 
 Clint* Clint::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -256,21 +268,15 @@ void Clint::Free(void)
 	__super::Free();
 
 	--Clint_Id;
-	Safe_Release(m_pNavigationCom);
-	Safe_Release(m_pColliderCom);
-	Safe_Release(m_pTransformCom);
-	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
+	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pRendererCom);
+	Safe_Release(m_pTransformCom);
+	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pPistolaComL);
 	Safe_Release(m_pPistolaComR);
-
-	for (auto& Pair : m_pClintStates)
-	{
-		Safe_Release(Pair.second);
-	}
-	m_pClintStates.clear();
-
-	/* Don't Forget Release for the VIBuffer or Model Component*/
+	Safe_Release(m_pRaycastCom);
+	Safe_Release(m_pStateContextCom);
 }
 

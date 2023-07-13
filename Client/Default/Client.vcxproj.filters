@@ -154,12 +154,6 @@
     <Filter Include="02. GameObjects\Cube">
       <UniqueIdentifier>{3198cdde-d249-4ee9-93c5-d530941a16e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\Fiona">
-      <UniqueIdentifier>{8e4eb307-a883-48ed-85a0-e80d476bfd64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\ForkLift">
-      <UniqueIdentifier>{97037014-9efd-49a3-8612-7273ea3b7474}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObjects\Clint">
       <UniqueIdentifier>{f9294993-46ce-4f52-b991-34107ab7ea3b}</UniqueIdentifier>
     </Filter>
@@ -172,8 +166,20 @@
     <Filter Include="02. GameObjects\Terrain">
       <UniqueIdentifier>{f002b723-511b-4b3c-aa44-e8f6b37d7d74}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\Clint\ClintState">
+    <Filter Include="95. Design">
+      <UniqueIdentifier>{9fee6d61-7134-49a7-80ea-1709fc05a4f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Alien_prawn">
+      <UniqueIdentifier>{10d9fee3-e69b-46b4-8358-6c472ed3a48e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Alien_prawn\State">
+      <UniqueIdentifier>{4b5d004c-3499-435d-b084-65a739a18a47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Clint\State">
       <UniqueIdentifier>{eed5c57d-67f0-4b6c-9e18-2c1fcf6604d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\ClintBasicBullet">
+      <UniqueIdentifier>{77cc2e19-3df5-40d9-9efe-db592266e60f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -248,12 +254,6 @@
     </ClInclude>
     <ClInclude Include="..\public\EditCamera.h">
       <Filter>96. IMGUI\02. EditCamera</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\ForkLift.h">
-      <Filter>02. GameObjects\ForkLift</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Fiona.h">
-      <Filter>02. GameObjects\Fiona</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ImMode.h">
       <Filter>96. IMGUI\01. ImWindow\98. ImMode</Filter>
@@ -348,26 +348,50 @@
     <ClInclude Include="..\public\WheelBarrow.h">
       <Filter>02. GameObjects\BackGround\WheelBarrow</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\ClintState.h">
-      <Filter>02. GameObjects\Clint\ClintState</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\ClintIdle.h">
-      <Filter>02. GameObjects\Clint\ClintState</Filter>
+      <Filter>02. GameObjects\Clint\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ClintRun.h">
-      <Filter>02. GameObjects\Clint\ClintState</Filter>
+      <Filter>02. GameObjects\Clint\State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ClintDash.h">
-      <Filter>02. GameObjects\Clint\ClintState</Filter>
+      <Filter>02. GameObjects\Clint\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Pistola.h">
       <Filter>02. GameObjects\Pistola</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ClintShoot.h">
-      <Filter>02. GameObjects\Clint\ClintState</Filter>
+      <Filter>02. GameObjects\Clint\State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ClintModel.h">
       <Filter>02. GameObjects\Clint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Alien_prawn.h">
+      <Filter>02. GameObjects\Alien_prawn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Alien_prawnIdle.h">
+      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Enum.h">
+      <Filter>99. Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StateContext.h">
+      <Filter>95. Design</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StateMachine.h">
+      <Filter>95. Design</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Alien_prawnRun.h">
+      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ClientInstance.h">
+      <Filter>95. Design</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Alien_prawnAttack.h">
+      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ClintBasicBullet.h">
+      <Filter>02. GameObjects\ClintBasicBullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -444,12 +468,6 @@
     </ClCompile>
     <ClCompile Include="..\private\EditCamera.cpp">
       <Filter>96. IMGUI\02. EditCamera</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\ForkLift.cpp">
-      <Filter>02. GameObjects\ForkLift</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Fiona.cpp">
-      <Filter>02. GameObjects\Fiona</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImMode.cpp">
       <Filter>96. IMGUI\01. ImWindow\98. ImMode</Filter>
@@ -541,26 +559,41 @@
     <ClCompile Include="..\private\WheelBarrow.cpp">
       <Filter>02. GameObjects\BackGround\WheelBarrow</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\ClintState.cpp">
-      <Filter>02. GameObjects\Clint\ClintState</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\ClintIdle.cpp">
-      <Filter>02. GameObjects\Clint\ClintState</Filter>
+      <Filter>02. GameObjects\Clint\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ClintRun.cpp">
-      <Filter>02. GameObjects\Clint\ClintState</Filter>
+      <Filter>02. GameObjects\Clint\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ClintDash.cpp">
-      <Filter>02. GameObjects\Clint\ClintState</Filter>
+      <Filter>02. GameObjects\Clint\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Pistola.cpp">
       <Filter>02. GameObjects\Pistola</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ClintShoot.cpp">
-      <Filter>02. GameObjects\Clint\ClintState</Filter>
+      <Filter>02. GameObjects\Clint\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ClintModel.cpp">
       <Filter>02. GameObjects\Clint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Alien_prawn.cpp">
+      <Filter>02. GameObjects\Alien_prawn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Alien_prawnIdle.cpp">
+      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Alien_prawnRun.cpp">
+      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ClientInstance.cpp">
+      <Filter>95. Design</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Alien_prawnAttack.cpp">
+      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ClintBasicBullet.cpp">
+      <Filter>02. GameObjects\ClintBasicBullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
