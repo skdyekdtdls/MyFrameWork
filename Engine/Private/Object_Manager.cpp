@@ -59,6 +59,16 @@ CGameObject* CObject_Manager::Add_GameObject(_uint iLevelIndex, const _tchar* pP
 	return pGameObject;
 }
 
+HRESULT CObject_Manager::Delete_GameObject(_uint iLevelIndex, const _tchar* pLayerTag, string strName)
+{
+	CLayer* pLayer = Find_LayerByName(iLevelIndex, pLayerTag);
+
+	if (nullptr == pLayer)
+		return E_FAIL;
+
+	return pLayer->Delete_GameObject(strName);
+}
+
 void CObject_Manager::Clear_LevelResources(_uint iLevelIndex)
 {
 	if (iLevelIndex >= m_iNumLevels)

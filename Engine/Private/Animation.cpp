@@ -190,12 +190,14 @@ void CAnimation::SaveData(HANDLE hFile, DWORD& dwByte)
 {
 	WriteVoid(&m_TickPerSecond, sizeof(m_TickPerSecond));
 	WriteVoid(&m_isLoop, sizeof(m_isLoop));
+	WriteVoid(&m_iNextIndex, sizeof(m_iNextIndex));
 }
 
 void CAnimation::LoadData(HANDLE hFile, DWORD& dwByte)
 {
 	ReadVoid(&m_TickPerSecond, sizeof(m_TickPerSecond));
 	ReadVoid(&m_isLoop, sizeof(m_isLoop));
+	ReadVoid(&m_iNextIndex, sizeof(m_iNextIndex));
 }
 
 CAnimation* CAnimation::Create(const aiAnimation* pAIAnimation, const CModel::BONES& Bones)

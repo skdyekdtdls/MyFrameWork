@@ -73,11 +73,14 @@ void Alien_prawn::Late_Tick(_double TimeDelta)
 	Safe_AddRef(pGameInstance);
 
 	__super::Late_Tick(TimeDelta);
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
+
+	if(pGameInstance->isIn_WorldSpace(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f))
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 
 	CColliderAABB* pClintAABB = static_cast<CColliderAABB*>(
 		pGameInstance->Get_ComponentOfClone(pGameInstance->Get_CurLevelIndex(), L"Layer_Player",
 		"Clint1", L"Com_BodyColl"));
+
 	pClintAABB->Intersect(m_pRaycastCom);
 	m_pRaycastCom->Intersect(pClintAABB);
 	Safe_Release(pGameInstance);
@@ -111,6 +114,14 @@ HRESULT Alien_prawn::Render()
 	 if (nullptr != m_pRaycastCom)
 		m_pRaycastCom->Render();
 #endif
+}
+
+void Alien_prawn::OnCollision(CCollider::COLLISION_INFO* pCollisionInfo)
+{
+	if (L"Prototype_GameObject_Pistola" == pCollisionInfo->tInfo.wstrKey)
+	{
+		m_pStateContextCom->TransitionTo(TEXT("Alien_prawnDead"));
+	}
 }
 
 void Alien_prawn::Save(HANDLE hFile, DWORD& dwByte)

@@ -39,7 +39,9 @@
 #include "Alien_prawnIdle.h"
 #include "Alien_prawnRun.h"
 #include "Alien_prawnAttack.h"
+#include "Alien_prawnDead.h"
 #include "ClintBasicBullet.h"
+
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext)
 	: m_pDevice(pDevice)
 	, m_pContext(pDeviceContext)
@@ -385,6 +387,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 	pAlienPrawnState->Add_State(Alien_prawnIdle::Tag(), Alien_prawnIdle::Create(m_pDevice, m_pContext));
 	pAlienPrawnState->Add_State(Alien_prawnRun::Tag(), Alien_prawnRun::Create(m_pDevice, m_pContext));
 	pAlienPrawnState->Add_State(Alien_prawnAttack::Tag(), Alien_prawnAttack::Create(m_pDevice, m_pContext));
+	pAlienPrawnState->Add_State(Alien_prawnDead::Tag(), Alien_prawnDead::Create(m_pDevice, m_pContext));
 
 	Set_LoadingText(L"객체 로딩 중"); // 객체는 마지막에 로딩되어야한다.
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CTerrain::ProtoTag(), CTerrain::Create(m_pDevice, m_pContext)), E_FAIL);

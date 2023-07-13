@@ -111,7 +111,7 @@ void CImWindow_AnimationTool::Tick()
 	string CurChannelIndex = "Current Bone Index : " + to_string(Bone_item_current);
 	ImGui::Text(CurChannelIndex.c_str());
 
-	// 틱퍼세컨드랑 loop 결정, Duration표시
+	// 애니메이션의 정보를 표현한다.(틱퍼세컨드랑 loop 결정, Duration표시)
 	if (nullptr != m_pAnimation)
 	{
 		_float fTickPerSecond = *m_pAnimation->GetTickPerSecondPtr();
@@ -119,8 +119,9 @@ void CImWindow_AnimationTool::Tick()
 		ImGui::Text("Duration : "); ImGui::SameLine(); ImGui::Text(to_string(fDuration).c_str());
 		ImGui::DragFloat("TickPerSecond", &fTickPerSecond);
 		*m_pAnimation->GetTickPerSecondPtr() = fTickPerSecond;
-
 		ImGui::Checkbox("IsLoop", m_pAnimation->GetIsLoopPtr());
+		ImGui::InputInt("NextIndex", m_pAnimation->GetNextIndexPtr());
+		*m_pAnimation->GetNextIndexPtr() = max(-1, *m_pAnimation->GetNextIndexPtr());
 	}
 
 	// 세이브 파일 다이얼로그

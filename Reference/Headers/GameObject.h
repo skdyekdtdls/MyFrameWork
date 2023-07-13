@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Composite.h"
-
+#include "Collider.h"
 BEGIN(Engine)
 #ifdef _DEBUG
 class CColliderSphere;
@@ -20,18 +20,26 @@ protected:
 	CGameObject(const CGameObject& rhs);
 	virtual ~CGameObject() = default;
 
-public:
+public: // Getter
 	string Get_Name()
 	{
 		return TO_STR(m_tInfo.wstrName);
 	}
+	_float3 GetPosition();
 
+	virtual _bool GetDead() { return m_bDead; }
+
+public: // Setter
+	virtual void SetDead() { m_bDead = true; }
+	INFO GetInfo() { return m_tInfo; }
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual HRESULT Render() override;
 	virtual void Tick(_double TimeDelta);
 	virtual void Late_Tick(_double TimeDelta);
+
+	virtual void OnCollision(CCollider::COLLISION_INFO* pCollisionInfo);
 
 #ifdef _DEBUG
 public:
@@ -40,13 +48,7 @@ public:
 	void ReleaseFreePickCollider();
 #endif
 
-	_float3 GetPosition();
-	virtual void SetDead() {
-		m_bDead = true;
-	}
-	virtual _bool GetDead() {
-		return m_bDead;
-	}
+
 
 public:
 	virtual CGameObject* Clone(void* pArg) override = 0;

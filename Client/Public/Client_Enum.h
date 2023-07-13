@@ -3,21 +3,6 @@
 namespace Client
 {
 	enum LEVELID { LEVEL_STATIC, LEVEL_IMGUI, LEVEL_LOGO, LEVEL_GAMEPLAY, LEVEL_LOADING, LEVEL_END };
-	enum class CLINT_STATE // FSM 시절에 사용했던거라 안쓰임.
-	{
-		IDLE,// = 64,
-		DASH,// = 27,
-		DEATH,// = 29,
-		SHOOT,
-		GRANADE,// = 50,
-		HIT,// = 53,
-		MVP,// = 74,
-		RUN,// = 89,
-		SKILL_01,// = 109,
-		SKILL_02,// = 122,
-		WEAPONCHANGE,// = 152,
-		STATE_END
-	};
 
 	enum CLINT_ANIM
 	{

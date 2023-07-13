@@ -4,6 +4,9 @@
 #include "Light_Manager.h"
 #include "PipeLine.h"
 #include "Input_Device.h"
+#include "CollisionMgr.h"
+#include "Layer.h"
+
 BEGIN(Engine)
 class CGraphic_Device;
 class CInput_Device;
@@ -13,7 +16,7 @@ class CLevel;
 class CGameObject;
 class CTimer_Manager;
 class CLight_Manager;
-
+class Frustum;
 class ENGINE_DLL CGameInstance final : public CBase
 {
 	DECLARE_SINGLETON(CGameInstance)
@@ -47,7 +50,9 @@ public: /* For Level_Manager */
 public: /* For Object_Manager*/
 	HRESULT Add_Prototype(const _tchar * pPrototypeTag, CGameObject * pPrototype);
 	CGameObject* Add_GameObject(_uint iLevelIndex, const _tchar * pPrototypeTag, const _tchar * pLayerTag, void* pArg = nullptr);
+	HRESULT Delete_GameObject(_uint iLevelIndex, const _tchar * pLayerTag, string strName);
 	void Clear_LevelResources(_uint iLevelIndex);
+	CLayer* Find_LayerByName(_uint iLevelIndex, const _tchar * pLayerTag);
 	CGameObject* Get_GameObject(_uint iLevelIndex, const _tchar * pLayerTag, string strName);
 	CComponent* Get_ComponentOfClone(_uint iLevelIndex, const _tchar * pLayerTag, string pCloneObjName, const _tchar * pCloneComName);
 	_uint GetNumLayers(_uint iLevelIndex);
@@ -75,9 +80,15 @@ public: /* For PipeLine */
 	_matrix Get_TransformMatrix_Inverse(CPipeLine::D3DTRANSFORMSTATE eTransformState);
 	_float4x4 Get_TransformFloat4x4_Inverse(CPipeLine::D3DTRANSFORMSTATE eTransformState);
 
+public:
+	_bool isIn_WorldSpace(_fvector vWorldPos, _float fRange);
+
 public: /* For Light_Manager */
 	const CLight::LIGHTDESC* Get_Light(_uint iIndex);
 	HRESULT Add_Lights(const CLight::LIGHTDESC & LightDesc);
+
+public: /* For Collision_Manager */
+	//void Add_ColliderGroup(list<CCollider*> Colliders, COLLGROUP eCollGroup, TEAM eTeam);
 
 private:
 	CGraphic_Device* m_pGraphic_Device = { nullptr };
@@ -87,7 +98,9 @@ private:
 	CTimer_Manager* m_pTimer_Manager = { nullptr };
 	CComponent_Manager* m_pComponent_Manager = { nullptr };
 	CPipeLine*			m_pPipeLine = { nullptr };
+	Frustum*			m_pFrustum = { nullptr };
 	CLight_Manager*		m_pLight_Manager = { nullptr };
+	CollisionMgr*		m_pCollision_Manager = { nullptr };
 public:
 	static void Release_Engine();
 	void Free() override;

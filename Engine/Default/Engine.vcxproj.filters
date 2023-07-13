@@ -127,6 +127,12 @@
     <ClCompile Include="..\Private\Raycast.cpp">
       <Filter>01. Utility\03. Components\Collider\Raycast</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\CollisionMgr.cpp">
+      <Filter>01. Utility\03. Components\Collider\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Frustum.cpp">
+      <Filter>01. Utility\04. PipeLine\Frustrum</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Graphic_Device.h">
@@ -276,6 +282,12 @@
     <ClInclude Include="..\Public\Raycast.h">
       <Filter>01. Utility\03. Components\Collider\Raycast</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CollisionMgr.h">
+      <Filter>01. Utility\03. Components\Collider\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Frustum.h">
+      <Filter>01. Utility\04. PipeLine\Frustrum</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -421,6 +433,12 @@
     </Filter>
     <Filter Include="01. Utility\03. Components\StateContext">
       <UniqueIdentifier>{786db06f-d245-4282-8d4d-a62416b67471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\Collider\Manager">
+      <UniqueIdentifier>{c722913d-dfd4-4a3b-ba0e-2a00b7275a71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\04. PipeLine\Frustrum">
+      <UniqueIdentifier>{c3c4586b-ce54-4cdb-979a-ebbddd5974aa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

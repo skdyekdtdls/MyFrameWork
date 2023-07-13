@@ -1,5 +1,11 @@
 #pragma once
 
+/*
+1. StateMachine<OWNER, ANIM_ENUM>를 로더에 Create한다(상태 헤더파일도 포함하기).
+2. 원하는 상태(스니펫 활용)를 정의하고 Add_State로 StateMachine의 umap에 넣는다.
+3. 원하는 곳에 TransitionTo를 정의한다.
+*/
+
 #include "ClientInstance.h"
 #include "IStateMachine.h"
 //#include "StateContext.h"

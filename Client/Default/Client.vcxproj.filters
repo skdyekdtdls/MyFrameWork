@@ -393,6 +393,9 @@
     <ClInclude Include="..\public\ClintBasicBullet.h">
       <Filter>02. GameObjects\ClintBasicBullet</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Alien_prawnDead.h">
+      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -594,6 +597,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ClintBasicBullet.cpp">
       <Filter>02. GameObjects\ClintBasicBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Alien_prawnDead.cpp">
+      <Filter>02. GameObjects\Alien_prawn\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

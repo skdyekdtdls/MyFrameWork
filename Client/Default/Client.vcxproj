@@ -185,6 +185,7 @@
     </ClInclude>
     <ClInclude Include="..\Public\Alien_prawn.h" />
     <ClInclude Include="..\public\Alien_prawnAttack.h" />
+    <ClInclude Include="..\public\Alien_prawnDead.h" />
     <ClInclude Include="..\public\Alien_prawnIdle.h" />
     <ClInclude Include="..\public\Alien_prawnRun.h" />
     <ClInclude Include="..\public\BackGround.h" />
@@ -310,6 +311,7 @@
     <ClCompile Include="..\IMGUI\ImWindow_EffectTool.cpp" />
     <ClCompile Include="..\Private\Alien_prawn.cpp" />
     <ClCompile Include="..\private\Alien_prawnAttack.cpp" />
+    <ClCompile Include="..\private\Alien_prawnDead.cpp" />
     <ClCompile Include="..\private\Alien_prawnIdle.cpp" />
     <ClCompile Include="..\private\Alien_prawnRun.cpp" />
     <ClCompile Include="..\private\BackGround.cpp">

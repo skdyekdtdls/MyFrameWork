@@ -43,6 +43,8 @@ public:
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
 
+	virtual void OnCollision(CCollider::COLLISION_INFO* pCollisionInfo) override;
+
 public:
 	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
 	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
@@ -58,6 +60,7 @@ private: /* For. Component */
 	AlienPrawnState* m_pStateContextCom = { nullptr };
 	// Can declare VIBuffer or Model Com
 
+
 private:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();
@@ -71,6 +74,8 @@ public:
 	static Alien_prawn* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free(void) override;
+
+
 };
 END
 

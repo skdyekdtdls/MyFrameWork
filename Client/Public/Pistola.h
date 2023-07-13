@@ -16,7 +16,6 @@ BEGIN(Client)
 class Pistola final : public CGameObject, public ISerializable
 {
 public:
-	
 	typedef struct tagPistolaDesc : public tagCGameObjectDesc
 	{
 		tagPistolaDesc() : tagCGameObjectDesc() {}

@@ -3,6 +3,7 @@
 #include "PipeLine.h"
 #endif
 #include "ColliderSphere.h"
+#include "GameObject.h"
 
 CCollider::CCollider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComponent(pDevice, pContext)
@@ -92,9 +93,16 @@ void CCollider::End()
 {
 	m_pBatch->End();
 }
+
 #endif
 
+void CCollider::OnCollision(const COLLISION_INFO* pCollisionInfo)
+{
+	if (nullptr == m_pOwner)
+		return;
 
+	//m_pOwner->OnCollision(pCollisionInfo);
+}
 
 void CCollider::Free()
 {

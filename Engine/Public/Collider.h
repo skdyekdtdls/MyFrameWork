@@ -19,6 +19,12 @@ public:
 		_float3 vCenter;
 	}CCOLLIDER_DESC;
 
+	typedef struct tagCollisionInfo
+	{
+		CCollider*	pOtherCollider;
+		INFO		tInfo;
+	}COLLISION_INFO;
+
 protected:
 	explicit CCollider(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);
 	explicit CCollider(const CCollider& rhs);
@@ -50,8 +56,8 @@ public:
 	void Begin();
 	void End();
 #endif
-
 public:
+	void OnCollision(const COLLISION_INFO* pCollisionInfo);
 	virtual _bool Intersect(CCollider* pCollider) = 0;
 
 protected:

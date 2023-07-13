@@ -11,6 +11,7 @@ public:
 	{
 		tagCRendererDesc() : tagComponentDesc() {};
 	}CRENDERER_DESC;
+
 public:
 	enum RENDERGROUP { RENDER_PRIORITY, RENDER_NONBLEND, RENDER_NONLIGHT, RENDER_BLEND, RENDER_UI, RENDER_END };
 private:

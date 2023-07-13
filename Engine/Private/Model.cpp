@@ -502,7 +502,7 @@ HRESULT CModel::Bind_BoneMatrices(CShader* pShader, const char* pConstantName, _
 
 HRESULT CModel::Add_TimeLineEvent(string strAnimName, const _tchar* pTag, TIMELINE_EVENT tTimeLineEvent, BODY eBody)
 {
-	CAnimation* pAnimation = GetAnimationByName(strAnimName);
+	CAnimation* pAnimation = GetAnimationByName(strAnimName, eBody);
 	if (nullptr == pAnimation)
 		return E_FAIL;
 

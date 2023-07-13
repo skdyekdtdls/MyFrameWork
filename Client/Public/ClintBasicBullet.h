@@ -49,7 +49,7 @@ private: /* For. Component */
 private:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();
-
+	void CheckCollision(_double TimeDelta);
 private:
 	_double m_TimeAcc = { 0.0 };
 	_double m_LifeSpan = { 1.0 };

@@ -1,4 +1,4 @@
-#include "..\Public\Frustum.h"
+﻿#include "..\Public\Frustum.h"
 #include "PipeLine.h"
 
 IMPLEMENT_SINGLETON(Frustum)
@@ -23,8 +23,6 @@ HRESULT Frustum::Initialize()
 
 void Frustum::Tick()
 {
-	/* ??????? ????? ????? ?????. */
-
 	CPipeLine* pPipeLine = CPipeLine::GetInstance();
 	Safe_AddRef(pPipeLine);
 
@@ -52,12 +50,7 @@ void Frustum::Tick()
 
 _bool Frustum::isIn_WorldSpace(_fvector vWorldPos, _float fRange)
 {
-	// ax + by + cz + d > 0	
-	/*
-	a b c d
-	x y z 1*/
-
-	for (size_t i = 0; i < 6; i++)
+		for (size_t i = 0; i < 6; i++)
 	{
 		if (fRange < XMVectorGetX(XMPlaneDotCoord(XMLoadFloat4(&m_vWorldPlanes[i]), vWorldPos)))
 			return false;

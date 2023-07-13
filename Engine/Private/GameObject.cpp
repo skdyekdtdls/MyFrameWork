@@ -63,6 +63,11 @@ void CGameObject::Late_Tick(_double TimeDelta)
 {
 }
 
+void CGameObject::OnCollision(CCollider::COLLISION_INFO* pCollisionInfo)
+{
+
+}
+
 #ifdef _DEBUG
 _bool CGameObject::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 {

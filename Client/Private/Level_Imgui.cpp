@@ -5,8 +5,6 @@
 #include "EditCamera.h"
 #include "Terrain.h"
 #include "Cube.h"
-#include "ForkLift.h"
-#include "Fiona.h"
 #include "ImWindow_Manager.h"
 #include "Clint.h"
 CLevel_Imgui::CLevel_Imgui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -111,6 +109,10 @@ void CLevel_Imgui::Ready_Layer_Monster(const _tchar* pLayerTag)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
+	// 몬스터 레이어 생성을 위해서 생성했다가 바로지움.
+	CGameObject* pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, CCube::ProtoTag(), pLayerTag);
+	pGameInstance->Delete_GameObject(LEVEL_IMGUI, L"Layer_Monster", pGameObject->Get_Name());
+	
 	Safe_Release(pGameInstance);
 }
 

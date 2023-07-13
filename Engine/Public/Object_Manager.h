@@ -34,8 +34,9 @@ public:
 	HRESULT Reserve_Containers(_uint iNumLevels);
 	HRESULT Add_Prototype(const _tchar* pPrototypeTag, CGameObject* pGameObject);
 	CGameObject* Add_GameObject(_uint iLevelIndex, const _tchar* pPrototypeTag, const _tchar* pLayerTag, void* pArg);
+	HRESULT Delete_GameObject(_uint iLevelIndex, const _tchar* pLayerTag, string strName);
 	void Clear_LevelResources(_uint iLevelIndex);
-
+	
 	void Tick(_double TimeDelta);
 	void Late_Tick(_double TimeDelta);
 	CLayer* Find_LayerByName(_uint iLevelIndex, const _tchar* pLayerTag);

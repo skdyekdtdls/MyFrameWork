@@ -48,16 +48,16 @@ HRESULT Clint::Initialize(void* pArg)
 	_double Start = { 1.0 };
 	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"RShoot1", TIMELINE_EVENT(Start, [this]() {
 		m_pPistolaComL->Attack(GetLook());
-		}));
+		}), UPPER);
 	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"LShoot1", TIMELINE_EVENT(Start += AttackInterval, [this]() {
 		m_pPistolaComR->Attack(GetLook());
-		}));
+		}), UPPER);
 	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"RShoot2", TIMELINE_EVENT(Start += AttackInterval, [this]() {
 		m_pPistolaComL->Attack(GetLook());
-		}));
+		}), UPPER);
 	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"LShoot2", TIMELINE_EVENT(Start += AttackInterval, [this]() {
 		m_pPistolaComR->Attack(GetLook());
-		}));
+		}), UPPER);
 
 	if(nullptr != m_pStateContextCom)
 		m_pStateContextCom->TransitionTo(L"ClintIdle");
