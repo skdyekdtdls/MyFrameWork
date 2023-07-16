@@ -195,19 +195,19 @@ void CCell::ClockWiseSort()
 	_vector AB, BC, CA;
 	AB = XMLoadFloat3(&m_vPoints[POINT_B]) - XMLoadFloat3(&m_vPoints[POINT_A]);
 	BC = XMLoadFloat3(&m_vPoints[POINT_C]) - XMLoadFloat3(&m_vPoints[POINT_B]);
-	CA = XMLoadFloat3(&m_vPoints[POINT_A]) - XMLoadFloat3(&m_vPoints[POINT_C]);
+	//CA = XMLoadFloat3(&m_vPoints[POINT_A]) - XMLoadFloat3(&m_vPoints[POINT_C]);
 	
 	fResult = XMVectorGetY(XMVector3Cross(AB, BC));
-	if (fResult < 0)
+	if (0 > fResult)
 		std::swap(m_vPoints[POINT_A], m_vPoints[POINT_C]);
 
-	fResult = XMVectorGetY(XMVector3Cross(BC, CA));
-	if (fResult < 0)
-		std::swap(m_vPoints[POINT_A], m_vPoints[POINT_C]);
+	//fResult = XMVectorGetY(XMVector3Cross(BC, CA));
+	//if (0 > fResult)
+	//	std::swap(m_vPoints[POINT_A], m_vPoints[POINT_C]);
 
-	fResult = XMVectorGetY(XMVector3Cross(CA, AB));
-	if (fResult < 0)
-		std::swap(m_vPoints[POINT_A], m_vPoints[POINT_C]);
+	//fResult = XMVectorGetY(XMVector3Cross(CA, AB));
+	//if (0 > fResult)
+	//	std::swap(m_vPoints[POINT_A], m_vPoints[POINT_C]);
 }
 
 #endif
