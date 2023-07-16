@@ -29,9 +29,15 @@ public: // Getter
 
 	virtual _bool GetDead() { return m_bDead; }
 
+	wstring GetLayerName() {
+		return m_LayerName;
+	}
+
 public: // Setter
+	void SetLayerName(wstring LayerName) { m_LayerName = LayerName; }
 	virtual void SetDead() { m_bDead = true; }
 	INFO GetInfo() { return m_tInfo; }
+
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
@@ -39,7 +45,7 @@ public:
 	virtual void Tick(_double TimeDelta);
 	virtual void Late_Tick(_double TimeDelta);
 
-	virtual void OnCollision(CCollider::COLLISION_INFO* pCollisionInfo);
+	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
 
 #ifdef _DEBUG
 public:
@@ -55,6 +61,7 @@ public:
 	virtual void Free() override;
 
 protected:
+	wstring m_LayerName;
 	INFO m_tInfo;
 	_bool m_bDead;
 

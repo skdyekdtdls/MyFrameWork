@@ -178,7 +178,13 @@
     <Filter Include="02. GameObjects\Clint\State">
       <UniqueIdentifier>{eed5c57d-67f0-4b6c-9e18-2c1fcf6604d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\ClintBasicBullet">
+    <Filter Include="02. GameObjects\Bullet">
+      <UniqueIdentifier>{0d09d8bf-43b7-4a6f-abd4-7307771fb239}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Bullet\ClintUltimateBullet">
+      <UniqueIdentifier>{ac5fbafe-82b0-496a-ab1c-aced67ea38bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Bullet\ClintBasicBullet">
       <UniqueIdentifier>{77cc2e19-3df5-40d9-9efe-db592266e60f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -391,10 +397,19 @@
       <Filter>02. GameObjects\Alien_prawn\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ClintBasicBullet.h">
-      <Filter>02. GameObjects\ClintBasicBullet</Filter>
+      <Filter>02. GameObjects\Bullet\ClintBasicBullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Alien_prawnDead.h">
       <Filter>02. GameObjects\Alien_prawn\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ClintUltimate01.h">
+      <Filter>02. GameObjects\Clint\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ClintUltimate01Bullet.h">
+      <Filter>02. GameObjects\Bullet\ClintUltimateBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Bullet.h">
+      <Filter>02. GameObjects\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -596,10 +611,19 @@
       <Filter>02. GameObjects\Alien_prawn\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ClintBasicBullet.cpp">
-      <Filter>02. GameObjects\ClintBasicBullet</Filter>
+      <Filter>02. GameObjects\Bullet\ClintBasicBullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Alien_prawnDead.cpp">
       <Filter>02. GameObjects\Alien_prawn\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ClintUltimate01.cpp">
+      <Filter>02. GameObjects\Clint\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ClintUltimate01Bullet.cpp">
+      <Filter>02. GameObjects\Bullet\ClintUltimateBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Bullet.cpp">
+      <Filter>02. GameObjects\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

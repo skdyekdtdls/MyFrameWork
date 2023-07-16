@@ -42,11 +42,15 @@ public:
 	HRESULT Delete_GameObject(string strName);
 	void Tick(_double TimeDelta);
 	void Late_Tick(_double TimeDelta);
-	
+
 	CGameObject* FindByName(string strName);
+private:
+	void ReleaseGameObject();
+
 private:
 	INFO			m_tInfo;
 	list<CGameObject*>	m_pGameObjects;
+
 public:
 	static CLayer* Create(wstring wstrLayerName);
 	void Free() override;

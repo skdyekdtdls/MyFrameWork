@@ -58,7 +58,12 @@ HRESULT CCollider::Initialize(void* pArg)
 
 void CCollider::Tick(_fmatrix TransformMatrix)
 {
-	
+	m_isColl = { false };
+}
+
+void CCollider::Add_ColliderGroup(COLL_GROUP eCollGroup)
+{
+	CollisionMgr::GetInstance()->Add_ColliderGroup(this, eCollGroup);
 }
 
 #ifdef _DEBUG
@@ -96,12 +101,12 @@ void CCollider::End()
 
 #endif
 
-void CCollider::OnCollision(const COLLISION_INFO* pCollisionInfo)
+void CCollider::OnCollision(COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
 	if (nullptr == m_pOwner)
 		return;
 
-	//m_pOwner->OnCollision(pCollisionInfo);
+	m_pOwner->OnCollision(tCollisionInfo, TimeDelta);
 }
 
 void CCollider::Free()

@@ -61,9 +61,10 @@ void CGameObject::Tick(_double TimeDelta)
 
 void CGameObject::Late_Tick(_double TimeDelta)
 {
+
 }
 
-void CGameObject::OnCollision(CCollider::COLLISION_INFO* pCollisionInfo)
+void CGameObject::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
 
 }

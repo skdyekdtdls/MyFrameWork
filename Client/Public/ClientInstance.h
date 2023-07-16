@@ -17,7 +17,6 @@ public:
 	virtual ~ClientInstance() = default;
 
 	_vector GetClintPosition();
-	_bool IntersectClintBodyColl(CCollider* pOtherCollider);
 	class CNavigation* GetClintNavigation();
 
 private:

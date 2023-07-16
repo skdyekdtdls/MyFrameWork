@@ -27,7 +27,7 @@ public:
 	virtual void Tick(_fmatrix TransformMatrix) override;
 
 	_bool IntersectRay(_float& fDist, const RAY& tMouseRay);
-	virtual _bool Intersect(CCollider* pOtherCollider) override;
+	virtual _bool Intersect(CCollider* pOtherCollider, COLLISION_INFO& CollisionInfo) override;
 #ifdef _DEBUG
 	virtual HRESULT Render() override;
 #endif

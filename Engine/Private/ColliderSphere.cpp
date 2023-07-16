@@ -37,7 +37,7 @@ HRESULT CColliderSphere::Initialize(void* pArg)
 void CColliderSphere::Tick(_fmatrix TransformMatrix)
 {
 	__super::Tick(TransformMatrix);
-
+	
 	m_pBoudingSphere_Origin->Transform(*m_pBoudingSphere, TransformMatrix);
 }
 
@@ -55,9 +55,8 @@ _bool CColliderSphere::IntersectRay(_float& fDist, const RAY& tMouseRay)
 	return false;
 }
 
-_bool CColliderSphere::Intersect(CCollider* pOtherCollider)
+_bool CColliderSphere::Intersect(CCollider* pOtherCollider, COLLISION_INFO& CollisionInfo)
 {
-	m_isColl = { false };
 	switch (pOtherCollider->GetType())
 	{
 	case TYPE_SPHERE:

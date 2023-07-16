@@ -16,7 +16,7 @@
 #include "Component.h"
 #include "StateContext.h"
 #include "StateMachine.h"
-
+#include "GameInstance.h"
 BEGIN(Client)
 template <typename OWNER, typename ANIM_ENUM>
 class StateContext final : public CComponent
@@ -70,6 +70,11 @@ public:
 			return nullptr;
 
 		return iter->second;
+	}
+
+	void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
+	{
+		m_pCurState->OnCollision(tCollisionInfo, TimeDelta);
 	}
 
 public:

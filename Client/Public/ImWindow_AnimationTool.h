@@ -20,6 +20,8 @@ public:
     _bool ShowDummyObject();
     void ChangeDummyObject(CGameObject* pGameObject);
 
+    void DummyTick(_double TimeDelta);
+    void DummyLateTick(_double TimeDelta);
 private:
     // 애니메이션 리스트 박스
     _int Animation_item_current = -1;

@@ -56,7 +56,6 @@ void Alien_prawn::Tick(_double TimeDelta)
 
 	if (nullptr != m_pColliderCom)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
-
 	if (nullptr != m_pRaycastCom)
 	{
 		m_pRaycastCom->Tick(m_pTransformCom->Get_State(CTransform::STATE_POSITION),
@@ -74,15 +73,12 @@ void Alien_prawn::Late_Tick(_double TimeDelta)
 
 	__super::Late_Tick(TimeDelta);
 
-	if(pGameInstance->isIn_WorldSpace(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f))
+	if (pGameInstance->isIn_WorldSpace(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f))
+	{
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
+		m_pColliderCom->Add_ColliderGroup(COLL_GROUP::MONSTER_BODY);
+	}
 
-	CColliderAABB* pClintAABB = static_cast<CColliderAABB*>(
-		pGameInstance->Get_ComponentOfClone(pGameInstance->Get_CurLevelIndex(), L"Layer_Player",
-		"Clint1", L"Com_BodyColl"));
-
-	pClintAABB->Intersect(m_pRaycastCom);
-	m_pRaycastCom->Intersect(pClintAABB);
 	Safe_Release(pGameInstance);
 }
 
@@ -116,12 +112,23 @@ HRESULT Alien_prawn::Render()
 #endif
 }
 
-void Alien_prawn::OnCollision(CCollider::COLLISION_INFO* pCollisionInfo)
+void Alien_prawn::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
-	if (L"Prototype_GameObject_Pistola" == pCollisionInfo->tInfo.wstrKey)
+	if (L"Prototype_GameObject_Pistola" == tCollisionInfo.pOtherGameObject->GetInfo().wstrKey)
 	{
 		m_pStateContextCom->TransitionTo(TEXT("Alien_prawnDead"));
 	}
+	// 바디콜라이더 끼리 부딪친 경우.
+	if (tCollisionInfo.MyCollName == TEXT("Com_BodyColl")
+		&& tCollisionInfo.OtherCollName == TEXT("Com_BodyColl")
+		&& tCollisionInfo.OtherGameObjectLayerName == TEXT("Layer_Monster"))
+	{
+		tCollisionInfo.vOverLapVector.y = 0.f;
+		m_pTransformCom->Go_Direction(TimeDelta, -XMLoadFloat3(&tCollisionInfo.vOverLapVector)
+			, XMVectorGetX(XMVector3Length(XMLoadFloat3(&tCollisionInfo.vOverLapVector))));
+	}
+
+	m_pStateContextCom->OnCollision(tCollisionInfo, TimeDelta);
 }
 
 void Alien_prawn::Save(HANDLE hFile, DWORD& dwByte)

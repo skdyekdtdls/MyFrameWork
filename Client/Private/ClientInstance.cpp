@@ -15,12 +15,6 @@ _vector ClientInstance::GetClintPosition()
 	return vClintPos;
 }
 
-_bool ClientInstance::IntersectClintBodyColl(CCollider* pOtherCollider)
-{
-	CColliderAABB* pCollBodyColl = GetClintBodyColl();
-	return pCollBodyColl->Intersect(pOtherCollider);
-}
-
 Clint* ClientInstance::GetClint()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();

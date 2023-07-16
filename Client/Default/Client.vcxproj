@@ -190,6 +190,7 @@
     <ClInclude Include="..\public\Alien_prawnRun.h" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\BarrelBoxStool.h" />
+    <ClInclude Include="..\public\Bullet.h" />
     <ClInclude Include="..\public\Bush01.h" />
     <ClInclude Include="..\public\BushA.h" />
     <ClInclude Include="..\public\BushB.h" />
@@ -204,6 +205,8 @@
     <ClInclude Include="..\public\ClintRun.h" />
     <ClInclude Include="..\public\ClintShoot.h" />
     <ClInclude Include="..\Public\ClintModel.h" />
+    <ClInclude Include="..\public\ClintUltimate01.h" />
+    <ClInclude Include="..\Public\ClintUltimate01Bullet.h" />
     <ClInclude Include="..\Public\ImGuiFileDialog.h" />
     <ClInclude Include="..\Public\ImGuiFileDialogConfig.h" />
     <ClInclude Include="..\public\ImWindow_AnimationTool.h" />
@@ -319,6 +322,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\private\BarrelBoxStool.cpp" />
+    <ClCompile Include="..\private\Bullet.cpp" />
     <ClCompile Include="..\Private\Bush01.cpp" />
     <ClCompile Include="..\private\BushA.cpp" />
     <ClCompile Include="..\Private\BushB.cpp" />
@@ -335,6 +339,8 @@
     <ClCompile Include="..\private\ClintRun.cpp" />
     <ClCompile Include="..\private\ClintShoot.cpp" />
     <ClCompile Include="..\private\ClintModel.cpp" />
+    <ClCompile Include="..\private\ClintUltimate01.cpp" />
+    <ClCompile Include="..\Private\ClintUltimate01Bullet.cpp" />
     <ClCompile Include="..\Private\ImGuiFileDialog.cpp" />
     <ClCompile Include="..\private\ImWindow_AnimationTool.cpp" />
     <ClCompile Include="..\Private\ImWindow_LightTool.cpp" />

@@ -62,10 +62,17 @@ HRESULT Clint::Initialize(void* pArg)
 	if(nullptr != m_pStateContextCom)
 		m_pStateContextCom->TransitionTo(L"ClintIdle");
 
+	// 모델 재생속도 조정
+	m_pModelCom->SetAnimationPlaySpeedByIndex(1.5, CLINT_ULTIMATE01, LOWER);
+	m_pModelCom->SetAnimationPlaySpeedByIndex(1.5, CLINT_ULTIMATE01, UPPER);
+	
+
 	// 총쏘기 지속시간을 조정.
-	CAnimation* pAnimation = m_pModelCom->GetAnimationByName("Clint_basic_shoot", UPPER);
+	CAnimation* pAnimation;
+	pAnimation  = m_pModelCom->GetAnimationByName("Clint_basic_shoot", UPPER);
 	pAnimation->SetDuration(25.0);
 
+	// 초기정보 세팅(위치)
 	CGAMEOBJECT_DESC tCloneDesc;
 	if (nullptr != pArg)
 		tCloneDesc = *(CGAMEOBJECT_DESC*)pArg;
@@ -107,6 +114,7 @@ void Clint::Late_Tick(_double TimeDelta)
 
 	// 렌더러 그룹에 추가
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
+	m_pColliderCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BODY);
 
 	if (nullptr != m_pPistolaComL && nullptr != m_pPistolaComR)
 	{
@@ -237,6 +245,12 @@ HRESULT Clint::SetUp_ShaderResources()
 	Safe_Release(pGameInstance);
 
 	return S_OK;
+}
+
+void Clint::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
+{
+
+	m_pStateContextCom->OnCollision(tCollisionInfo, TimeDelta);
 }
 
 Clint* Clint::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

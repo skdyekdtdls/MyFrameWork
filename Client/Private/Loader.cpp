@@ -36,11 +36,13 @@
 #include "ClintIdle.h"
 #include "ClintRun.h"
 #include "ClintShoot.h"
+#include "ClintUltimate01.h"
 #include "Alien_prawnIdle.h"
 #include "Alien_prawnRun.h"
 #include "Alien_prawnAttack.h"
 #include "Alien_prawnDead.h"
 #include "ClintBasicBullet.h"
+#include "ClintUltimate01Bullet.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext)
 	: m_pDevice(pDevice)
@@ -378,6 +380,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 	pClintState->Add_State(ClintRun::Tag(),  ClintRun::Create(m_pDevice, m_pContext));
 	pClintState->Add_State(ClintDash::Tag(), ClintDash::Create(m_pDevice, m_pContext));
 	pClintState->Add_State(ClintShoot::Tag(), ClintShoot::Create(m_pDevice, m_pContext));
+	pClintState->Add_State(ClintUltimate01::Tag(), ClintUltimate01::Create(m_pDevice, m_pContext));
 
 	cout << "Alien_prawn States" << endl;
 	StateContext<Alien_prawn, ALIEN_PRAWN_ANIM>* pAlienPrawnState;
@@ -414,9 +417,10 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(RailSupportB::ProtoTag(), RailSupportB::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(RailSupportA::ProtoTag(), RailSupportA::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Clint::ProtoTag(), Clint::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(ClintBasicBullet::ProtoTag(), ClintBasicBullet::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(ClintUltimate01Bullet::ProtoTag(), ClintUltimate01Bullet::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Pistola::ProtoTag(), Pistola::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Alien_prawn::ProtoTag(), Alien_prawn::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(ClintBasicBullet::ProtoTag(), ClintBasicBullet::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	Set_LoadingText(L"로딩 완료");
 

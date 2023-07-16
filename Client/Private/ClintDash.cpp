@@ -16,8 +16,8 @@ void ClintDash::OnStateEnter()
 {
 	__super::OnStateEnter();
 
-	m_pOwner->GetComponent<CModel>()->Set_AnimByIndex(CLINT_ANIM_DASH, UPPER);
-	m_pOwner->GetComponent<CModel>()->Set_AnimByIndex(CLINT_ANIM_DASH, LOWER);
+	m_pOwner->GetComponent<CModel>()->Set_AnimByIndex(CLINT_DASH, UPPER);
+	m_pOwner->GetComponent<CModel>()->Set_AnimByIndex(CLINT_DASH, LOWER);
 }
 
 void ClintDash::OnStateTick(_double TimeDelta)
@@ -28,6 +28,8 @@ void ClintDash::OnStateTick(_double TimeDelta)
 	Safe_AddRef(pGameInstance);
 	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
 	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
+
+
 
 	if (pModel->IsAnimationFinished(LOWER))
 	{

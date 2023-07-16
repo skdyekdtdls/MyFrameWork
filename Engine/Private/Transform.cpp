@@ -247,6 +247,49 @@ void CTransform::Go_Direction(_double TimeDelta, DIRECTION eDir)
 	Go_Direction(TimeDelta, eDir, m_TransformDesc.SpeedPerSec);
 }
 
+// 내부적으로 노말라이즈 안함.
+void CTransform::Go_Direction(_double TimeDelta, _fvector _vDir, _float fLength)
+{
+	CNavigation* pNavigation = dynamic_cast<CNavigation*>(m_pOwner->Get_Component(L"Com_Navigation"));
+	_vector		vPosition = Get_State(STATE_POSITION);
+	_vector		vNextPosition = vPosition;
+	_vector		vDir = XMVector3Normalize(_vDir); 
+	_bool		isMove = true; // 기본적으로 플레이어는 이동 상태로 가정합니다.
+
+	vNextPosition += vDir * fLength * TimeDelta;
+	if (pNavigation != nullptr)
+	{
+		if (true == (isMove = pNavigation->is_Move(vNextPosition))) // NonSliding
+		{
+			vPosition = vNextPosition; // 위치를 업데이트합니다.
+			//vPosition -= XMVector3Normalize(XMLoadFloat3(&vContactNormal)) * 0.13f; // 벽에 갇히지 않게 밀어냄
+		}
+		else
+		{
+			while (false == isMove)
+			{
+				vNextPosition = vPosition;
+				vDir *= 0.6f;
+				_float3 vContactNormal = pNavigation->ContactNormal(); // 충돌 법선을 가져옵니다.
+				_vector vSlidingVector = pNavigation->GetSlidingVector(vDir, XMLoadFloat3(&vContactNormal));
+				vNextPosition += vDir * fLength * TimeDelta;
+
+				isMove = pNavigation->is_Move(vNextPosition);
+			}
+
+			vPosition = vNextPosition; // 위치를 업데이트합니다.
+		}
+	}
+	else
+		vPosition = vNextPosition;
+
+	// 이동 가능한 상태라면, 새로 계산한 위치를 설정합니다.
+	if (true == isMove)
+	{
+		Set_State(STATE_POSITION, vPosition);
+	}
+}
+
 void CTransform::Chase(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance)
 {
 	_vector		vPosition = Get_State(STATE_POSITION);

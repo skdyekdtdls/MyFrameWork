@@ -27,13 +27,17 @@ void Alien_prawnRun::OnStateTick(_double TimeDelta)
 	Safe_AddRef(pGameInstance);
 	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
 	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
+	Raycast* pRaycast = static_cast<Raycast*>(m_pOwner->Get_Component(L"Com_RayDetect"));
+	CCollider* pCollider = static_cast<CCollider*>(m_pOwner->Get_Component(L"Com_BodyColl"));
+
 	_vector vClintPos = Facade->GetClintPosition();
 	pTransform->Chase(vClintPos, TimeDelta, 0.5f);
 	pTransform->LookAt(vClintPos);
 
-	if (Facade->IntersectClintBodyColl(static_cast<CCollider*>(m_pOwner->Get_Component(L"Com_RayDetect"))))
+	// 절두체 안에 있으면 콜라이더 그룹 추가.
+	if (pGameInstance->isIn_WorldSpace(pTransform->Get_State(CTransform::STATE_POSITION), 1.f))
 	{
-		m_pStateContext->TransitionTo(L"Alien_prawnAttack");
+		pRaycast->Add_ColliderGroup(COLL_GROUP::MONSTER_DETECT);
 	}
 
 	Safe_Release(pGameInstance);
@@ -42,6 +46,15 @@ void Alien_prawnRun::OnStateTick(_double TimeDelta)
 void Alien_prawnRun::OnStateExit()
 {
 	__super::OnStateExit();
+}
+
+void Alien_prawnRun::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
+{
+	if (tCollisionInfo.pMyCollider == m_pOwner->GetComponent<Raycast>() &&
+		tCollisionInfo.pOtherGameObject->GetInfo().wstrKey == TEXT("Prototype_GameObject_Clint"))
+	{
+		TransitionTo(L"Alien_prawnAttack");
+	}
 }
 
 StateMachine<Alien_prawn, ALIEN_PRAWN_ANIM>* Alien_prawnRun::Clone(void* pArg)

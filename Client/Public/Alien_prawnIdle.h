@@ -17,6 +17,8 @@ public:
 	virtual void OnStateTick(_double TimeDelta) override;
 	virtual void OnStateExit() override;
 
+	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
+
 private:
 	_double m_TimeAcc = { 0.0 };
 

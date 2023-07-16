@@ -88,6 +88,7 @@ public:
 
 	void Go_Direction(_double TimeDelta, DIRECTION eDir, _float fLength);
 	void Go_Direction(_double TimeDelta, DIRECTION eDir);
+	void Go_Direction(_double TimeDelta, _fvector vDir, _float fLength);
 
 	void Chase(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance = 0.1f);
 	void LookAt(_fvector vTargetPosition);

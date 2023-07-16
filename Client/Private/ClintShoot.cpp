@@ -15,8 +15,8 @@ ClintShoot::ClintShoot(const ClintShoot& rhs)
 void ClintShoot::OnStateEnter()
 {
 	__super::OnStateEnter();
-	SetAnimIndex(CLINT_ANIM_SHOOT, UPPER);
-	SetAnimIndex(CLINT_ANIM_SHOOT, LOWER);
+	SetAnimIndex(CLINT_SHOOT, UPPER);
+	SetAnimIndex(CLINT_SHOOT, LOWER);
 }
 
 void ClintShoot::OnStateTick(_double TimeDelta)
@@ -33,10 +33,10 @@ void ClintShoot::OnStateTick(_double TimeDelta)
 		if (pGameInstance->Get_DIKeyState(DIK_W))
 		{
 			pTransform->Go_Straight(TimeDelta, Facade->GetClintNavigation());
-			SetAnimIndex(CLINT_ANIM_RUN, LOWER);
+			SetAnimIndex(CLINT_RUN, LOWER);
 		}
 		else
-			SetAnimIndex(CLINT_ANIM_SHOOT, LOWER);
+			SetAnimIndex(CLINT_SHOOT, LOWER);
 	}
 	else
 		m_pStateContext->TransitionTo(L"ClintIdle");

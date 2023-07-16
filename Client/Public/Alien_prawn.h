@@ -43,7 +43,7 @@ public:
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
 
-	virtual void OnCollision(CCollider::COLLISION_INFO* pCollisionInfo) override;
+	virtual void OnCollision(CCollider::COLLISION_INFO pCollisionInfo, _double TimeDelta) override;
 
 public:
 	virtual void Save(HANDLE hFile, DWORD& dwByte) override;

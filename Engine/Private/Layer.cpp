@@ -53,7 +53,7 @@ HRESULT CLayer::Add_GameObject(CGameObject* pGameObject)
 		return E_FAIL;
 
 	m_pGameObjects.push_back(pGameObject);
-
+	pGameObject->SetLayerName(m_tInfo.wstrName);
 	return S_OK;
 }
 
@@ -75,6 +75,8 @@ HRESULT CLayer::Delete_GameObject(string strName)
 
 void CLayer::Tick(_double TimeDelta)
 {
+	ReleaseGameObject();
+
 	for (auto& GameObject : m_pGameObjects)
 	{
 		GameObject->Tick(TimeDelta);
@@ -99,6 +101,20 @@ CGameObject* CLayer::FindByName(string strName)
 		});
 
 	return (GameObject != m_pGameObjects.end()) ? *GameObject : nullptr;
+}
+
+void CLayer::ReleaseGameObject()
+{
+	for (auto iter = m_pGameObjects.begin(); iter != m_pGameObjects.end();)
+	{
+		if (true == (*iter)->GetDead())
+		{
+			Safe_Release(*iter);
+			iter = m_pGameObjects.erase(iter);
+		}
+		else
+			++iter;
+	}
 }
 
 CLayer* CLayer::Create(wstring wstrLayerName)

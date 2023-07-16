@@ -1,13 +1,12 @@
 
 #pragma once
 #include "Component.h"
-
 #ifdef _DEBUG
 #include "DebugDraw.h"
 #endif
+#include "CollisionMgr.h"
 
 BEGIN(Engine)
-
 class ENGINE_DLL CCollider abstract : public CComponent
 {
 public:
@@ -21,8 +20,18 @@ public:
 
 	typedef struct tagCollisionInfo
 	{
-		CCollider*	pOtherCollider;
-		INFO		tInfo;
+		CGameObject* pOtherGameObject;
+		string OtherGameObejctName;
+		wstring OtherGameObjectLayerName;
+
+		CCollider* pOtherCollider;
+		wstring OtherCollName;
+
+		CCollider* pMyCollider;
+		wstring MyCollName;
+
+		_float3 vOverLapVector;
+
 	}COLLISION_INFO;
 
 protected:
@@ -36,7 +45,9 @@ public: // Getter
 	}
 
 public: // Setter
-
+	void SetIsColl(_bool isColl) {
+		m_isColl = isColl;
+	}
 public:
 	_bool IsColl() const {
 		return m_isColl;
@@ -46,6 +57,7 @@ public:
 	HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual void Tick(_fmatrix TransformMatrix);
+	void Add_ColliderGroup(COLL_GROUP eCollGroup);
 
 #ifdef _DEBUG
 	PrimitiveBatch<DirectX::VertexPositionColor>* GetBatch() {
@@ -56,12 +68,13 @@ public:
 	void Begin();
 	void End();
 #endif
+
 public:
-	void OnCollision(const COLLISION_INFO* pCollisionInfo);
-	virtual _bool Intersect(CCollider* pCollider) = 0;
+	void OnCollision(COLLISION_INFO tCollisionInfo, _double TimeDelta);
+	virtual _bool Intersect(CCollider* pCollider, COLLISION_INFO& CollisionInfo) = 0;
 
 protected:
-	TYPE m_eType = { TYPE_END };
+	TYPE			m_eType = { TYPE_END };
 
 #ifdef _DEBUG
 private:

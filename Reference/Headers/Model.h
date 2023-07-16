@@ -74,6 +74,8 @@ public: /* Setter */
 		XMStoreFloat4x4(&m_PivotMatrix, PivotMatrix);
 	}
 
+	void SetAnimationPlaySpeedByIndex(_double PlaySpeed, _uint iAnimIndex, BODY eBody = LOWER);
+
 public: /* For.Assimp*/
 	void SaveAssimp(HANDLE hFile, DWORD & dwByte);
 	void LoadAssimp(const char* pFileName);
@@ -102,7 +104,8 @@ public:
 	virtual HRESULT Add_TimeLineEvent(string strAnimName, const _tchar* pTag, TIMELINE_EVENT tTimeLineEvent, BODY eBody = LOWER);
 	void Delete_TimeLineEvent(string strAnimName, const _tchar* pTag, BODY eBody = LOWER);
 	const TIMELINE_EVENT* Get_TimeLineEvent(string strAnimName, const _tchar* pTag, BODY eBody = LOWER);
-
+	_bool IsCurAnimTimeAccGreaterThan(_double Duration, BODY eBody = LOWER);
+	_bool IsCurAnimTimeAccLessThan(_double Duration, BODY eBody = LOWER);
 protected: /* For.Bones*/
 	_uint						m_iNumBones = { 0 };
 	vector<class CBone*>		m_Bones;

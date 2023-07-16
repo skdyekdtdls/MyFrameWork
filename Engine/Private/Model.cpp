@@ -114,11 +114,14 @@ void CModel::Set_AnimByIndex(_uint iAnimIndex, BODY eBody)
 void CModel::Set_AnimByName(const char* pName, BODY eBody)
 {
 	_int iIndex = 0;
+	if (m_Animations[eBody].empty())
+		return;
+
 	for (auto& iter : m_Animations[eBody])
 	{
 		if (0 == strcmp(iter->m_szName, pName))
 		{
-			Set_AnimByIndex(iIndex);
+			Set_AnimByIndex(iIndex, eBody);
 			return;
 		}
 		++iIndex;
@@ -131,6 +134,14 @@ void CModel::Set_AnimByName(const char* pName, BODY eBody)
 void CModel::Set_RootNode(_uint iBoneIndex)
 {
 	m_RootIndex = iBoneIndex;
+}
+
+void CModel::SetAnimationPlaySpeedByIndex(_double PlaySpeed, _uint iAnimIndex, BODY eBody)
+{
+	if (iAnimIndex >= m_iNumAnimations)
+		return;
+
+	m_Animations[eBody][iAnimIndex]->SetPlaySpeed(PlaySpeed);
 }
 
 void CModel::SaveAssimp(HANDLE hFile, DWORD& dwByte)
@@ -328,24 +339,44 @@ void CModel::Play_Animation(_double TimeDelta, BODY eBody)
 	if (m_eAnimType == TYPE_NONANIM)
 		return;
 
-	if (m_iPrevAnimIndex[eBody] != m_iCurrentAnimIndex[eBody])
+	if (m_Animations[eBody].empty())
+		return;
+
+	_uint iCurrentAnimIndex = m_iCurrentAnimIndex[eBody];
+	_uint iPrevAnimIndex = m_iPrevAnimIndex[eBody];
+
+	// 루프애니메이션이 아닐 경우 NextAnimtion으로 넘어감.
+	if (false == m_Animations[eBody][iCurrentAnimIndex]->m_isLoop)
+	{
+		if (m_Animations[eBody][iCurrentAnimIndex]->IsFinished())
+		{
+			_uint iNextAnimIndex = m_Animations[eBody][iCurrentAnimIndex]->m_iNextIndex;
+			if (-1 != iNextAnimIndex)
+			{
+				Set_AnimByIndex(iNextAnimIndex, eBody);
+			}
+		}
+	}
+
+	// 만약 애니메이션의 변경이 일어나면 보간 시작
+	if (iPrevAnimIndex != iCurrentAnimIndex)
 	{
 		m_InterTimeAcc[eBody] += TimeDelta;
 
-		if (m_InterTimeAcc[eBody] > 0.2)
-		{
-			m_Animations[eBody][m_iPrevAnimIndex[eBody]]->m_isFinished = true;
-			m_iPrevAnimIndex[eBody] = m_iCurrentAnimIndex[eBody];
-			m_Animations[eBody][m_iCurrentAnimIndex[eBody]]->Reset(); // 현재 시작하려는 애니메이션을 준비한다.
+		if (m_InterTimeAcc[eBody] > 0.2) // 보간이 끝나면 현재와 이전의 애니메이션 인덱스 세팅
+		{	
+			m_Animations[eBody][iPrevAnimIndex]->m_isFinished = true;
+			m_iPrevAnimIndex[eBody] = iCurrentAnimIndex;
+			m_Animations[eBody][iCurrentAnimIndex]->Reset();
 		}
-		else
+		else // 보간 
 		{
-			m_Animations[eBody][m_iCurrentAnimIndex[eBody]]->InterAnimation_TransfomationMatrix(m_Bones, m_InterTimeAcc[eBody], eBody);
+			m_Animations[eBody][iCurrentAnimIndex]->InterAnimation_TransfomationMatrix(m_Bones, m_InterTimeAcc[eBody], eBody);
 		}
 	}
-	else
+	else // 채널 상태 갱신
 	{
-		m_Animations[eBody][m_iCurrentAnimIndex[eBody]]->Invalidate_TransformationMatrix(m_Bones, TimeDelta, eBody);
+		m_Animations[eBody][iCurrentAnimIndex]->Invalidate_TransformationMatrix(m_Bones, TimeDelta, eBody);
 	}
 
 	if (LOWER == eBody)
@@ -354,7 +385,6 @@ void CModel::Play_Animation(_double TimeDelta, BODY eBody)
 		m_Bones[m_RootIndex]->FixBone();
 	}
 	
-
 	for (auto& Bone : m_Bones)
 	{
 		Bone->Invalidate_CombinedTransformationMatrix(m_Bones);
@@ -528,6 +558,19 @@ const TIMELINE_EVENT* CModel::Get_TimeLineEvent(string strAnimName, const _tchar
 		return nullptr;
 
 	return pAnimation->Get_TimeLineEvent(pTag);
+}
+
+_bool CModel::IsCurAnimTimeAccGreaterThan(_double Time, BODY eBody)
+{
+	if (eBody >= BODY_END)
+		return _bool();
+
+	return m_Animations[eBody][m_iCurrentAnimIndex[eBody]]->GetTimeAcc() >= Time;
+}
+
+_bool CModel::IsCurAnimTimeAccLessThan(_double Duration, BODY eBody)
+{
+	return !IsCurAnimTimeAccGreaterThan(Duration, eBody);
 }
 
 HRESULT CModel::Ready_Bones(aiNode* pNode, CBone* pParent)

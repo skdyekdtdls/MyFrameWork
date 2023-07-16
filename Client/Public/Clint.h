@@ -71,6 +71,7 @@ private:
 private:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();
+	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta) override;
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_GameObject_Clint"; }

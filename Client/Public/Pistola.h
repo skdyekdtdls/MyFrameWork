@@ -13,6 +13,8 @@ class CModel;
 END
 
 BEGIN(Client)
+class Bullet;
+
 class Pistola final : public CGameObject, public ISerializable
 {
 public:
@@ -54,15 +56,15 @@ private: /* ºÎ¸ð²¨ */
 	const _float4x4* m_pParentWorldMatrix;
 	_float4x4	m_WorldMatrix;
 	
-	list<class ClintBasicBullet*> m_Bullets;
+	list<Bullet*> m_Bullets;
 
 private:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();
 	
 	void AttachingWeapon();
-	void PushBackBullet(ClintBasicBullet* pClintBasicBullet);
-	void ReleaseIf(function<bool(class ClintBasicBullet* pClintBasicBullet)> func);
+	void PushBackBullet(Bullet* pClintBasicBullet);
+	void ReleaseIf(function<bool(Bullet* pClintBasicBullet)> func);
 private:
 	static _uint Pistola_Id;
 

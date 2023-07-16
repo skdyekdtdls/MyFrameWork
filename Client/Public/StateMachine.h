@@ -1,7 +1,7 @@
 #pragma once
 
 /*
-1. StateMachine<OWNER, ANIM_ENUM>를 로더에 Create한다(상태 헤더파일도 포함하기).
+1. 상태 헤더파일도 포함하기.
 2. 원하는 상태(스니펫 활용)를 정의하고 Add_State로 StateMachine의 umap에 넣는다.
 3. 원하는 곳에 TransitionTo를 정의한다.
 */
@@ -60,6 +60,11 @@ public:
 	void SetAnimIndex(ANIM_ENUM eAnim, BODY eBody = LOWER) {
 		static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"))->Set_AnimByIndex(eAnim, eBody);
 	}
+	void TransitionTo(const _tchar* pTag) {
+		m_pStateContext->TransitionTo(pTag);
+	}
+
+	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta) {};
 
 protected:
 	_bool	m_isCloned;

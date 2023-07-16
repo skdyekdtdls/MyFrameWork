@@ -28,13 +28,15 @@ void Alien_prawnIdle::OnStateTick(_double TimeDelta)
 	Safe_AddRef(pGameInstance);
 	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
 	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
+	Raycast* pRaycast = static_cast<Raycast*>(m_pOwner->Get_Component(L"Com_RayDetect"));
+	CCollider* pCollider = static_cast<CCollider*>(m_pOwner->Get_Component(L"Com_BodyColl"));
+
 	m_TimeAcc += TimeDelta;
 	
 	if (m_TimeAcc >= 2.0)
 	{
 		m_pStateContext->TransitionTo(L"Alien_prawnRun");
 	}
-	
 
 	Safe_Release(pGameInstance);
 }
@@ -42,6 +44,11 @@ void Alien_prawnIdle::OnStateTick(_double TimeDelta)
 void Alien_prawnIdle::OnStateExit()
 {
 	__super::OnStateExit();
+}
+
+void Alien_prawnIdle::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
+{
+
 }
 
 StateMachine<Alien_prawn, ALIEN_PRAWN_ANIM>* Alien_prawnIdle::Clone(void* pArg)

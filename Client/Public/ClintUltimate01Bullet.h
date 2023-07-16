@@ -17,20 +17,16 @@ class CModel;
 END
 
 BEGIN(Client)
-class ClintBasicBullet final : public Bullet
+class ClintUltimate01Bullet final : public Bullet
 {
-public:
-	typedef struct tagClintBasicBulletDesc : public tagBulletDesc
+	typedef struct tagClintUltimate01BulletDesc : public tagBulletDesc
 	{
-		tagClintBasicBulletDesc() : tagBulletDesc() {}
-
-		_vector vLook;
-	}CLINT_BASIC_BULLET_DESC;
-
+		tagClintUltimate01BulletDesc() : tagBulletDesc() {}
+	}CLINT_ULTIMATE01_BULLET_DESC;
 private:
-	ClintBasicBullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	ClintBasicBullet(const ClintBasicBullet& rhs);
-	virtual ~ClintBasicBullet() = default;
+	ClintUltimate01Bullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	ClintUltimate01Bullet(const ClintUltimate01Bullet& rhs);
+	virtual ~ClintUltimate01Bullet() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -39,26 +35,26 @@ public:
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
 
+	virtual void CheckCollision(_double TimeDelta) override;
+
 private: /* For. Component */
 	//CShader* m_pShaderCom = { nullptr };
 	//CModel* m_pModelCom = { nullptr };
-
+	// Can declare VIBuffer or Model Com
 private:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();
 
 private:
-	virtual void CheckCollision(_double TimeDelta) override;
-
-private:
-	static _uint ClintBasicBullet_Id;
+	static _uint ClintUltimate01Bullet_Id;
 
 public:
-	static const _tchar* ProtoTag() { return L"Prototype_GameObject_ClintBasicBullet"; }
-	static ClintBasicBullet* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual Bullet* Clone(void* pArg) override;
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_ClintUltimate01Bullet"; }
+	static ClintUltimate01Bullet* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free(void) override;
-};
 
+
+};
 END
 

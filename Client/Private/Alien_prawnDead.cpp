@@ -30,7 +30,7 @@ void Alien_prawnDead::OnStateTick(_double TimeDelta)
 
 	if (pModel->IsAnimationFinished())
 	{
-		//SetAnimIndex(ALIEN_PRAWN_HIT_LAUNCH_)
+		m_pOwner->SetDead();
 	}
 
 	Safe_Release(pGameInstance);

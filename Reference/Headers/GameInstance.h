@@ -88,7 +88,7 @@ public: /* For Light_Manager */
 	HRESULT Add_Lights(const CLight::LIGHTDESC & LightDesc);
 
 public: /* For Collision_Manager */
-	//void Add_ColliderGroup(list<CCollider*> Colliders, COLLGROUP eCollGroup, TEAM eTeam);
+	void Add_ColliderGroup(CCollider* pCollider, COLL_GROUP eCollGroup);
 
 private:
 	CGraphic_Device* m_pGraphic_Device = { nullptr };
@@ -101,6 +101,7 @@ private:
 	Frustum*			m_pFrustum = { nullptr };
 	CLight_Manager*		m_pLight_Manager = { nullptr };
 	CollisionMgr*		m_pCollision_Manager = { nullptr };
+
 public:
 	static void Release_Engine();
 	void Free() override;

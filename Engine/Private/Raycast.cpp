@@ -40,22 +40,23 @@ HRESULT Raycast::Initialize(void* pArg)
 
 void Raycast::Tick(_fvector _vRayOrigin, _fvector _vRayDir)
 {
+	__super::Tick(XMMatrixIdentity());
+
 	_vector vRayOrigin = _vRayOrigin + XMLoadFloat3(&m_vCenter);
 
 	XMStoreFloat4(&m_tRay.vRayOrigin, vRayOrigin);
 	XMStoreFloat4(&m_tRay.vRayDir, _vRayDir);
 }
 
-_bool Raycast::Intersect(CCollider* pOtherCollider)
+_bool Raycast::Intersect(CCollider* pOtherCollider, COLLISION_INFO& CollisionInfo)
 {
-	m_isColl = { false };
 	switch (pOtherCollider->GetType())
 	{
 	case TYPE_SPHERE:
-		m_isColl = static_cast<CColliderSphere*>(pOtherCollider)->Intersect(this);
+		m_isColl = static_cast<CColliderSphere*>(pOtherCollider)->Intersect(this, CollisionInfo);
 		break;
 	case TYPE_AABB:
-		m_isColl = static_cast<CColliderAABB*>(pOtherCollider)->Intersect(this);
+		m_isColl = static_cast<CColliderAABB*>(pOtherCollider)->Intersect(this, CollisionInfo);
 		break;
 	}
 
@@ -106,4 +107,3 @@ void Raycast::Free()
 {
 	__super::Free();
 }
-

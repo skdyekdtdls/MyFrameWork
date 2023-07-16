@@ -3,7 +3,6 @@
 #include "Model.h"
 #include "Bone.h"
 #include "ClintBasicBullet.h"
-
 _uint Pistola::Pistola_Id = 0;
 
 /* Don't Forget Release for the VIBuffer or Model Component*/
@@ -71,7 +70,7 @@ void Pistola::Tick(_double TimeDelta)
 
 	AttachingWeapon();
 
-	ReleaseIf([](ClintBasicBullet* pClintBasicBullet) {
+	ReleaseIf([](Bullet* pClintBasicBullet) {
 		return pClintBasicBullet->GetDead();
 		});
 
@@ -129,8 +128,10 @@ void Pistola::Attack(_fvector vLook)
 	tClintBasicBulletDesc.vLook = vLook;
 	XMStoreFloat4(&tClintBasicBulletDesc.vPosition, XMLoadFloat4x4(&m_WorldMatrix).r[3]);
 
-	CGameObject* pBullet = pGameInstance->Clone_GameObject(ClintBasicBullet::ProtoTag(), &tClintBasicBulletDesc);
-	PushBackBullet(static_cast<ClintBasicBullet*>(pBullet));
+	Bullet* pBullet;
+	pBullet = static_cast<Bullet*>(pGameInstance->Clone_GameObject(ClintBasicBullet::ProtoTag(), &tClintBasicBulletDesc));
+	PushBackBullet((pBullet));
+
 	Safe_Release(pGameInstance);
 }
 
@@ -188,7 +189,7 @@ HRESULT Pistola::SetUp_ShaderResources()
 	return S_OK;
 }
 
-void Pistola::PushBackBullet(ClintBasicBullet* pClintBasicBullet)
+void Pistola::PushBackBullet(Bullet* pClintBasicBullet)
 {
 	m_Bullets.push_back(pClintBasicBullet);
 }
@@ -209,7 +210,7 @@ void Pistola::AttachingWeapon()
 		BoneMatrix * XMLoadFloat4x4(m_pParentWorldMatrix));
 }
 
-void Pistola::ReleaseIf(function<bool(ClintBasicBullet* pClintBasicBullet)> func)
+void Pistola::ReleaseIf(function<bool(Bullet* pClintBasicBullet)> func)
 {
 	for (auto iter = m_Bullets.begin(); iter != m_Bullets.end();)
 	{

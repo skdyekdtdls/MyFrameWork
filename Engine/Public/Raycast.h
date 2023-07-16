@@ -29,7 +29,7 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual void Tick(_fvector vRayOrigin, _fvector vRayDir);
 
-	virtual _bool Intersect(CCollider * pOtherCollider) override;
+	virtual _bool Intersect(CCollider * pOtherCollider, COLLISION_INFO& CollisionInfo) override;
 
 #ifdef _DEBUG
 	virtual HRESULT Render() override;

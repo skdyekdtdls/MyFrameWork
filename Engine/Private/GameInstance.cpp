@@ -73,7 +73,7 @@ void CGameInstance::Tick_Engine(_double TimeDelta)
 	m_pPipeLine->Tick();
 	m_pFrustum->Tick();
 	m_pObject_Manager->Late_Tick(TimeDelta);
-
+	m_pCollision_Manager->Late_Tick(TimeDelta);
 	m_pLevel_Manager->Tick(TimeDelta);
 	m_pLevel_Manager->Late_Tick(TimeDelta);
 }
@@ -411,13 +411,13 @@ HRESULT CGameInstance::Add_Lights(const CLight::LIGHTDESC& LightDesc)
 	return m_pLight_Manager->Add_Lights(LightDesc);
 }
 
-//void CGameInstance::Add_ColliderGroup(list<CCollider*> Colliders, COLLGROUP eCollGroup, TEAM eTeam)
-//{
-//	if (nullptr == m_pCollision_Manager)
-//		return;
-//
-//	m_pCollision_Manager->Add_Colliders(Colliders, eCollGroup, eTeam);
-//}
+void CGameInstance::Add_ColliderGroup(CCollider* pCollider, COLL_GROUP eCollGroup)
+{
+	if (nullptr == m_pCollision_Manager)
+		return;
+
+	m_pCollision_Manager->Add_ColliderGroup(pCollider, eCollGroup);
+}
 
 void CGameInstance::Release_Engine()
 {

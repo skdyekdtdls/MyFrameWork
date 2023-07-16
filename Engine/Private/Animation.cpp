@@ -23,6 +23,16 @@ CAnimation::CAnimation(const CAnimation& rhs)
 		Safe_AddRef(pChannel);
 }
 
+_bool CAnimation::IsFinishedCompletly()
+{
+	_bool bResult = IsFinished();
+
+	if (true == bResult)
+		bResult = (-1 == m_iNextIndex) ? true : false;
+
+	return bResult;
+}
+
 CChannel* CAnimation::Get_ChannelByName(string strName)
 {
 	for (auto& Channel : m_Channels)
@@ -109,13 +119,14 @@ void CAnimation::Reset()
 	m_isFinished = false;
 	m_iCurKeyFrame = { 0 };
 	m_TimeAcc = { 0.0 };
+
 	for (auto& pChannelIndex : m_ChannelCurrentKeyFrames)
 		pChannelIndex = { 0 };
 }
 
 void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeDelta, BODY eBody)
 {
-	m_TimeAcc += m_TickPerSecond * TimeDelta;
+	m_TimeAcc += m_TickPerSecond * m_PlaySpeed * TimeDelta;
 
 	if (m_TimeAcc >= m_Duration)
 	{
@@ -124,7 +135,10 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 			m_TimeAcc = 0.f;
 		}
 		else
+		{
 			m_isFinished = true;
+			m_TimeAcc = 0.f;
+		}
 
 		m_iCurKeyFrame = 0;
 	}
@@ -143,7 +157,7 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 	for (auto& Pair : m_TimeLineEvents)
 	{
 		// 시간값이 일치하면 실행한다.
-		if (FloatEqual(Pair.second.first, m_TimeAcc, TimeDelta * 1.5))
+		if (FloatEqual(Pair.second.first, m_TimeAcc, TimeDelta * 1.2))
 			Pair.second.second();
 	}
 }
@@ -188,6 +202,7 @@ TIMELINE_EVENT* CAnimation::Find_TimeLine(const _tchar* pTag)
 
 void CAnimation::SaveData(HANDLE hFile, DWORD& dwByte)
 {
+	WriteVoid(&m_Duration, sizeof(m_Duration));
 	WriteVoid(&m_TickPerSecond, sizeof(m_TickPerSecond));
 	WriteVoid(&m_isLoop, sizeof(m_isLoop));
 	WriteVoid(&m_iNextIndex, sizeof(m_iNextIndex));
@@ -195,6 +210,7 @@ void CAnimation::SaveData(HANDLE hFile, DWORD& dwByte)
 
 void CAnimation::LoadData(HANDLE hFile, DWORD& dwByte)
 {
+	ReadVoid(&m_Duration, sizeof(m_Duration));
 	ReadVoid(&m_TickPerSecond, sizeof(m_TickPerSecond));
 	ReadVoid(&m_isLoop, sizeof(m_isLoop));
 	ReadVoid(&m_iNextIndex, sizeof(m_iNextIndex));

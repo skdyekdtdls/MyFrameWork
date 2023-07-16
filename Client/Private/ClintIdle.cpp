@@ -15,8 +15,8 @@ ClintIdle::ClintIdle(const ClintIdle& rhs)
 void ClintIdle::OnStateEnter()
 {
 	__super::OnStateEnter();
-	SetAnimIndex(CLINT_ANIM_IDLE, UPPER);
-	SetAnimIndex(CLINT_ANIM_IDLE, LOWER);
+	SetAnimIndex(CLINT_IDLE, UPPER);
+	SetAnimIndex(CLINT_IDLE, LOWER);
 }
 
 void ClintIdle::OnStateTick(_double TimeDelta)
@@ -30,6 +30,10 @@ void ClintIdle::OnStateTick(_double TimeDelta)
 		pGameInstance->Get_DIKeyState(DIK_S) || pGameInstance->Get_DIKeyState(DIK_D))
 	{
 		m_pStateContext->TransitionTo(L"ClintRun");
+	}
+	else if (pGameInstance->Get_DIKeyState(DIK_Q))
+	{
+		m_pStateContext->TransitionTo(L"ClintUltimate01");
 	}
 	else if (pGameInstance->Get_DIKeyState(DIK_SPACE))
 	{

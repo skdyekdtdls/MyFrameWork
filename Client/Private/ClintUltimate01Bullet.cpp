@@ -1,21 +1,21 @@
-#include "ClintBasicBullet.h"
+#include "ClintUltimate01Bullet.h"
 #include "GameInstance.h"
 
-_uint ClintBasicBullet::ClintBasicBullet_Id = 0;
+_uint ClintUltimate01Bullet::ClintUltimate01Bullet_Id = 0;
 
 /* Don't Forget Release for the VIBuffer or Model Component*/
 
-ClintBasicBullet::ClintBasicBullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+ClintUltimate01Bullet::ClintUltimate01Bullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: Bullet(pDevice, pContext)
 {
 }
 
-ClintBasicBullet::ClintBasicBullet(const ClintBasicBullet& rhs)
+ClintUltimate01Bullet::ClintUltimate01Bullet(const ClintUltimate01Bullet& rhs)
 	: Bullet(rhs)
 {
 }
 
-HRESULT ClintBasicBullet::Initialize_Prototype()
+HRESULT ClintUltimate01Bullet::Initialize_Prototype()
 {
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
@@ -23,8 +23,7 @@ HRESULT ClintBasicBullet::Initialize_Prototype()
 	return S_OK;
 }
 
-
-HRESULT ClintBasicBullet::Initialize(void* pArg)
+HRESULT ClintUltimate01Bullet::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -32,34 +31,34 @@ HRESULT ClintBasicBullet::Initialize(void* pArg)
 	if (FAILED(Add_Components()))
 		return E_FAIL;
 
-	++ClintBasicBullet_Id;
-	m_tInfo.wstrName = TO_WSTR("ClintBasicBullet" + to_string(ClintBasicBullet_Id));
+	++ClintUltimate01Bullet_Id;
+	m_tInfo.wstrName = TO_WSTR("ClintUltimate01Bullet" + to_string(ClintUltimate01Bullet_Id));
 	m_tInfo.wstrKey = ProtoTag();
-	m_tInfo.ID = ClintBasicBullet_Id;
+	m_tInfo.ID = ClintUltimate01Bullet_Id;
 
-	CLINT_BASIC_BULLET_DESC tClintBasicBulletDesc;
+	CLINT_ULTIMATE01_BULLET_DESC tClintUltimate01BulletDesc;
 	if (nullptr != pArg)
-		tClintBasicBulletDesc = *(CLINT_BASIC_BULLET_DESC*)pArg;
-	m_pTransformCom->Set_State(CTransform::STATE_LOOK, tClintBasicBulletDesc.vLook);
+		tClintUltimate01BulletDesc = *(CLINT_ULTIMATE01_BULLET_DESC*)pArg;
+
 	//m_pModelCom->Set_RootNode(3);
 
 	return S_OK;
 }
 
-void ClintBasicBullet::Tick(_double TimeDelta)
+void ClintUltimate01Bullet::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
 
 	// 	m_pModelCom->Play_Animation(TimeDelta);
 }
 
-void ClintBasicBullet::Late_Tick(_double TimeDelta)
+void ClintUltimate01Bullet::Late_Tick(_double TimeDelta)
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
 	__super::Late_Tick(TimeDelta);
-	if(pGameInstance->isIn_WorldSpace(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f))
+	if (pGameInstance->isIn_WorldSpace(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f))
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 
 	CheckCollision(TimeDelta);
@@ -67,7 +66,7 @@ void ClintBasicBullet::Late_Tick(_double TimeDelta)
 	Safe_Release(pGameInstance);
 }
 
-HRESULT ClintBasicBullet::Render()
+HRESULT ClintUltimate01Bullet::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
@@ -97,7 +96,7 @@ HRESULT ClintBasicBullet::Render()
 #endif
 }
 
-HRESULT ClintBasicBullet::Add_Components()
+HRESULT ClintUltimate01Bullet::Add_Components()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
@@ -113,7 +112,7 @@ HRESULT ClintBasicBullet::Add_Components()
 	return S_OK;
 }
 
-HRESULT ClintBasicBullet::SetUp_ShaderResources()
+HRESULT ClintUltimate01Bullet::SetUp_ShaderResources()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
@@ -124,7 +123,7 @@ HRESULT ClintBasicBullet::SetUp_ShaderResources()
 	return S_OK;
 }
 
-void ClintBasicBullet::CheckCollision(_double TimeDelta)
+void ClintUltimate01Bullet::CheckCollision(_double TimeDelta)
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
@@ -137,7 +136,6 @@ void ClintBasicBullet::CheckCollision(_double TimeDelta)
 	//	{
 	//		if (pCollider->Intersect(m_pColliderCom))
 	//		{
-	//			SetDead();
 	//			CCollider::COLLISION_INFO tCollisionInfo;
 	//			tCollisionInfo.pOtherCollider = { m_pColliderCom };
 	//			tCollisionInfo.tInfo = { m_pOwner->GetInfo() };
@@ -149,37 +147,36 @@ void ClintBasicBullet::CheckCollision(_double TimeDelta)
 	Safe_Release(pGameInstance);
 }
 
-ClintBasicBullet* ClintBasicBullet::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+ClintUltimate01Bullet* ClintUltimate01Bullet::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	ClintBasicBullet* pInstance = new ClintBasicBullet(pDevice, pContext);
+	ClintUltimate01Bullet* pInstance = new ClintUltimate01Bullet(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created ClintBasicBullet");
+		MSG_BOX("Failed to Created ClintUltimate01Bullet");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-Bullet* ClintBasicBullet::Clone(void* pArg)
+CGameObject* ClintUltimate01Bullet::Clone(void* pArg)
 {
-	ClintBasicBullet* pInstance = new ClintBasicBullet(*this);
+	ClintUltimate01Bullet* pInstance = new ClintUltimate01Bullet(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned ClintBasicBullet");
+		MSG_BOX("Failed to Cloned ClintUltimate01Bullet");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-void ClintBasicBullet::Free(void)
+void ClintUltimate01Bullet::Free(void)
 {
 	__super::Free();
 
-	--ClintBasicBullet_Id;
+	--ClintUltimate01Bullet_Id;
 	//Safe_Release(m_pShaderCom);
 	//Safe_Release(m_pModelCom);
 
 }
-
