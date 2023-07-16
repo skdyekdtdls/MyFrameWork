@@ -127,7 +127,6 @@ HRESULT CTerrain::Add_Components()
 	CTexture::CTEXTURE_DESC tTextureDesc; tTextureDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), L"Prototype_Component_Texture_Terrain", L"Com_Texture", (CComponent**)&m_pTextureCom[TYPE_DIFFUSE], &tTextureDesc), E_FAIL);
 
-
 	//FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), L"Prototype_Component_Texture_Terrain_Mask", L"Com_Texture_Mask", (CComponent**)&m_pTextureCom[TYPE_MASK]), E_FAIL);
 	//FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), L"Prototype_Component_Texture_Terrain_Brush", L"Com_Texture_Brush", (CComponent**)&m_pTextureCom[TYPE_BRUSH]), E_FAIL);
 	
@@ -165,6 +164,8 @@ HRESULT CTerrain::SetUp_ShaderResources()
 
 	FAILED_CHECK_RETURN(m_pTextureCom[TYPE_DIFFUSE]->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture"), E_FAIL);
 
+	_bool bRed = true;
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_bRed", &bRed, sizeof(_bool)), E_FAIL);
 	return S_OK;
 }
 

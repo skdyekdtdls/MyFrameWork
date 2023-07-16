@@ -21,12 +21,12 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap) // Áö±
 
 	BITMAPFILEHEADER	fh;
 	BITMAPINFOHEADER	ih;
-
+	
 	ReadFile(hFile, &fh, sizeof fh, &dwByte, nullptr);
 	ReadFile(hFile, &ih, sizeof ih, &dwByte, nullptr);
 
-	m_iNumVerticesX = { (_uint)ih.biWidth };
-	m_iNumVerticesZ = { (_uint)ih.biHeight };
+	m_iNumVerticesX = { 256/*(_uint)ih.biWidth*/ };
+	m_iNumVerticesZ = { 256/*(_uint)ih.biHeight*/ };
 	
 	_ulong* pPixel = new _ulong[m_iNumVerticesX * m_iNumVerticesZ];
 	ZeroMemory(pPixel, sizeof(_ulong) * m_iNumVerticesX * m_iNumVerticesZ);
@@ -63,7 +63,7 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap) // Áö±
 		{
 			_uint		iIndex = i * m_iNumVerticesX + j;
 
-			m_pVertices[iIndex].vPosition = _float3(j, 0.f /*(pPixel[iIndex] & 0x000000ff) / 10.0f */, i);
+			m_pVertices[iIndex].vPosition = _float3(j, 0.f /*(pPixel[iIndex] & 0x000000ff)*/ / 100.0f , i);
 			m_pVertices[iIndex].vNormal = _float3(0.f, 0.f, 0.f);
 			m_pVertices[iIndex].vTexCoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
 		}

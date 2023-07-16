@@ -17,7 +17,7 @@ protected:
 	virtual ~CVIBuffer_Terrain() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype(const _tchar * pHeightMap);
+	virtual HRESULT Initialize_Prototype(const _tchar * pDDSFile);
 	virtual HRESULT Initialize(void* pArg) override;
 	_bool	IsPicked(FXMVECTOR vRayOrigin, FXMVECTOR vRayDir, _float& fMinDist);
 
