@@ -23,7 +23,7 @@ public:
 	_bool	IsPicked(FXMVECTOR vRayOrigin, FXMVECTOR vRayDir, _float& fMinDist);
 
 private:
-	void CheckPoint(_float3 vPoints[POINT_END], _fvector RayOrigin, _fvector RayDir, _float& fDist);
+	void IntersectPoint(_float3 vPoints[POINT_END], _fvector RayOrigin, _fvector RayDir, _float& fDist);
 	_bool isInFourPoint(_fvector LT, _fvector RT, _fvector RB, _gvector LB, _hvector RayOrigin, _hvector RayDir, _float& fDist);
 
 private:

@@ -32,6 +32,7 @@ void CImWindow_MapTool::Tick()
 		// 터레인의 셀들을 가져와서 푸쉬백을 해준다.
 		for (size_t i = 0; i < m_pImMgr->GetCellNum(); ++i)
 			Cell_Index_items.push_back(to_string(i));
+		m_pCurTerrain = Facade->GetTerrain();
 		m_bStart = false;
 	}
 
@@ -87,6 +88,64 @@ void CImWindow_MapTool::Tick()
 		ImGuiFileDialog::Instance()->Close();
 	}
 
+	// 맵 그리기
+	ImGui::Checkbox("DrawMap", &m_pCurTerrain->m_bShowBrush);
+	if (m_pCurTerrain->m_bShowBrush)
+	{
+		ImGui::RadioButton("Default", &DrawOption, 0);
+		ImGui::RadioButton("Sand", &DrawOption, 1);
+		ImGui::RadioButton("Rock", &DrawOption, 2);
+	}
+
+	// 세이브 파일 다이얼로그
+	if (ImGui::Button("Save MapTexture"))
+	{
+		ImGuiFileDialog::Instance()->OpenDialog("SaveMapTextureFileDlgKey", "Save", " .mtex", "../../Resources/Skeletal_Mesh/");
+	}
+
+	if (ImGuiFileDialog::Instance()->Display("SaveMapTextureFileDlgKey"))
+	{
+		// action if OK
+		if (ImGuiFileDialog::Instance()->IsOk())
+		{
+			// 만약 위의 인자5번에서 여러가지 선택후 OK가 눌린경우 get selection
+			// 반환값은 map<string, string> (file path, file name) 형태로 반환
+			ImGuiFileDialog::Instance()->GetSelection();
+
+			filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+			filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+			SaveMapTextureData();
+		}
+
+		// close
+		ImGuiFileDialog::Instance()->Close();
+	}
+
+	// 로드 파일 다이얼로그
+	if (ImGui::Button("Load MapTexture"))
+	{
+		ImGuiFileDialog::Instance()->OpenDialog("LoadMapTextureFileDlgKey", "Load", " .mtex", "../../Resources/Skeletal_Mesh/");
+	}
+
+	if (ImGuiFileDialog::Instance()->Display("LoadMapTextureFileDlgKey"))
+	{
+		// action if OK
+		if (ImGuiFileDialog::Instance()->IsOk())
+		{
+			// 만약 위의 인자5번에서 여러가지 선택후 OK가 눌린경우 get selection
+			// 반환값은 map<string, string> (file path, file name) 형태로 반환
+			ImGuiFileDialog::Instance()->GetSelection();
+
+			filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+			filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+			LoadMapTextureData();
+		}
+
+		// close
+		ImGuiFileDialog::Instance()->Close();
+	}
+
+	
 	ImGui::End();
 
 	switch (m_eNaviMode)
@@ -227,6 +286,44 @@ void CImWindow_MapTool::CreateTriangleStrip()
 	}
 
 	Safe_Release(pImMgr);
+}
+
+void CImWindow_MapTool::SaveMapTextureData()
+{
+	HANDLE hFile = CreateFile(TO_WSTR(filePathName).c_str(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	if (0 == hFile)
+	{
+		CONSOLE_MSG("File save failed");
+		return;
+	}
+
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	DWORD dwByte = { 0 };
+
+	Safe_Release(pGameInstance);
+	CONSOLE_MSG("File save completed successfully.");
+	CloseHandle(hFile);
+}
+
+void CImWindow_MapTool::LoadMapTextureData()
+{
+	HANDLE hFile = CreateFile(TO_WSTR(filePathName).c_str(), GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	if (0 == hFile)
+	{
+		CONSOLE_MSG("File load failed");
+		return;
+	}
+
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	DWORD dwByte = { 0 };
+	
+	Safe_Release(pGameInstance);
+	CONSOLE_MSG("File load completed successfully.");
+	CloseHandle(hFile);
 }
 
 CImWindow_MapTool* CImWindow_MapTool::Create(ImGuiIO* pIO)

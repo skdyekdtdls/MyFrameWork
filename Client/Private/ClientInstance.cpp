@@ -1,6 +1,7 @@
 #include "ClientInstance.h"
 #include "GameInstance.h"
 #include "Clint.h"
+#include "Terrain.h"
 IMPLEMENT_SINGLETON(ClientInstance)
 
 _vector ClientInstance::GetClintPosition()
@@ -34,6 +35,51 @@ CColliderAABB* ClientInstance::GetClintBodyColl()
 	Safe_Release(pGameInstance);
 
 	return pCollAABB;
+}
+
+CTerrain* ClientInstance::GetTerrain()
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	CTerrain* pTerrain = static_cast<CTerrain*>(pGameInstance->Get_GameObject(pGameInstance->Get_CurLevelIndex(), L"Layer_BackGround", "CTerrain1"));
+	Safe_Release(pGameInstance);
+	return pTerrain;
+}
+
+RAY ClientInstance::GetMouseRay(ID3D11DeviceContext* pContext)
+{
+	::POINT	ptMouse{};
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+	D3D11_VIEWPORT ViewPort;
+	UINT iNumViewPorts = 1;
+	RAY  tMouseRay;
+	ZeroStruct(ViewPort);
+	pContext->RSGetViewports(&iNumViewPorts, &ViewPort);
+
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	_float4x4 projMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
+
+	_float vx = (2.f * ptMouse.x / ViewPort.Width - 1.0f) / projMatrix.m[0][0];
+	_float vy = (-2.f * ptMouse.y / ViewPort.Height + 1.0f) / projMatrix.m[1][1];
+
+	_vector vRayOrigin = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	_vector vRayDir = XMVectorSet(vx, vy, 1.f, 0.f);
+
+	_matrix invView = pGameInstance->Get_TransformMatrix_Inverse(CPipeLine::D3DTS_VIEW);
+
+	vRayOrigin = XMVector3TransformCoord(vRayOrigin, invView);
+	vRayDir = XMVector3TransformNormal(vRayDir, invView);
+
+	XMVector3Normalize(vRayDir);
+
+	XMStoreFloat4(&tMouseRay.vRayOrigin, vRayOrigin);
+	XMStoreFloat4(&tMouseRay.vRayDir, vRayDir);
+	Safe_Release(pGameInstance);
+
+	return tMouseRay;
 }
 
 CNavigation* ClientInstance::GetClintNavigation()

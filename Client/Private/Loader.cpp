@@ -214,7 +214,10 @@ HRESULT CLoader::Loading_For_IMGUI()
 	Set_LoadingText(L"텍스처 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Terrain"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Art/Misc/John/Materials/DesertScales.dds"))), E_FAIL);
-	// 
+	
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Terrain_Brush"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Terrain/Brush.png"))), E_FAIL);
+
 	Set_LoadingText(L"버퍼 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Terrain::ProtoTag(),
 		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Art/Misc/John/Materials/TexturesCom_SmoothRock_1024_heightmap.bmp"))), E_FAIL);

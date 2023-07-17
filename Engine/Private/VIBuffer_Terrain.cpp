@@ -192,65 +192,20 @@ _bool CVIBuffer_Terrain::IsPicked(FXMVECTOR vRayOrigin, FXMVECTOR vRayDir, _floa
 	vPoint[LB] = _float3(0.f, 0.f, 0.f);
 	
 	if (false == isInFourPoint(XMLoadFloat3(&vPoint[LT]), XMLoadFloat3(&vPoint[RT])
-		, XMLoadFloat3(&vPoint[LB]), XMLoadFloat3(&vPoint[RB]), vRayOrigin, vRayDir, fMinDist))
+		, XMLoadFloat3(&vPoint[RB]), XMLoadFloat3(&vPoint[LB]), vRayOrigin, vRayDir, fMinDist))
 	{
 		return false;
 	}
 
-	CheckPoint(vPoint, vRayOrigin, vRayDir, fMinDist);
+	IntersectPoint(vPoint, vRayOrigin, vRayDir, fMinDist);
 
-	// 1. 네 점 안에 들어가 있으면 4등분해라!
-	//for (_ulong i = 0; i < m_iNumVerticesZ -1; ++i)
-	//{
-	//	for (_ulong j = 0; j < m_iNumVerticesX - 1; ++j)
-	//	{
-	//		_uint iIndex = i * m_iNumVerticesX + j;
-
-	//		//if (iIndex >= (m_iNumVerticesX - 1)* (m_iNumVerticesZ - 1))
-	//		//	return false;
-
-	//		_float fDist;
-	//		_uint		iIndices[4] = {
-	//			iIndex + m_iNumVerticesX,
-	//			iIndex + m_iNumVerticesX + 1,
-	//			iIndex + 1,
-	//			iIndex
-	//		};
-	//		if (TriangleTests::Intersects(
-	//			vRayOrigin
-	//			, vRayDir
-	//			, XMLoadFloat3(&m_pVertices[iIndices[0]].vPosition)
-	//			, XMLoadFloat3(&m_pVertices[iIndices[1]].vPosition)
-	//			, XMLoadFloat3(&m_pVertices[iIndices[2]].vPosition)
-	//			, fDist))
-	//		{
-	//			bResult = { true };
-	//			if (fDist < fMinDist)
-	//				fMinDist = fDist;				
-	//		}
-	//		
-	//		if (TriangleTests::Intersects(
-	//			vRayOrigin
-	//			, vRayDir
-	//			, XMLoadFloat3(&m_pVertices[iIndices[0]].vPosition)
-	//			, XMLoadFloat3(&m_pVertices[iIndices[2]].vPosition)
-	//			, XMLoadFloat3(&m_pVertices[iIndices[3]].vPosition)
-	//			, fDist))
-	//		{
-
-	//			bResult = { true };
-	//			if (fDist < fMinDist)
-	//				fMinDist = fDist;
-	//		}
-	//	}
-	//}
 #ifdef _DEBUG
 	system("cls");
 #endif
 	return true;
 }
 
-void CVIBuffer_Terrain::CheckPoint(_float3 vPoints[POINT_END], _fvector RayOrigin, _fvector RayDir, _float& fDist)
+void CVIBuffer_Terrain::IntersectPoint(_float3 vPoints[POINT_END], _fvector RayOrigin, _fvector RayDir, _float& fDist)
 {
 	if (FloatEqual(vPoints[RT].x - vPoints[LT].x, 1.f))
 	{
@@ -277,7 +232,7 @@ void CVIBuffer_Terrain::CheckPoint(_float3 vPoints[POINT_END], _fvector RayOrigi
 		XMStoreFloat3(&vSubPoints[RT], vPoint[SUB_TC]);
 		XMStoreFloat3(&vSubPoints[LB], vPoint[SUB_LC]);
 		XMStoreFloat3(&vSubPoints[RB], vPoint[SUB_C]);
-		CheckPoint(vSubPoints, RayOrigin, RayDir, fDist);
+		IntersectPoint(vSubPoints, RayOrigin, RayDir, fDist);
 		return;
 	}
 
@@ -288,7 +243,7 @@ void CVIBuffer_Terrain::CheckPoint(_float3 vPoints[POINT_END], _fvector RayOrigi
 		XMStoreFloat3(&vSubPoints[RT], vPoint[SUB_RT]);
 		XMStoreFloat3(&vSubPoints[LB], vPoint[SUB_C]);
 		XMStoreFloat3(&vSubPoints[RB], vPoint[SUB_RC]);
-		CheckPoint(vSubPoints, RayOrigin, RayDir, fDist);
+		IntersectPoint(vSubPoints, RayOrigin, RayDir, fDist);
 		return;
 	}
 
@@ -299,7 +254,7 @@ void CVIBuffer_Terrain::CheckPoint(_float3 vPoints[POINT_END], _fvector RayOrigi
 		XMStoreFloat3(&vSubPoints[RT], vPoint[SUB_C]);
 		XMStoreFloat3(&vSubPoints[LB], vPoint[SUB_LB]);
 		XMStoreFloat3(&vSubPoints[RB], vPoint[SUB_BC]);
-		CheckPoint(vSubPoints, RayOrigin, RayDir, fDist);
+		IntersectPoint(vSubPoints, RayOrigin, RayDir, fDist);
 		return;
 	}
 
@@ -310,7 +265,7 @@ void CVIBuffer_Terrain::CheckPoint(_float3 vPoints[POINT_END], _fvector RayOrigi
 		XMStoreFloat3(&vSubPoints[RT], vPoint[SUB_RC]);
 		XMStoreFloat3(&vSubPoints[LB], vPoint[SUB_BC]);
 		XMStoreFloat3(&vSubPoints[RB], vPoint[SUB_RB]);
-		CheckPoint(vSubPoints, RayOrigin, RayDir, fDist);
+		IntersectPoint(vSubPoints, RayOrigin, RayDir, fDist);
 		return;
 	}
 }

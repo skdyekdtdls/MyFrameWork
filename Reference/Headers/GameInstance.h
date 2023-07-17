@@ -17,6 +17,7 @@ class CGameObject;
 class CTimer_Manager;
 class CLight_Manager;
 class Frustum;
+class CTarget_Manager;
 class ENGINE_DLL CGameInstance final : public CBase
 {
 	DECLARE_SINGLETON(CGameInstance)
@@ -101,6 +102,7 @@ private:
 	Frustum*			m_pFrustum = { nullptr };
 	CLight_Manager*		m_pLight_Manager = { nullptr };
 	CollisionMgr*		m_pCollision_Manager = { nullptr };
+	CTarget_Manager*	m_pTarget_Manager = { nullptr };
 
 public:
 	static void Release_Engine();

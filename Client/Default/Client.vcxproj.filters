@@ -411,6 +411,9 @@
     <ClInclude Include="..\public\Bullet.h">
       <Filter>02. GameObjects\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="..\Bin\ShaderFiles\Shader_Client_Defines.hpp">
+      <Filter>97. ShaderFiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -645,6 +648,9 @@
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

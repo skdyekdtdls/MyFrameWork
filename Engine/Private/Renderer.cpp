@@ -1,20 +1,46 @@
 #include "Renderer.h"
 #include "GameObject.h"
+#include "Target_Manager.h"
 
 CRenderer::CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComponent(pDevice, pContext)
+	, m_pTarget_Manager(CTarget_Manager::GetInstance())
 {
-}
-
-CRenderer::CRenderer(const CRenderer& rhs)
-	: CComponent(rhs)
-{
+	Safe_AddRef(m_pTarget_Manager);
 }
 
 HRESULT CRenderer::Initialize_Prototype()
 {
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
+
+	_uint iNumViews = { 1 };
+	D3D11_VIEWPORT ViewPortDesc;
+
+	m_pContext->RSGetViewports(&iNumViews, &ViewPortDesc);
+
+	// ·»´õÅ¸°Ù Ãß°¡
+	if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext,
+		TEXT("Target_Diffuse"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
+		return E_FAIL;
+
+	//if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext,
+	//	TEXT("Target_Normal"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
+	//	return E_FAIL;
+
+	//if (FAILED(m_pTarget_Manager->Add_RenderTarget(m_pDevice, m_pContext,
+	//	TEXT("Target_Shade"), ViewPortDesc.Width, ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
+	//	return E_FAIL;
+
+	// ¸ÖÆ¼·»´õÅ¸°Ù Ãß°¡
+	if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Diffuse"))))
+		return E_FAIL;
+
+	//if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_GameObjects"), TEXT("Target_Normal"))))
+	//	return E_FAIL;
+
+	//if (FAILED(m_pTarget_Manager->Add_MRT(TEXT("MRT_Lights"), TEXT("Target_Shade"))))
+	//	return E_FAIL;
 
 	return S_OK;
 }
@@ -87,6 +113,8 @@ HRESULT CRenderer::Render_Priority()
 
 HRESULT CRenderer::Render_NonBlend()
 {
+	m_pTarget_Manager->Begin_MRT(m_pContext, TEXT("MRT_GameObjects"));
+
 	HRESULT hr = S_OK;
 	for (auto& pGameObject : m_RenderObjects[RENDER_NONBLEND])
 	{
@@ -95,6 +123,8 @@ HRESULT CRenderer::Render_NonBlend()
 		Safe_Release(pGameObject);
 	}
 	m_RenderObjects[RENDER_NONBLEND].clear();
+
+	m_pTarget_Manager->End_MRT(m_pContext);
 
 	return hr;
 }
@@ -166,6 +196,7 @@ CComponent* CRenderer::Clone(void* pArg)
 void CRenderer::Free(void)
 {
 	__super::Free();
+	Safe_Release(m_pTarget_Manager);
 	for (auto& RenderList : m_RenderObjects)
 	{
 		for (auto& pGameObject : RenderList)

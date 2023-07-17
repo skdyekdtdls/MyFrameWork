@@ -8,6 +8,7 @@
 #include "Frustum.h"
 #include "Layer.h"
 #include "CollisionMgr.h"
+#include "Target_Manager.h"
 IMPLEMENT_SINGLETON(CGameInstance)
 
 CGameInstance::CGameInstance()
@@ -21,6 +22,7 @@ CGameInstance::CGameInstance()
 	, m_pInput_Device(CInput_Device::GetInstance())
 	, m_pLight_Manager(CLight_Manager::GetInstance())
 	, m_pCollision_Manager(CollisionMgr::GetInstance())
+	, m_pTarget_Manager(CTarget_Manager::GetInstance())
 {
 	Safe_AddRef(m_pCollision_Manager);
 	Safe_AddRef(m_pLight_Manager);
@@ -32,6 +34,7 @@ CGameInstance::CGameInstance()
 	Safe_AddRef(m_pObject_Manager);
 	Safe_AddRef(m_pTimer_Manager);
 	Safe_AddRef(m_pComponent_Manager);
+	Safe_AddRef(m_pTarget_Manager);
 }
 
 HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHICDESC& GraphicDesc, ID3D11Device** ppDevice, ID3D11DeviceContext** ppDeviceContext)
@@ -422,6 +425,7 @@ void CGameInstance::Add_ColliderGroup(CCollider* pCollider, COLL_GROUP eCollGrou
 void CGameInstance::Release_Engine()
 {
 	CTimer_Manager::DestroyInstance();
+	CTarget_Manager::DestroyInstance();
 	CInput_Device::DestroyInstance();
 	CObject_Manager::DestroyInstance();
 	CComponent_Manager::DestroyInstance();
@@ -436,6 +440,7 @@ void CGameInstance::Release_Engine()
 
 void CGameInstance::Free()
 {
+	Safe_Release(m_pTarget_Manager);
 	Safe_Release(m_pCollision_Manager);
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pInput_Device);

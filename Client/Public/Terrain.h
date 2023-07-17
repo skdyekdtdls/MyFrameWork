@@ -41,7 +41,13 @@ public:
 #ifdef _DEBUG
 public:
 	virtual _bool Picked(_Inout_ PICK_DESC& tPickDesc, const RAY& tRay) override;
-#endif DEBUG
+	
+private:
+	_bool	m_bShowBrush = { true };
+	_float4 m_vBrushPos = _float4();
+
+	friend class CImWindow_MapTool;
+#endif // _DEBUG
 
 private:
 	CShader* m_pShaderCom = { nullptr };

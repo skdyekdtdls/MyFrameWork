@@ -92,6 +92,10 @@ HRESULT CEditCamera::Initialize(void* pArg)
 	m_tInfo.ID = 0;
 	m_tInfo.wstrName = L"EditCamera";
 	m_tInfo.wstrKey = ProtoTag();
+	CTransform::CTRANSFORM_DESC tTransformDesc;
+	tTransformDesc.SpeedPerSec = 40.f;
+	tTransformDesc.RotationPerSec = XMConvertToRadians(90.f);
+	m_pTransform->Set_Desc(tTransformDesc);
 
 	return S_OK;
 }

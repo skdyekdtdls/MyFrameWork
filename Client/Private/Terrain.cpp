@@ -43,6 +43,20 @@ HRESULT CTerrain::Initialize(void* pArg)
 void CTerrain::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
+
+#ifdef _DEBUG
+	// ¸¶¿ì½ºÁÂÇ¥ µû¶ó´Ù´Ô.
+	if (m_bShowBrush)
+	{
+		RAY tRay = Facade->GetMouseRay(m_pContext);
+		PICK_DESC tPickDesc;
+		if (false == XMVector4EqualInt(XMVectorIsNaN(XMLoadFloat4(&tRay.vRayDir)), XMVectorTrueInt()))
+		{
+			Picked(tPickDesc, tRay);
+		}
+	}
+#endif // _DEBUG
+
 }
 
 void CTerrain::Late_Tick(_double TimeDelta)
@@ -59,7 +73,7 @@ HRESULT CTerrain::Render()
 	if (FAILED(SetUp_ShaderResources()))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(1);
+	m_pShaderCom->Begin(0);
 
 	m_pVIBufferCom->Render();
 #ifdef _DEBUG
@@ -96,7 +110,7 @@ _bool CTerrain::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 		XMStoreFloat3(&vIntersection, XMVector3TransformCoord(XMLoadFloat3(&vIntersection), XMLoadFloat4x4(&worldMatrix)));
 
 		tPickDesc.fDist = fMinDist;
-		tPickDesc.vPickPos = *(_float4*)&vIntersection;
+		m_vBrushPos = tPickDesc.vPickPos = *(_float4*)&vIntersection;
 		tPickDesc.pPickedObject = this;
 	}
 	
@@ -127,9 +141,11 @@ HRESULT CTerrain::Add_Components()
 	CTexture::CTEXTURE_DESC tTextureDesc; tTextureDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), L"Prototype_Component_Texture_Terrain", L"Com_Texture", (CComponent**)&m_pTextureCom[TYPE_DIFFUSE], &tTextureDesc), E_FAIL);
 
-	//FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), L"Prototype_Component_Texture_Terrain_Mask", L"Com_Texture_Mask", (CComponent**)&m_pTextureCom[TYPE_MASK]), E_FAIL);
-	//FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), L"Prototype_Component_Texture_Terrain_Brush", L"Com_Texture_Brush", (CComponent**)&m_pTextureCom[TYPE_BRUSH]), E_FAIL);
-	
+#ifdef _DEBUG
+	//FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), L"Prototype_Component_Texture_Terrain_Mask", L"Com_Texture_Mask", (CComponent**)&m_pTextureCom[TYPE_MASK], &tTextureDesc), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), L"Prototype_Component_Texture_Terrain_Brush", L"Com_Texture_Brush", (CComponent**)&m_pTextureCom[TYPE_BRUSH], &tTextureDesc), E_FAIL);
+#endif
+
 	CNavigation::CNAVIGATION_DESC tNavigationDesc; tNavigationDesc.iCurrentIndex = -1, tNavigationDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(pGameInstance->Get_NextLevelIndex(), CNavigation::ProtoTag(), L"Com_Navigation", (CComponent**)&m_pNavigationCom, &tNavigationDesc), E_FAIL);
 
@@ -153,12 +169,9 @@ HRESULT CTerrain::SetUp_ShaderResources()
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &tmp), E_FAIL);
 
 
-	_float4 tmp2 = pGameInstance->Get_CamPosition();
-	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", &tmp2, sizeof(_float4)), E_FAIL);
-
 	FAILED_CHECK_RETURN(m_pTextureCom[TYPE_DIFFUSE]->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture"), E_FAIL);
 	//FAILED_CHECK_RETURN(m_pTextureCom[TYPE_MASK]->Bind_ShaderResources(m_pShaderCom, "g_MaskTexture"), E_FAIL);
-	//FAILED_CHECK_RETURN(m_pTextureCom[TYPE_BRUSH]->Bind_ShaderResources(m_pShaderCom, "g_BrushTexture"), E_FAIL);
+	FAILED_CHECK_RETURN(m_pTextureCom[TYPE_BRUSH]->Bind_ShaderResources(m_pShaderCom, "g_BrushTexture"), E_FAIL);
 
 	Safe_Release(pGameInstance);
 
@@ -166,6 +179,12 @@ HRESULT CTerrain::SetUp_ShaderResources()
 
 	_bool bRed = true;
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_bRed", &bRed, sizeof(_bool)), E_FAIL);
+
+#ifdef _DEBUG
+	if(m_bShowBrush)
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vBrushPos", &m_vBrushPos, sizeof(_float3)), E_FAIL);
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_bShowBrush", &m_bShowBrush, sizeof(_bool)), E_FAIL);
+#endif
 	return S_OK;
 }
 

@@ -16,7 +16,6 @@ public:
 	enum RENDERGROUP { RENDER_PRIORITY, RENDER_NONBLEND, RENDER_NONLIGHT, RENDER_BLEND, RENDER_UI, RENDER_END };
 private:
 	CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CRenderer(const CRenderer& rhs);
 	virtual ~CRenderer() = default;
 
 public:
@@ -33,6 +32,9 @@ public:
 
 private:
 	list<CGameObject*> m_RenderObjects[RENDER_END];
+
+private:
+	class CTarget_Manager* m_pTarget_Manager = { nullptr };
 
 private:
 	HRESULT Render_Priority();
