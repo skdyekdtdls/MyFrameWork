@@ -35,8 +35,6 @@ public:
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
 
-	virtual void CheckCollision(_double TimeDelta) override;
-
 private: /* For. Component */
 	//CShader* m_pShaderCom = { nullptr };
 	//CModel* m_pModelCom = { nullptr };

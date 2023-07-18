@@ -369,9 +369,6 @@
     <ClInclude Include="..\public\ClintShoot.h">
       <Filter>02. GameObjects\Clint\State</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\ClintModel.h">
-      <Filter>02. GameObjects\Clint</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Alien_prawn.h">
       <Filter>02. GameObjects\Alien_prawn</Filter>
     </ClInclude>
@@ -595,9 +592,6 @@
     <ClCompile Include="..\private\ClintShoot.cpp">
       <Filter>02. GameObjects\Clint\State</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\ClintModel.cpp">
-      <Filter>02. GameObjects\Clint</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Alien_prawn.cpp">
       <Filter>02. GameObjects\Alien_prawn</Filter>
     </ClCompile>
@@ -651,6 +645,12 @@
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTexInstance.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

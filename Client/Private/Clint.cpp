@@ -115,7 +115,12 @@ void Clint::Late_Tick(_double TimeDelta)
 	// 렌더러 그룹에 추가
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 	m_pColliderCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BODY);
-
+#ifdef _DEBUG
+	//m_pNavigationCom->Render();
+	if (nullptr != m_pColliderCom)
+		m_pRendererCom->Add_DebugGroup(m_pColliderCom);
+	m_pRendererCom->Add_DebugGroup(m_pRaycastCom);
+#endif
 	if (nullptr != m_pPistolaComL && nullptr != m_pPistolaComR)
 	{
 		m_pPistolaComL->Late_Tick(TimeDelta);
@@ -144,14 +149,7 @@ HRESULT Clint::Render()
 
 		m_pModelCom->Render(i);
 	}
-	
-#ifdef _DEBUG
-	//m_pNavigationCom->Render_Navigation();
-	 if(nullptr != m_pColliderCom)
-		m_pColliderCom->Render();
-	 if (nullptr != m_pRaycastCom)
-		 m_pRaycastCom->Render();
-#endif
+
 	 return S_OK;
 }
 

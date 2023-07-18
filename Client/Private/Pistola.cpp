@@ -110,11 +110,6 @@ HRESULT Pistola::Render()
 
 	// 만약에 모델 컴포넌트 안쓰면 이걸로 쓰면된다.
 	// m_pShaderCom->Begin(0);
-
-#ifdef _DEBUG
-	// if(nullptr != m_pColliderCom)
-	//	m_pColliderCom->Render();
-#endif
 }
 
 void Pistola::Attack(_fvector vLook)

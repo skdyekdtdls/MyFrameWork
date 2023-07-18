@@ -138,19 +138,8 @@ void CImWindow_Manager::Initialize_Imgui(ImGuiIO** pIO, ID3D11Device* pDevice, I
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
-    //g_io.ConfigViewportsNoAutoMerge = true;
-    //g_io.ConfigViewportsNoTaskBarIcon = true;
-    //g_io.ConfigViewportsNoDefaultParent = true;
-    //g_io.ConfigDockingAlwaysTabBar = true;
-    //g_io.ConfigDockingTransparentPayload = true;
-    //g_io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleFonts;     // FIXME-DPI: Experimental. THIS CURRENTLY DOESN'T WORK AS EXPECTED. DON'T USE IN USER APP!
-    //g_io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports; // FIXME-DPI: Experimental.
 
-    // Setup Dear ImGui style
     ImGui::StyleColorsDark();
-    //ImGui::StyleColorsLight();
-
-    // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
     ImGuiStyle& style = ImGui::GetStyle();
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {

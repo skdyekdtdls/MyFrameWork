@@ -92,7 +92,7 @@ HRESULT CTarget_Manager::Ready_Debug(const _tchar* pTargetTag, _float fX, _float
 	CRenderTarget* pRenderTarget = Find_RenderTarget(pTargetTag);
 	NULL_CHECK_RETURN(pRenderTarget, E_FAIL);
 
-	return pRenderTarget->Ready_Debug(fX, fY, fSizeX, fSizeY);;
+	return pRenderTarget->Ready_Debug(fX, fY, fSizeX, fSizeY);
 }
 
 HRESULT CTarget_Manager::Render_Debug(const _tchar* pMRTTag, CShader* pShader, CVIBuffer_Rect* pVIBuffer)

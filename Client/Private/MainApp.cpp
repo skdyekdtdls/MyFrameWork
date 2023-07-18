@@ -20,8 +20,8 @@ HRESULT CMainApp::Initialize()
 
 	GraphicDesc.hWnd = g_hWnd;
 	GraphicDesc.hInst = g_hInst;
-	GraphicDesc.iViewportSizeX = g_iWinSizeX;
-	GraphicDesc.iViewportSizeY = g_iWinSizeY;
+	GraphicDesc.iViewportSizeX = 1264;
+	GraphicDesc.iViewportSizeY = 681;
 	GraphicDesc.eWinMode = GraphicDesc.WM_WIN;
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(LEVEL_END, GraphicDesc, &m_pDevice, &m_pContext)))

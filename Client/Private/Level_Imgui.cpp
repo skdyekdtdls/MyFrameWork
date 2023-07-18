@@ -57,7 +57,7 @@ void CLevel_Imgui::Ready_Lights()
 	CLight::LIGHTDESC LightDesc;
 	ZeroStruct(LightDesc);
 
-	LightDesc.eType = { CLight::TYPE_DIRECTION };
+	LightDesc.eType = { CLight::TYPE_DIRECTIONAL };
 	LightDesc.vDir = { 1.f, -1.f, 1.f, 0.f };
 	LightDesc.vAmbient = { 1.f, 1.f, 1.f, 1.f };
 	LightDesc.vDiffuse = { 1.f, 1.f, 1.f, 1.f };

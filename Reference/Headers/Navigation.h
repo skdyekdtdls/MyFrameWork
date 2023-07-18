@@ -59,7 +59,7 @@ public:
 	void UpdateCellCollider(_uint iIndex);
 
 	//_DEBUG VIBuffer와 ColliderSphere를 렌더하는 함수.
-	HRESULT Render_Navigation();
+	virtual HRESULT Render() override;
 
 	//_DEBUG 피킹된 모든 정점들을 vector컨테이너에 채워준다.
 	_bool IsCellVertexPicked(vector<CELL_PICK_DESC>& tPickDesc, const RAY& tRay);

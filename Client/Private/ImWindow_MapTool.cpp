@@ -96,7 +96,7 @@ void CImWindow_MapTool::Tick()
 		ImGui::RadioButton("Sand", &DrawOption, 1);
 		ImGui::RadioButton("Rock", &DrawOption, 2);
 	}
-
+	
 	// 세이브 파일 다이얼로그
 	if (ImGui::Button("Save MapTexture"))
 	{

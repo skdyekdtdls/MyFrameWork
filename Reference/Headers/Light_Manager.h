@@ -18,6 +18,8 @@ public:
 	HRESULT Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	HRESULT Add_Lights(const CLight::LIGHTDESC& LightDesc);
 
+	HRESULT Render_Lights(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
+
 private:
 	list<CLight*>	m_Lights;
 

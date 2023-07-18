@@ -63,7 +63,6 @@ public:
 	PrimitiveBatch<DirectX::VertexPositionColor>* GetBatch() {
 		return m_pBatch;
 	}
-	virtual HRESULT Render() = 0;
 	void SetupResources();
 	void Begin();
 	void End();

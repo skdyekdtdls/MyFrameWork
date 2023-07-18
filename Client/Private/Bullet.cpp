@@ -64,7 +64,9 @@ void Bullet::Late_Tick(_double TimeDelta)
 	if (pGameInstance->isIn_WorldSpace(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f))
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 
-	CheckCollision(TimeDelta);
+#ifdef _DEBUG
+	m_pRendererCom->Add_DebugGroup(m_pColliderCom);
+#endif
 
 	Safe_Release(pGameInstance);
 }
@@ -93,11 +95,6 @@ HRESULT Bullet::Render()
 
 	// 만약에 모델 컴포넌트 안쓰면 이걸로 쓰면된다.
 	// m_pShaderCom->Begin(0);
-
-#ifdef _DEBUG
-	if (nullptr != m_pColliderCom)
-		m_pColliderCom->Render();
-#endif
 }
 
 HRESULT Bullet::Add_Components()
@@ -146,31 +143,6 @@ HRESULT Bullet::SetUp_ShaderResources()
 	Safe_Release(pGameInstance);
 
 	return S_OK;
-}
-
-void Bullet::CheckCollision(_double TimeDelta)
-{
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
-
-	//CLayer* pLayer = pGameInstance->Find_LayerByName(pGameInstance->Get_CurLevelIndex(), L"Layer_Monster");
-	//for (auto iter = pLayer->Begin(); iter != pLayer->End(); ++iter)
-	//{
-	//	CCollider* pCollider = { nullptr };
-	//	if (pCollider = static_cast<CCollider*>((*iter)->Get_Component(L"Com_BodyColl")))
-	//	{
-	//		if (pCollider->Intersect(m_pColliderCom))
-	//		{
-	//			SetDead();
-	//			CCollider::COLLISION_INFO tCollisionInfo;
-	//			tCollisionInfo.pOtherCollider = { m_pColliderCom };
-	//			tCollisionInfo.tInfo = { m_pOwner->GetInfo() };
-	//			(*iter)->OnCollision(&tCollisionInfo);
-	//			break;
-	//		}
-	//	}
-	//}
-	Safe_Release(pGameInstance);
 }
 
 void Bullet::LifeSpan(_double TimeDelta)

@@ -47,9 +47,6 @@ protected: /* For. Component */
 	CTransform* m_pTransformCom = { nullptr };
 	CColliderSphere* m_pColliderCom = { nullptr };
 
-protected:
-	virtual void CheckCollision(_double TimeDelta) = 0;
-
 private:
 	void LifeSpan(_double TimeDelta);
 	HRESULT Add_Components();

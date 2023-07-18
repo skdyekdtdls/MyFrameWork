@@ -48,9 +48,6 @@ private:
 	HRESULT SetUp_ShaderResources();
 
 private:
-	virtual void CheckCollision(_double TimeDelta) override;
-
-private:
 	static _uint ClintBasicBullet_Id;
 
 public:

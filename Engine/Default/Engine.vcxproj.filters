@@ -464,10 +464,16 @@
     <Filter Include="01. Utility\08. RenderTargets\Manager">
       <UniqueIdentifier>{1d2355b2-3cb9-4ca5-ae1d-9fe657fa9d4f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Utility\03. Components\Renderer\Deffered">
+      <UniqueIdentifier>{5188fa1e-b1a5-46dd-a108-6803e851b26e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Navigation.hlsl">
       <Filter>01. Utility\03. Components\Navigation</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl">
+      <Filter>01. Utility\03. Components\Renderer\Deffered</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

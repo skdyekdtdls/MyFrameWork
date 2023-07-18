@@ -166,7 +166,7 @@ void CNavigation::UpdateCellCollider(_uint iIndex)
 #endif
 
 #ifdef _DEBUG
-HRESULT CNavigation::Render_Navigation()
+HRESULT CNavigation::Render()
 {
 	NULL_CHECK_RETURN(m_pShader, E_FAIL);
 

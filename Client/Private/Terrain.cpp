@@ -55,8 +55,9 @@ void CTerrain::Tick(_double TimeDelta)
 			Picked(tPickDesc, tRay);
 		}
 	}
-#endif // _DEBUG
 
+	m_pRendererCom->Add_DebugGroup(m_pNavigationCom);
+#endif // _DEBUG
 }
 
 void CTerrain::Late_Tick(_double TimeDelta)
@@ -76,9 +77,6 @@ HRESULT CTerrain::Render()
 	m_pShaderCom->Begin(0);
 
 	m_pVIBufferCom->Render();
-#ifdef _DEBUG
-	m_pNavigationCom->Render_Navigation();
-#endif
 
 	return S_OK;
 }

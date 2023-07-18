@@ -31,7 +31,7 @@ public: // Setter
 public:
 	virtual HRESULT Initialize_Prototype(void);
 	virtual HRESULT Initialize(void* pArg);
-
+	virtual HRESULT Render() { return S_OK; }
 protected:
 	CGameObject* m_pOwner = { nullptr };
 	ID3D11Device* m_pDevice = { nullptr };

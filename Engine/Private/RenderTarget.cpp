@@ -65,7 +65,7 @@ HRESULT CRenderTarget::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
 	FAILED_CHECK_RETURN(pShader->Bind_ShaderResource("g_Texture", m_pSRV), E_FAIL);
 	FAILED_CHECK_RETURN(pShader->Begin(0), E_FAIL);
 	
-	return S_OK;
+	return pVIBuffer->Render();
 }
 #endif
 
@@ -82,10 +82,7 @@ HRESULT CRenderTarget::Bind_ShaderResourceView(CShader* pShader, const char* pCo
 		return E_FAIL;
 
 	return pShader->Bind_ShaderResource(pConstantName, m_pSRV);
-
-	return S_OK;
 }
-
 
 CRenderTarget* CRenderTarget::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iSizeX, _uint iSizeY, DXGI_FORMAT eFormat, const _float4& vClearColor)
 {
@@ -106,5 +103,4 @@ void CRenderTarget::Free()
 	Safe_Release(m_pTexture2D);
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
-
 }

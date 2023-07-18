@@ -62,8 +62,6 @@ void ClintBasicBullet::Late_Tick(_double TimeDelta)
 	if(pGameInstance->isIn_WorldSpace(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f))
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 
-	CheckCollision(TimeDelta);
-
 	Safe_Release(pGameInstance);
 }
 
@@ -122,31 +120,6 @@ HRESULT ClintBasicBullet::SetUp_ShaderResources()
 	Safe_Release(pGameInstance);
 
 	return S_OK;
-}
-
-void ClintBasicBullet::CheckCollision(_double TimeDelta)
-{
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
-
-	//CLayer* pLayer = pGameInstance->Find_LayerByName(pGameInstance->Get_CurLevelIndex(), L"Layer_Monster");
-	//for (auto iter = pLayer->Begin(); iter != pLayer->End(); ++iter)
-	//{
-	//	CCollider* pCollider = { nullptr };
-	//	if (pCollider = static_cast<CCollider*>((*iter)->Get_Component(L"Com_BodyColl")))
-	//	{
-	//		if (pCollider->Intersect(m_pColliderCom))
-	//		{
-	//			SetDead();
-	//			CCollider::COLLISION_INFO tCollisionInfo;
-	//			tCollisionInfo.pOtherCollider = { m_pColliderCom };
-	//			tCollisionInfo.tInfo = { m_pOwner->GetInfo() };
-	//			(*iter)->OnCollision(&tCollisionInfo);
-	//			break;
-	//		}
-	//	}
-	//}
-	Safe_Release(pGameInstance);
 }
 
 ClintBasicBullet* ClintBasicBullet::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

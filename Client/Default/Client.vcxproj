@@ -205,7 +205,6 @@
     <ClInclude Include="..\public\ClintIdle.h" />
     <ClInclude Include="..\public\ClintRun.h" />
     <ClInclude Include="..\public\ClintShoot.h" />
-    <ClInclude Include="..\Public\ClintModel.h" />
     <ClInclude Include="..\public\ClintUltimate01.h" />
     <ClInclude Include="..\Public\ClintUltimate01Bullet.h" />
     <ClInclude Include="..\Public\ImGuiFileDialog.h" />
@@ -339,7 +338,6 @@
     <ClCompile Include="..\private\ClintIdle.cpp" />
     <ClCompile Include="..\private\ClintRun.cpp" />
     <ClCompile Include="..\private\ClintShoot.cpp" />
-    <ClCompile Include="..\private\ClintModel.cpp" />
     <ClCompile Include="..\private\ClintUltimate01.cpp" />
     <ClCompile Include="..\Private\ClintUltimate01Bullet.cpp" />
     <ClCompile Include="..\Private\ImGuiFileDialog.cpp" />
@@ -448,10 +446,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Vtxtex.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTexInstance.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\IMGUI\misc\debuggers\imgui.natstepfilter">
