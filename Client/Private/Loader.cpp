@@ -1,6 +1,12 @@
 #include "..\Public\Loader.h"
 #include "GameInstance.h"
 #include <process.h>
+#include "SM_Cliff01.h"
+#include "SM_MountainRock_Closed.h"
+#include "SM_LargePlainsBoulder002.h"
+#include "SM_LargePlainsBoulder003.h"
+#include "SM_LargePlainsBoulder002_Red_Desert.h"
+#include "SM_MountainRock.h"
 #include "Sky.h"
 #include "BackGround.h"
 #include "Camera_Free.h"
@@ -46,6 +52,7 @@
 #include "ClintUltimate01Bullet.h"
 #include "VIBuffer_Cube.h"
 #include "Blue_Snow.h"
+#include "LargeVolcanicRock_002_Red_Desert.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext)
 	: m_pDevice(pDevice)
@@ -271,6 +278,55 @@ HRESULT CLoader::Loading_For_IMGUI()
 		, TEXT("Prototype_Component_Model_Alien_prawn"), pModel), E_FAIL);
 
 	// Static_Meshes
+	cout << "--- LargeVolcanicRock_002_Red_Desert ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("LargeVolcanicRock_002_Red_Desert.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_LargeVolcanicRock_002_Red_Desert"), pModel), E_FAIL);
+
+
+	cout << "--- SM_Cliff01 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_Cliff01.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_Cliff01"), pModel), E_FAIL);
+
+
+	cout << "--- SM_LargePlainsBoulder002 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_LargePlainsBoulder002.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_LargePlainsBoulder002"), pModel), E_FAIL);
+
+
+	cout << "--- SM_LargePlainsBoulder002_Red_Desert ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_LargePlainsBoulder002_Red_Desert.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_LargePlainsBoulder002_Red_Desert"), pModel), E_FAIL);
+
+
+	cout << "--- SM_LargePlainsBoulder003 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_LargePlainsBoulder003.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_LargePlainsBoulder003"), pModel), E_FAIL);
+
+
+	cout << "--- SM_MountainRock ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_MountainRock.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_MountainRock"), pModel), E_FAIL);
+
+
+	cout << "--- SM_MountainRock_Closed ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_MountainRock_Closed.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_MountainRock_Closed"), pModel), E_FAIL);
+
+
 	//cout << "--- BarrelBoxStool ---" << endl;
 	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("BarrelBoxStool.dat");
@@ -424,9 +480,16 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CEditCamera::ProtoTag(), CEditCamera::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Sky::ProtoTag(), Sky::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_MountainRock::ProtoTag(), SM_MountainRock::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_MountainRock_Closed::ProtoTag(), SM_MountainRock_Closed::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_LargePlainsBoulder003::ProtoTag(), SM_LargePlainsBoulder003::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_LargePlainsBoulder002_Red_Desert::ProtoTag(), SM_LargePlainsBoulder002_Red_Desert::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_LargePlainsBoulder002::ProtoTag(), SM_LargePlainsBoulder002::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_Cliff01::ProtoTag(), SM_Cliff01::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CBlue_Snow::ProtoTag(), CBlue_Snow::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CCube::ProtoTag(), CCube::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BarrelBoxStool::ProtoTag(), BarrelBoxStool::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LargeVolcanicRock_002_Red_Desert::ProtoTag(), LargeVolcanicRock_002_Red_Desert::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Bush01::ProtoTag(), Bush01::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BushA::ProtoTag(), BushA::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BushB::ProtoTag(), BushB::Create(m_pDevice, m_pContext)), E_FAIL);

@@ -202,6 +202,30 @@
     <Filter Include="02. GameObjects\Effect\Instancing\Red">
       <UniqueIdentifier>{7cc0a865-f3bf-4afc-bb15-a8684ca1e67e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObjects\BackGround\LargeVolcanicRock_002_Red_Desert">
+      <UniqueIdentifier>{f0b46961-e53f-49ac-a6bb-96f9e1a1e16a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\LargeVolcanicRock_004_Red_Desert">
+      <UniqueIdentifier>{04e4adbd-1d6c-40d7-a010-736209f4b5f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Cliff01">
+      <UniqueIdentifier>{79f62859-618b-4b0f-a142-0760b7d73cee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_LargePlainsBoulder002">
+      <UniqueIdentifier>{b5933d90-e45b-48e1-bbeb-a8bdf1ec67ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_LargePlainsBoulder002_Red_Desert">
+      <UniqueIdentifier>{94efd024-1743-4ec7-a18c-110fbdaaac95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_LargePlainsBoulder003">
+      <UniqueIdentifier>{d2b650fe-9b17-4673-84b7-abee59ed96b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_MountainRock">
+      <UniqueIdentifier>{a916b08f-3f3f-4520-a772-c6f9a370b44a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_MountainRock_Closed">
+      <UniqueIdentifier>{a29ab5ca-a64f-43bc-a884-41623c68cf90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -433,6 +457,30 @@
       <Filter>02. GameObjects\Effect\Instancing\Blue</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Red_Snow.h" />
+    <ClInclude Include="..\public\LargeVolcanicRock_002_Red_Desert.h">
+      <Filter>02. GameObjects\BackGround\LargeVolcanicRock_002_Red_Desert</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\LargeVolcanicRock_004_Red_Desert.h">
+      <Filter>02. GameObjects\BackGround\LargeVolcanicRock_004_Red_Desert</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Cliff01.h">
+      <Filter>02. GameObjects\BackGround\SM_Cliff01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_LargePlainsBoulder002.h">
+      <Filter>02. GameObjects\BackGround\SM_LargePlainsBoulder002</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_LargePlainsBoulder002_Red_Desert.h">
+      <Filter>02. GameObjects\BackGround\SM_LargePlainsBoulder002_Red_Desert</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_LargePlainsBoulder003.h">
+      <Filter>02. GameObjects\BackGround\SM_LargePlainsBoulder003</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_MountainRock.h">
+      <Filter>02. GameObjects\BackGround\SM_MountainRock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_MountainRock_Closed.h">
+      <Filter>02. GameObjects\BackGround\SM_MountainRock_Closed</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -651,6 +699,30 @@
       <Filter>02. GameObjects\Effect\Instancing\Blue</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Red_Snow.cpp" />
+    <ClCompile Include="..\private\LargeVolcanicRock_002_Red_Desert.cpp">
+      <Filter>02. GameObjects\BackGround\LargeVolcanicRock_002_Red_Desert</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\LargeVolcanicRock_004_Red_Desert.cpp">
+      <Filter>02. GameObjects\BackGround\LargeVolcanicRock_004_Red_Desert</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Cliff01.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Cliff01</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_LargePlainsBoulder002.cpp">
+      <Filter>02. GameObjects\BackGround\SM_LargePlainsBoulder002</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_LargePlainsBoulder002_Red_Desert.cpp">
+      <Filter>02. GameObjects\BackGround\SM_LargePlainsBoulder002_Red_Desert</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_LargePlainsBoulder003.cpp">
+      <Filter>02. GameObjects\BackGround\SM_LargePlainsBoulder003</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_MountainRock.cpp">
+      <Filter>02. GameObjects\BackGround\SM_MountainRock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_MountainRock_Closed.cpp">
+      <Filter>02. GameObjects\BackGround\SM_MountainRock_Closed</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

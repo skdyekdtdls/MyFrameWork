@@ -199,9 +199,6 @@ _bool CVIBuffer_Terrain::IsPicked(FXMVECTOR vRayOrigin, FXMVECTOR vRayDir, _floa
 
 	IntersectPoint(vPoint, vRayOrigin, vRayDir, fMinDist);
 
-#ifdef _DEBUG
-	system("cls");
-#endif
 	return true;
 }
 

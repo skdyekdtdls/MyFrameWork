@@ -9,6 +9,7 @@
 #include "Clint.h"
 #include "Sky.h"
 #include "Blue_Snow.h"
+#include "LargeVolcanicRock_002_Red_Desert.h"
 
 CLevel_Imgui::CLevel_Imgui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
@@ -72,7 +73,6 @@ void CLevel_Imgui::Ready_Lights()
 		return;
 
 	Safe_Release(pGameInstance);
-
 }
 
 void CLevel_Imgui::Ready_Layer_BackGround(const _tchar* pLayerTag)

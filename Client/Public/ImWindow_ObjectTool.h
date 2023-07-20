@@ -22,13 +22,15 @@ public:
     virtual void Set_GameObject(CGameObject* pGameObject) override;
 
 private: /* Obejct_Place */
-    _bool   m_bCheck = { false };
+    _int   m_iPlaceOrDelete = { false };
+    _bool   m_bCheckDeletePlace = { false };
     _int    m_bRadioButton = -1;
     char    m_szCurItemLabel[MAX_PATH] = "";
     bool    open_popup = false;
      
 private:
     void ObjectPlace();
+    void DeletePlace();
 
 public:
     static  CImWindow_ObjectTool* Create(ImGuiIO* pIO);

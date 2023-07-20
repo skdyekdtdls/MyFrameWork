@@ -12,7 +12,7 @@ namespace fs = std::filesystem;
 CImWindow_ObjectTool::CImWindow_ObjectTool(ImGuiIO* pIO)
 	: CImWindow(pIO)
 {
-
+	
 }
 
 HRESULT CImWindow_ObjectTool::Initialize(void* pArg)
@@ -53,10 +53,15 @@ void CImWindow_ObjectTool::Tick()
 	}
 
 	// °´Ã¼ ¼³Ä¡ ±â´É
-	ImGui::Checkbox("Object_Place", &m_bCheck);
-	if (m_bCheck)
+	ImGui::RadioButton("Object_Place", &m_iPlaceOrDelete, 0);
+	ImGui::RadioButton("Delete_Place", &m_iPlaceOrDelete, 1);
+	if (0 == m_iPlaceOrDelete)
 	{
 		ObjectPlace(); 
+	}
+	else if (1 == m_iPlaceOrDelete)
+	{
+		DeletePlace();
 	}
 
 	// °´Ã¼ Æ®·£½ºÆû ÆíÁý
@@ -137,7 +142,7 @@ void CImWindow_ObjectTool::ObjectPlace()
 	CImWindow_Manager* pImMgr = CImWindow_Manager::GetInstance();
 	Safe_AddRef(pGameInstance);
 	Safe_AddRef(pImMgr);
-
+	system("cls");
 	wstring tag;
 	PICK_DESC tTerrainPickDesc = pImMgr->GetTerrainPickDesc();
 	if (Static_Mesh_item_current != -1)
@@ -220,6 +225,52 @@ void CImWindow_ObjectTool::ObjectPlace()
 	Safe_Release(pImMgr);
 	Safe_Release(pGameInstance);
 }
+
+void CImWindow_ObjectTool::DeletePlace()
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	CImWindow_Manager* pImMgr = CImWindow_Manager::GetInstance();
+	Safe_AddRef(pGameInstance);
+	Safe_AddRef(pImMgr);
+	system("cls");
+	PICK_DESC tPickDesc = pImMgr->GetMinDistPickDesc();
+	std::string strName;
+	
+	if(nullptr != tPickDesc.pPickedObject)
+		strName = tPickDesc.pPickedObject->Get_Name().c_str();
+
+	if (nullptr == tPickDesc.pPickedObject)
+	{
+		Safe_Release(pImMgr);
+		Safe_Release(pGameInstance);
+		return;
+	}
+
+	if (0 == strName.compare("Clint1"))
+	{
+		Safe_Release(pImMgr);
+		Safe_Release(pGameInstance);
+		return;
+	}
+
+	if (0 == strName.compare("CTerrain1"))
+	{
+		Safe_Release(pImMgr);
+		Safe_Release(pGameInstance);
+		return;
+	}
+
+	tPickDesc.pPickedObject->SetDead();
+
+	wstring tag;
+	PICK_DESC tTerrainPickDesc = pImMgr->GetTerrainPickDesc();
+
+	CONSOLE_MSG(tPickDesc.pPickedObject->Get_Name() << " Deleted");
+
+	Safe_Release(pImMgr);
+	Safe_Release(pGameInstance);
+}
+
 void CImWindow_ObjectTool::Free()
 {
 	__super::Free();

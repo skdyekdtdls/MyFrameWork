@@ -247,6 +247,8 @@
     <ClInclude Include="..\public\KemmekhBridgeA.h" />
     <ClInclude Include="..\public\KemmekhBridgeD.h" />
     <ClInclude Include="..\public\KemmekhBridgeF.h" />
+    <ClInclude Include="..\public\LargeVolcanicRock_002_Red_Desert.h" />
+    <ClInclude Include="..\public\LargeVolcanicRock_004_Red_Desert.h" />
     <ClInclude Include="..\public\Level_GamePlay.h" />
     <ClInclude Include="..\public\Level_Imgui.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -263,6 +265,12 @@
     <ClInclude Include="..\public\Rock.h" />
     <ClInclude Include="..\public\Sky.h" />
     <ClInclude Include="..\public\SmallRockC.h" />
+    <ClInclude Include="..\public\SM_Cliff01.h" />
+    <ClInclude Include="..\public\SM_LargePlainsBoulder002.h" />
+    <ClInclude Include="..\public\SM_LargePlainsBoulder002_Red_Desert.h" />
+    <ClInclude Include="..\public\SM_LargePlainsBoulder003.h" />
+    <ClInclude Include="..\public\SM_MountainRock.h" />
+    <ClInclude Include="..\public\SM_MountainRock_Closed.h" />
     <ClInclude Include="..\Public\StateContext.h" />
     <ClInclude Include="..\Public\StateMachine.h" />
     <ClInclude Include="..\public\Terrain.h" />
@@ -382,6 +390,8 @@
     <ClCompile Include="..\private\KemmekhBridgeA.cpp" />
     <ClCompile Include="..\Private\KemmekhBridgeD.cpp" />
     <ClCompile Include="..\private\KemmekhBridgeF.cpp" />
+    <ClCompile Include="..\private\LargeVolcanicRock_002_Red_Desert.cpp" />
+    <ClCompile Include="..\private\LargeVolcanicRock_004_Red_Desert.cpp" />
     <ClCompile Include="..\private\Level_GamePlay.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
@@ -413,6 +423,12 @@
     <ClCompile Include="..\private\Rock.cpp" />
     <ClCompile Include="..\private\Sky.cpp" />
     <ClCompile Include="..\private\SmallRockC.cpp" />
+    <ClCompile Include="..\private\SM_Cliff01.cpp" />
+    <ClCompile Include="..\private\SM_LargePlainsBoulder002.cpp" />
+    <ClCompile Include="..\private\SM_LargePlainsBoulder002_Red_Desert.cpp" />
+    <ClCompile Include="..\private\SM_LargePlainsBoulder003.cpp" />
+    <ClCompile Include="..\private\SM_MountainRock.cpp" />
+    <ClCompile Include="..\private\SM_MountainRock_Closed.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>

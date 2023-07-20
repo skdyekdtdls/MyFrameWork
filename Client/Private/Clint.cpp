@@ -115,11 +115,12 @@ void Clint::Late_Tick(_double TimeDelta)
 	// 렌더러 그룹에 추가
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 	m_pColliderCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BODY);
+
 #ifdef _DEBUG
 	//m_pNavigationCom->Render();
 	if (nullptr != m_pColliderCom)
 		m_pRendererCom->Add_DebugGroup(m_pColliderCom);
-	m_pRendererCom->Add_DebugGroup(m_pRaycastCom);
+	//m_pRendererCom->Add_DebugGroup(m_pRaycastCom);
 #endif
 	if (nullptr != m_pPistolaComL && nullptr != m_pPistolaComR)
 	{
@@ -143,7 +144,7 @@ HRESULT Clint::Render()
 		m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
 
 		m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
-		// m_pModelCom->Bind_Material(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS);
+		//m_pModelCom->Bind_Material(m_pShaderCom, "g_NormalTexture", i, TextureType_NORMALS);
 
 		m_pShaderCom->Begin(0);
 
