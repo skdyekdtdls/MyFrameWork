@@ -53,6 +53,28 @@
 #include "VIBuffer_Cube.h"
 #include "Blue_Snow.h"
 #include "LargeVolcanicRock_002_Red_Desert.h"
+#include "Kemmekh_Formacion_rocosa.h"
+#include "Kemmekh_wall.h"
+#include "SM_Wall02.h"
+#include "SM_Wall01.h"
+#include "SM_TrozoPared.h"
+#include "SM_Relic.h"
+#include "SM_Pueblo02.h"
+#include "SM_Poblado01.h"
+#include "SM_Poblado.h"
+#include "SM_Piedras.h"
+#include "SM_MultiLake02.h"
+#include "SM_MiniBujer.h"
+#include "SM_Mina2.h"
+#include "SM_MERGED_RailSupportB2_452.h"
+#include "SM_MERGED_MultiRock371.h"
+#include "SM_LaMina.h"
+#include "SM_LagoSmall.h"
+#include "SM_GenericWall01.h"
+#include "SM_CrystalYRocas.h"
+#include "SM_Crystal.h"
+#include "SM_Barriletes.h"
+#include "LargeVolcanicRock_002_Red_Desert.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext)
 	: m_pDevice(pDevice)
@@ -223,7 +245,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 
 	Set_LoadingText(L"텍스처 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Terrain"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Art/Misc/John/Materials/DesertScales.dds"))), E_FAIL);
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Terrain/Tile%d.dds", 2))), E_FAIL);
 	
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Terrain_Brush"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Terrain/Brush.png"))), E_FAIL);
@@ -325,6 +347,153 @@ HRESULT CLoader::Loading_For_IMGUI()
 	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_MountainRock_Closed.dat");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
 		, TEXT("Prototype_Component_Model_SM_MountainRock_Closed"), pModel), E_FAIL);
+
+
+	cout << "--- Kemmekh_Formacion_rocosa ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Kemmekh_Formacion_rocosa.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_Kemmekh_Formacion_rocosa"), pModel), E_FAIL);
+
+
+	cout << "--- Kemmekh_wall ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Kemmekh_wall.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_Kemmekh_wall"), pModel), E_FAIL);
+
+
+	cout << "--- SM_Wall02 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_Wall02.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_Wall02"), pModel), E_FAIL);
+
+
+	cout << "--- SM_Wall01 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_Wall01.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_Wall01"), pModel), E_FAIL);
+
+
+	cout << "--- SM_TrozoPared ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_TrozoPared.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_TrozoPared"), pModel), E_FAIL);
+
+
+	cout << "--- SM_Relic ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_Relic.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_Relic"), pModel), E_FAIL);
+
+
+	cout << "--- SM_Pueblo02 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_Pueblo02.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_Pueblo02"), pModel), E_FAIL);
+
+
+	cout << "--- SM_Poblado01 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_Poblado01.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_Poblado01"), pModel), E_FAIL);
+
+
+	cout << "--- SM_Poblado ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_Poblado.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_Poblado"), pModel), E_FAIL);
+
+
+	cout << "--- SM_Piedras ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_Piedras.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_Piedras"), pModel), E_FAIL);
+
+
+	cout << "--- SM_MultiLake02 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_MultiLake02.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_MultiLake02"), pModel), E_FAIL);
+
+
+	cout << "--- SM_MiniBujer ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_MiniBujer.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_MiniBujer"), pModel), E_FAIL);
+
+
+	cout << "--- SM_Mina2 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_Mina2.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_Mina2"), pModel), E_FAIL);
+
+
+	cout << "--- SM_MERGED_RailSupportB2_452 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_MERGED_RailSupportB2_452.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_MERGED_RailSupportB2_452"), pModel), E_FAIL);
+
+
+	cout << "--- SM_MERGED_MultiRock371 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_MERGED_MultiRock371.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_MERGED_MultiRock371"), pModel), E_FAIL);
+
+
+	cout << "--- SM_LaMina ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_LaMina.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_LaMina"), pModel), E_FAIL);
+
+
+	cout << "--- SM_LagoSmall ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_LagoSmall.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_LagoSmall"), pModel), E_FAIL);
+
+
+	cout << "--- SM_GenericWall01 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_GenericWall01.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_GenericWall01"), pModel), E_FAIL);
+
+
+	cout << "--- SM_CrystalYRocas ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_CrystalYRocas.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_CrystalYRocas"), pModel), E_FAIL);
+
+
+	cout << "--- SM_Crystal ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_Crystal.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_Crystal"), pModel), E_FAIL);
+
+
+	cout << "--- SM_Barriletes ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_Barriletes.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SM_Barriletes"), pModel), E_FAIL);
 
 
 	//cout << "--- BarrelBoxStool ---" << endl;
@@ -480,6 +649,28 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CEditCamera::ProtoTag(), CEditCamera::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Sky::ProtoTag(), Sky::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Kemmekh_Formacion_rocosa::ProtoTag(), Kemmekh_Formacion_rocosa::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Kemmekh_wall::ProtoTag(), Kemmekh_wall::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_Wall02::ProtoTag(), SM_Wall02::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_Wall01::ProtoTag(), SM_Wall01::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_TrozoPared::ProtoTag(), SM_TrozoPared::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_Relic::ProtoTag(), SM_Relic::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_Pueblo02::ProtoTag(), SM_Pueblo02::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_Poblado01::ProtoTag(), SM_Poblado01::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_Poblado::ProtoTag(), SM_Poblado::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_Piedras::ProtoTag(), SM_Piedras::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_MultiLake02::ProtoTag(), SM_MultiLake02::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_MiniBujer::ProtoTag(), SM_MiniBujer::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_Mina2::ProtoTag(), SM_Mina2::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_MERGED_RailSupportB2_452::ProtoTag(), SM_MERGED_RailSupportB2_452::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_MERGED_MultiRock371::ProtoTag(), SM_MERGED_MultiRock371::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_LaMina::ProtoTag(), SM_LaMina::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_LagoSmall::ProtoTag(), SM_LagoSmall::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_GenericWall01::ProtoTag(), SM_GenericWall01::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_CrystalYRocas::ProtoTag(), SM_CrystalYRocas::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_Crystal::ProtoTag(), SM_Crystal::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_Barriletes::ProtoTag(), SM_Barriletes::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LargeVolcanicRock_002_Red_Desert::ProtoTag(), LargeVolcanicRock_002_Red_Desert::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_MountainRock::ProtoTag(), SM_MountainRock::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_MountainRock_Closed::ProtoTag(), SM_MountainRock_Closed::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_LargePlainsBoulder003::ProtoTag(), SM_LargePlainsBoulder003::Create(m_pDevice, m_pContext)), E_FAIL);
@@ -489,7 +680,6 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CBlue_Snow::ProtoTag(), CBlue_Snow::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CCube::ProtoTag(), CCube::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BarrelBoxStool::ProtoTag(), BarrelBoxStool::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LargeVolcanicRock_002_Red_Desert::ProtoTag(), LargeVolcanicRock_002_Red_Desert::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Bush01::ProtoTag(), Bush01::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BushA::ProtoTag(), BushA::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BushB::ProtoTag(), BushB::Create(m_pDevice, m_pContext)), E_FAIL);

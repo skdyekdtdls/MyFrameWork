@@ -30,6 +30,7 @@ public:
 	virtual _bool Intersect(CCollider* pOtherCollider, COLLISION_INFO& CollisionInfo) override;
 #ifdef _DEBUG
 	virtual HRESULT Render() override;
+	void SetPickRadius(_float fScale);
 #endif
 
 private:

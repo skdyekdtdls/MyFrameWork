@@ -170,10 +170,12 @@ void CObject_Manager::Serialization(HANDLE hFile, DWORD& dwByte, _uint iLevelInd
 
 void CObject_Manager::Deserialization(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 {
+
 	for (auto& Pair : m_pLayers[iLevelIndex])
 	{
 		Safe_Release(Pair.second);
 	}
+
 	m_pLayers[iLevelIndex].clear();
 
 	_uint iSize = 0;

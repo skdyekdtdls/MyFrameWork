@@ -154,16 +154,22 @@ void CImWindow_Manager::Initialize_Imgui(ImGuiIO** pIO, ID3D11Device* pDevice, I
 
 PICK_DESC CImWindow_Manager::GetMinDistPickDesc()
 {
+    if (nullptr == Get_EditCamera())
+        return PICK_DESC();
     return Get_EditCamera()->GetMinDistPickDesc();
 }
 
 PICK_DESC CImWindow_Manager::GetTerrainPickDesc()
 {
+    if (nullptr == Get_EditCamera())
+        return PICK_DESC();
     return Get_EditCamera()->GetTerrainPickDesc();
 }
 
 const _bool& CImWindow_Manager::IsPicking()
 {
+    if (nullptr == Get_EditCamera())
+        return false;
     return Get_EditCamera()->IsPicking();
 }
 
@@ -225,7 +231,6 @@ CEditCamera* CImWindow_Manager::Get_EditCamera()
     CGameInstance* pGameInstance = CGameInstance::GetInstance();
     Safe_AddRef(pGameInstance);
     CEditCamera* pEditCamera = (CEditCamera*)pGameInstance->Get_GameObject(LEVEL_IMGUI, L"Layer_Camera", "EditCamera");
-    NULL_CHECK_RETURN(pEditCamera, nullptr);
     Safe_Release(pGameInstance);
 
     return pEditCamera;

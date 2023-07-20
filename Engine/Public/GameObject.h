@@ -14,6 +14,8 @@ public:
 	{
 		tagCGameObjectDesc() : tagCCompositeDesc(), vPosition(_float4(0.f, 0.f, 0.f, 1.f)){};
 		_float4 vPosition;
+
+
 	}CGAMEOBJECT_DESC;
 protected:
 	CGameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -52,9 +54,8 @@ public:
 	virtual _bool Picked(_Inout_ PICK_DESC& tPickDesc, const RAY& tMouseRay);
 	_float GetPickSphereRadius();
 	void ReleaseFreePickCollider();
+	void SetPickRadius(_float fRadius);
 #endif
-
-
 
 public:
 	virtual CGameObject* Clone(void* pArg) override = 0;

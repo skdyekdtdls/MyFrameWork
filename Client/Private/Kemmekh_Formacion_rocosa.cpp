@@ -1,20 +1,19 @@
-
-#include "SM_Cliff01.h"
+#include "Kemmekh_Formacion_rocosa.h"
 #include "GameInstance.h"
 
-_uint SM_Cliff01::SM_Cliff01_Id = 0;
+_uint Kemmekh_Formacion_rocosa::Kemmekh_Formacion_rocosa_Id = 0;
 
-SM_Cliff01::SM_Cliff01(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+Kemmekh_Formacion_rocosa::Kemmekh_Formacion_rocosa(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
 }
 
-SM_Cliff01::SM_Cliff01(const SM_Cliff01& rhs)
+Kemmekh_Formacion_rocosa::Kemmekh_Formacion_rocosa(const Kemmekh_Formacion_rocosa& rhs)
 	: CGameObject(rhs)
 {
 }
 
-HRESULT SM_Cliff01::Initialize_Prototype()
+HRESULT Kemmekh_Formacion_rocosa::Initialize_Prototype()
 {
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
@@ -23,7 +22,7 @@ HRESULT SM_Cliff01::Initialize_Prototype()
 }
 
 
-HRESULT SM_Cliff01::Initialize(void* pArg)
+HRESULT Kemmekh_Formacion_rocosa::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -31,24 +30,26 @@ HRESULT SM_Cliff01::Initialize(void* pArg)
 	if (FAILED(Add_Components()))
 		return E_FAIL;
 
-	++SM_Cliff01_Id;
-	m_tInfo.wstrName = TO_WSTR("SM_Cliff01" + to_string(SM_Cliff01_Id));
+	++Kemmekh_Formacion_rocosa_Id;
+	m_tInfo.wstrName = TO_WSTR("Kemmekh_Formacion_rocosa" + to_string(Kemmekh_Formacion_rocosa_Id));
 	m_tInfo.wstrKey = ProtoTag();
-	m_tInfo.ID = SM_Cliff01_Id;
+	m_tInfo.ID = Kemmekh_Formacion_rocosa_Id;
 
-	tagSM_Cliff01Desc tCloneDesc;
+	tagKemmekh_Formacion_rocosaDesc tCloneDesc;
 	if (nullptr != pArg)
-		tCloneDesc = *(tagSM_Cliff01Desc*)pArg;
+		tCloneDesc = *(tagKemmekh_Formacion_rocosaDesc*)pArg;
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
 
+	//m_pModelCom->Set_RootNode(3);
+	cout << m_pModelCom->GetPivotMatrixScale().x << endl;
 #ifdef _DEBUG
-	__super::SetPickRadius(2.f * 100.f * m_pModelCom->GetPivotMatrixScale().x);
+	__super::SetPickRadius(5.f * 100.f * m_pModelCom->GetPivotMatrixScale().x);
 #endif
-
+	
 	return S_OK;
 }
 
-void SM_Cliff01::Tick(_double TimeDelta)
+void Kemmekh_Formacion_rocosa::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
 
@@ -57,7 +58,7 @@ void SM_Cliff01::Tick(_double TimeDelta)
 	//		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
 }
 
-void SM_Cliff01::Late_Tick(_double TimeDelta)
+void Kemmekh_Formacion_rocosa::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
 
@@ -74,7 +75,7 @@ void SM_Cliff01::Late_Tick(_double TimeDelta)
 #endif
 }
 
-HRESULT SM_Cliff01::Render()
+HRESULT Kemmekh_Formacion_rocosa::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
@@ -100,18 +101,18 @@ HRESULT SM_Cliff01::Render()
 	// m_pShaderCom->Begin(0);
 }
 
-void SM_Cliff01::Save(HANDLE hFile, DWORD& dwByte)
+void Kemmekh_Formacion_rocosa::Save(HANDLE hFile, DWORD& dwByte)
 {
 	m_tInfo.Save(hFile, dwByte);
 	m_pTransformCom->Save(hFile, dwByte);
 }
 
-void SM_Cliff01::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
+void Kemmekh_Formacion_rocosa::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 {
 	m_pTransformCom->Load(hFile, dwByte, iLevelIndex);
 }
 
-HRESULT SM_Cliff01::Add_Components()
+HRESULT Kemmekh_Formacion_rocosa::Add_Components()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
@@ -128,7 +129,7 @@ HRESULT SM_Cliff01::Add_Components()
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxMesh", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
 
 	CModel::CMODEL_DESC tModelDesc; tModelDesc.pOwner = this;
-	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_SM_Cliff01", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Kemmekh_Formacion_rocosa", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
 
 	CColliderAABB::CCOLLIDER_AABB_DESC tColliderAABBDesc;
 	tColliderAABBDesc.pOwner = this;
@@ -144,7 +145,7 @@ HRESULT SM_Cliff01::Add_Components()
 	return S_OK;
 }
 
-HRESULT SM_Cliff01::SetUp_ShaderResources()
+HRESULT Kemmekh_Formacion_rocosa::SetUp_ShaderResources()
 {
 	_float4x4 MyMatrix = m_pTransformCom->Get_WorldFloat4x4();
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &MyMatrix), E_FAIL);
@@ -163,35 +164,35 @@ HRESULT SM_Cliff01::SetUp_ShaderResources()
 	return S_OK;
 }
 
-SM_Cliff01* SM_Cliff01::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+Kemmekh_Formacion_rocosa* Kemmekh_Formacion_rocosa::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	SM_Cliff01* pInstance = new SM_Cliff01(pDevice, pContext);
+	Kemmekh_Formacion_rocosa* pInstance = new Kemmekh_Formacion_rocosa(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created SM_Cliff01");
+		MSG_BOX("Failed to Created Kemmekh_Formacion_rocosa");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-CGameObject* SM_Cliff01::Clone(void* pArg)
+CGameObject* Kemmekh_Formacion_rocosa::Clone(void* pArg)
 {
-	SM_Cliff01* pInstance = new SM_Cliff01(*this);
+	Kemmekh_Formacion_rocosa* pInstance = new Kemmekh_Formacion_rocosa(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned SM_Cliff01");
+		MSG_BOX("Failed to Cloned Kemmekh_Formacion_rocosa");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-void SM_Cliff01::Free(void)
+void Kemmekh_Formacion_rocosa::Free(void)
 {
 	__super::Free();
 
-	--SM_Cliff01_Id;
+	--Kemmekh_Formacion_rocosa_Id;
 	
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pShaderCom);

@@ -1,20 +1,20 @@
 
-#include "SM_Cliff01.h"
+#include "SM_LagoSmall.h"
 #include "GameInstance.h"
 
-_uint SM_Cliff01::SM_Cliff01_Id = 0;
+_uint SM_LagoSmall::SM_LagoSmall_Id = 0;
 
-SM_Cliff01::SM_Cliff01(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+SM_LagoSmall::SM_LagoSmall(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
 }
 
-SM_Cliff01::SM_Cliff01(const SM_Cliff01& rhs)
+SM_LagoSmall::SM_LagoSmall(const SM_LagoSmall& rhs)
 	: CGameObject(rhs)
 {
 }
 
-HRESULT SM_Cliff01::Initialize_Prototype()
+HRESULT SM_LagoSmall::Initialize_Prototype()
 {
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
@@ -23,7 +23,7 @@ HRESULT SM_Cliff01::Initialize_Prototype()
 }
 
 
-HRESULT SM_Cliff01::Initialize(void* pArg)
+HRESULT SM_LagoSmall::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -31,24 +31,24 @@ HRESULT SM_Cliff01::Initialize(void* pArg)
 	if (FAILED(Add_Components()))
 		return E_FAIL;
 
-	++SM_Cliff01_Id;
-	m_tInfo.wstrName = TO_WSTR("SM_Cliff01" + to_string(SM_Cliff01_Id));
+	++SM_LagoSmall_Id;
+	m_tInfo.wstrName = TO_WSTR("SM_LagoSmall" + to_string(SM_LagoSmall_Id));
 	m_tInfo.wstrKey = ProtoTag();
-	m_tInfo.ID = SM_Cliff01_Id;
+	m_tInfo.ID = SM_LagoSmall_Id;
 
-	tagSM_Cliff01Desc tCloneDesc;
+	tagSM_LagoSmallDesc tCloneDesc;
 	if (nullptr != pArg)
-		tCloneDesc = *(tagSM_Cliff01Desc*)pArg;
+		tCloneDesc = *(tagSM_LagoSmallDesc*)pArg;
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
 
+	//m_pModelCom->Set_RootNode(3);
 #ifdef _DEBUG
-	__super::SetPickRadius(2.f * 100.f * m_pModelCom->GetPivotMatrixScale().x);
+	__super::SetPickRadius(5.f * 100.f * m_pModelCom->GetPivotMatrixScale().x);
 #endif
-
 	return S_OK;
 }
 
-void SM_Cliff01::Tick(_double TimeDelta)
+void SM_LagoSmall::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
 
@@ -57,7 +57,7 @@ void SM_Cliff01::Tick(_double TimeDelta)
 	//		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
 }
 
-void SM_Cliff01::Late_Tick(_double TimeDelta)
+void SM_LagoSmall::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
 
@@ -74,7 +74,7 @@ void SM_Cliff01::Late_Tick(_double TimeDelta)
 #endif
 }
 
-HRESULT SM_Cliff01::Render()
+HRESULT SM_LagoSmall::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
@@ -100,18 +100,18 @@ HRESULT SM_Cliff01::Render()
 	// m_pShaderCom->Begin(0);
 }
 
-void SM_Cliff01::Save(HANDLE hFile, DWORD& dwByte)
+void SM_LagoSmall::Save(HANDLE hFile, DWORD& dwByte)
 {
 	m_tInfo.Save(hFile, dwByte);
 	m_pTransformCom->Save(hFile, dwByte);
 }
 
-void SM_Cliff01::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
+void SM_LagoSmall::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 {
 	m_pTransformCom->Load(hFile, dwByte, iLevelIndex);
 }
 
-HRESULT SM_Cliff01::Add_Components()
+HRESULT SM_LagoSmall::Add_Components()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
@@ -128,7 +128,7 @@ HRESULT SM_Cliff01::Add_Components()
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxMesh", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
 
 	CModel::CMODEL_DESC tModelDesc; tModelDesc.pOwner = this;
-	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_SM_Cliff01", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_SM_LagoSmall", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
 
 	CColliderAABB::CCOLLIDER_AABB_DESC tColliderAABBDesc;
 	tColliderAABBDesc.pOwner = this;
@@ -144,7 +144,7 @@ HRESULT SM_Cliff01::Add_Components()
 	return S_OK;
 }
 
-HRESULT SM_Cliff01::SetUp_ShaderResources()
+HRESULT SM_LagoSmall::SetUp_ShaderResources()
 {
 	_float4x4 MyMatrix = m_pTransformCom->Get_WorldFloat4x4();
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &MyMatrix), E_FAIL);
@@ -163,35 +163,35 @@ HRESULT SM_Cliff01::SetUp_ShaderResources()
 	return S_OK;
 }
 
-SM_Cliff01* SM_Cliff01::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+SM_LagoSmall* SM_LagoSmall::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	SM_Cliff01* pInstance = new SM_Cliff01(pDevice, pContext);
+	SM_LagoSmall* pInstance = new SM_LagoSmall(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created SM_Cliff01");
+		MSG_BOX("Failed to Created SM_LagoSmall");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-CGameObject* SM_Cliff01::Clone(void* pArg)
+CGameObject* SM_LagoSmall::Clone(void* pArg)
 {
-	SM_Cliff01* pInstance = new SM_Cliff01(*this);
+	SM_LagoSmall* pInstance = new SM_LagoSmall(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned SM_Cliff01");
+		MSG_BOX("Failed to Cloned SM_LagoSmall");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-void SM_Cliff01::Free(void)
+void SM_LagoSmall::Free(void)
 {
 	__super::Free();
 
-	--SM_Cliff01_Id;
+	--SM_LagoSmall_Id;
 	
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pShaderCom);

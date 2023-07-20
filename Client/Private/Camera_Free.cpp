@@ -29,6 +29,32 @@ HRESULT CCamera_Free::Initialize(void* pArg)
 	return S_OK;
 }
 
+void CCamera_Free::Save(HANDLE hFile, DWORD& dwByte)
+{
+	m_tInfo.Save(hFile, dwByte);
+
+	WriteVoid(&m_vEye, sizeof(_float4));
+	WriteVoid(&m_vAt, sizeof(_float4));
+	WriteVoid(&m_vUp, sizeof(_float4));
+	WriteVoid(&m_fFovy, sizeof(_float));
+	WriteVoid(&m_fAspect, sizeof(_float));
+	WriteVoid(&m_fNear, sizeof(_float));
+	WriteVoid(&m_fFar, sizeof(_float));
+	m_pTransform->Save(hFile, dwByte);
+}
+
+void CCamera_Free::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
+{
+	ReadVoid(&m_vEye, sizeof(_float4));
+	ReadVoid(&m_vAt, sizeof(_float4));
+	ReadVoid(&m_vUp, sizeof(_float4));
+	ReadVoid(&m_fFovy, sizeof(_float));
+	ReadVoid(&m_fAspect, sizeof(_float));
+	ReadVoid(&m_fNear, sizeof(_float));
+	ReadVoid(&m_fFar, sizeof(_float));
+	m_pTransform->Load(hFile, dwByte, iLevelIndex);
+}
+
 void CCamera_Free::Tick(_double TimeDelta)
 {
 	if (g_hWnd != ::GetFocus())

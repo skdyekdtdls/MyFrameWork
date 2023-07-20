@@ -86,6 +86,17 @@ HRESULT Sky::Render()
 	return S_OK;
 }
 
+void Sky::Save(HANDLE hFile, DWORD& dwByte)
+{
+	m_tInfo.Save(hFile, dwByte);
+	m_pTransformCom->Save(hFile, dwByte);
+}
+
+void Sky::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
+{
+	m_pTransformCom->Load(hFile, dwByte, iLevelIndex);
+}
+
 HRESULT Sky::Add_Components()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();

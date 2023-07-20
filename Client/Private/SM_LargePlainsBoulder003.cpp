@@ -41,7 +41,9 @@ HRESULT SM_LargePlainsBoulder003::Initialize(void* pArg)
 		tCloneDesc = *(tagSM_LargePlainsBoulder003Desc*)pArg;
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
 
-	//m_pModelCom->Set_RootNode(3);
+#ifdef _DEBUG
+	__super::SetPickRadius(3.f * 100.f * m_pModelCom->GetPivotMatrixScale().x);
+#endif
 
 	return S_OK;
 }

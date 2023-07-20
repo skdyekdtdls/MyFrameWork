@@ -82,6 +82,10 @@ HRESULT CColliderSphere::Render()
 
 	return S_OK;
 }
+void CColliderSphere::SetPickRadius(_float fRadius)
+{
+	m_pBoudingSphere_Origin->Radius = fRadius;
+}
 #endif
 
 CColliderSphere* CColliderSphere::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

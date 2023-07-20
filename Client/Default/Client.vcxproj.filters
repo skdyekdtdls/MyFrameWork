@@ -55,9 +55,6 @@
     <Filter Include="96. IMGUI\01. ImWindow\01. ImWindow_ObjectTool">
       <UniqueIdentifier>{296bff4e-de67-4fee-8759-0a4a723de7ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="96. IMGUI\01. ImWindow\NewFilter1">
-      <UniqueIdentifier>{3423ab4a-f1bd-453a-a65e-e987f69cdd65}</UniqueIdentifier>
-    </Filter>
     <Filter Include="96. IMGUI\01. ImWindow\02. ImWindow_MapTool">
       <UniqueIdentifier>{7857ea36-7826-4123-8501-f5c613895ef6}</UniqueIdentifier>
     </Filter>
@@ -225,6 +222,69 @@
     </Filter>
     <Filter Include="02. GameObjects\BackGround\SM_MountainRock_Closed">
       <UniqueIdentifier>{a29ab5ca-a64f-43bc-a884-41623c68cf90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\Kemmekh_Formacion_rocosa">
+      <UniqueIdentifier>{fb41b2c9-e4af-4e23-87a8-bfb935803182}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Barriletes">
+      <UniqueIdentifier>{5e7fd838-224e-48a8-a271-43e92fa25b76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\Kemmekh_wall">
+      <UniqueIdentifier>{8cd63838-c79b-4a34-b81f-eef00eb457d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Crystal">
+      <UniqueIdentifier>{c0eef261-c2dc-4d86-b003-7ca565463f32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_CrystalYRocas">
+      <UniqueIdentifier>{9ce15135-6054-4f18-b7d0-fa346c7b5d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_GenericWall01">
+      <UniqueIdentifier>{baa177dd-2c39-4e58-9039-8076a5202535}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_LagoSmall">
+      <UniqueIdentifier>{ca06d4a7-0059-48b6-b6a5-753b75aee3dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_LaMina">
+      <UniqueIdentifier>{9f15185b-7692-4d75-b0c2-1583ae7f6290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_MERGED_MultiRock371">
+      <UniqueIdentifier>{c14c6988-e113-43fd-81a2-496cd252b6a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_MERGED_RailSupportB2_452">
+      <UniqueIdentifier>{8fdff341-4afb-4565-9f2b-7f831eff8fe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Mina2">
+      <UniqueIdentifier>{f255064a-3e3e-4b86-9ae7-7d1d2ebeafe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_MiniBujer">
+      <UniqueIdentifier>{f440a480-9c9d-48ce-a828-8ba6e99d6449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_MultiLake02">
+      <UniqueIdentifier>{4d438f74-55d0-4763-9629-20189486bef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Piedras">
+      <UniqueIdentifier>{c3716d71-9e77-4c8e-a116-28b30bf50e84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Poblado">
+      <UniqueIdentifier>{fbfbee0b-7b7c-43a2-b4c5-65b18f1b7e2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Poblado01">
+      <UniqueIdentifier>{cd81af27-69b6-4a29-8f48-c30e1c2ee21f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Pueblo02">
+      <UniqueIdentifier>{ea868769-7505-4c2e-99b3-f89612e493ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Relic">
+      <UniqueIdentifier>{696510c7-79b1-4d7b-b5f9-25126a74af65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_TrozoPared">
+      <UniqueIdentifier>{e14b5958-52ed-4aeb-a4a1-c1a06d2e4298}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Wall01">
+      <UniqueIdentifier>{c0e252b8-6f6d-4685-8304-39f425484a32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Wall02">
+      <UniqueIdentifier>{503ebf58-145c-4c2f-95c7-6927b961a9a5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -481,6 +541,69 @@
     <ClInclude Include="..\public\SM_MountainRock_Closed.h">
       <Filter>02. GameObjects\BackGround\SM_MountainRock_Closed</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Kemmekh_Formacion_rocosa.h">
+      <Filter>02. GameObjects\BackGround\Kemmekh_Formacion_rocosa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Kemmekh_wall.h">
+      <Filter>02. GameObjects\BackGround\Kemmekh_wall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Barriletes.h">
+      <Filter>02. GameObjects\BackGround\SM_Barriletes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Wall02.h">
+      <Filter>02. GameObjects\BackGround\SM_Wall02</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Wall01.h">
+      <Filter>02. GameObjects\BackGround\SM_Wall01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_TrozoPared.h">
+      <Filter>02. GameObjects\BackGround\SM_TrozoPared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Relic.h">
+      <Filter>02. GameObjects\BackGround\SM_Relic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Pueblo02.h">
+      <Filter>02. GameObjects\BackGround\SM_Pueblo02</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Poblado01.h">
+      <Filter>02. GameObjects\BackGround\SM_Poblado01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Poblado.h">
+      <Filter>02. GameObjects\BackGround\SM_Poblado</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Piedras.h">
+      <Filter>02. GameObjects\BackGround\SM_Piedras</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_MultiLake02.h">
+      <Filter>02. GameObjects\BackGround\SM_MultiLake02</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_MiniBujer.h">
+      <Filter>02. GameObjects\BackGround\SM_MiniBujer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Mina2.h">
+      <Filter>02. GameObjects\BackGround\SM_Mina2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_MERGED_RailSupportB2_452.h">
+      <Filter>02. GameObjects\BackGround\SM_MERGED_RailSupportB2_452</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_MERGED_MultiRock371.h">
+      <Filter>02. GameObjects\BackGround\SM_MERGED_MultiRock371</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_LaMina.h">
+      <Filter>02. GameObjects\BackGround\SM_LaMina</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_LagoSmall.h">
+      <Filter>02. GameObjects\BackGround\SM_LagoSmall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_GenericWall01.h">
+      <Filter>02. GameObjects\BackGround\SM_GenericWall01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_CrystalYRocas.h">
+      <Filter>02. GameObjects\BackGround\SM_CrystalYRocas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Crystal.h">
+      <Filter>02. GameObjects\BackGround\SM_Crystal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -722,6 +845,69 @@
     </ClCompile>
     <ClCompile Include="..\private\SM_MountainRock_Closed.cpp">
       <Filter>02. GameObjects\BackGround\SM_MountainRock_Closed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Kemmekh_Formacion_rocosa.cpp">
+      <Filter>02. GameObjects\BackGround\Kemmekh_Formacion_rocosa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Kemmekh_wall.cpp">
+      <Filter>02. GameObjects\BackGround\Kemmekh_wall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Barriletes.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Barriletes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Wall02.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Wall02</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Wall01.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Wall01</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_TrozoPared.cpp">
+      <Filter>02. GameObjects\BackGround\SM_TrozoPared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Relic.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Relic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Pueblo02.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Pueblo02</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Poblado01.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Poblado01</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Poblado.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Poblado</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Piedras.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Piedras</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_MultiLake02.cpp">
+      <Filter>02. GameObjects\BackGround\SM_MultiLake02</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_MiniBujer.cpp">
+      <Filter>02. GameObjects\BackGround\SM_MiniBujer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Mina2.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Mina2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_MERGED_RailSupportB2_452.cpp">
+      <Filter>02. GameObjects\BackGround\SM_MERGED_RailSupportB2_452</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_MERGED_MultiRock371.cpp">
+      <Filter>02. GameObjects\BackGround\SM_MERGED_MultiRock371</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_LaMina.cpp">
+      <Filter>02. GameObjects\BackGround\SM_LaMina</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_LagoSmall.cpp">
+      <Filter>02. GameObjects\BackGround\SM_LagoSmall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_GenericWall01.cpp">
+      <Filter>02. GameObjects\BackGround\SM_GenericWall01</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_CrystalYRocas.cpp">
+      <Filter>02. GameObjects\BackGround\SM_CrystalYRocas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Crystal.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Crystal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

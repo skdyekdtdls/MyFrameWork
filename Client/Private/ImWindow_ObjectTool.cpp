@@ -53,8 +53,22 @@ void CImWindow_ObjectTool::Tick()
 	}
 
 	// 객체 설치 기능
+
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	if (pGameInstance->Key_Down(DIK_GRAVE))
+	{
+		m_iPlaceOrDelete++;
+		if (m_iPlaceOrDelete >= 3)
+			m_iPlaceOrDelete = 0;
+	}
+
+	Safe_Release(pGameInstance);
+
+
 	ImGui::RadioButton("Object_Place", &m_iPlaceOrDelete, 0);
 	ImGui::RadioButton("Delete_Place", &m_iPlaceOrDelete, 1);
+	ImGui::RadioButton("NONE", &m_iPlaceOrDelete, 2);
 	if (0 == m_iPlaceOrDelete)
 	{
 		ObjectPlace(); 

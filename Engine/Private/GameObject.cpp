@@ -26,10 +26,9 @@ HRESULT CGameObject::Initialize_Prototype()
 HRESULT CGameObject::Initialize(void* pArg)
 {
 	FAILED_CHECK_RETURN(__super::Initialize(pArg), E_FAIL);
-
+	CGAMEOBJECT_DESC* pGameObjectDesc = (CGAMEOBJECT_DESC*)pArg;
 #ifdef _DEBUG
 	CColliderSphere::CCOLLIDER_SPHERE_DESC tColliderSphereDesc;
-	tColliderSphereDesc.fRadius = { 0.5f };
 	tColliderSphereDesc.vCenter = { _float3(0.f, tColliderSphereDesc.fRadius * 1.f, 0.f) };
 	FAILED_CHECK_RETURN(__super::Add_Component(0, CColliderSphere::ProtoTag()
 		, L"Com_PickCollider", (CComponent**)&m_pPickCollider, &tColliderSphereDesc), E_FAIL);
@@ -117,8 +116,13 @@ _float3 CGameObject::GetPosition()
 
 	return vPos;
 }
-
-
+#ifdef _DEBUG
+void CGameObject::SetPickRadius(_float fRadius)
+{
+	if (nullptr != m_pPickCollider)
+		m_pPickCollider->SetPickRadius(fRadius);
+}
+#endif
 void CGameObject::Free()
 {
 	__super::Free();

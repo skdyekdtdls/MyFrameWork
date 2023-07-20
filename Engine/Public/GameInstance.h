@@ -41,6 +41,9 @@ public: /* For Input_Device*/
 	_bool	Mouse_Down(CInput_Device::MOUSEKEYSTATE eMouseID);
 	_bool	Mouse_Pressing(CInput_Device::MOUSEKEYSTATE eMouseID);
 	_bool	Mouse_Up(CInput_Device::MOUSEKEYSTATE eMouseID);
+	bool	Key_Pressing(_ubyte ubyKey);
+	bool	Key_Down(_ubyte ubyKey);
+	bool	Key_Up(_ubyte ubyKey);
 
 public: /* For Level_Manager */
 	HRESULT Open_Level(_uint iLevelIndex, CLevel * pNewLevel);
