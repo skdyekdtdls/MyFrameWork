@@ -191,6 +191,7 @@
     <ClInclude Include="..\public\Alien_prawnRun.h" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\BarrelBoxStool.h" />
+    <ClInclude Include="..\public\Blue_Snow.h" />
     <ClInclude Include="..\public\Bullet.h" />
     <ClInclude Include="..\public\Bush01.h" />
     <ClInclude Include="..\public\BushA.h" />
@@ -258,7 +259,9 @@
     <ClInclude Include="..\public\ClintBasicBullet.h" />
     <ClInclude Include="..\public\RailSupportA.h" />
     <ClInclude Include="..\public\RailSupportB.h" />
+    <ClInclude Include="..\public\Red_Snow.h" />
     <ClInclude Include="..\public\Rock.h" />
+    <ClInclude Include="..\public\Sky.h" />
     <ClInclude Include="..\public\SmallRockC.h" />
     <ClInclude Include="..\Public\StateContext.h" />
     <ClInclude Include="..\Public\StateMachine.h" />
@@ -322,6 +325,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\private\BarrelBoxStool.cpp" />
+    <ClCompile Include="..\private\Blue_Snow.cpp" />
     <ClCompile Include="..\private\Bullet.cpp" />
     <ClCompile Include="..\Private\Bush01.cpp" />
     <ClCompile Include="..\private\BushA.cpp" />
@@ -405,7 +409,9 @@
     <ClCompile Include="..\private\ClintBasicBullet.cpp" />
     <ClCompile Include="..\private\RailSupportA.cpp" />
     <ClCompile Include="..\private\RailSupportB.cpp" />
+    <ClCompile Include="..\private\Red_Snow.cpp" />
     <ClCompile Include="..\private\Rock.cpp" />
+    <ClCompile Include="..\private\Sky.cpp" />
     <ClCompile Include="..\private\SmallRockC.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>

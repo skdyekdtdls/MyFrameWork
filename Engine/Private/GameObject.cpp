@@ -41,7 +41,8 @@ HRESULT CGameObject::Initialize(void* pArg)
 HRESULT CGameObject::Render()
 {
 #ifdef _DEBUG
-	m_pPickCollider->Render();
+	if(nullptr != m_pPickCollider)
+		m_pPickCollider->Render();
 #endif // _DEBUG
 
 	return S_OK;
@@ -54,7 +55,7 @@ void CGameObject::Tick(_double TimeDelta)
 		return;
 	CTransform* pTransform = static_cast<CTransform*>(Get_Component(L"Com_Transform"));
 
-	NULL_CHECK(m_pPickCollider)
+	if (nullptr != m_pPickCollider)
 		m_pPickCollider->Tick(pTransform->Get_WorldMatrix());
 #endif
 }
@@ -74,6 +75,10 @@ _bool CGameObject::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 {
 	if (!HasTransformCom())
 		return false;
+
+	if (nullptr == m_pPickCollider)
+		return false;
+
 	_float3 vPosFloat3 = GetPosition();
 
 	_float fDistance = { FLT_MAX };

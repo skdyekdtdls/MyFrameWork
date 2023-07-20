@@ -139,6 +139,15 @@
     <ClCompile Include="..\private\Target_Manager.cpp">
       <Filter>01. Utility\08. RenderTargets\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Rect_Instance.cpp">
+      <Filter>01. Utility\03. Components\VIBuffer\Instancing\Rect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Point_Instance.cpp">
+      <Filter>01. Utility\03. Components\VIBuffer\Instancing\Point</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Instancing.cpp">
+      <Filter>01. Utility\03. Components\VIBuffer\Instancing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Graphic_Device.h">
@@ -300,6 +309,15 @@
     <ClInclude Include="..\public\Target_Manager.h">
       <Filter>01. Utility\08. RenderTargets\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Rect_Instance.h">
+      <Filter>01. Utility\03. Components\VIBuffer\Instancing\Rect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Point_Instance.h">
+      <Filter>01. Utility\03. Components\VIBuffer\Instancing\Point</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Instancing.h">
+      <Filter>01. Utility\03. Components\VIBuffer\Instancing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -437,9 +455,6 @@
     <Filter Include="01. Utility\03. Components\Collider\ColliderOBB">
       <UniqueIdentifier>{7641eb8b-06d5-4ca7-9be5-e3905a9df8c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Utility\03. Components\VIBuffer\Ray">
-      <UniqueIdentifier>{4050028a-8095-412e-b168-806caf5e41f6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Utility\03. Components\Collider\Raycast">
       <UniqueIdentifier>{f819a212-5619-45fe-96d6-9a2924acae43}</UniqueIdentifier>
     </Filter>
@@ -466,6 +481,18 @@
     </Filter>
     <Filter Include="01. Utility\03. Components\Renderer\Deffered">
       <UniqueIdentifier>{5188fa1e-b1a5-46dd-a108-6803e851b26e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\VIBuffer\Instancing">
+      <UniqueIdentifier>{ab288560-3327-4a9d-8e84-c23bafb77be5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\VIBuffer\Instancing\Point">
+      <UniqueIdentifier>{3e9d2419-dcdb-4b92-8261-92929c76d8c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\VIBuffer\Instancing\Rect">
+      <UniqueIdentifier>{9d45ecdd-2630-4a88-bc7a-280c6c564bc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\VIBuffer\Ray">
+      <UniqueIdentifier>{4050028a-8095-412e-b168-806caf5e41f6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

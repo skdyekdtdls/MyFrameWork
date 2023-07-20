@@ -187,6 +187,21 @@
     <Filter Include="02. GameObjects\Bullet\ClintBasicBullet">
       <UniqueIdentifier>{77cc2e19-3df5-40d9-9efe-db592266e60f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObjects\Sky">
+      <UniqueIdentifier>{32d73e75-1820-48d1-99f0-cb806fbcb3d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect">
+      <UniqueIdentifier>{f1e50009-cb73-4796-acf3-f309937f9487}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Instancing">
+      <UniqueIdentifier>{9cabb107-9d81-4a0b-816d-a4fd3d335056}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Instancing\Blue">
+      <UniqueIdentifier>{e2ca6a31-f73c-4b24-bad6-deed2b718b40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Instancing\Red">
+      <UniqueIdentifier>{7cc0a865-f3bf-4afc-bb15-a8684ca1e67e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -411,6 +426,13 @@
     <ClInclude Include="..\Bin\ShaderFiles\Shader_Client_Defines.hpp">
       <Filter>97. ShaderFiles</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Sky.h">
+      <Filter>02. GameObjects\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Blue_Snow.h">
+      <Filter>02. GameObjects\Effect\Instancing\Blue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Red_Snow.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -622,6 +644,13 @@
     <ClCompile Include="..\private\Bullet.cpp">
       <Filter>02. GameObjects\Bullet</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Sky.cpp">
+      <Filter>02. GameObjects\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Blue_Snow.cpp">
+      <Filter>02. GameObjects\Effect\Instancing\Blue</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Red_Snow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

@@ -33,6 +33,9 @@
     <ClInclude Include="..\public\Component.h" />
     <ClInclude Include="..\public\Component_Manager.h" />
     <ClInclude Include="..\public\Composite.h" />
+    <ClInclude Include="..\public\VIBuffer_Instancing.h" />
+    <ClInclude Include="..\public\VIBuffer_Point_Instance.h" />
+    <ClInclude Include="..\public\VIBuffer_Rect_Instance.h" />
     <ClInclude Include="..\public\RenderTarget.h" />
     <ClInclude Include="..\Public\DebugDraw.h" />
     <ClInclude Include="..\Public\Engine_Defines.h" />
@@ -88,6 +91,9 @@
     <ClCompile Include="..\private\Component.cpp" />
     <ClCompile Include="..\private\Component_Manager.cpp" />
     <ClCompile Include="..\private\Composite.cpp" />
+    <ClCompile Include="..\private\VIBuffer_Instancing.cpp" />
+    <ClCompile Include="..\private\VIBuffer_Point_Instance.cpp" />
+    <ClCompile Include="..\private\VIBuffer_Rect_Instance.cpp" />
     <ClCompile Include="..\private\RenderTarget.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />
     <ClCompile Include="..\private\Frustum.cpp" />

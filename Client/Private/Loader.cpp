@@ -1,6 +1,7 @@
 #include "..\Public\Loader.h"
 #include "GameInstance.h"
 #include <process.h>
+#include "Sky.h"
 #include "BackGround.h"
 #include "Camera_Free.h"
 #include "EditCamera.h"
@@ -43,6 +44,8 @@
 #include "Alien_prawnDead.h"
 #include "ClintBasicBullet.h"
 #include "ClintUltimate01Bullet.h"
+#include "VIBuffer_Cube.h"
+#include "Blue_Snow.h"
 
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext)
 	: m_pDevice(pDevice)
@@ -218,12 +221,32 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Terrain_Brush"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Terrain/Brush.png"))), E_FAIL);
 
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Sky"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/SkyBox/Sky_%d.dds"), 4)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Snow"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Snow/Snow.png"), 1)), E_FAIL);
+
 	Set_LoadingText(L"버퍼 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Terrain::ProtoTag(),
 		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Art/Misc/John/Materials/TexturesCom_SmoothRock_1024_heightmap.bmp"))), E_FAIL);
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Cube::ProtoTag(),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext)), E_FAIL);
+
+
+	CVIBuffer_Rect_Instance::INSTANCEDESC tVIBufferRectInstanceDesc;
+	ZeroStruct(tVIBufferRectInstanceDesc);
+	tVIBufferRectInstanceDesc.vRange = _float3(10.f, 4.f, 10.f); tVIBufferRectInstanceDesc.vSpeed = _uint2(2, 10);
+	tVIBufferRectInstanceDesc.fLifeTime = 10.f; tVIBufferRectInstanceDesc.iNumInstance = 30; tVIBufferRectInstanceDesc.fHeight = 10.f;
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Rect_Instance::ProtoTag(),
+		CVIBuffer_Rect_Instance::Create(m_pDevice, m_pContext, &tVIBufferRectInstanceDesc)), E_FAIL);
+	
+	CVIBuffer_Point_Instance::INSTANCEDESC tVIBufferPointInstanceDesc;
+	tVIBufferPointInstanceDesc.vRange = _float3(10.f, 4.f, 10.f); tVIBufferPointInstanceDesc.vSpeed = _uint2(2, 10);
+	tVIBufferPointInstanceDesc.fLifeTime = 10.f; tVIBufferPointInstanceDesc.iNumInstance = 30; tVIBufferPointInstanceDesc.fHeight = 10.f;
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Point_Instance::ProtoTag(),
+		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, &tVIBufferPointInstanceDesc)), E_FAIL);
 	
 	// Skeletal_Meshes
 	Set_LoadingText(L"모델 로딩 중");
@@ -400,6 +423,8 @@ HRESULT CLoader::Loading_For_IMGUI()
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CEditCamera::ProtoTag(), CEditCamera::Create(m_pDevice, m_pContext)), E_FAIL);
 
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Sky::ProtoTag(), Sky::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CBlue_Snow::ProtoTag(), CBlue_Snow::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CCube::ProtoTag(), CCube::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BarrelBoxStool::ProtoTag(), BarrelBoxStool::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Bush01::ProtoTag(), Bush01::Create(m_pDevice, m_pContext)), E_FAIL);

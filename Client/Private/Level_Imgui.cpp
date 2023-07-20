@@ -7,6 +7,9 @@
 #include "Cube.h"
 #include "ImWindow_Manager.h"
 #include "Clint.h"
+#include "Sky.h"
+#include "Blue_Snow.h"
+
 CLevel_Imgui::CLevel_Imgui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -22,6 +25,8 @@ HRESULT CLevel_Imgui::Initialize()
 	Ready_Layer_BackGround(TEXT("Layer_BackGround"));
 	Ready_Layer_Camera(TEXT("Layer_Camera"));
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
+	Ready_Layer_Effect(TEXT("Layer_Effect"));
+		
 }
 
 void CLevel_Imgui::Tick(_double TimeDelta)
@@ -75,9 +80,8 @@ void CLevel_Imgui::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-
 	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, CTerrain::ProtoTag(), pLayerTag));
-	//NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, ForkLift::ProtoTag(), pLayerTag), E_FAIL);
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Sky::ProtoTag(), pLayerTag));
 
 	Safe_Release(pGameInstance);
 }
@@ -122,6 +126,16 @@ void CLevel_Imgui::Ready_Layer_Player(const _tchar* pLayerTag)
 	Safe_AddRef(pGameInstance);
 
 	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Clint::ProtoTag(), pLayerTag));
+
+	Safe_Release(pGameInstance);
+}
+
+void CLevel_Imgui::Ready_Layer_Effect(const _tchar* pLayerTag)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, CBlue_Snow::ProtoTag(), pLayerTag));
 
 	Safe_Release(pGameInstance);
 }

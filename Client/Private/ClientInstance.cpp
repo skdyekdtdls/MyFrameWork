@@ -82,6 +82,22 @@ RAY ClientInstance::GetMouseRay(ID3D11DeviceContext* pContext)
 	return tMouseRay;
 }
 
+// 렌더러가 nullptr이 아니고 카메라 안에 들어오면 렌더함.
+_bool ClientInstance::isRender(CRenderer* pRenderer, CTransform* pTransform, _float fRange)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	if (nullptr != pRenderer && true == pGameInstance->isIn_WorldSpace(pTransform->Get_State(CTransform::STATE_POSITION), fRange))
+	{
+		Safe_Release(pGameInstance);
+		return true;
+	}
+
+	Safe_Release(pGameInstance);
+	return false;
+}
+
 CNavigation* ClientInstance::GetClintNavigation()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();

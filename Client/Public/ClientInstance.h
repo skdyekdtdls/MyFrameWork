@@ -6,6 +6,8 @@ BEGIN(Engine)
 class CColliderAABB;
 class CCollider;
 class CNavigation;
+class CRenderer;
+class CTransform;
 END
 
 BEGIN(Client)
@@ -21,6 +23,8 @@ public:
 	class CTerrain* GetTerrain();
 
 	RAY GetMouseRay(ID3D11DeviceContext* pContext);
+
+	_bool isRender(CRenderer* pRenderer, CTransform* pTransform, _float fRange = 2.f);
 private:
 	class Clint* GetClint();
 	class CColliderAABB* GetClintBodyColl();

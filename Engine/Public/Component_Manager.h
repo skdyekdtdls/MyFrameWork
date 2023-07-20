@@ -13,7 +13,8 @@
 #include "ColliderSphere.h"
 #include "ColliderAABB.h"
 #include "Raycast.h"
-
+#include "VIBuffer_Rect_Instance.h"
+#include "VIBuffer_Point_Instance.h"
 BEGIN(Engine)
 class ENGINE_DLL CComponent_Manager final : public CBase
 {
