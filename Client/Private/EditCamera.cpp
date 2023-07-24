@@ -156,9 +156,12 @@ void CEditCamera::PlayMode_Tick(_double TimeDelta)
 {
 	_vector ClintPos = Facade->GetClintPosition();
 	_vector Offset = XMLoadFloat4(&m_OffsetPos);
-	ClintPos += Offset;
-
-	m_pTransform->Set_State(CTransform::STATE_POSITION, ClintPos);
+	_vector OffsetPos;
+	
+	OffsetPos = ClintPos + Offset;
+	
+	m_pTransform->Set_State(CTransform::STATE_POSITION, OffsetPos);
+	m_pTransform->LookAt(ClintPos);
 }
 
 void CEditCamera::EditMode_Late_Tick(_double TimeDelta)

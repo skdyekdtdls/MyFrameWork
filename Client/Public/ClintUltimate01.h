@@ -21,6 +21,7 @@ private:
 	_double m_TimeAcc = { 0.0 };
 	_double m_Duration = { 6.0 };
 
+	_double m_UltTimeAcc = { 0.0 };
 public:
 	static const _tchar* Tag() { return L"ClintUltimate01"; }
 	static ClintUltimate01* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

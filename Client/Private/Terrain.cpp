@@ -108,7 +108,7 @@ _bool CTerrain::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 		XMStoreFloat3(&vIntersection, XMVector3TransformCoord(XMLoadFloat3(&vIntersection), XMLoadFloat4x4(&worldMatrix)));
 
 		tPickDesc.fDist = fMinDist;
-		m_vBrushPos = tPickDesc.vPickPos = *(_float4*)&vIntersection;
+		m_vPickPos = tPickDesc.vPickPos = *(_float4*)&vIntersection;
 		tPickDesc.pPickedObject = this;
 	}
 	
@@ -180,7 +180,7 @@ HRESULT CTerrain::SetUp_ShaderResources()
 
 #ifdef _DEBUG
 	if(m_bShowBrush)
-		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vBrushPos", &m_vBrushPos, sizeof(_float3)), E_FAIL);
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vBrushPos", &m_vPickPos, sizeof(_float3)), E_FAIL);
 		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_bShowBrush", &m_bShowBrush, sizeof(_bool)), E_FAIL);
 #endif
 	return S_OK;

@@ -21,6 +21,7 @@ public:
 	_vector GetClintPosition();
 	class CNavigation* GetClintNavigation();
 	class CTerrain* GetTerrain();
+	_vector PickPosOnTerrain();
 
 	RAY GetMouseRay(ID3D11DeviceContext* pContext);
 

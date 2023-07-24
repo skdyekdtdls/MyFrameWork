@@ -27,7 +27,7 @@ private: /* Obejct_Place */
     _int    m_bRadioButton = -1;
     char    m_szCurItemLabel[MAX_PATH] = "";
     bool    open_popup = false;
-     
+
 private:
     void ObjectPlace();
     void DeletePlace();

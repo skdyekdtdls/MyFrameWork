@@ -4,6 +4,7 @@
 #include "ImMode.h"
 #include "GameInstance.h"
 #include "GameObject.h"
+#include "EditCamera.h"
 #include "Terrain.h"
 #include <filesystem>
 
@@ -53,7 +54,6 @@ void CImWindow_ObjectTool::Tick()
 	}
 
 	// 객체 설치 기능
-
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 	if (pGameInstance->Key_Down(DIK_GRAVE))
@@ -100,6 +100,15 @@ void CImWindow_ObjectTool::Tick()
 			pTransform->Set_WorldMatrix(matWorld);
 		}
 	}
+
+	CEditCamera* pEditCamera = pImMgr->Get_EditCamera();
+
+	if (nullptr != pEditCamera)
+	{
+		ImGui::RadioButton("EditMode", reinterpret_cast<_int*>(&pEditCamera->m_eEditMode), 0);
+		ImGui::RadioButton("PlayMode", reinterpret_cast<_int*>(&pEditCamera->m_eEditMode), 1);
+	}
+
 
 	ImGui::End();
 	Safe_Release(pImMgr);

@@ -59,10 +59,6 @@ HRESULT Clint::Initialize(void* pArg)
 		m_pPistolaComR->Attack(GetLook());
 		}), UPPER);
 
-	m_pModelCom->Add_TimeLineEvent("adsf", L"UltEnable", TIMELINE_EVENT(1.f, [this]() {
-		m_bUltEnable = true;
-		}), UPPER);
-
 	if(nullptr != m_pStateContextCom)
 		m_pStateContextCom->TransitionTo(L"ClintIdle");
 
@@ -229,11 +225,11 @@ HRESULT Clint::Add_Components()
 	tColliderAABBDesc.vCenter = _float3(-0.15f, tColliderAABBDesc.Extents.y, 0.f);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CColliderAABB::ProtoTag(), L"Com_BodyColl", (CComponent**)&m_pColliderCom, &tColliderAABBDesc), E_FAIL);
 
-	CColliderAABB::CCOLLIDER_AABB_DESC tUltCollider;
+	CColliderSphere::CCOLLIDER_SPHERE_DESC tUltCollider;
 	tUltCollider.pOwner = this;
-	tUltCollider.Extents = _float3(0.5f, 1.f, 0.5f);
-	tUltCollider.vCenter = _float3(-0.15f, tUltCollider.Extents.y, 0.f);
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CColliderAABB::ProtoTag(), L"Com_UltColl", (CComponent**)&m_pUltimateCom, &tUltCollider), E_FAIL);
+	tUltCollider.fRadius = 5.f;
+	tUltCollider.vCenter = _float3(-0.15f, tColliderAABBDesc.Extents.y, 0.f);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CColliderSphere::ProtoTag(), L"Com_UltColl", (CComponent**)&m_pUltimateCom, &tUltCollider), E_FAIL);
 
 	Raycast::RAYCAST_DESC tRaycastDesc;
 	tRaycastDesc.pOwner = this;

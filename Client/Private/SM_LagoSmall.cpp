@@ -61,7 +61,7 @@ void SM_LagoSmall::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
 
-	if (Facade->isRender(m_pRendererCom, m_pTransformCom))
+	if (Facade->isRender(m_pRendererCom, m_pTransformCom, 20.f))
 	{
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 	}

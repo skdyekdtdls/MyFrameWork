@@ -46,6 +46,8 @@ HRESULT Kemmekh_Formacion_rocosa::Initialize(void* pArg)
 	__super::SetPickRadius(5.f * 100.f * m_pModelCom->GetPivotMatrixScale().x);
 #endif
 	
+
+
 	return S_OK;
 }
 
@@ -62,7 +64,7 @@ void Kemmekh_Formacion_rocosa::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
 
-	if (Facade->isRender(m_pRendererCom, m_pTransformCom))
+	if (Facade->isRender(m_pRendererCom, m_pTransformCom, 20.f))
 	{
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 	}

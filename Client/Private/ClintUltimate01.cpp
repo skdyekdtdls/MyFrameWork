@@ -22,6 +22,7 @@ void ClintUltimate01::OnStateEnter()
 	SetAnimIndex(CLINT_ULTIMATE01, UPPER);
 
 	m_TimeAcc = { 0.0 };
+	m_UltTimeAcc = { 0.0 };
 }
 
 void ClintUltimate01::OnStateTick(_double TimeDelta)
@@ -50,22 +51,26 @@ void ClintUltimate01::OnStateTick(_double TimeDelta)
 	if (W)
 	{
 		pTransform->Go_Direction(TimeDelta, CTransform::DIR_N);
-		pTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(0.f));
 	}
 	else if (A)
 	{
 		pTransform->Go_Direction(TimeDelta, CTransform::DIR_W);
-		pTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-90.f));
 	}
 	else if (S)
 	{
 		pTransform->Go_Direction(TimeDelta, CTransform::DIR_S);
-		pTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.f));
 	}
 	else if (D)
 	{
 		pTransform->Go_Direction(TimeDelta, CTransform::DIR_E);
-		pTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f));
+	}
+
+	m_UltTimeAcc += TimeDelta;
+
+	if (m_UltTimeAcc > 0.25)
+	{
+		m_UltTimeAcc = 0.0;
+		m_pOwner->EnableUltColl();
 	}
 }
 

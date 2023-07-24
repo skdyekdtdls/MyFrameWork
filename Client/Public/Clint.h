@@ -48,6 +48,7 @@ public:
 public:
 	_vector GetPosition();
 	_vector GetLook();
+	void EnableUltColl() { m_bUltEnable = true; }
 
 public:
 	virtual void Save(HANDLE hFile, DWORD& dwByte) override;

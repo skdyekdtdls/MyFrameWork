@@ -37,6 +37,8 @@ void ClintShoot::OnStateTick(_double TimeDelta)
 		}
 		else
 			SetAnimIndex(CLINT_SHOOT, LOWER);
+
+		pTransform->LookAt(Facade->PickPosOnTerrain());
 	}
 	else
 		m_pStateContext->TransitionTo(L"ClintIdle");
