@@ -17,12 +17,16 @@ class CModel;
 END
 
 BEGIN(Client)
-class KemmekhBridgeA final : public CGameObject, public ISerializable
+class MineCrystalsC final : public CGameObject, public ISerializable
 {
+	typedef struct tagMineCrystalsCDesc : public tagCGameObjectDesc
+	{
+		tagMineCrystalsCDesc() : tagCGameObjectDesc() {}
+	};
 private:
-	KemmekhBridgeA(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	KemmekhBridgeA(const KemmekhBridgeA& rhs);
-	virtual ~KemmekhBridgeA() = default;
+	MineCrystalsC(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	MineCrystalsC(const MineCrystalsC& rhs);
+	virtual ~MineCrystalsC() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -46,11 +50,11 @@ private:
 	HRESULT SetUp_ShaderResources();
 
 private:
-	static _uint KemmekhBridgeA_Id;
+	static _uint MineCrystalsC_Id;
 
 public:
-	static const _tchar* ProtoTag() { return L"Prototype_GameObject_KemmekhBridgeA"; }
-	static KemmekhBridgeA* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_MineCrystalsC"; }
+	static MineCrystalsC* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free(void) override;
 };

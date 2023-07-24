@@ -57,6 +57,7 @@ private: /* For. Component */
 	CModel* m_pModelCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 	CCollider* m_pColliderCom = { nullptr };
+	CCollider* m_pUltimateCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CNavigation* m_pNavigationCom = { nullptr };
@@ -67,7 +68,7 @@ private: /* For. Component */
 
 private:
 	static _uint Clint_Id;
-
+	_bool	m_bUltEnable = { false };
 private:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();

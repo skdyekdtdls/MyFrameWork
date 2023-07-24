@@ -45,8 +45,9 @@ HRESULT Sky::Initialize(void* pArg)
 
 	//m_pModelCom->Set_RootNode(3);
 
+#if _DEBUG
 	ReleaseFreePickCollider();
-
+#endif
 	return S_OK;
 }
 
@@ -62,7 +63,7 @@ void Sky::Late_Tick(_double TimeDelta)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	_float4 vCamPosition = pGameInstance->Get_CamPosition();
+	_float4 vCamPosition = pGameInstance->Get_CamPositionFloat4();
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&vCamPosition));
 
 	Safe_Release(pGameInstance);

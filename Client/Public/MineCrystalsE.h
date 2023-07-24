@@ -17,12 +17,16 @@ class CModel;
 END
 
 BEGIN(Client)
-class TunnelEntryWood final : public CGameObject, public ISerializable
+class MineCrystalsE final : public CGameObject, public ISerializable
 {
+	typedef struct tagMineCrystalsEDesc : public tagCGameObjectDesc
+	{
+		tagMineCrystalsEDesc() : tagCGameObjectDesc() {}
+	};
 private:
-	TunnelEntryWood(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	TunnelEntryWood(const TunnelEntryWood& rhs);
-	virtual ~TunnelEntryWood() = default;
+	MineCrystalsE(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	MineCrystalsE(const MineCrystalsE& rhs);
+	virtual ~MineCrystalsE() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -46,11 +50,11 @@ private:
 	HRESULT SetUp_ShaderResources();
 
 private:
-	static _uint TunnelEntryWood_Id;
+	static _uint MineCrystalsE_Id;
 
 public:
-	static const _tchar* ProtoTag() { return L"Prototype_GameObject_TunnelEntryWood"; }
-	static TunnelEntryWood* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_MineCrystalsE"; }
+	static MineCrystalsE* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free(void) override;
 };

@@ -66,7 +66,6 @@ private:
 	const wchar_t* m_pTargetTag = { nullptr };
 };
 
-
 static std::string WideToMultiByte(const std::wstring& wide_str)
 {
 	int requiredSize = WideCharToMultiByte(CP_UTF8, 0, wide_str.c_str(), -1, NULL, 0, NULL, NULL);
@@ -99,6 +98,8 @@ static bool Float3Equal(_float3 f1, _float3 f2, float epsilon = std::numeric_lim
 	return true;
 }
 
+static 
+
 bool IsPointOnLineSegment(FXMVECTOR A, FXMVECTOR B, FXMVECTOR P)
 {
 	DirectX::FXMVECTOR AB = DirectX::XMVectorSubtract(B, A);
@@ -111,6 +112,8 @@ bool IsPointOnLineSegment(FXMVECTOR A, FXMVECTOR B, FXMVECTOR P)
 
 	return (dotABAP >= 0.f && dotABAP <= dotABAB && dotBAPB >= 0.f);
 }
+
+
 
 #ifdef _DEBUG
 static void CoutVector(_fvector vector)

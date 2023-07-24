@@ -10,7 +10,8 @@
 #include "ImWindow_MapTool.h"
 #include "ImMode.h"
 #include "Layer.h"
-
+#include "Model.h"
+#include "Bone.h"
 CEditCamera::CEditCamera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
 {
@@ -102,14 +103,14 @@ HRESULT CEditCamera::Initialize(void* pArg)
 
 void CEditCamera::Tick(_double TimeDelta)
 {
-	ClearPickDesc();
-	m_isPicking = { false };
-	Make_MouseRay();
-
-	if (g_hWnd == ::GetFocus())
+	switch (m_eEditMode)
 	{
-		Key_Input(TimeDelta);
-		Mouse_Input(TimeDelta);
+	case Client::CEditCamera::EDIT_MODE:
+		EditMode_Tick(TimeDelta);
+		break;
+	case Client::CEditCamera::PLAY_MODE:
+		PlayMode_Tick(TimeDelta);
+		break;
 	}
 
 	__super::Tick(TimeDelta);
@@ -120,12 +121,52 @@ void CEditCamera::Late_Tick(_double TimeDelta)
 	if (g_hWnd != ::GetFocus())
 		return;
 
+	switch (m_eEditMode)
+	{
+	case Client::CEditCamera::EDIT_MODE:
+		EditMode_Late_Tick(TimeDelta);
+		break;
+	case Client::CEditCamera::PLAY_MODE:
+		PlayMode_Late_Tick(TimeDelta);
+		break;
+	}
+
 	__super::Late_Tick(TimeDelta);
 }
 
 HRESULT CEditCamera::Render()
 {
 	return S_OK;
+}
+
+void CEditCamera::EditMode_Tick(_double TimeDelta)
+{
+	ClearPickDesc();
+	m_isPicking = { false };
+	Make_MouseRay();
+
+	if (g_hWnd == ::GetFocus())
+	{
+		Key_Input(TimeDelta);
+		Mouse_Input(TimeDelta);
+	}
+}
+
+void CEditCamera::PlayMode_Tick(_double TimeDelta)
+{
+	_vector ClintPos = Facade->GetClintPosition();
+	_vector Offset = XMLoadFloat4(&m_OffsetPos);
+	ClintPos += Offset;
+
+	m_pTransform->Set_State(CTransform::STATE_POSITION, ClintPos);
+}
+
+void CEditCamera::EditMode_Late_Tick(_double TimeDelta)
+{
+}
+
+void CEditCamera::PlayMode_Late_Tick(_double TimeDelta)
+{
 }
 
 void CEditCamera::Picking()

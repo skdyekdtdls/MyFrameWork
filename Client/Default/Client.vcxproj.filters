@@ -88,60 +88,6 @@
     <Filter Include="02. GameObjects\BackGround">
       <UniqueIdentifier>{39d68aa7-c375-4c3b-9af5-70e0105c19f7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\BackGround\BarrelBoxStool">
-      <UniqueIdentifier>{975a9f9b-8836-4688-b78a-925a88330c2e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\Bush01">
-      <UniqueIdentifier>{709d5c7f-9436-4be2-971d-b58e7e5e2b54}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\BushA">
-      <UniqueIdentifier>{90ae0ea8-abc6-4d62-8e36-846aea1fa827}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\BushB">
-      <UniqueIdentifier>{37461de6-c090-4b23-843b-5c760fe9f435}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\BushC">
-      <UniqueIdentifier>{53b8949d-12e0-429d-a266-887803461abd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\Cage">
-      <UniqueIdentifier>{8b8c160c-0a81-4563-8665-ce5dc6e3a84c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\KemmekhBridgeA">
-      <UniqueIdentifier>{3b934821-617e-4ccb-8e4c-a9f82a80ac6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\KemmekhBridgeD">
-      <UniqueIdentifier>{158a2609-7a4b-4346-86e7-ec1cc8b2c6e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\KemmekhBridgeF">
-      <UniqueIdentifier>{9eec2fac-daf6-4b4c-ae12-8d3ab37a2fb1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\RailSupportA">
-      <UniqueIdentifier>{f7b5552c-e680-4b27-b32c-b4fcfd1959f9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\RailSupportB">
-      <UniqueIdentifier>{79d0c0b8-ee77-4b2e-825a-34ea39287b7f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\Rock">
-      <UniqueIdentifier>{b107f6cd-92a3-49a3-8fbb-b535ced4cb8b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\SmallRockC">
-      <UniqueIdentifier>{1a7bf9eb-90fd-428c-baa5-61ae275093ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\Tong">
-      <UniqueIdentifier>{1db48a53-a916-4621-b1ae-fde20949e58b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\TunnelEntryWood">
-      <UniqueIdentifier>{a676f80a-4b09-4a35-b4af-fb31eeabdd0b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\Wagon2">
-      <UniqueIdentifier>{b3a2ad9d-c64c-4b20-8b1d-b3e7ac39ecf4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\WatchTowerLadder">
-      <UniqueIdentifier>{6f72d91d-06fd-454a-90de-3f8f9378a467}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\WheelBarrow">
-      <UniqueIdentifier>{c4af4775-2249-4581-80e7-829907cd8442}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObjects\Camera">
       <UniqueIdentifier>{64cee68d-feb5-4a45-8151-ee2d424ba2a8}</UniqueIdentifier>
     </Filter>
@@ -286,6 +232,66 @@
     <Filter Include="02. GameObjects\BackGround\SM_Wall02">
       <UniqueIdentifier>{503ebf58-145c-4c2f-95c7-6927b961a9a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용">
+      <UniqueIdentifier>{2611fe2c-d7ac-4979-be2f-f779658e2ac6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\Bush01">
+      <UniqueIdentifier>{709d5c7f-9436-4be2-971d-b58e7e5e2b54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\BushA">
+      <UniqueIdentifier>{90ae0ea8-abc6-4d62-8e36-846aea1fa827}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\BushB">
+      <UniqueIdentifier>{37461de6-c090-4b23-843b-5c760fe9f435}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\BushC">
+      <UniqueIdentifier>{53b8949d-12e0-429d-a266-887803461abd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\Cage">
+      <UniqueIdentifier>{8b8c160c-0a81-4563-8665-ce5dc6e3a84c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\Cave">
+      <UniqueIdentifier>{d99c16da-749e-4e7a-9cb1-1383fbe52943}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\CraterA">
+      <UniqueIdentifier>{e3dc9996-f233-40df-9420-9bfdf0f9a82d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\CraterB">
+      <UniqueIdentifier>{3be5166f-251f-47f3-8a40-97a592cf91fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\CraterC">
+      <UniqueIdentifier>{d7bb4227-98cc-47c0-8faa-4090d2d76771}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\Kemmek_Hole">
+      <UniqueIdentifier>{81ad33c3-a002-471b-866d-e368a47b32cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\MineCrystalsA">
+      <UniqueIdentifier>{7d984dc6-5694-4b91-8146-d06835e4abd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\MineCrystalsB">
+      <UniqueIdentifier>{c57ba14f-ac63-4961-938a-eabc9a3d1e93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\MineCrystalsC">
+      <UniqueIdentifier>{c7d90239-d30e-4292-9f64-1eefa211e592}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\MineCrystalsD">
+      <UniqueIdentifier>{45eb6dcb-53ed-4f77-960f-ff6390762d4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\MineCrystalsE">
+      <UniqueIdentifier>{9aad4287-d7fe-4f40-bd90-834bdc56587c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\MineCrystalsF">
+      <UniqueIdentifier>{34b4dd09-0fc5-4ca1-9950-4f3e5a8aedd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\TreeB1">
+      <UniqueIdentifier>{9cf7a5fa-357b-441d-bd0a-9decd9252bba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\TreeA">
+      <UniqueIdentifier>{32b49ef6-0963-4c86-b599-6ab013183b0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\TreeB2">
+      <UniqueIdentifier>{985b44cd-b065-4f96-93f4-16a56953a010}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -357,9 +363,6 @@
     <ClInclude Include="..\public\Cube.h">
       <Filter>02. GameObjects\Cube</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\EditCamera.h">
-      <Filter>96. IMGUI\02. EditCamera</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\ImMode.h">
       <Filter>96. IMGUI\01. ImWindow\98. ImMode</Filter>
     </ClInclude>
@@ -375,21 +378,6 @@
     <ClInclude Include="..\public\ImWindow_MapTool.h">
       <Filter>96. IMGUI\01. ImWindow\02. ImWindow_MapTool</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\ImWindow_CameraTool.h">
-      <Filter>96. IMGUI\01. ImWindow\03. ImWindow_CameraTool</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\ImWindow_AnimationTool.h">
-      <Filter>96. IMGUI\01. ImWindow\04. ImWindow_AnimationTool</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\ImWindow_UITool.h">
-      <Filter>96. IMGUI\01. ImWindow\06. ImWindow_UITool</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\ImWindow_LightTool.h">
-      <Filter>96. IMGUI\01. ImWindow\07. ImWindow_LightTool</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\ImWindow_EffectTool.h">
-      <Filter>96. IMGUI\01. ImWindow\05. ImWindow_EffectTool</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\ImGuiFileDialogConfig.h">
       <Filter>96. IMGUI\03. ImVertex\filedialog</Filter>
     </ClInclude>
@@ -399,59 +387,17 @@
     <ClInclude Include="..\public\Clint.h">
       <Filter>02. GameObjects\Clint</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\BarrelBoxStool.h">
-      <Filter>02. GameObjects\BackGround\BarrelBoxStool</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Bush01.h">
-      <Filter>02. GameObjects\BackGround\Bush01</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\BushA.h">
-      <Filter>02. GameObjects\BackGround\BushA</Filter>
+      <Filter>02. GameObjects\BackGround\1 모으기용\BushA</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BushB.h">
-      <Filter>02. GameObjects\BackGround\BushB</Filter>
+      <Filter>02. GameObjects\BackGround\1 모으기용\BushB</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BushC.h">
-      <Filter>02. GameObjects\BackGround\BushC</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\KemmekhBridgeA.h">
-      <Filter>02. GameObjects\BackGround\KemmekhBridgeA</Filter>
+      <Filter>02. GameObjects\BackGround\1 모으기용\BushC</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Cage.h">
-      <Filter>02. GameObjects\BackGround\Cage</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\KemmekhBridgeD.h">
-      <Filter>02. GameObjects\BackGround\KemmekhBridgeD</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\KemmekhBridgeF.h">
-      <Filter>02. GameObjects\BackGround\KemmekhBridgeF</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\RailSupportA.h">
-      <Filter>02. GameObjects\BackGround\RailSupportA</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\RailSupportB.h">
-      <Filter>02. GameObjects\BackGround\RailSupportB</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Rock.h">
-      <Filter>02. GameObjects\BackGround\Rock</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\SmallRockC.h">
-      <Filter>02. GameObjects\BackGround\SmallRockC</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Tong.h">
-      <Filter>02. GameObjects\BackGround\Tong</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\TunnelEntryWood.h">
-      <Filter>02. GameObjects\BackGround\TunnelEntryWood</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Wagon2.h">
-      <Filter>02. GameObjects\BackGround\Wagon2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\WatchTowerLadder.h">
-      <Filter>02. GameObjects\BackGround\WatchTowerLadder</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\WheelBarrow.h">
-      <Filter>02. GameObjects\BackGround\WheelBarrow</Filter>
+      <Filter>02. GameObjects\BackGround\1 모으기용\Cage</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ClintIdle.h">
       <Filter>02. GameObjects\Clint\State</Filter>
@@ -604,6 +550,69 @@
     <ClInclude Include="..\public\SM_Crystal.h">
       <Filter>02. GameObjects\BackGround\SM_Crystal</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Cave.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\Cave</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CraterA.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\CraterA</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CraterB.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\CraterB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CraterC.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\CraterC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Kemmek_Hole.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\Kemmek_Hole</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MineCrystalsA.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsA</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MineCrystalsB.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MineCrystalsC.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MineCrystalsD.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MineCrystalsE.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MineCrystalsF.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TreeA.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\TreeA</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TreeB1.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\TreeB1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TreeB2.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\TreeB2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bush01.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\Bush01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_CameraTool.h">
+      <Filter>96. IMGUI\01. ImWindow\03. ImWindow_CameraTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_AnimationTool.h">
+      <Filter>96. IMGUI\01. ImWindow\04. ImWindow_AnimationTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_EffectTool.h">
+      <Filter>96. IMGUI\01. ImWindow\05. ImWindow_EffectTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_UITool.h">
+      <Filter>96. IMGUI\01. ImWindow\06. ImWindow_UITool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_LightTool.h">
+      <Filter>96. IMGUI\01. ImWindow\07. ImWindow_LightTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EditCamera.h">
+      <Filter>02. GameObjects\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -677,9 +686,6 @@
     <ClCompile Include="..\private\Cube.cpp">
       <Filter>02. GameObjects\Cube</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\EditCamera.cpp">
-      <Filter>96. IMGUI\02. EditCamera</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\ImMode.cpp">
       <Filter>96. IMGUI\01. ImWindow\98. ImMode</Filter>
     </ClCompile>
@@ -695,80 +701,26 @@
     <ClCompile Include="..\Private\ImWindow_MapTool.cpp">
       <Filter>96. IMGUI\01. ImWindow\02. ImWindow_MapTool</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\ImWindow_AnimationTool.cpp">
-      <Filter>96. IMGUI\01. ImWindow\04. ImWindow_AnimationTool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\ImWindow_LightTool.cpp">
-      <Filter>96. IMGUI\01. ImWindow\07. ImWindow_LightTool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\ImWindow_UITool.cpp">
-      <Filter>96. IMGUI\01. ImWindow\06. ImWindow_UITool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\IMGUI\ImWindow_EffectTool.cpp">
-      <Filter>96. IMGUI\01. ImWindow\05. ImWindow_EffectTool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\IMGUI\ImWindow_CameraTool.cpp">
-      <Filter>96. IMGUI\01. ImWindow\03. ImWindow_CameraTool</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\ImGuiFileDialog.cpp">
       <Filter>96. IMGUI\03. ImVertex\filedialog</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Clint.cpp">
       <Filter>02. GameObjects\Clint</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\BarrelBoxStool.cpp">
-      <Filter>02. GameObjects\BackGround\BarrelBoxStool</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\BushA.cpp">
-      <Filter>02. GameObjects\BackGround\BushA</Filter>
+      <Filter>02. GameObjects\BackGround\1 모으기용\BushA</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Bush01.cpp">
-      <Filter>02. GameObjects\BackGround\Bush01</Filter>
+      <Filter>02. GameObjects\BackGround\1 모으기용\Bush01</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BushB.cpp">
-      <Filter>02. GameObjects\BackGround\BushB</Filter>
+      <Filter>02. GameObjects\BackGround\1 모으기용\BushB</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BushC.cpp">
-      <Filter>02. GameObjects\BackGround\BushC</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\KemmekhBridgeA.cpp">
-      <Filter>02. GameObjects\BackGround\KemmekhBridgeA</Filter>
+      <Filter>02. GameObjects\BackGround\1 모으기용\BushC</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Cage.cpp">
-      <Filter>02. GameObjects\BackGround\Cage</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\KemmekhBridgeD.cpp">
-      <Filter>02. GameObjects\BackGround\KemmekhBridgeD</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\KemmekhBridgeF.cpp">
-      <Filter>02. GameObjects\BackGround\KemmekhBridgeF</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\RailSupportA.cpp">
-      <Filter>02. GameObjects\BackGround\RailSupportA</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\RailSupportB.cpp">
-      <Filter>02. GameObjects\BackGround\RailSupportB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Rock.cpp">
-      <Filter>02. GameObjects\BackGround\Rock</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\SmallRockC.cpp">
-      <Filter>02. GameObjects\BackGround\SmallRockC</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Tong.cpp">
-      <Filter>02. GameObjects\BackGround\Tong</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\TunnelEntryWood.cpp">
-      <Filter>02. GameObjects\BackGround\TunnelEntryWood</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Wagon2.cpp">
-      <Filter>02. GameObjects\BackGround\Wagon2</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\WatchTowerLadder.cpp">
-      <Filter>02. GameObjects\BackGround\WatchTowerLadder</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\WheelBarrow.cpp">
-      <Filter>02. GameObjects\BackGround\WheelBarrow</Filter>
+      <Filter>02. GameObjects\BackGround\1 모으기용\Cage</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ClintIdle.cpp">
       <Filter>02. GameObjects\Clint\State</Filter>
@@ -908,6 +860,66 @@
     </ClCompile>
     <ClCompile Include="..\private\SM_Crystal.cpp">
       <Filter>02. GameObjects\BackGround\SM_Crystal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Cave.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\Cave</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CraterA.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\CraterA</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CraterB.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\CraterB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CraterC.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\CraterC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Kemmek_Hole.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\Kemmek_Hole</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MineCrystalsA.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsA</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MineCrystalsB.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MineCrystalsC.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MineCrystalsD.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MineCrystalsE.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MineCrystalsF.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TreeA.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\TreeA</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TreeB1.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\TreeB1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TreeB2.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\TreeB2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_CameraTool.cpp">
+      <Filter>96. IMGUI\01. ImWindow\03. ImWindow_CameraTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_AnimationTool.cpp">
+      <Filter>96. IMGUI\01. ImWindow\04. ImWindow_AnimationTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_UITool.cpp">
+      <Filter>96. IMGUI\01. ImWindow\06. ImWindow_UITool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_LightTool.cpp">
+      <Filter>96. IMGUI\01. ImWindow\07. ImWindow_LightTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_EffectTool.cpp">
+      <Filter>96. IMGUI\01. ImWindow\05. ImWindow_EffectTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EditCamera.cpp">
+      <Filter>02. GameObjects\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

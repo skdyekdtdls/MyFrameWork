@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "Client_Defines.h"
@@ -17,12 +16,16 @@ class CModel;
 END
 
 BEGIN(Client)
-class Tong final : public CGameObject, public ISerializable
+class CraterA final : public CGameObject, public ISerializable
 {
+	typedef struct tagCraterADesc : public tagCGameObjectDesc
+	{
+		tagCraterADesc() : tagCGameObjectDesc() {}
+	};
 private:
-	Tong(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Tong(const Tong& rhs);
-	virtual ~Tong() = default;
+	CraterA(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CraterA(const CraterA& rhs);
+	virtual ~CraterA() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -46,11 +49,11 @@ private:
 	HRESULT SetUp_ShaderResources();
 
 private:
-	static _uint Tong_Id;
+	static _uint CraterA_Id;
 
 public:
-	static const _tchar* ProtoTag() { return L"Prototype_GameObject_Tong"; }
-	static Tong* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_CraterA"; }
+	static CraterA* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free(void) override;
 };

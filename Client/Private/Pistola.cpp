@@ -9,17 +9,17 @@ _uint Pistola::Pistola_Id = 0;
 
 Pistola::Pistola(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
+	, m_AttachedBoneIndex(0)
 {
-	XMStoreFloat4x4(&m_OffsetMatrix, XMMatrixIdentity());
-	XMStoreFloat4x4(&m_PivotMatrix, XMMatrixIdentity());
+
 	XMStoreFloat4x4(&m_WorldMatrix, XMMatrixIdentity());
 }
 
 Pistola::Pistola(const Pistola& rhs)
 	: CGameObject(rhs)
-	, m_OffsetMatrix(rhs.m_OffsetMatrix)
-	, m_PivotMatrix(rhs.m_PivotMatrix)
+
 	, m_WorldMatrix(rhs.m_WorldMatrix)
+	, m_AttachedBoneIndex(rhs.m_AttachedBoneIndex)
 {
 }
 
@@ -48,14 +48,14 @@ HRESULT Pistola::Initialize(void* pArg)
 
 	CModel* pModel = m_pOwner->GetComponent<CModel>();
 	CTransform* pParentTransform = m_pOwner->GetComponent<CTransform>();
-	CBone* pBone = pModel->GetBoneByName(tPistolaDesc.pAttachedBoneName); // hand_r, hand_l
-	
-	m_PivotMatrix = pModel->GetPivotMatrix();
-	m_OffsetMatrix = pBone->Get_OffsetMatrix();
-	m_pCombindTransformationMatrix = pBone->Get_CombinedTransformationMatrixPtr();
+	CBone* pBone = pModel->GetBoneByName(tPistolaDesc.pAttachedBoneName); 
+	m_AttachedBoneIndex = pBone->GetIndex();
+
 	m_pParentWorldMatrix = pParentTransform->Get_WorldFloat4x4Ptr();
 
 	m_pTransformCom->Rotation(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(-90.f));
+
+	
 
 	return S_OK;
 }
@@ -189,20 +189,13 @@ void Pistola::PushBackBullet(Bullet* pClintBasicBullet)
 	m_Bullets.push_back(pClintBasicBullet);
 }
 
+// ¹«±â¸¦ »À¿¡ ºÙ¿©ÁÜ.
 void Pistola::AttachingWeapon()
 {
-	_matrix BoneMatrix;
-
-	BoneMatrix = XMLoadFloat4x4(&m_OffsetMatrix) *
-		XMLoadFloat4x4(m_pCombindTransformationMatrix) *
-		XMLoadFloat4x4(&m_PivotMatrix);
-
-	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
-	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
-	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
 
 	XMStoreFloat4x4(&m_WorldMatrix, m_pTransformCom->Get_WorldMatrix() *
-		BoneMatrix * XMLoadFloat4x4(m_pParentWorldMatrix));
+		pModel->GetMatrixAttacingBone(m_AttachedBoneIndex) * XMLoadFloat4x4(m_pParentWorldMatrix));
 }
 
 void Pistola::ReleaseIf(function<bool(Bullet* pClintBasicBullet)> func)

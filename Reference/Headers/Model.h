@@ -95,6 +95,8 @@ public:
 	// 인자로 아무것도 들어오지 않거나 음수가 들어오면 현재 애니메이션 리셋
 	virtual void ResetAnimation(_int iIndex = -1, BODY eBody = LOWER);
 	void RootMotion(_double TimeDelta, CTransform::DIRECTION eDir);
+	
+	_matrix GetMatrixAttacingBone(_uint iBoneIndex);
 
 public:
 	HRESULT Bind_Material(class CShader* pShader, const char* pConstantName, _uint iMeshIndex, TextureType MaterialType);

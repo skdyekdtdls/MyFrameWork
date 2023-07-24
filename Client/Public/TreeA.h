@@ -17,16 +17,16 @@ class CModel;
 END
 
 BEGIN(Client)
-class BushC final : public CGameObject, public ISerializable
+class TreeA final : public CGameObject, public ISerializable
 {
-	typedef struct tagBushCDesc : public tagCGameObjectDesc
+	typedef struct tagTreeADesc : public tagCGameObjectDesc
 	{
-		tagBushCDesc() : tagCGameObjectDesc() {}
+		tagTreeADesc() : tagCGameObjectDesc() {}
 	};
 private:
-	BushC(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	BushC(const BushC& rhs);
-	virtual ~BushC() = default;
+	TreeA(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	TreeA(const TreeA& rhs);
+	virtual ~TreeA() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -50,11 +50,11 @@ private:
 	HRESULT SetUp_ShaderResources();
 
 private:
-	static _uint BushC_Id;
+	static _uint TreeA_Id;
 
 public:
-	static const _tchar* ProtoTag() { return L"Prototype_GameObject_BushC"; }
-	static BushC* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_TreeA"; }
+	static TreeA* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free(void) override;
 };

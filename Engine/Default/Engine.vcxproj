@@ -33,6 +33,8 @@
     <ClInclude Include="..\public\Component.h" />
     <ClInclude Include="..\public\Component_Manager.h" />
     <ClInclude Include="..\public\Composite.h" />
+    <ClInclude Include="..\Public\CustomFont.h" />
+    <ClInclude Include="..\public\Font_Manager.h" />
     <ClInclude Include="..\public\VIBuffer_Instancing.h" />
     <ClInclude Include="..\public\VIBuffer_Point_Instance.h" />
     <ClInclude Include="..\public\VIBuffer_Rect_Instance.h" />
@@ -91,6 +93,8 @@
     <ClCompile Include="..\private\Component.cpp" />
     <ClCompile Include="..\private\Component_Manager.cpp" />
     <ClCompile Include="..\private\Composite.cpp" />
+    <ClCompile Include="..\Private\CustomFont.cpp" />
+    <ClCompile Include="..\private\Font_Manager.cpp" />
     <ClCompile Include="..\private\VIBuffer_Instancing.cpp" />
     <ClCompile Include="..\private\VIBuffer_Point_Instance.cpp" />
     <ClCompile Include="..\private\VIBuffer_Rect_Instance.cpp" />
@@ -175,7 +179,7 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <EnableUnitySupport>false</EnableUnitySupport>
+    <EnableUnitySupport>true</EnableUnitySupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">

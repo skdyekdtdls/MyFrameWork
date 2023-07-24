@@ -6,6 +6,7 @@
 #include "Input_Device.h"
 #include "CollisionMgr.h"
 #include "Layer.h"
+#include "Font_Manager.h"
 
 BEGIN(Engine)
 class CGraphic_Device;
@@ -33,11 +34,12 @@ public: /* For Graphic_Device*/
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
 	HRESULT Clear_DepthStencil_View();
 	HRESULT Present();
+	_uint2 GetViewPortSize(ID3D11DeviceContext * pContext);
 
 public: /* For Input_Device*/
-	_byte Get_DIKeyState(_ubyte ubyKeyID);
-	_byte Get_DIMouseState(CInput_Device::MOUSEKEYSTATE eMouseID);
-	_long Get_DIMouseMove(CInput_Device::MOUSEMOVESTATE eMouseMoveID);
+	_byte	Get_DIKeyState(_ubyte ubyKeyID);
+	_byte	Get_DIMouseState(CInput_Device::MOUSEKEYSTATE eMouseID);
+	_long	Get_DIMouseMove(CInput_Device::MOUSEMOVESTATE eMouseMoveID);
 	_bool	Mouse_Down(CInput_Device::MOUSEKEYSTATE eMouseID);
 	_bool	Mouse_Pressing(CInput_Device::MOUSEKEYSTATE eMouseID);
 	_bool	Mouse_Up(CInput_Device::MOUSEKEYSTATE eMouseID);
@@ -77,7 +79,8 @@ public: /* For Component Manager */
 	CComponent* Get_ProtoComponent(_uint iLevelIndex, const _tchar * pProtoTag);
 
 public: /* For PipeLine */
-	_float4	Get_CamPosition() const;
+	_float4	Get_CamPositionFloat4() const;
+	_vector	Get_CamPositionVector();
 	void Set_Transform(CPipeLine::D3DTRANSFORMSTATE eTransformState, _fmatrix TransformStateMatrix);
 	_matrix Get_TransformMatrix(CPipeLine::D3DTRANSFORMSTATE eTransformState);
 	_float4x4 Get_TransformFloat4x4(CPipeLine::D3DTRANSFORMSTATE eTransformState);
@@ -93,7 +96,11 @@ public: /* For Light_Manager */
 
 public: /* For Collision_Manager */
 	void Add_ColliderGroup(CCollider* pCollider, COLL_GROUP eCollGroup);
-
+	
+public: /* For Font_Manager */
+	HRESULT Add_Fonts(ID3D11Device * pDevice, ID3D11DeviceContext * pContext,
+		const _tchar * pFontTag, const _tchar * pFontFilePath);
+	HRESULT Render_Font(const _tchar * pFontTag, const _tchar * pText, const _float2 & Position, _fvector vColor = XMVectorSet(1.f, 1.f, 1.f, 1.f), float fRotation = 0.f, const _float2 & vOrigin = _float2(0.f, 0.f), _float fScale = 1.f);
 private:
 	CGraphic_Device* m_pGraphic_Device = { nullptr };
 	CInput_Device* m_pInput_Device = { nullptr };
@@ -106,6 +113,7 @@ private:
 	CLight_Manager*		m_pLight_Manager = { nullptr };
 	CollisionMgr*		m_pCollision_Manager = { nullptr };
 	CTarget_Manager*	m_pTarget_Manager = { nullptr };
+	CFont_Manager*		m_pFont_Manager = { nullptr };
 
 public:
 	static void Release_Engine();

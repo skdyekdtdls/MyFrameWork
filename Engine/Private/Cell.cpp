@@ -1,5 +1,5 @@
 #include "..\Public\Cell.h"
-
+#include "GameInstance.h"
 #ifdef _DEBUG
 #include "VIBuffer_Cell.h"
 #include "ColliderSphere.h"
@@ -62,9 +62,12 @@ HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex)
 		memcpy(m_vPoints, pPoints, sizeof(_float3) * POINT_END);
 		m_iIndex = iIndex;
 	}
-
+#ifdef _DEBUG
 	ClockWiseSort();
+#endif
+
 	CalcNormal();
+
 #ifdef _DEBUG
 	for (size_t i = 0; i < POINT_END; ++i)
 		m_pColliderSpheres.push_back(CColliderSphere::Create(m_pDevice, m_pContext));
@@ -126,6 +129,27 @@ _bool CCell::is_In(_fvector vPosition, _int* pNeighborIndex, NEIGHBOR& eNeighbor
 	return true;
 }
 
+_bool CCell::is_In(_fvector vPosition)
+{
+	for (size_t i = 0; i < NEIGHBOR_END; ++i)
+	{
+		_vector vDir = XMVector3Normalize(vPosition - XMLoadFloat3(&m_vPoints[i]));
+		_vector vNormal = XMVector3Normalize(XMLoadFloat3(&m_vNormals[i]));
+
+		if (0 < XMVectorGetX(XMVector3Dot(vDir, vNormal)))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+void CCell::DecrementIndex()
+{
+	--m_iIndex;
+}
+
 #ifdef _DEBUG
 HRESULT CCell::Render_ColliderSphere()
 {
@@ -143,6 +167,51 @@ HRESULT CCell::Render_VIBuffer()
 
 	m_pVIBuffer->Render();
 
+	return S_OK;
+}
+
+HRESULT CCell::Render_CellIndex()
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	
+	// 중점 = 세 점의 위치 / 3
+	_vector vCenter = (XMLoadFloat3(&m_vPoints[POINT_A]) + XMLoadFloat3(&m_vPoints[POINT_B]) + XMLoadFloat3(&m_vPoints[POINT_C])) / POINT_END;
+	_vector vCamPos = pGameInstance->Get_CamPositionVector();
+	_vector vDir;
+	_float fRange = 40.f;
+	_float fAtt;
+	vDir = vCenter - vCamPos;
+	_float fCenterLength;
+
+	fCenterLength  = XMVectorGetX(XMVector3Length(vDir));
+	fAtt = (fRange - fCenterLength) / fRange;
+	if (fAtt < 0.f)// 0보다 작으면 어차피 출력이 안될것이므로 최적화를 위해 리턴함.
+	{
+		Safe_Release(pGameInstance);
+		return S_OK; 
+	}
+
+	// 카메라가 멀어지면 폰트가 작아지고 카메라가 가까워지면 커지게한다.
+	_matrix matWorld = XMMatrixIdentity();
+	_matrix matView = pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW);
+	_matrix matProj = pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ);
+	_matrix matWVP = matWorld * matView * matProj;
+	_float3 Center;
+	XMStoreFloat3(&Center, XMVector3TransformCoord(vCenter, matWVP));
+
+	_uint2 WinSize = pGameInstance->GetViewPortSize(m_pContext);
+	_float2 FontPos = _float2();
+
+	FontPos.x = (_float)WinSize.x * 0.5f * (Center.x + 1.0f);
+	FontPos.y = (_float)WinSize.y * 0.5f * (1.0f - Center.y);
+
+	fAtt = max(fAtt, 0.f);
+	pGameInstance->Render_Font(TEXT("Font_135"), to_wstring(m_iIndex).c_str(), FontPos
+		, XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.f, _float2(0.f, 0.f) , 1.f * fAtt);
+
+	Safe_Release(pGameInstance);
+	
 	return S_OK;
 }
 
@@ -210,8 +279,6 @@ void CCell::ClockWiseSort()
 	//	std::swap(m_vPoints[POINT_A], m_vPoints[POINT_C]);
 }
 
-#endif
-
 void CCell::Release_Debug()
 {
 	for (auto& Collider : m_pColliderSpheres)
@@ -219,6 +286,10 @@ void CCell::Release_Debug()
 	m_pColliderSpheres.clear();
 	Safe_Release(m_pVIBuffer);
 }
+
+#endif
+
+
 
 CCell* CCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _float3* pPoints, _int iIndex)
 {

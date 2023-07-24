@@ -43,12 +43,27 @@ public:
 		return m_vContactNormal;
 	}
 
+
 	// 이동 방향과 접촉한 선분의 노말벡터를 받아서 슬라이딩 벡터를 반환한다.
 	_vector GetSlidingVector(_fvector vLook, _fvector vContactNormal);
 
 	// 다음 위치로 움직일 수 있는지 검사. 이 함수가 호출되면 ContactNormal의 정보가 갱신된다.
 	_bool is_Move(_fvector vPosition);
+
+	// 들어온 점에 대해서 어떤 셀의 인덱스에 있는지 찾아준다.
+	_uint FindIndex(_fvector vPosition);
+
+	// 객체가 들어있는 인덱스를 설정해준다.
+	void SetCurIndex(_uint iIndex) { m_tNaviDesc.iCurrentIndex = iIndex; }
+
 #ifdef _DEBUG
+	_bool* isRenderPtr() {
+		return &m_bRender;
+	}
+
+	// 셀을 지우고 셀의 이웃을 처음부터 다시 연결한다.
+	void DeleteCellByIndex(_uint iIndex);
+
 	// _DEBUG 셰이더에 콜라이더 렌더 정보를 바인딩한다.(WVP, Color)
 	void Set_ShaderResources();
 
@@ -75,7 +90,8 @@ private:
 
 #ifdef _DEBUG
 private:
-	class CShader* m_pShader = { nullptr };
+	class CShader*  m_pShader = { nullptr };
+	_bool			m_bRender = { false };
 #endif // _DEBUG
 
 private:

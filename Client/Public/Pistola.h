@@ -49,14 +49,15 @@ private: /* For. Component */
 	CTransform* m_pTransformCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
 
-private: /* 부모꺼 */
-	_float4x4	m_OffsetMatrix;
-	_float4x4	m_PivotMatrix;
-	const _float4x4* m_pCombindTransformationMatrix;
-	const _float4x4* m_pParentWorldMatrix;
-	_float4x4	m_WorldMatrix;
+private: 
+	const _float4x4* m_pParentWorldMatrix;  // 부모의 월드매트릭스
+	_float4x4	m_WorldMatrix; // 모든 연산의 결과, 셰이더에 던짐
 	
+private:
 	list<Bullet*> m_Bullets;
+
+private:
+	_uint m_AttachedBoneIndex;
 
 private:
 	HRESULT Add_Components();

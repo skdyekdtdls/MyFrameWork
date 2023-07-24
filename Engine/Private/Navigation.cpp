@@ -125,7 +125,35 @@ _bool CNavigation::is_Move(_fvector vPosition)
 	return false;
 }
 
+_uint CNavigation::FindIndex(_fvector vPosition)
+{
+	for (auto Cell : m_Cells)
+	{
+		if (Cell->is_In(vPosition))
+			return Cell->GetIndex();
+	}
+
+	return -1;
+}
+
 #ifdef _DEBUG
+
+void CNavigation::DeleteCellByIndex(_uint iIndex)
+{
+	if (iIndex >= m_Cells.size())
+		return;
+
+	Safe_Release(m_Cells[iIndex]);
+	m_Cells.erase(m_Cells.begin() + iIndex);
+
+	for (_uint i = iIndex; i < m_Cells.size(); ++i)
+	{
+		m_Cells[i]->DecrementIndex();
+	}
+
+	SetUp_Neighbors();
+}
+
 void CNavigation::Set_ShaderResources()
 {
 	NULL_CHECK(m_pShader);
@@ -168,6 +196,9 @@ void CNavigation::UpdateCellCollider(_uint iIndex)
 #ifdef _DEBUG
 HRESULT CNavigation::Render()
 {
+	if (!m_bRender)
+		return S_OK;
+
 	NULL_CHECK_RETURN(m_pShader, E_FAIL);
 
 	Set_ShaderResources();
@@ -178,10 +209,15 @@ HRESULT CNavigation::Render()
 	{
 		pCell->Render_VIBuffer();
 	}
-
+	
 	for (auto& pCell : m_Cells)
 	{
 		pCell->Render_ColliderSphere();
+	}
+
+	for (auto& pCell : m_Cells)
+	{
+		pCell->Render_CellIndex();
 	}
 
 	return S_OK;

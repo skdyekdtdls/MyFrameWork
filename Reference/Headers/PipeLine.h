@@ -24,9 +24,13 @@ public:
 	_float4x4 Get_TransformFloat4x4(D3DTRANSFORMSTATE eTransformState);
 	_matrix Get_TransformMatrix_Inverse(D3DTRANSFORMSTATE eTransformState);
 	_float4x4 Get_TransformFloat4x4_Inverse(D3DTRANSFORMSTATE eTransformState);
-	_float4	Get_CamPosition() const
+	_float4	Get_CamPositionFloat4() const
 	{
 		return m_vCameraPos;
+	}
+	_vector Get_CamPositionVector() 
+	{
+		return XMLoadFloat4(&m_vCameraPos);
 	}
 
 public:

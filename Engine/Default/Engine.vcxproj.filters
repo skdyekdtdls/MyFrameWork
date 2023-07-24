@@ -148,6 +148,12 @@
     <ClCompile Include="..\private\VIBuffer_Instancing.cpp">
       <Filter>01. Utility\03. Components\VIBuffer\Instancing</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Font_Manager.cpp">
+      <Filter>01. Utility\06. Fonts\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CustomFont.cpp">
+      <Filter>01. Utility\06. Fonts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Graphic_Device.h">
@@ -317,6 +323,12 @@
     </ClInclude>
     <ClInclude Include="..\public\VIBuffer_Instancing.h">
       <Filter>01. Utility\03. Components\VIBuffer\Instancing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Font_Manager.h">
+      <Filter>01. Utility\06. Fonts\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CustomFont.h">
+      <Filter>01. Utility\06. Fonts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -493,6 +505,9 @@
     </Filter>
     <Filter Include="01. Utility\03. Components\VIBuffer\Ray">
       <UniqueIdentifier>{4050028a-8095-412e-b168-806caf5e41f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\06. Fonts\Manager">
+      <UniqueIdentifier>{125508d7-f0e7-4174-975a-3efb69f6ad78}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

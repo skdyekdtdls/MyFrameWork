@@ -17,12 +17,16 @@ class CModel;
 END
 
 BEGIN(Client)
-class SmallRockC final : public CGameObject, public ISerializable
+class Cave final : public CGameObject, public ISerializable
 {
+	typedef struct tagCaveDesc : public tagCGameObjectDesc
+	{
+		tagCaveDesc() : tagCGameObjectDesc() {}
+	};
 private:
-	SmallRockC(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	SmallRockC(const SmallRockC& rhs);
-	virtual ~SmallRockC() = default;
+	Cave(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	Cave(const Cave& rhs);
+	virtual ~Cave() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -46,11 +50,11 @@ private:
 	HRESULT SetUp_ShaderResources();
 
 private:
-	static _uint SmallRockC_Id;
+	static _uint Cave_Id;
 
 public:
-	static const _tchar* ProtoTag() { return L"Prototype_GameObject_SmallRockC"; }
-	static SmallRockC* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_Cave"; }
+	static Cave* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free(void) override;
 };

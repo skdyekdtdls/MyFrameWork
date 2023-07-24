@@ -59,6 +59,10 @@ HRESULT Clint::Initialize(void* pArg)
 		m_pPistolaComR->Attack(GetLook());
 		}), UPPER);
 
+	m_pModelCom->Add_TimeLineEvent("adsf", L"UltEnable", TIMELINE_EVENT(1.f, [this]() {
+		m_bUltEnable = true;
+		}), UPPER);
+
 	if(nullptr != m_pStateContextCom)
 		m_pStateContextCom->TransitionTo(L"ClintIdle");
 
@@ -78,12 +82,14 @@ HRESULT Clint::Initialize(void* pArg)
 		tCloneDesc = *(CGAMEOBJECT_DESC*)pArg;
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
 
-	return S_OK;
+	return S_OK; 
 }
 
 void Clint::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
+
+	m_bUltEnable = { false };
 
 	if(nullptr != m_pStateContextCom)
 		m_pStateContextCom->Tick(TimeDelta);
@@ -92,8 +98,11 @@ void Clint::Tick(_double TimeDelta)
 	m_pModelCom->Play_Animation(TimeDelta, LOWER);
 	m_pModelCom->Play_Animation(TimeDelta, UPPER);
 
-	if(nullptr != m_pColliderCom)
+	if (nullptr != m_pColliderCom)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
+
+	if (nullptr != m_pColliderCom)
+		m_pUltimateCom->Tick(m_pTransformCom->Get_WorldMatrix());
 
 	if (nullptr != m_pPistolaComL && nullptr != m_pPistolaComR)
 	{
@@ -115,12 +124,19 @@ void Clint::Late_Tick(_double TimeDelta)
 	// 렌더러 그룹에 추가
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 	m_pColliderCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BODY);
+	if (m_bUltEnable)
+		m_pUltimateCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BULLET);
 
 #ifdef _DEBUG
 	//m_pNavigationCom->Render();
 	if (nullptr != m_pColliderCom)
 		m_pRendererCom->Add_DebugGroup(m_pColliderCom);
-	//m_pRendererCom->Add_DebugGroup(m_pRaycastCom);
+
+	if (nullptr != m_pUltimateCom && true == m_bUltEnable)
+		m_pRendererCom->Add_DebugGroup(m_pUltimateCom);
+
+	if(nullptr != m_pRaycastCom)
+		m_pRendererCom->Add_DebugGroup(m_pRaycastCom);
 #endif
 	if (nullptr != m_pPistolaComL && nullptr != m_pPistolaComR)
 	{
@@ -173,6 +189,7 @@ void Clint::Save(HANDLE hFile, DWORD& dwByte)
 void Clint::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 {
 	m_pTransformCom->Load(hFile, dwByte, iLevelIndex);
+	m_pNavigationCom->SetCurIndex(m_pNavigationCom->FindIndex(m_pTransformCom->Get_State(CTransform::STATE_POSITION)));
 }
 
 HRESULT Clint::Add_Components()
@@ -212,11 +229,17 @@ HRESULT Clint::Add_Components()
 	tColliderAABBDesc.vCenter = _float3(-0.15f, tColliderAABBDesc.Extents.y, 0.f);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CColliderAABB::ProtoTag(), L"Com_BodyColl", (CComponent**)&m_pColliderCom, &tColliderAABBDesc), E_FAIL);
 
+	CColliderAABB::CCOLLIDER_AABB_DESC tUltCollider;
+	tUltCollider.pOwner = this;
+	tUltCollider.Extents = _float3(0.5f, 1.f, 0.5f);
+	tUltCollider.vCenter = _float3(-0.15f, tUltCollider.Extents.y, 0.f);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CColliderAABB::ProtoTag(), L"Com_UltColl", (CComponent**)&m_pUltimateCom, &tUltCollider), E_FAIL);
+
 	Raycast::RAYCAST_DESC tRaycastDesc;
 	tRaycastDesc.pOwner = this;
 	tRaycastDesc.vCenter = _float3(0.15f, 1.f, 0.f);
 	tRaycastDesc.fLength = { 1.f };
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, Raycast::ProtoTag(), L"Com_RaycastTest", (CComponent**)&m_pRaycastCom, &tRaycastDesc), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, Raycast::ProtoTag(), L"Com_Raycast", (CComponent**)&m_pRaycastCom, &tRaycastDesc), E_FAIL);
 	Safe_Release(pGameInstance);
 	
 	ClintState::STATE_CONTEXT_DESC tStateContextDesc;
@@ -283,6 +306,7 @@ void Clint::Free(void)
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pColliderCom);
+	Safe_Release(m_pUltimateCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pNavigationCom);

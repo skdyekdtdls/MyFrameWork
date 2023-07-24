@@ -156,7 +156,7 @@ void CImWindow_ObjectTool::ObjectPlace()
 	CImWindow_Manager* pImMgr = CImWindow_Manager::GetInstance();
 	Safe_AddRef(pGameInstance);
 	Safe_AddRef(pImMgr);
-	system("cls");
+	
 	wstring tag;
 	PICK_DESC tTerrainPickDesc = pImMgr->GetTerrainPickDesc();
 	if (Static_Mesh_item_current != -1)
@@ -223,6 +223,7 @@ void CImWindow_ObjectTool::ObjectPlace()
 	tCloneDesc.vPosition = _float4(pTerrainDesc.vPickPos);
 	tCloneDesc.vPosition.w = 1.f;
 	CGameObject* pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, tag.c_str(), szTmp, &tCloneDesc);
+	system("cls");
 	CONSOLE_MSG("The Object Tool call \'Add_GameObject\'");
 	if (nullptr == pGameObject)
 	{

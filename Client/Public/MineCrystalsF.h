@@ -17,12 +17,16 @@ class CModel;
 END
 
 BEGIN(Client)
-class BarrelBoxStool final : public CGameObject, public ISerializable
+class MineCrystalsF final : public CGameObject, public ISerializable
 {
+	typedef struct tagMineCrystalsFDesc : public tagCGameObjectDesc
+	{
+		tagMineCrystalsFDesc() : tagCGameObjectDesc() {}
+	};
 private:
-	BarrelBoxStool(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	BarrelBoxStool(const BarrelBoxStool& rhs);
-	virtual ~BarrelBoxStool() = default;
+	MineCrystalsF(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	MineCrystalsF(const MineCrystalsF& rhs);
+	virtual ~MineCrystalsF() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -46,14 +50,13 @@ private:
 	HRESULT SetUp_ShaderResources();
 
 private:
-	static _uint BarrelBoxStool_Id;
+	static _uint MineCrystalsF_Id;
 
 public:
-	static const _tchar* ProtoTag() { return L"Prototype_GameObject_BarrelBoxStool"; }
-	static BarrelBoxStool* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_MineCrystalsF"; }
+	static MineCrystalsF* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free(void) override;
 };
 END
-
 

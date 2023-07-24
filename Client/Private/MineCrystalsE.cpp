@@ -1,20 +1,20 @@
 
-#include "Cage.h"
+#include "MineCrystalsE.h"
 #include "GameInstance.h"
 
-_uint Cage::Cage_Id = 0;
+_uint MineCrystalsE::MineCrystalsE_Id = 0;
 
-Cage::Cage(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+MineCrystalsE::MineCrystalsE(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
 }
 
-Cage::Cage(const Cage& rhs)
+MineCrystalsE::MineCrystalsE(const MineCrystalsE& rhs)
 	: CGameObject(rhs)
 {
 }
 
-HRESULT Cage::Initialize_Prototype()
+HRESULT MineCrystalsE::Initialize_Prototype()
 {
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
@@ -23,7 +23,7 @@ HRESULT Cage::Initialize_Prototype()
 }
 
 
-HRESULT Cage::Initialize(void* pArg)
+HRESULT MineCrystalsE::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -31,14 +31,14 @@ HRESULT Cage::Initialize(void* pArg)
 	if (FAILED(Add_Components()))
 		return E_FAIL;
 
-	++Cage_Id;
-	m_tInfo.wstrName = TO_WSTR("Cage" + to_string(Cage_Id));
+	++MineCrystalsE_Id;
+	m_tInfo.wstrName = TO_WSTR("MineCrystalsE" + to_string(MineCrystalsE_Id));
 	m_tInfo.wstrKey = ProtoTag();
-	m_tInfo.ID = Cage_Id;
+	m_tInfo.ID = MineCrystalsE_Id;
 
-	tagCageDesc tCloneDesc;
+	tagMineCrystalsEDesc tCloneDesc;
 	if (nullptr != pArg)
-		tCloneDesc = *(tagCageDesc*)pArg;
+		tCloneDesc = *(tagMineCrystalsEDesc*)pArg;
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
 
 	//m_pModelCom->Set_RootNode(3);
@@ -46,7 +46,7 @@ HRESULT Cage::Initialize(void* pArg)
 	return S_OK;
 }
 
-void Cage::Tick(_double TimeDelta)
+void MineCrystalsE::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
 
@@ -55,7 +55,7 @@ void Cage::Tick(_double TimeDelta)
 	//		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
 }
 
-void Cage::Late_Tick(_double TimeDelta)
+void MineCrystalsE::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
 
@@ -72,7 +72,7 @@ void Cage::Late_Tick(_double TimeDelta)
 #endif
 }
 
-HRESULT Cage::Render()
+HRESULT MineCrystalsE::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
@@ -98,18 +98,18 @@ HRESULT Cage::Render()
 	// m_pShaderCom->Begin(0);
 }
 
-void Cage::Save(HANDLE hFile, DWORD& dwByte)
+void MineCrystalsE::Save(HANDLE hFile, DWORD& dwByte)
 {
 	m_tInfo.Save(hFile, dwByte);
 	m_pTransformCom->Save(hFile, dwByte);
 }
 
-void Cage::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
+void MineCrystalsE::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 {
 	m_pTransformCom->Load(hFile, dwByte, iLevelIndex);
 }
 
-HRESULT Cage::Add_Components()
+HRESULT MineCrystalsE::Add_Components()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
@@ -126,7 +126,7 @@ HRESULT Cage::Add_Components()
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxMesh", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
 
 	CModel::CMODEL_DESC tModelDesc; tModelDesc.pOwner = this;
-	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Cage", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_MineCrystalsE", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
 
 	CColliderAABB::CCOLLIDER_AABB_DESC tColliderAABBDesc;
 	tColliderAABBDesc.pOwner = this;
@@ -142,7 +142,7 @@ HRESULT Cage::Add_Components()
 	return S_OK;
 }
 
-HRESULT Cage::SetUp_ShaderResources()
+HRESULT MineCrystalsE::SetUp_ShaderResources()
 {
 	_float4x4 MyMatrix = m_pTransformCom->Get_WorldFloat4x4();
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &MyMatrix), E_FAIL);
@@ -161,35 +161,35 @@ HRESULT Cage::SetUp_ShaderResources()
 	return S_OK;
 }
 
-Cage* Cage::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+MineCrystalsE* MineCrystalsE::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	Cage* pInstance = new Cage(pDevice, pContext);
+	MineCrystalsE* pInstance = new MineCrystalsE(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created Cage");
+		MSG_BOX("Failed to Created MineCrystalsE");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-CGameObject* Cage::Clone(void* pArg)
+CGameObject* MineCrystalsE::Clone(void* pArg)
 {
-	Cage* pInstance = new Cage(*this);
+	MineCrystalsE* pInstance = new MineCrystalsE(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned Cage");
+		MSG_BOX("Failed to Cloned MineCrystalsE");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-void Cage::Free(void)
+void MineCrystalsE::Free(void)
 {
 	__super::Free();
 
-	--Cage_Id;
+	--MineCrystalsE_Id;
 	
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pShaderCom);

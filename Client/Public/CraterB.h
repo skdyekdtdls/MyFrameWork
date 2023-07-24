@@ -17,12 +17,16 @@ class CModel;
 END
 
 BEGIN(Client)
-class Wagon2 final : public CGameObject, public ISerializable
+class CraterB final : public CGameObject, public ISerializable
 {
+	typedef struct tagCraterBDesc : public tagCGameObjectDesc
+	{
+		tagCraterBDesc() : tagCGameObjectDesc() {}
+	};
 private:
-	Wagon2(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Wagon2(const Wagon2& rhs);
-	virtual ~Wagon2() = default;
+	CraterB(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CraterB(const CraterB& rhs);
+	virtual ~CraterB() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -46,11 +50,11 @@ private:
 	HRESULT SetUp_ShaderResources();
 
 private:
-	static _uint Wagon2_Id;
+	static _uint CraterB_Id;
 
 public:
-	static const _tchar* ProtoTag() { return L"Prototype_GameObject_Wagon2"; }
-	static Wagon2* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_CraterB"; }
+	static CraterB* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free(void) override;
 };

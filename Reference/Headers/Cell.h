@@ -50,11 +50,16 @@ public:
 	// 삼각형의 세 변 안에 점이 들어있는지 검사하고, 들어있지 않으면 어느 변으로 나갔는지 NEIGHBOR변수로 알려준다.
 	_bool is_In(_fvector vPosition, _int* pNeighborIndex, NEIGHBOR& eNeighbor);
 
+	// xz평면에 대해서 세 변 안에 점이 들어있는지 검사하는 함수.
+	_bool is_In(_fvector vPosition);
+	void DecrementIndex();
+	_uint GetIndex() { return m_iIndex; }
 #ifdef _DEBUG
 public:
 	
 	HRESULT Render_ColliderSphere();
 	HRESULT Render_VIBuffer();
+	HRESULT Render_CellIndex();
 
 	// 셀의 정점 1개에 대해서 콜라이더 위치 업데이트
 	void	UpdateColliderForVertex(POINT ePoint);

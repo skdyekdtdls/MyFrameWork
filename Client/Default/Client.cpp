@@ -64,15 +64,26 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
 #ifdef _DEBUG
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-    int ConsoleCX = 500, ConsoleCY = 200;
+    int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+    int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+    int ConsoleCX = 500;
+    int ConsoleCY = 200;
+    int ConsolePosX = 0;
+    int ConsolePosY = screenHeight - ConsoleCY - 30;
+    
     // Set console size
     SetConsoleWindowSize(ConsoleCX, ConsoleCY);
     // Get the screen size
-    int screenHeight = GetSystemMetrics(SM_CYSCREEN);
-    // Set console position
-    SetConsoleWindowPosition(0, screenHeight - ConsoleCY - 30);
-#endif
+    int nMonitor = GetSystemMetrics(SM_CMONITORS);
+    if (nMonitor >= 2)
+    {
+        ConsolePosX += screenWidth;
+        ConsolePosY -= 130;
+    }
 
+    // Set console position
+    SetConsoleWindowPosition(ConsolePosX, ConsolePosY);
+#endif
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
@@ -206,9 +217,18 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    int screenWidth = GetSystemMetrics(SM_CXSCREEN);
    int xPos = screenWidth - g_iWinSizeX; // g_iWinSizeX is the width of your window
+   int yPos = 0;
+   // 만약 2개의 모니터를 사용하면 2가 반환 됨.
+   int nMonitors = GetSystemMetrics(SM_CMONITORS);
+
+   if (nMonitors >= 2)
+   {
+       xPos += 1500;
+       yPos = 200;
+   }
 
    HWND hWnd = g_hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-       xPos, 0, g_iWinSizeX, g_iWinSizeY, nullptr, nullptr, hInstance, nullptr);
+       xPos, yPos, g_iWinSizeX, g_iWinSizeY, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {

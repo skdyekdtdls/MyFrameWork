@@ -232,7 +232,7 @@ HRESULT CRenderer::Render_Lights()
 		&matProjInv)))
 		return E_FAIL;
 
-	_float4 CamPos = pPipeLine->Get_CamPosition();
+	_float4 CamPos = pPipeLine->Get_CamPositionFloat4();
 	if (FAILED(m_pShader->Bind_RawValue("g_vCamPosition", &CamPos, sizeof(_float4))))
 		return E_FAIL;
 

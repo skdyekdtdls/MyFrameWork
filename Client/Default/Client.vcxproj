@@ -52,7 +52,7 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <EnableUnitySupport>false</EnableUnitySupport>
+    <EnableUnitySupport>true</EnableUnitySupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -190,15 +190,15 @@
     <ClInclude Include="..\public\Alien_prawnIdle.h" />
     <ClInclude Include="..\public\Alien_prawnRun.h" />
     <ClInclude Include="..\public\BackGround.h" />
-    <ClInclude Include="..\public\BarrelBoxStool.h" />
     <ClInclude Include="..\public\Blue_Snow.h" />
     <ClInclude Include="..\public\Bullet.h" />
-    <ClInclude Include="..\public\Bush01.h" />
+    <ClInclude Include="..\Public\Bush01.h" />
     <ClInclude Include="..\public\BushA.h" />
     <ClInclude Include="..\public\BushB.h" />
     <ClInclude Include="..\public\BushC.h" />
     <ClInclude Include="..\public\Cage.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
+    <ClInclude Include="..\public\Cave.h" />
     <ClInclude Include="..\public\ClientInstance.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
     <ClInclude Include="..\public\Clint.h" />
@@ -208,12 +208,27 @@
     <ClInclude Include="..\public\ClintShoot.h" />
     <ClInclude Include="..\public\ClintUltimate01.h" />
     <ClInclude Include="..\Public\ClintUltimate01Bullet.h" />
-    <ClInclude Include="..\Public\ImGuiFileDialog.h" />
-    <ClInclude Include="..\Public\ImGuiFileDialogConfig.h" />
-    <ClInclude Include="..\public\ImWindow_AnimationTool.h" />
-    <ClInclude Include="..\public\ImWindow_CameraTool.h" />
-    <ClInclude Include="..\Public\ImWindow_EffectTool.h" />
-    <ClInclude Include="..\Public\ImWindow_LightTool.h" />
+    <ClInclude Include="..\public\CraterA.h" />
+    <ClInclude Include="..\public\CraterB.h" />
+    <ClInclude Include="..\public\CraterC.h" />
+    <ClInclude Include="..\Public\ImGuiFileDialog.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGuiFileDialogConfig.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_AnimationTool.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_CameraTool.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_EffectTool.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_LightTool.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\public\ImWindow_SaveLoads.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
@@ -243,12 +258,12 @@
     <ClInclude Include="..\Public\ImWindow_Manager.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\Public\ImWindow_UITool.h" />
-    <ClInclude Include="..\public\KemmekhBridgeA.h" />
-    <ClInclude Include="..\public\KemmekhBridgeD.h" />
-    <ClInclude Include="..\public\KemmekhBridgeF.h" />
+    <ClInclude Include="..\Public\ImWindow_UITool.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\public\Kemmekh_Formacion_rocosa.h" />
     <ClInclude Include="..\public\Kemmekh_wall.h" />
+    <ClInclude Include="..\public\Kemmek_Hole.h" />
     <ClInclude Include="..\public\LargeVolcanicRock_002_Red_Desert.h" />
     <ClInclude Include="..\public\LargeVolcanicRock_004_Red_Desert.h" />
     <ClInclude Include="..\public\Level_GamePlay.h" />
@@ -259,14 +274,16 @@
     <ClInclude Include="..\public\Level_Logo.h" />
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\Public\MainApp.h" />
+    <ClInclude Include="..\public\MineCrystalsA.h" />
+    <ClInclude Include="..\public\MineCrystalsB.h" />
+    <ClInclude Include="..\public\MineCrystalsC.h" />
+    <ClInclude Include="..\public\MineCrystalsD.h" />
+    <ClInclude Include="..\public\MineCrystalsE.h" />
+    <ClInclude Include="..\public\MineCrystalsF.h" />
     <ClInclude Include="..\public\Pistola.h" />
     <ClInclude Include="..\public\ClintBasicBullet.h" />
-    <ClInclude Include="..\public\RailSupportA.h" />
-    <ClInclude Include="..\public\RailSupportB.h" />
     <ClInclude Include="..\public\Red_Snow.h" />
-    <ClInclude Include="..\public\Rock.h" />
     <ClInclude Include="..\public\Sky.h" />
-    <ClInclude Include="..\public\SmallRockC.h" />
     <ClInclude Include="..\public\SM_Barriletes.h" />
     <ClInclude Include="..\public\SM_Cliff01.h" />
     <ClInclude Include="..\public\SM_Crystal.h" />
@@ -295,11 +312,9 @@
     <ClInclude Include="..\Public\StateContext.h" />
     <ClInclude Include="..\Public\StateMachine.h" />
     <ClInclude Include="..\public\Terrain.h" />
-    <ClInclude Include="..\public\Tong.h" />
-    <ClInclude Include="..\public\TunnelEntryWood.h" />
-    <ClInclude Include="..\public\Wagon2.h" />
-    <ClInclude Include="..\public\WatchTowerLadder.h" />
-    <ClInclude Include="..\public\WheelBarrow.h" />
+    <ClInclude Include="..\public\TreeA.h" />
+    <ClInclude Include="..\public\TreeB1.h" />
+    <ClInclude Include="..\public\TreeB2.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
@@ -342,8 +357,6 @@
       <IncludeInUnityFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</IncludeInUnityFile>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\IMGUI\ImWindow_CameraTool.cpp" />
-    <ClCompile Include="..\IMGUI\ImWindow_EffectTool.cpp" />
     <ClCompile Include="..\Private\Alien_prawn.cpp" />
     <ClCompile Include="..\private\Alien_prawnAttack.cpp" />
     <ClCompile Include="..\private\Alien_prawnDead.cpp" />
@@ -353,7 +366,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\private\BarrelBoxStool.cpp" />
     <ClCompile Include="..\private\Blue_Snow.cpp" />
     <ClCompile Include="..\private\Bullet.cpp" />
     <ClCompile Include="..\Private\Bush01.cpp" />
@@ -365,6 +377,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\private\Cave.cpp" />
     <ClCompile Include="..\private\ClientInstance.cpp" />
     <ClCompile Include="..\private\Clint.cpp" />
     <ClCompile Include="..\Private\ClintDash.cpp" />
@@ -373,9 +386,24 @@
     <ClCompile Include="..\private\ClintShoot.cpp" />
     <ClCompile Include="..\private\ClintUltimate01.cpp" />
     <ClCompile Include="..\Private\ClintUltimate01Bullet.cpp" />
-    <ClCompile Include="..\Private\ImGuiFileDialog.cpp" />
-    <ClCompile Include="..\private\ImWindow_AnimationTool.cpp" />
-    <ClCompile Include="..\Private\ImWindow_LightTool.cpp" />
+    <ClCompile Include="..\private\CraterA.cpp" />
+    <ClCompile Include="..\private\CraterB.cpp" />
+    <ClCompile Include="..\private\CraterC.cpp" />
+    <ClCompile Include="..\Private\ImGuiFileDialog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_AnimationTool.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_CameraTool.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_EffectTool.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_LightTool.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\private\ImWindow_SaveLoads.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -407,12 +435,12 @@
     <ClCompile Include="..\Private\ImWindow_Manager.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\Private\ImWindow_UITool.cpp" />
-    <ClCompile Include="..\private\KemmekhBridgeA.cpp" />
-    <ClCompile Include="..\Private\KemmekhBridgeD.cpp" />
-    <ClCompile Include="..\private\KemmekhBridgeF.cpp" />
+    <ClCompile Include="..\Private\ImWindow_UITool.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\private\Kemmekh_Formacion_rocosa.cpp" />
     <ClCompile Include="..\private\Kemmekh_wall.cpp" />
+    <ClCompile Include="..\private\Kemmek_Hole.cpp" />
     <ClCompile Include="..\private\LargeVolcanicRock_002_Red_Desert.cpp" />
     <ClCompile Include="..\private\LargeVolcanicRock_004_Red_Desert.cpp" />
     <ClCompile Include="..\private\Level_GamePlay.cpp">
@@ -438,14 +466,16 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\private\MineCrystalsA.cpp" />
+    <ClCompile Include="..\private\MineCrystalsB.cpp" />
+    <ClCompile Include="..\private\MineCrystalsC.cpp" />
+    <ClCompile Include="..\private\MineCrystalsD.cpp" />
+    <ClCompile Include="..\private\MineCrystalsE.cpp" />
+    <ClCompile Include="..\private\MineCrystalsF.cpp" />
     <ClCompile Include="..\private\Pistola.cpp" />
     <ClCompile Include="..\private\ClintBasicBullet.cpp" />
-    <ClCompile Include="..\private\RailSupportA.cpp" />
-    <ClCompile Include="..\private\RailSupportB.cpp" />
     <ClCompile Include="..\private\Red_Snow.cpp" />
-    <ClCompile Include="..\private\Rock.cpp" />
     <ClCompile Include="..\private\Sky.cpp" />
-    <ClCompile Include="..\private\SmallRockC.cpp" />
     <ClCompile Include="..\private\SM_Barriletes.cpp" />
     <ClCompile Include="..\private\SM_Cliff01.cpp" />
     <ClCompile Include="..\private\SM_Crystal.cpp" />
@@ -475,11 +505,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\private\Tong.cpp" />
-    <ClCompile Include="..\private\TunnelEntryWood.cpp" />
-    <ClCompile Include="..\private\Wagon2.cpp" />
-    <ClCompile Include="..\private\WatchTowerLadder.cpp" />
-    <ClCompile Include="..\private\WheelBarrow.cpp" />
+    <ClCompile Include="..\private\TreeA.cpp" />
+    <ClCompile Include="..\private\TreeB1.cpp" />
+    <ClCompile Include="..\private\TreeB2.cpp" />
     <ClCompile Include="Client.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -498,7 +526,10 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
@@ -510,12 +541,18 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Vtxtex.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTexInstance.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTexInstance.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\IMGUI\misc\debuggers\imgui.natstepfilter">

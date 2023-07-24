@@ -17,12 +17,16 @@ class CModel;
 END
 
 BEGIN(Client)
-class WatchTowerLadder final : public CGameObject, public ISerializable
+class CraterC final : public CGameObject, public ISerializable
 {
+	typedef struct tagCraterCDesc : public tagCGameObjectDesc
+	{
+		tagCraterCDesc() : tagCGameObjectDesc() {}
+	};
 private:
-	WatchTowerLadder(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	WatchTowerLadder(const WatchTowerLadder& rhs);
-	virtual ~WatchTowerLadder() = default;
+	CraterC(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CraterC(const CraterC& rhs);
+	virtual ~CraterC() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -46,11 +50,11 @@ private:
 	HRESULT SetUp_ShaderResources();
 
 private:
-	static _uint WatchTowerLadder_Id;
+	static _uint CraterC_Id;
 
 public:
-	static const _tchar* ProtoTag() { return L"Prototype_GameObject_WatchTowerLadder"; }
-	static WatchTowerLadder* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_CraterC"; }
+	static CraterC* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free(void) override;
 };

@@ -17,12 +17,16 @@ class CModel;
 END
 
 BEGIN(Client)
-class RailSupportB final : public CGameObject, public ISerializable
+class MineCrystalsA final : public CGameObject, public ISerializable
 {
+	typedef struct tagMineCrystalsADesc : public tagCGameObjectDesc
+	{
+		tagMineCrystalsADesc() : tagCGameObjectDesc() {}
+	};
 private:
-	RailSupportB(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	RailSupportB(const RailSupportB& rhs);
-	virtual ~RailSupportB() = default;
+	MineCrystalsA(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	MineCrystalsA(const MineCrystalsA& rhs);
+	virtual ~MineCrystalsA() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -46,11 +50,11 @@ private:
 	HRESULT SetUp_ShaderResources();
 
 private:
-	static _uint RailSupportB_Id;
+	static _uint MineCrystalsA_Id;
 
 public:
-	static const _tchar* ProtoTag() { return L"Prototype_GameObject_RailSupportB"; }
-	static RailSupportB* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_MineCrystalsA"; }
+	static MineCrystalsA* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free(void) override;
 };

@@ -17,12 +17,16 @@ class CModel;
 END
 
 BEGIN(Client)
-class WheelBarrow final : public CGameObject, public ISerializable
+class TreeB1 final : public CGameObject, public ISerializable
 {
+	typedef struct tagTreeB1Desc : public tagCGameObjectDesc
+	{
+		tagTreeB1Desc() : tagCGameObjectDesc() {}
+	};
 private:
-	WheelBarrow(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	WheelBarrow(const WheelBarrow& rhs);
-	virtual ~WheelBarrow() = default;
+	TreeB1(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	TreeB1(const TreeB1& rhs);
+	virtual ~TreeB1() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -46,11 +50,11 @@ private:
 	HRESULT SetUp_ShaderResources();
 
 private:
-	static _uint WheelBarrow_Id;
+	static _uint TreeB1_Id;
 
 public:
-	static const _tchar* ProtoTag() { return L"Prototype_GameObject_WheelBarrow"; }
-	static WheelBarrow* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_TreeB1"; }
+	static TreeB1* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free(void) override;
 };

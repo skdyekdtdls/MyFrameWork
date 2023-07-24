@@ -23,7 +23,9 @@ CGameInstance::CGameInstance()
 	, m_pLight_Manager(CLight_Manager::GetInstance())
 	, m_pCollision_Manager(CollisionMgr::GetInstance())
 	, m_pTarget_Manager(CTarget_Manager::GetInstance())
+	, m_pFont_Manager(CFont_Manager::GetInstance())
 {
+	Safe_AddRef(m_pFont_Manager);
 	Safe_AddRef(m_pCollision_Manager);
 	Safe_AddRef(m_pLight_Manager);
 	Safe_AddRef(m_pInput_Device);
@@ -191,6 +193,20 @@ HRESULT CGameInstance::Present()
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
 	return m_pGraphic_Device->Present();
+}
+
+_uint2 CGameInstance::GetViewPortSize(ID3D11DeviceContext* pContext)
+{
+	_uint2 WinSize;
+
+	_uint iNumViews = { 1 };
+	D3D11_VIEWPORT ViewPortDesc;
+	pContext->RSGetViewports(&iNumViews, &ViewPortDesc);
+
+	WinSize.x = ViewPortDesc.Width;
+	WinSize.y = ViewPortDesc.Height;
+
+	return WinSize;
 }
 
 _byte CGameInstance::Get_DIKeyState(_ubyte ubyKeyID)
@@ -366,9 +382,14 @@ CComponent* CGameInstance::Get_ProtoComponent(_uint iLevelIndex, const _tchar* p
 	return m_pComponent_Manager->Get_ProtoComponent(iLevelIndex, pProtoTag);
 }
 
-_float4 CGameInstance::Get_CamPosition() const
+_float4 CGameInstance::Get_CamPositionFloat4() const
 {
-	return m_pPipeLine->Get_CamPosition();
+	return m_pPipeLine->Get_CamPositionFloat4();
+}
+
+_vector CGameInstance::Get_CamPositionVector()
+{
+	return m_pPipeLine->Get_CamPositionVector();
 }
 
 void CGameInstance::Set_Transform(CPipeLine::D3DTRANSFORMSTATE eTransformState, _fmatrix TransformStateMatrix)
@@ -443,9 +464,26 @@ void CGameInstance::Add_ColliderGroup(CCollider* pCollider, COLL_GROUP eCollGrou
 	m_pCollision_Manager->Add_ColliderGroup(pCollider, eCollGroup);
 }
 
+HRESULT CGameInstance::Add_Fonts(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pFontTag, const _tchar* pFontFilePath)
+{
+	if (nullptr == m_pFont_Manager)
+		return E_FAIL;
+
+	return m_pFont_Manager->Add_Fonts(pDevice, pContext, pFontTag, pFontFilePath);
+}
+
+HRESULT CGameInstance::Render_Font(const _tchar* pFontTag, const _tchar* pText, const _float2& vPosition, _fvector vColor, float fRotation, const _float2& vOrigin, _float fScale)
+{
+	if (nullptr == m_pFont_Manager)
+		return E_FAIL;
+
+	return m_pFont_Manager->Render_Font(pFontTag, pText, vPosition, vColor, fRotation, vOrigin, fScale);
+}
+
 void CGameInstance::Release_Engine()
 {
 	CTimer_Manager::DestroyInstance();
+	CFont_Manager::DestroyInstance();
 	CTarget_Manager::DestroyInstance();
 	CInput_Device::DestroyInstance();
 	CObject_Manager::DestroyInstance();
@@ -462,6 +500,7 @@ void CGameInstance::Release_Engine()
 void CGameInstance::Free()
 {
 	Safe_Release(m_pTarget_Manager);
+	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pCollision_Manager);
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pInput_Device);

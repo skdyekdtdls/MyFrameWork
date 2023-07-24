@@ -17,12 +17,16 @@ class CModel;
 END
 
 BEGIN(Client)
-class Rock final : public CGameObject, public ISerializable
+class TreeB2 final : public CGameObject, public ISerializable
 {
+	typedef struct tagTreeB2Desc : public tagCGameObjectDesc
+	{
+		tagTreeB2Desc() : tagCGameObjectDesc() {}
+	};
 private:
-	Rock(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	Rock(const Rock& rhs);
-	virtual ~Rock() = default;
+	TreeB2(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	TreeB2(const TreeB2& rhs);
+	virtual ~TreeB2() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -46,11 +50,11 @@ private:
 	HRESULT SetUp_ShaderResources();
 
 private:
-	static _uint Rock_Id;
+	static _uint TreeB2_Id;
 
 public:
-	static const _tchar* ProtoTag() { return L"Prototype_GameObject_Rock"; }
-	static Rock* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_TreeB2"; }
+	static TreeB2* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free(void) override;
 };

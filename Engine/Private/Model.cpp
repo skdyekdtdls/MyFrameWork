@@ -506,6 +506,29 @@ void CModel::RootMotion(_double TimeDelta, CTransform::DIRECTION eDir)
 	m_PrevMoveDistance = m_RootMoveDistance;
 }
 
+// 뼈오프셋 * 뼈 컴바인 * 모델피벗에 대한 메트릭스(내부적으로 0,1,2행 노말라이즈)를 반환
+_matrix CModel::GetMatrixAttacingBone(_uint iBoneIndex)
+{
+	if (iBoneIndex > m_Bones.size())
+		return _matrix();
+
+	_matrix AttachingBoneMatrix;
+
+	CBone* pBone = m_Bones[iBoneIndex];
+	_matrix PivotMatirx = XMLoadFloat4x4(&m_PivotMatrix);
+	_matrix OffsetMatrix = pBone->Get_OffsetMatrix();
+	_float4x4 CombinedFloat4x4 = pBone->Get_CombinedTransformationMatrix();
+	_matrix CombinedMatrix = XMLoadFloat4x4(&CombinedFloat4x4);
+	
+	AttachingBoneMatrix = OffsetMatrix * CombinedMatrix * PivotMatirx;
+	
+	AttachingBoneMatrix.r[0] = XMVector3Normalize(AttachingBoneMatrix.r[0]);
+	AttachingBoneMatrix.r[1] = XMVector3Normalize(AttachingBoneMatrix.r[1]);
+	AttachingBoneMatrix.r[2] = XMVector3Normalize(AttachingBoneMatrix.r[2]);
+
+	return AttachingBoneMatrix;
+}
+
 HRESULT CModel::Bind_Material(CShader* pShader, const char* pConstantName, _uint iMeshIndex, TextureType MaterialType)
 {
 	if (iMeshIndex >= m_iNumMeshes ||

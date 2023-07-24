@@ -17,24 +17,28 @@
 #include "ForkLift.h"
 #include "Fiona.h"
 #include "Clint.h"
-#include "BarrelBoxStool.h"
+
 #include "Bush01.h"
 #include "BushA.h"
 #include "BushB.h"
 #include "BushC.h"
 #include "Cage.h"
-#include "KemmekhBridgeA.h"
-#include "KemmekhBridgeD.h"
-#include "KemmekhBridgeF.h"
-#include "WheelBarrow.h"
-#include "WatchTowerLadder.h"
-#include "Wagon2.h"
-#include "TunnelEntryWood.h"
-#include "Tong.h"
-#include "SmallRockC.h"
-#include "Rock.h"
-#include "RailSupportB.h"
-#include "RailSupportA.h"
+#include "Cave.h"
+#include "CraterA.h"
+#include "CraterB.h"
+#include "CraterC.h"
+#include "Kemmek_Hole.h"
+#include "MineCrystalsA.h"
+#include "MineCrystalsA.h"
+#include "MineCrystalsB.h"
+#include "MineCrystalsC.h"
+#include "MineCrystalsD.h"
+#include "MineCrystalsE.h"
+#include "MineCrystalsF.h"
+#include "TreeA.h"
+#include "TreeB1.h"
+#include "TreeB2.h"
+
 #include "Pistola.h"
 #include "Alien_prawn.h"
 #include "StateContext.h"
@@ -53,6 +57,7 @@
 #include "VIBuffer_Cube.h"
 #include "Blue_Snow.h"
 #include "LargeVolcanicRock_002_Red_Desert.h"
+
 #include "Kemmekh_Formacion_rocosa.h"
 #include "Kemmekh_wall.h"
 #include "SM_Wall02.h"
@@ -300,19 +305,12 @@ HRESULT CLoader::Loading_For_IMGUI()
 		, TEXT("Prototype_Component_Model_Alien_prawn"), pModel), E_FAIL);
 
 	// Static_Meshes
-	cout << "--- LargeVolcanicRock_002_Red_Desert ---" << endl;
-	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("LargeVolcanicRock_002_Red_Desert.dat");
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-		, TEXT("Prototype_Component_Model_LargeVolcanicRock_002_Red_Desert"), pModel), E_FAIL);
-
 
 	cout << "--- SM_Cliff01 ---" << endl;
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_Cliff01.dat");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
 		, TEXT("Prototype_Component_Model_SM_Cliff01"), pModel), E_FAIL);
-
 
 	cout << "--- SM_LargePlainsBoulder002 ---" << endl;
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
@@ -496,113 +494,135 @@ HRESULT CLoader::Loading_For_IMGUI()
 		, TEXT("Prototype_Component_Model_SM_Barriletes"), pModel), E_FAIL);
 
 
-	//cout << "--- BarrelBoxStool ---" << endl;
-	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("BarrelBoxStool.dat");
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-	//	, TEXT("Prototype_Component_Model_BarrelBoxStool"), pModel), E_FAIL);
+	cout << "--- Bush01 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Bush01.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_Bush01"), pModel), E_FAIL);
 
-	//cout << "--- Bush01 ---" << endl;
-	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Bush01.dat");
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-	//	, TEXT("Prototype_Component_Model_Bush01"), pModel), E_FAIL);
+	cout << "--- BushA ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("BushA.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_BushA"), pModel), E_FAIL);
 
-	//cout << "--- BushA ---" << endl;
-	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("BushA.dat");
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-	//	, TEXT("Prototype_Component_Model_BushA"), pModel), E_FAIL);
 
-	//cout << "--- BushB ---" << endl;
-	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("BushB.dat");
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-	//	, TEXT("Prototype_Component_Model_BushB"), pModel), E_FAIL);
+	cout << "--- BushB ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("BushB.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_BushB"), pModel), E_FAIL);
 
-	//cout << "--- BushC ---" << endl;
-	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("BushC.dat");
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-	//	, TEXT("Prototype_Component_Model_BushC"), pModel), E_FAIL);
 
-	//cout << "--- Cage ---" << endl;
-	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Cage.dat");
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-	//	, TEXT("Prototype_Component_Model_Cage"), pModel), E_FAIL);
+	cout << "--- BushC ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("BushC.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_BushC"), pModel), E_FAIL);
 
-	//cout << "--- KemmekhBridgeA ---" << endl;
-	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("KemmekhBridgeA.dat");
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-	//	, TEXT("Prototype_Component_Model_KemmekhBridgeA"), pModel), E_FAIL);
 
-	//cout << "--- KemmekhBridgeD ---" << endl;
-	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("KemmekhBridgeD.dat");
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-	//	, TEXT("Prototype_Component_Model_KemmekhBridgeD"), pModel), E_FAIL);
+	cout << "--- Cage ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Cage.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_Cage"), pModel), E_FAIL);
 
-	//cout << "--- KemmekhBridgeF ---" << endl;
-	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("KemmekhBridgeF.dat");
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-	//	, TEXT("Prototype_Component_Model_KemmekhBridgeF"), pModel), E_FAIL);
 
-	//cout << "--- RailSupportA ---" << endl;
-	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("RailSupportA.dat");
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-	//	, TEXT("Prototype_Component_Model_RailSupportA"), pModel), E_FAIL);
+	cout << "--- Cave ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Cave.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_Cave"), pModel), E_FAIL);
 
-	//cout << "--- RailSupportB ---" << endl;
-	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("RailSupportB.dat");
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-	//	, TEXT("Prototype_Component_Model_RailSupportB"), pModel), E_FAIL);
 
-	//cout << "--- Rock ---" << endl;
-	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Rock.dat");
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-	//	, TEXT("Prototype_Component_Model_Rock"), pModel), E_FAIL);
+	cout << "--- CraterA ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("CraterA.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_CraterA"), pModel), E_FAIL);
 
-	//cout << "--- SmallRockC ---" << endl;
-	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SmallRockC.dat");
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-	//	, TEXT("Prototype_Component_Model_SmallRockC"), pModel), E_FAIL);
+	cout << "--- CraterB ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("CraterB.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_CraterB"), pModel), E_FAIL);
 
-	//cout << "--- Tong ---" << endl;
-	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Tong.dat");
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-	//	, TEXT("Prototype_Component_Model_Tong"), pModel), E_FAIL);
 
-	//cout << "--- TunnelEntryWood ---" << endl;
-	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("TunnelEntryWood.dat");
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-	//	, TEXT("Prototype_Component_Model_TunnelEntryWood"), pModel), E_FAIL);
+	cout << "--- CraterC ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("CraterC.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_CraterC"), pModel), E_FAIL);
 
-	//cout << "--- Wagon2 ---" << endl;
-	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Wagon2.dat");
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-	//	, TEXT("Prototype_Component_Model_Wagon2"), pModel), E_FAIL);
 
-	//cout << "--- WatchTowerLadder ---" << endl;
-	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("WatchTowerLadder.dat");
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-	//	, TEXT("Prototype_Component_Model_WatchTowerLadder"), pModel), E_FAIL);
+	cout << "--- Kemmek_Hole ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Kemmek_Hole.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_Kemmek_Hole"), pModel), E_FAIL);
 
-	//cout << "--- WheelBarrow ---" << endl;
-	//PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("WheelBarrow.dat");
-	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-	//	, TEXT("Prototype_Component_Model_WheelBarrow"), pModel), E_FAIL);
+
+	cout << "--- MineCrystalsA ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("MineCrystalsA.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_MineCrystalsA"), pModel), E_FAIL);
+
+
+	cout << "--- MineCrystalsB ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("MineCrystalsB.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_MineCrystalsB"), pModel), E_FAIL);
+
+
+	cout << "--- MineCrystalsC ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("MineCrystalsC.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_MineCrystalsC"), pModel), E_FAIL);
+
+
+	cout << "--- MineCrystalsD ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("MineCrystalsD.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_MineCrystalsD"), pModel), E_FAIL);
+
+
+	cout << "--- MineCrystalsE ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("MineCrystalsE.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_MineCrystalsE"), pModel), E_FAIL);
+
+
+	cout << "--- MineCrystalsF ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("MineCrystalsF.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_MineCrystalsF"), pModel), E_FAIL);
+
+
+	cout << "--- TreeA ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("TreeA.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_TreeA"), pModel), E_FAIL);
+
+
+	cout << "--- TreeB1 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("TreeB1.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_TreeB1"), pModel), E_FAIL);
+
+
+	cout << "--- TreeB2 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("TreeB2.dat");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_TreeB2"), pModel), E_FAIL);
 
 	cout << "--- Pistola ---" << endl;
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);// * XMMatrixRotationY(XMConvertToRadians(180.0f));
@@ -679,24 +699,25 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_Cliff01::ProtoTag(), SM_Cliff01::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CBlue_Snow::ProtoTag(), CBlue_Snow::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CCube::ProtoTag(), CCube::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BarrelBoxStool::ProtoTag(), BarrelBoxStool::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Bush01::ProtoTag(), Bush01::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BushA::ProtoTag(), BushA::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BushB::ProtoTag(), BushB::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BushC::ProtoTag(), BushC::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Cage::ProtoTag(), Cage::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(KemmekhBridgeA::ProtoTag(), KemmekhBridgeA::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(KemmekhBridgeD::ProtoTag(), KemmekhBridgeD::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(KemmekhBridgeF::ProtoTag(), KemmekhBridgeF::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(WheelBarrow::ProtoTag(), WheelBarrow::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(WatchTowerLadder::ProtoTag(), WatchTowerLadder::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Wagon2::ProtoTag(), Wagon2::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(TunnelEntryWood::ProtoTag(), TunnelEntryWood::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Tong::ProtoTag(), Tong::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SmallRockC::ProtoTag(), SmallRockC::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Rock::ProtoTag(), Rock::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(RailSupportB::ProtoTag(), RailSupportB::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(RailSupportA::ProtoTag(), RailSupportA::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Cave::ProtoTag(), Cave::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CraterA::ProtoTag(), CraterA::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CraterB::ProtoTag(), CraterB::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CraterC::ProtoTag(), CraterC::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Kemmek_Hole::ProtoTag(), Kemmek_Hole::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(MineCrystalsA::ProtoTag(), MineCrystalsA::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(MineCrystalsB::ProtoTag(), MineCrystalsB::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(MineCrystalsC::ProtoTag(), MineCrystalsC::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(MineCrystalsD::ProtoTag(), MineCrystalsD::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(MineCrystalsE::ProtoTag(), MineCrystalsE::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(MineCrystalsF::ProtoTag(), MineCrystalsF::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(TreeA::ProtoTag(), TreeA::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(TreeB1::ProtoTag(), TreeB1::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(TreeB2::ProtoTag(), TreeB2::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Clint::ProtoTag(), Clint::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(ClintBasicBullet::ProtoTag(), ClintBasicBullet::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(ClintUltimate01Bullet::ProtoTag(), ClintUltimate01Bullet::Create(m_pDevice, m_pContext)), E_FAIL);

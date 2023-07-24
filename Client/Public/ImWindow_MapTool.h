@@ -9,7 +9,7 @@ class CImWindow_Manager;
 class CImWindow_MapTool final : public CImWindow
 {
 public:
-    enum NAVI_MODE { CREATE_MODE, VERTEX_EDIT_MODE, SELECT_CELL_MODE, MODE_END };
+    enum NAVI_MODE { CREATE_MODE, VERTEX_EDIT_MODE, MODE_END };
 
 protected:
     explicit CImWindow_MapTool(ImGuiIO* pIO);

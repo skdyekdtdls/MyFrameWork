@@ -17,12 +17,16 @@ class CModel;
 END
 
 BEGIN(Client)
-class RailSupportA final : public CGameObject, public ISerializable
+class Kemmek_Hole final : public CGameObject, public ISerializable
 {
+	typedef struct tagKemmek_HoleDesc : public tagCGameObjectDesc
+	{
+		tagKemmek_HoleDesc() : tagCGameObjectDesc() {}
+	};
 private:
-	RailSupportA(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	RailSupportA(const RailSupportA& rhs);
-	virtual ~RailSupportA() = default;
+	Kemmek_Hole(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	Kemmek_Hole(const Kemmek_Hole& rhs);
+	virtual ~Kemmek_Hole() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -46,11 +50,11 @@ private:
 	HRESULT SetUp_ShaderResources();
 
 private:
-	static _uint RailSupportA_Id;
+	static _uint Kemmek_Hole_Id;
 
 public:
-	static const _tchar* ProtoTag() { return L"Prototype_GameObject_RailSupportA"; }
-	static RailSupportA* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_Kemmek_Hole"; }
+	static Kemmek_Hole* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free(void) override;
 };

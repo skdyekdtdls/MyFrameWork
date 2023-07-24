@@ -43,6 +43,9 @@ HRESULT CMainApp::Initialize()
 	//if (FAILED(Ready_Gara()))
 	//	return E_FAIL;
 
+	if (FAILED(Ready_Font()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -67,6 +70,7 @@ HRESULT CMainApp::Render()
 	m_pGameInstance->Clear_DepthStencil_View();
 
 	m_pRenderer->Draw_RenderGroup();
+
 #ifdef _DEBUG
 	CImWindow_Manager::GetInstance()->Render();
 #endif
@@ -139,6 +143,21 @@ HRESULT CMainApp::Ready_Prototype_Component_For_Static()
 
 	Safe_AddRef(m_pRenderer);
 
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Font()
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	if (FAILED(m_pGameInstance->Add_Fonts(m_pDevice, m_pContext, TEXT("Font_135"), TEXT("../../Resources/Fonts/135ex.spritefont"))))
+	{
+		Safe_Release(pGameInstance);
+		return E_FAIL;
+	}	
+
+	Safe_Release(pGameInstance);
 	return S_OK;
 }
 

@@ -39,6 +39,8 @@ void CImWindow_MapTool::Tick()
 	CImWindow_Manager* pImManagerInstance = CImWindow_Manager::GetInstance();
 	Safe_AddRef(pImManagerInstance);
 
+	CNavigation* pNavigation = m_pCurTerrain->GetComponent<CNavigation>();
+
 	ImGui::Begin("Navigation Mesh");
 
 	if (ImGui::RadioButton("CREATE_MODE", (int*)&m_eNaviMode, CREATE_MODE))
@@ -48,10 +50,17 @@ void CImWindow_MapTool::Tick()
 	}
 	ImGui::SameLine();
 	ImGui::RadioButton("VERTEX_EDIT_MODE", (int*)&m_eNaviMode, VERTEX_EDIT_MODE); ImGui::SameLine();
-	ImGui::RadioButton("SELECT_CELL_MODE", (int*)&m_eNaviMode, SELECT_CELL_MODE);
-	// 선택된 아이템을 기억할 변수
-	
-	//ImGui::ListBox("Navigation Index", &Cell_Index_item_current, VectorGetter, static_cast<void*>(&Cell_Index_items),Cell_Index_items.size(), 4);
+
+	// 셀을 지우는 기능
+	if (ImGui::Button("DeleteCell"))
+	{
+
+		if(Cell_Index_item_current >= 0)
+			pNavigation->DeleteCellByIndex(Cell_Index_item_current);
+		Cell_Index_items.clear();
+		for (size_t i = 0; i < m_pImMgr->GetCellNum(); ++i)
+			Cell_Index_items.push_back(to_string(i));
+	}
 	
 	ImGui::ListBox("Cell_Index\n(single select)",
 		&Cell_Index_item_current,
@@ -59,9 +68,9 @@ void CImWindow_MapTool::Tick()
 		static_cast<void*>(&Cell_Index_items),
 		Cell_Index_items.size(),
 		20);
-
+	
 	VecInfo("Position", &vPos, 120);
-
+	
 	// display
 	if (ImGui::Button("Open File Dialog"))
 	{
@@ -87,6 +96,9 @@ void CImWindow_MapTool::Tick()
 		// close
 		ImGuiFileDialog::Instance()->Close();
 	}
+
+	// 네비메쉬 렌더할지 말지 체크박스
+	ImGui::Checkbox("NaviRender", pNavigation->isRenderPtr());
 
 	// 맵 그리기
 	ImGui::Checkbox("DrawMap", &m_pCurTerrain->m_bShowBrush);
@@ -155,8 +167,6 @@ void CImWindow_MapTool::Tick()
 		break;
 	case VERTEX_EDIT_MODE:
 		Vertex_Edit();
-		break;
-	case SELECT_CELL_MODE:
 		break;
 	}
 
