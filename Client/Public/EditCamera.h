@@ -63,7 +63,7 @@ private:
 	RAY		m_tMouseRay;
 	_bool	m_isPicking = { false };
 	_uint   m_iAttachingBoneIndex = { 0 };
-	_float4 m_OffsetPos = { _float4(0.f, 15.f, -7.f, 0.f) };
+	_float4 m_OffsetPos = { _float4(0.f, 10.f, -10.f, 0.f) };
 
 private:
 	void Make_MouseRay();

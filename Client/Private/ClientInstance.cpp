@@ -22,7 +22,6 @@ Clint* ClientInstance::GetClint()
 	Safe_AddRef(pGameInstance);
 	Clint* pClint = static_cast<Clint*>(pGameInstance->Get_GameObject(pGameInstance->Get_CurLevelIndex(), L"Layer_Player", "Clint1"));
 	
-	
 	Safe_Release(pGameInstance);
 	return pClint;
 }
@@ -30,7 +29,7 @@ Clint* ClientInstance::GetClint()
 CColliderAABB* ClientInstance::GetClintBodyColl()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
+	Safe_AddRef(pGameInstance); 
 	CColliderAABB* pCollAABB = static_cast<CColliderAABB*>(pGameInstance->Get_ComponentOfClone(pGameInstance->Get_CurLevelIndex(), L"Layer_Player", "Clint1", L"Com_BodyColl"));
 	Safe_Release(pGameInstance);
 

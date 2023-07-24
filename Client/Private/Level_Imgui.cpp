@@ -27,7 +27,6 @@ HRESULT CLevel_Imgui::Initialize()
 	Ready_Layer_Camera(TEXT("Layer_Camera"));
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_Effect(TEXT("Layer_Effect"));
-		
 }
 
 void CLevel_Imgui::Tick(_double TimeDelta)

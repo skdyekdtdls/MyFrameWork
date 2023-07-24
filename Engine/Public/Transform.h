@@ -79,6 +79,8 @@ public:
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
+public:
+	_vector DirectionVector(DIRECTION eDir);
 
 public:
 	void Go_Straight(_double TimeDelta, class CNavigation* pNavigation = nullptr);
@@ -110,9 +112,6 @@ private:
 private:
 	_float4x4				m_PrevWorldMatrix;
 	_float4x4				m_WorldMatrix;
-
-private:
-	_vector DirectionVector(DIRECTION eDir);
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_Component_Transform"; }

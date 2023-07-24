@@ -43,6 +43,7 @@ private:
 
 private:
 	_bool CheckAABBCollision(CColliderAABB* pOtherCollider, COLLISION_INFO& CollisionInfo);
+	_matrix Remove_Rotation(_fmatrix TransformMatrix);
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_Component_CColliderAABB"; }

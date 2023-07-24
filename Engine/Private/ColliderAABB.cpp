@@ -44,7 +44,7 @@ void CColliderAABB::Tick(_fmatrix TransformMatrix)
 {
 	__super::Tick(TransformMatrix);
 	
-	m_pBoundingBox_Origin->Transform(*m_pBoundingBox, TransformMatrix);
+	m_pBoundingBox_Origin->Transform(*m_pBoundingBox, Remove_Rotation(TransformMatrix));
 }
 
 _bool CColliderAABB::Intersect(CCollider* pOtherCollider, COLLISION_INFO& CollisionInfo)
@@ -139,6 +139,17 @@ _bool CColliderAABB::CheckAABBCollision(CColliderAABB* pOtherCollider, COLLISION
 		CollisionInfo.vOverLapVector.z = -CollisionInfo.vOverLapVector.z;
 
 	return true;
+}
+
+_matrix CColliderAABB::Remove_Rotation(_fmatrix TransformMatrix)
+{
+	_matrix		ResultMatrix = TransformMatrix;
+
+	ResultMatrix.r[0] = XMVectorSet(1.f, 0.f, 0.f, 0.f) * XMVectorGetX(XMVector3Length(TransformMatrix.r[0]));
+	ResultMatrix.r[1] = XMVectorSet(0.f, 1.f, 0.f, 0.f) * XMVectorGetX(XMVector3Length(TransformMatrix.r[1]));
+	ResultMatrix.r[2] = XMVectorSet(0.f, 0.f, 1.f, 0.f) * XMVectorGetX(XMVector3Length(TransformMatrix.r[2]));
+
+	return ResultMatrix;
 }
 
 CColliderAABB* CColliderAABB::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

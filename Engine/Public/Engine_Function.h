@@ -98,7 +98,65 @@ static bool Float3Equal(_float3 f1, _float3 f2, float epsilon = std::numeric_lim
 	return true;
 }
 
-static 
+template <typename T>
+static bool	isInsideRange(T _value, T _min, T _max)
+{
+	if (_min <= _value && _value <= _max)
+		return true;
+
+	return false;
+}
+
+// 값을 최소 최대 사이로 자르고 반환함.
+template <typename T>
+static T Saturate(T value, T _min, T _max)
+{
+	value = max(value, _min);
+	value = min(value, _max);
+
+	return value;
+}
+
+// 두 벡터 사이의 Radian을 구하는 함수
+static float RadianBetweenVectors(FXMVECTOR _v1, FXMVECTOR _v2)
+{
+	XMVECTOR v1 = XMVector3Normalize(_v1);
+	XMVECTOR v2 = XMVector3Normalize(_v2);
+
+	float fDot = Saturate(XMVectorGetX(XMVector3Dot(v1, v2)), -1.f, 1.f);
+	XMVECTOR cross = XMVector3Cross(_v1, _v2);
+	float crossY = XMVectorGetY(cross); // Z 값을 얻습니다. Z 축은 두 벡터의 수평면에 수직입니다.
+	float radian = acos(fDot);
+
+	if (0 < crossY)
+	{
+		radian = (2 * XM_PI) - radian; // 360도 - 계산된 각도
+	}
+
+	return radian;
+}
+
+// 두 벡터 사이의 Degree를 구하는 함수.
+static float DegreeBetweenVectors(FXMVECTOR _v1, FXMVECTOR _v2)
+{
+	return XMConvertToDegrees(RadianBetweenVectors(_v1, _v2));
+}
+
+// 각도를 0~360도로 조정해주는 함수.
+static void DegreeClipping(_float& fDegree)
+{
+	if (fDegree > 0)
+	{
+		// 나머지연산(fmod는 float에 대한 나머지를 구하는 함수)
+		fDegree = fmod(fDegree, 360.f);
+	}
+	else
+	{
+		// 각도가 0~360안에 들어갈 때 까지 루프를 돔.
+		while (0 > fDegree)
+			fDegree += 360.f;
+	}	
+}
 
 bool IsPointOnLineSegment(FXMVECTOR A, FXMVECTOR B, FXMVECTOR P)
 {

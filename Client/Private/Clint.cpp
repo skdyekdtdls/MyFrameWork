@@ -222,13 +222,13 @@ HRESULT Clint::Add_Components()
 	CColliderAABB::CCOLLIDER_AABB_DESC tColliderAABBDesc;
 	tColliderAABBDesc.pOwner = this;
 	tColliderAABBDesc.Extents = _float3(0.3f, 1.f, 0.3f);
-	tColliderAABBDesc.vCenter = _float3(-0.15f, tColliderAABBDesc.Extents.y, 0.f);
+	tColliderAABBDesc.vCenter = _float3(0.0f, tColliderAABBDesc.Extents.y, 0.f);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CColliderAABB::ProtoTag(), L"Com_BodyColl", (CComponent**)&m_pColliderCom, &tColliderAABBDesc), E_FAIL);
 
 	CColliderSphere::CCOLLIDER_SPHERE_DESC tUltCollider;
 	tUltCollider.pOwner = this;
 	tUltCollider.fRadius = 5.f;
-	tUltCollider.vCenter = _float3(-0.15f, tColliderAABBDesc.Extents.y, 0.f);
+	tUltCollider.vCenter = _float3(0.f, tColliderAABBDesc.Extents.y, 0.f);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CColliderSphere::ProtoTag(), L"Com_UltColl", (CComponent**)&m_pUltimateCom, &tUltCollider), E_FAIL);
 
 	Raycast::RAYCAST_DESC tRaycastDesc;
@@ -266,7 +266,6 @@ HRESULT Clint::SetUp_ShaderResources()
 
 void Clint::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
-
 	m_pStateContextCom->OnCollision(tCollisionInfo, TimeDelta);
 }
 

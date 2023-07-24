@@ -202,6 +202,11 @@ void CTransform::Go_Right(_double TimeDelta, CNavigation* pNavigation)
 void CTransform::Go_Direction(_double TimeDelta, DIRECTION eDir, _float fLength)
 {
 	m_eCurDirection = eDir;
+	if (m_eCurDirection != DIR_N && m_eCurDirection != DIR_S && m_eCurDirection != DIR_W && m_eCurDirection != DIR_E)
+	{
+		fLength *= 0.707;
+	}
+
 	CNavigation* pNavigation = dynamic_cast<CNavigation*>(m_pOwner->Get_Component(L"Com_Navigation"));
 	_vector		vPosition = Get_State(STATE_POSITION);
 	_vector		vNextPosition = vPosition;
