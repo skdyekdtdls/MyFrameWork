@@ -29,19 +29,23 @@ void ClintIdle::OnStateTick(_double TimeDelta)
 	if (pGameInstance->Get_DIKeyState(DIK_W) || pGameInstance->Get_DIKeyState(DIK_A) ||
 		pGameInstance->Get_DIKeyState(DIK_S) || pGameInstance->Get_DIKeyState(DIK_D))
 	{
-		m_pStateContext->TransitionTo(L"ClintRun");
+		TransitionTo(L"ClintRun");
 	}
 	else if (pGameInstance->Get_DIKeyState(DIK_Q))
 	{
-		m_pStateContext->TransitionTo(L"ClintUltimate01");
+		TransitionTo(L"ClintUltimate01");
 	}
 	else if (pGameInstance->Get_DIKeyState(DIK_SPACE))
 	{
-		m_pStateContext->TransitionTo(L"ClintDash");
+		TransitionTo(L"ClintDash");
 	}
 	else if (pGameInstance->Get_DIMouseState(CInput_Device::DIMK_LBUTTON))
 	{
-		m_pStateContext->TransitionTo(L"ClintShoot");
+		TransitionTo(L"ClintShoot");
+	}
+	else if (pGameInstance->Get_DIMouseState(CInput_Device::DIMK_RBUTTON))
+	{
+		TransitionTo(L"ClintSkill01");
 	}
 	Safe_Release(pGameInstance);
 }

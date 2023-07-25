@@ -38,6 +38,8 @@ void ClintShoot::OnStateTick(_double TimeDelta)
 	
 	if (pGameInstance->Get_DIMouseState(CInput_Device::DIMK_LBUTTON))
 	{
+		
+		pTransform->Set_Speed(3.5f);
 		_bool Calc = false;
 		if (W)
 		{
@@ -118,11 +120,12 @@ void ClintShoot::OnStateTick(_double TimeDelta)
 		}
 		else
 			SetAnimIndex(CLINT_SHOOT, LOWER);
-
+		pTransform->Set_Speed(7.f);
 		pTransform->LookAt(Facade->PickPosOnTerrain());
 		
 		if (true == Calc)
 		{
+			
 			_vector vXDir = XMVectorSet(1.f, 0.f, 0.f, 1.f);
 
 			_float fDegreeInXMove;
@@ -169,7 +172,7 @@ void ClintShoot::OnStateTick(_double TimeDelta)
 		}
 	}
 	else
-		m_pStateContext->TransitionTo(L"ClintIdle");
+		TransitionTo(L"ClintIdle");
 
 	Safe_Release(pGameInstance);
 }

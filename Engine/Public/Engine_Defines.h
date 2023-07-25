@@ -45,7 +45,18 @@ namespace fs = std::filesystem;
 
 BEGIN(Engine)
 typedef unordered_map<const _tchar*, class CLayer*> LAYERS;
-typedef pair <_double, function<void()> > TIMELINE_EVENT;
+typedef struct tagTimeLineEvent
+{
+	tagTimeLineEvent() = default;
+	tagTimeLineEvent(_double _Time, function<void()> _Lamda, _bool _CanPlay = true)
+		: Time(_Time)
+		, CanPlay(_CanPlay)
+		, Lamda(_Lamda)
+	{}
+	_double Time = { 0.0 };
+	function<void()> Lamda;
+	_bool CanPlay;
+}TIMELINE_EVENT;
 END
 
 #include "DirectXTK/DDSTextureLoader.h"

@@ -48,6 +48,8 @@
 #include "ClintRun.h"
 #include "ClintShoot.h"
 #include "ClintUltimate01.h"
+#include "ClintSkill01.h"
+#include "ClintSkill02.h"
 #include "Alien_prawnIdle.h"
 #include "Alien_prawnRun.h"
 #include "Alien_prawnAttack.h"
@@ -652,6 +654,8 @@ HRESULT CLoader::Loading_For_IMGUI()
 	pClintState->Add_State(ClintDash::Tag(), ClintDash::Create(m_pDevice, m_pContext));
 	pClintState->Add_State(ClintShoot::Tag(), ClintShoot::Create(m_pDevice, m_pContext));
 	pClintState->Add_State(ClintUltimate01::Tag(), ClintUltimate01::Create(m_pDevice, m_pContext));
+	pClintState->Add_State(ClintSkill01::Tag(), ClintSkill01::Create(m_pDevice, m_pContext));
+	pClintState->Add_State(ClintSkill02::Tag(), ClintSkill02::Create(m_pDevice, m_pContext));
 
 	cout << "Alien_prawn States" << endl;
 	StateContext<Alien_prawn, ALIEN_PRAWN_ANIM>* pAlienPrawnState;

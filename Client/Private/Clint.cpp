@@ -58,6 +58,9 @@ HRESULT Clint::Initialize(void* pArg)
 	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"LShoot2", TIMELINE_EVENT(Start += AttackInterval, [this]() {
 		m_pPistolaComR->Attack(GetLook());
 		}), UPPER);
+	m_pModelCom->Add_TimeLineEvent("clint_skill01", L"Skill1", TIMELINE_EVENT(54.f, [this]() {
+		m_pPistolaComR->Attack(GetLook());
+		}), UPPER);
 
 	if(nullptr != m_pStateContextCom)
 		m_pStateContextCom->TransitionTo(L"ClintIdle");

@@ -92,7 +92,6 @@ public:
 	HRESULT Add_TimeLineEvent(const _tchar* pTag, TIMELINE_EVENT timeLineEvent);
 	void Delete_TimeLineEvent(const _tchar* pTag);
 	const TIMELINE_EVENT* Get_TimeLineEvent(const _tchar* pTag);
-
 private:
 	TIMELINE_EVENT* Find_TimeLine(const _tchar* pTag);
 

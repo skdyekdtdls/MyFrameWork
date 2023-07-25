@@ -171,7 +171,9 @@ bool IsPointOnLineSegment(FXMVECTOR A, FXMVECTOR B, FXMVECTOR P)
 	return (dotABAP >= 0.f && dotABAP <= dotABAB && dotBAPB >= 0.f);
 }
 
-
+static XMVECTOR WorldAxisX() { return XMVectorSet(1.f, 0.f, 0.f, 0.f); }
+static XMVECTOR WorldAxisY() { return XMVectorSet(0.f, 1.f, 0.f, 0.f); }
+static XMVECTOR WorldAxisZ() { return XMVectorSet(0.f, 0.f, 1.f, 0.f); }
 
 #ifdef _DEBUG
 static void CoutVector(_fvector vector)

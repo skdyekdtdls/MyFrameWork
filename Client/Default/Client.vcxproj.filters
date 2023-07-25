@@ -613,6 +613,12 @@
     <ClInclude Include="..\public\EditCamera.h">
       <Filter>02. GameObjects\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ClintSkill01.h">
+      <Filter>02. GameObjects\Clint\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ClintSkill02.h">
+      <Filter>02. GameObjects\Clint\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -920,6 +926,12 @@
     </ClCompile>
     <ClCompile Include="..\private\EditCamera.cpp">
       <Filter>02. GameObjects\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ClintSkill01.cpp">
+      <Filter>02. GameObjects\Clint\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ClintSkill02.cpp">
+      <Filter>02. GameObjects\Clint\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

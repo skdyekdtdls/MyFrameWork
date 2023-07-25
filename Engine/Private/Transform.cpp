@@ -247,6 +247,8 @@ void CTransform::Go_Direction(_double TimeDelta, DIRECTION eDir, _float fLength)
 	}
 }
 
+
+
 void CTransform::Go_Direction(_double TimeDelta, DIRECTION eDir)
 {
 	Go_Direction(TimeDelta, eDir, m_TransformDesc.SpeedPerSec);
@@ -293,6 +295,18 @@ void CTransform::Go_Direction(_double TimeDelta, _fvector _vDir, _float fLength)
 	{
 		Set_State(STATE_POSITION, vPosition);
 	}
+}
+
+void CTransform::Chase_Lerp(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance)
+{
+	//현재 내 위치
+	_vector        vPosition = Get_State(STATE_POSITION);
+	//거리
+	_vector        vDir = vTargetPosition - vPosition;
+	if (fMinDistance < XMVectorGetX(XMVector3Length(vDir)))
+		vPosition = XMVectorLerp(vPosition, vTargetPosition, m_TransformDesc.SpeedPerSec * TimeDelta);
+
+	Set_State(STATE_POSITION, vPosition);
 }
 
 void CTransform::Chase(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance)
@@ -368,15 +382,20 @@ void CTransform::Turn(_fvector vAxis, _double TimeDelta)
 	Set_State(STATE_LOOK, XMVector3TransformNormal(vLook, RotationMatrix));
 }
 
-void CTransform::Turn(_fvector vAxis, _fvector vTargetVector, _double TimeDelta)
+void CTransform::Turn(_fvector vAxis, _fvector _vTargetVector, _double TimeDelta)
 {
 	_vector		vLook = Get_State(STATE_LOOK);
+	_vector		vTargetVector = _vTargetVector;
+	
+	_float fDegree = fabs(DegreeBetweenVectors(vTargetVector, vLook));
+	cout << fDegree << endl;
+	if (fDegree < 13.f)
+	{
+		Rotation(vAxis, XMVectorGetX(XMVector3AngleBetweenVectors(vTargetVector, WorldAxisZ())));
+		return;
+	}
 
-	// 둘 사이의 각도를 구면보간
-	//_vector newDirection = XMQuaternionSlerp(, vTargetVector, TimeDelta);
-
-	// 생성된 방향벡터로 LookAt함수 이용해서 그 방향을 바라보게함.
-	//LookAt(newDirection);
+	Turn(vAxis, TimeDelta);
 }
 
 void CTransform::Scaled(const _float3& vScale)

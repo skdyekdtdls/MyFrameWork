@@ -40,7 +40,7 @@ void CImWindow_MapTool::Tick()
 	Safe_AddRef(pImManagerInstance);
 
 	CNavigation* pNavigation = m_pCurTerrain->GetComponent<CNavigation>();
-
+	 
 	ImGui::Begin("Navigation Mesh");
 
 	if (ImGui::RadioButton("CREATE_MODE", (int*)&m_eNaviMode, CREATE_MODE))
@@ -54,7 +54,6 @@ void CImWindow_MapTool::Tick()
 	// 셀을 지우는 기능
 	if (ImGui::Button("DeleteCell"))
 	{
-
 		if(Cell_Index_item_current >= 0)
 			pNavigation->DeleteCellByIndex(Cell_Index_item_current);
 		Cell_Index_items.clear();

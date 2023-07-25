@@ -76,6 +76,10 @@ public:
 		XMStoreFloat4x4(&m_WorldMatrix, matWorldMatrix);
 	}
 
+	void Set_Speed(float fSpeed)
+	{
+		m_TransformDesc.SpeedPerSec = fSpeed;
+	}
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
@@ -83,6 +87,9 @@ public:
 	_vector DirectionVector(DIRECTION eDir);
 
 public:
+	void Chase_Lerp(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance);
+
+
 	void Go_Straight(_double TimeDelta, class CNavigation* pNavigation = nullptr);
 	void Go_Backward(_double TimeDelta, class CNavigation* pNavigation = nullptr);
 	void Go_Left(_double TimeDelta, class CNavigation* pNavigation = nullptr);

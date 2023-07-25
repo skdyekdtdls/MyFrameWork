@@ -141,6 +141,10 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 		}
 
 		m_iCurKeyFrame = 0;
+		for (auto& Pair : m_TimeLineEvents)
+		{
+			Pair.second.CanPlay = true;
+		}
 	}
 
 	/* 현재 재생된 시간에 맞도록 모든 뼈의 상태를 키프레임정보를 기반으로하여 갱신한다. */
@@ -157,8 +161,14 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 	for (auto& Pair : m_TimeLineEvents)
 	{
 		// 시간값이 일치하면 실행한다.
-		if (FloatEqual(Pair.second.first, m_TimeAcc, TimeDelta * 1.2))
-			Pair.second.second();
+		if (true == Pair.second.CanPlay && Pair.second.Time <= m_TimeAcc)
+		{
+			Pair.second.CanPlay = false;
+			Pair.second.Lamda();
+		}
+			
+		//if (FloatEqual(Pair.second.Time, m_TimeAcc, TimeDelta * 1.2))
+		//	Pair.second.Lamda();
 	}
 }
 
@@ -172,7 +182,7 @@ void CAnimation::InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _doubl
 
 HRESULT CAnimation::Add_TimeLineEvent(const _tchar* pTag, TIMELINE_EVENT timeLineEvent)
 {
-	if (timeLineEvent.first > m_Duration)
+	if (timeLineEvent.Time > m_Duration)
 		return E_FAIL;
 
 	m_TimeLineEvents.emplace(pTag, timeLineEvent);
@@ -189,6 +199,8 @@ const TIMELINE_EVENT* CAnimation::Get_TimeLineEvent(const _tchar* pTag)
 {
 	return Find_TimeLine(pTag);
 }
+
+
 
 TIMELINE_EVENT* CAnimation::Find_TimeLine(const _tchar* pTag)
 {

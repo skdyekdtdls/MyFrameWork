@@ -41,7 +41,8 @@ void ClintRun::OnStateTick(_double TimeDelta)
 	if (W)
 	{
 		pTransform->Go_Direction(TimeDelta, CTransform::DIR_N);
-		pTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(0.f));
+		pTransform->Turn(WorldAxisY(), WorldAxisZ(), TimeDelta);
+		
 		if (Q)
 		{
 			m_pStateContext->TransitionTo(L"ClintUltimate01");
@@ -50,7 +51,7 @@ void ClintRun::OnStateTick(_double TimeDelta)
 	else if (A)
 	{
 		pTransform->Go_Direction(TimeDelta, CTransform::DIR_W);
-		pTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-90.f));
+		pTransform->Turn(WorldAxisY(), -WorldAxisX(), TimeDelta);
 		if (Q)
 		{
 			m_pStateContext->TransitionTo(L"ClintUltimate01");
@@ -59,7 +60,7 @@ void ClintRun::OnStateTick(_double TimeDelta)
 	else if (S)
 	{
 		pTransform->Go_Direction(TimeDelta, CTransform::DIR_S);
-		pTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.f));
+		pTransform->Turn(WorldAxisY(), -WorldAxisZ(), TimeDelta);
 		if (Q)
 		{
 			m_pStateContext->TransitionTo(L"ClintUltimate01");
@@ -68,7 +69,7 @@ void ClintRun::OnStateTick(_double TimeDelta)
 	else if (D)
 	{
 		pTransform->Go_Direction(TimeDelta, CTransform::DIR_E);
-		pTransform->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.f));
+		pTransform->Turn(WorldAxisY(), WorldAxisX(), TimeDelta);
 		if (Q)
 		{
 			m_pStateContext->TransitionTo(L"ClintUltimate01");
