@@ -39,27 +39,38 @@ HRESULT ClintUltimate01Bullet::Initialize(void* pArg)
 	CLINT_ULTIMATE01_BULLET_DESC tClintUltimate01BulletDesc;
 	if (nullptr != pArg)
 		tClintUltimate01BulletDesc = *(CLINT_ULTIMATE01_BULLET_DESC*)pArg;
-
-	//m_pModelCom->Set_RootNode(3);
+	m_fDamage = 300.f;
 
 	return S_OK;
 }
 
 void ClintUltimate01Bullet::Tick(_double TimeDelta)
 {
-	__super::Tick(TimeDelta);
-
-	// 	m_pModelCom->Play_Animation(TimeDelta);
+	m_bEnable = false;
+	
+	CTransform* pOwnerTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
+	m_pTransformCom->Set_WorldMatrix(pOwnerTransform->Get_WorldMatrix());
+	m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
 }
 
 void ClintUltimate01Bullet::Late_Tick(_double TimeDelta)
 {
+	if (false == m_bEnable)
+		return;
+	__super::Late_Tick(TimeDelta);
+
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	__super::Late_Tick(TimeDelta);
+	m_pColliderCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BULLET);
+
+	// 	m_pModelCom->Play_Animation(TimeDelta);
 	if (pGameInstance->isIn_WorldSpace(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f))
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
+
+#ifdef _DEBUG
+	m_pRendererCom->Add_DebugGroup(m_pColliderCom);
+#endif
 
 	Safe_Release(pGameInstance);
 }
@@ -105,6 +116,12 @@ HRESULT ClintUltimate01Bullet::Add_Components()
 
 	CModel::CMODEL_DESC tModelDesc; tModelDesc.pOwner = this;
 	//FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, /*L"Prototype_Component_Model_", L"Com_Model"*/, (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+
+	CColliderSphere::CCOLLIDER_SPHERE_DESC tUltCollider;
+	tUltCollider.pOwner = this;
+	tUltCollider.fRadius = 5.f;
+	tUltCollider.vCenter = _float3(0.f, 1.f, 0.f);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CColliderSphere::ProtoTag(), L"Com_Coll", (CComponent**)&m_pColliderCom, &tUltCollider), E_FAIL);
 
 	Safe_Release(pGameInstance);
 	return S_OK;
@@ -152,5 +169,6 @@ void ClintUltimate01Bullet::Free(void)
 	--ClintUltimate01Bullet_Id;
 	//Safe_Release(m_pShaderCom);
 	//Safe_Release(m_pModelCom);
+	Safe_Release(m_pColliderCom);
 
 }

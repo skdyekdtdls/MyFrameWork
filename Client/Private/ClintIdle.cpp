@@ -26,6 +26,14 @@ void ClintIdle::OnStateTick(_double TimeDelta)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
+	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
+	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
+	_byte W = pGameInstance->Get_DIKeyState(DIK_W);
+	_byte A = pGameInstance->Get_DIKeyState(DIK_A);
+	_byte S = pGameInstance->Get_DIKeyState(DIK_S);
+	_byte D = pGameInstance->Get_DIKeyState(DIK_D);
+	_byte Space = pGameInstance->Get_DIKeyState(DIK_SPACE);
+
 	if (pGameInstance->Get_DIKeyState(DIK_W) || pGameInstance->Get_DIKeyState(DIK_A) ||
 		pGameInstance->Get_DIKeyState(DIK_S) || pGameInstance->Get_DIKeyState(DIK_D))
 	{
@@ -35,7 +43,7 @@ void ClintIdle::OnStateTick(_double TimeDelta)
 	{
 		TransitionTo(L"ClintUltimate01");
 	}
-	else if (pGameInstance->Get_DIKeyState(DIK_SPACE))
+	else if (Space)
 	{
 		TransitionTo(L"ClintDash");
 	}

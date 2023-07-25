@@ -12,6 +12,7 @@ Bullet::Bullet(const Bullet& rhs)
 	: CGameObject(rhs)
 	, m_TimeAcc(0.0)
 	, m_LifeSpan(1.0)
+	, m_fDamage(rhs.m_fDamage)
 {
 }
 
@@ -22,7 +23,6 @@ HRESULT Bullet::Initialize_Prototype()
 
 	return S_OK;
 }
-
 
 HRESULT Bullet::Initialize(void* pArg)
 {
@@ -52,7 +52,10 @@ void Bullet::Tick(_double TimeDelta)
 	m_pTransformCom->Go_Straight(TimeDelta);
 
 	if (nullptr != m_pColliderCom)
+	{
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
+		m_pColliderCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BULLET);
+	}
 }
 
 void Bullet::Late_Tick(_double TimeDelta)
@@ -95,6 +98,22 @@ HRESULT Bullet::Render()
 
 	// 만약에 모델 컴포넌트 안쓰면 이걸로 쓰면된다.
 	// m_pShaderCom->Begin(0);
+}
+
+void Bullet::Damage(CGameObject* pGameObejct)
+{
+	Health* pHealth = dynamic_cast<Health*>(pGameObejct->Get_Component(L"Com_Health"));
+
+	if (pHealth)
+		pHealth->TakeDamage(m_fDamage);
+}
+
+void Bullet::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
+{
+	if (isMonsterLayer(tCollisionInfo.OtherGameObjectLayerName))
+	{
+		Damage(tCollisionInfo.pOtherGameObject);
+	}
 }
 
 HRESULT Bullet::Add_Components()

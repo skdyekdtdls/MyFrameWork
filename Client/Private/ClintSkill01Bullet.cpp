@@ -1,21 +1,19 @@
-#include "ClintBasicBullet.h"
+#include "ClintSkill01Bullet.h"
 #include "GameInstance.h"
 
-_uint ClintBasicBullet::ClintBasicBullet_Id = 0;
+_uint ClintSkill01Bullet::ClintBasicBullet_Id = 0;
 
-/* Don't Forget Release for the VIBuffer or Model Component*/
-
-ClintBasicBullet::ClintBasicBullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+ClintSkill01Bullet::ClintSkill01Bullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: Bullet(pDevice, pContext)
 {
 }
 
-ClintBasicBullet::ClintBasicBullet(const ClintBasicBullet& rhs)
+ClintSkill01Bullet::ClintSkill01Bullet(const ClintSkill01Bullet& rhs)
 	: Bullet(rhs)
 {
 }
 
-HRESULT ClintBasicBullet::Initialize_Prototype()
+HRESULT ClintSkill01Bullet::Initialize_Prototype()
 {
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
@@ -23,8 +21,7 @@ HRESULT ClintBasicBullet::Initialize_Prototype()
 	return S_OK;
 }
 
-
-HRESULT ClintBasicBullet::Initialize(void* pArg)
+HRESULT ClintSkill01Bullet::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -33,7 +30,7 @@ HRESULT ClintBasicBullet::Initialize(void* pArg)
 		return E_FAIL;
 
 	++ClintBasicBullet_Id;
-	m_tInfo.wstrName = TO_WSTR("ClintBasicBullet" + to_string(ClintBasicBullet_Id));
+	m_tInfo.wstrName = TO_WSTR("ClintSkill01Bullet" + to_string(ClintBasicBullet_Id));
 	m_tInfo.wstrKey = ProtoTag();
 	m_tInfo.ID = ClintBasicBullet_Id;
 
@@ -41,31 +38,31 @@ HRESULT ClintBasicBullet::Initialize(void* pArg)
 	if (nullptr != pArg)
 		tClintBasicBulletDesc = *(CLINT_BASIC_BULLET_DESC*)pArg;
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, tClintBasicBulletDesc.vLook);
-	
-	m_fDamage = 100.f;
+	//m_pModelCom->Set_RootNode(3);
+	m_fDamage = 1000.f;
 	return S_OK;
 }
 
-void ClintBasicBullet::Tick(_double TimeDelta)
+void ClintSkill01Bullet::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
 
 	// 	m_pModelCom->Play_Animation(TimeDelta);
 }
 
-void ClintBasicBullet::Late_Tick(_double TimeDelta)
+void ClintSkill01Bullet::Late_Tick(_double TimeDelta)
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
 	__super::Late_Tick(TimeDelta);
-	if(pGameInstance->isIn_WorldSpace(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f))
+	if (pGameInstance->isIn_WorldSpace(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f))
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 
 	Safe_Release(pGameInstance);
 }
 
-HRESULT ClintBasicBullet::Render()
+HRESULT ClintSkill01Bullet::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
@@ -95,7 +92,7 @@ HRESULT ClintBasicBullet::Render()
 #endif
 }
 
-HRESULT ClintBasicBullet::Add_Components()
+HRESULT ClintSkill01Bullet::Add_Components()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
@@ -111,7 +108,7 @@ HRESULT ClintBasicBullet::Add_Components()
 	return S_OK;
 }
 
-HRESULT ClintBasicBullet::SetUp_ShaderResources()
+HRESULT ClintSkill01Bullet::SetUp_ShaderResources()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
@@ -122,40 +119,31 @@ HRESULT ClintBasicBullet::SetUp_ShaderResources()
 	return S_OK;
 }
 
-void ClintBasicBullet::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
+ClintSkill01Bullet* ClintSkill01Bullet::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	if (__super::isMonsterLayer(tCollisionInfo.OtherGameObjectLayerName))
-	{
-		__super::Damage(tCollisionInfo.pOtherGameObject);
-		SetDead();
-	}
-}
-
-ClintBasicBullet* ClintBasicBullet::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-{
-	ClintBasicBullet* pInstance = new ClintBasicBullet(pDevice, pContext);
+	ClintSkill01Bullet* pInstance = new ClintSkill01Bullet(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created ClintBasicBullet");
+		MSG_BOX("Failed to Created ClintSkill01Bullet");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-Bullet* ClintBasicBullet::Clone(void* pArg)
+Bullet* ClintSkill01Bullet::Clone(void* pArg)
 {
-	ClintBasicBullet* pInstance = new ClintBasicBullet(*this);
+	ClintSkill01Bullet* pInstance = new ClintSkill01Bullet(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned ClintBasicBullet");
+		MSG_BOX("Failed to Cloned ClintSkill01Bullet");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-void ClintBasicBullet::Free(void)
+void ClintSkill01Bullet::Free(void)
 {
 	__super::Free();
 

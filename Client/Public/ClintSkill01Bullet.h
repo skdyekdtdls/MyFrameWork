@@ -17,7 +17,7 @@ class CModel;
 END
 
 BEGIN(Client)
-class ClintBasicBullet final : public Bullet
+class ClintSkill01Bullet final : public Bullet
 {
 public:
 	typedef struct tagClintBasicBulletDesc : public tagBulletDesc
@@ -28,9 +28,9 @@ public:
 	}CLINT_BASIC_BULLET_DESC;
 
 private:
-	ClintBasicBullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	ClintBasicBullet(const ClintBasicBullet& rhs);
-	virtual ~ClintBasicBullet() = default;
+	ClintSkill01Bullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	ClintSkill01Bullet(const ClintSkill01Bullet& rhs);
+	virtual ~ClintSkill01Bullet() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -47,15 +47,12 @@ private:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();
 
-public:
-	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
-
 private:
 	static _uint ClintBasicBullet_Id;
 
 public:
-	static const _tchar* ProtoTag() { return L"Prototype_GameObject_ClintBasicBullet"; }
-	static ClintBasicBullet* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_ClintSkill01Bullet"; }
+	static ClintSkill01Bullet* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual Bullet* Clone(void* pArg) override;
 	virtual void Free(void) override;
 };

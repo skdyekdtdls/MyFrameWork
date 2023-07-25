@@ -202,10 +202,10 @@ void CTransform::Go_Right(_double TimeDelta, CNavigation* pNavigation)
 void CTransform::Go_Direction(_double TimeDelta, DIRECTION eDir, _float fLength)
 {
 	m_eCurDirection = eDir;
-	if (m_eCurDirection != DIR_N && m_eCurDirection != DIR_S && m_eCurDirection != DIR_W && m_eCurDirection != DIR_E)
+	/*if (m_eCurDirection != DIR_N && m_eCurDirection != DIR_S && m_eCurDirection != DIR_W && m_eCurDirection != DIR_E)
 	{
 		fLength *= 0.707;
-	}
+	}*/
 
 	CNavigation* pNavigation = dynamic_cast<CNavigation*>(m_pOwner->Get_Component(L"Com_Navigation"));
 	_vector		vPosition = Get_State(STATE_POSITION);
@@ -375,8 +375,6 @@ void CTransform::Turn(_fvector vAxis, _double TimeDelta)
 
 	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, m_TransformDesc.RotationPerSec * TimeDelta);
 
-	/*XMVector3TransformCoord();*/
-	/*XMVector4Transform();*/
 	Set_State(STATE_RIGHT, XMVector3TransformNormal(vRight, RotationMatrix));
 	Set_State(STATE_UP, XMVector3TransformNormal(vUp, RotationMatrix));
 	Set_State(STATE_LOOK, XMVector3TransformNormal(vLook, RotationMatrix));
@@ -386,17 +384,23 @@ void CTransform::Turn(_fvector vAxis, _fvector _vTargetVector, _double TimeDelta
 {
 	_vector		vLook = Get_State(STATE_LOOK);
 	_vector		vTargetVector = _vTargetVector;
-	
+	_float fCross = XMVectorGetY(XMVector3Cross(vLook, vTargetVector));
 	_float fDegree = fabs(DegreeBetweenVectors(vTargetVector, vLook));
-	cout << fDegree << endl;
-	if (fDegree < 13.f)
+
+	// 0도 = 360도이기 때문에 360도에서도 더 이상 회전 안시키려고 넣은 코드.
+	if (fDegree > 359.9f)
+		fDegree = 0.f;
+
+	if (fDegree < m_TransformDesc.RotationPerSec + 1.f)
 	{
-		Rotation(vAxis, XMVectorGetX(XMVector3AngleBetweenVectors(vTargetVector, WorldAxisZ())));
+		Rotation(vAxis, RadianBetweenVectors(vTargetVector, WorldAxisZ()));
 		return;
 	}
 
+	if (fCross < 0.f)
+		TimeDelta *= -1.0;
 	Turn(vAxis, TimeDelta);
-}
+}	
 
 void CTransform::Scaled(const _float3& vScale)
 {

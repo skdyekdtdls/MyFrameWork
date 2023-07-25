@@ -109,12 +109,10 @@ static bool	isInsideRange(T _value, T _min, T _max)
 
 // 값을 최소 최대 사이로 자르고 반환함.
 template <typename T>
-static T Saturate(T value, T _min, T _max)
+static void Saturate(T& _value, T _min, T _max)
 {
-	value = max(value, _min);
-	value = min(value, _max);
-
-	return value;
+	_value = max(_value, _min);
+	_value = min(_value, _max);
 }
 
 // 두 벡터 사이의 Radian을 구하는 함수
@@ -123,7 +121,8 @@ static float RadianBetweenVectors(FXMVECTOR _v1, FXMVECTOR _v2)
 	XMVECTOR v1 = XMVector3Normalize(_v1);
 	XMVECTOR v2 = XMVector3Normalize(_v2);
 
-	float fDot = Saturate(XMVectorGetX(XMVector3Dot(v1, v2)), -1.f, 1.f);
+	float fDot = XMVectorGetX(XMVector3Dot(v1, v2));
+	Saturate(fDot, -1.f, 1.f);
 	XMVECTOR cross = XMVector3Cross(_v1, _v2);
 	float crossY = XMVectorGetY(cross); // Z 값을 얻습니다. Z 축은 두 벡터의 수평면에 수직입니다.
 	float radian = acos(fDot);

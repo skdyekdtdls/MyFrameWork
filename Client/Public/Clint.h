@@ -14,10 +14,12 @@ class CModel;
 class CCollider;
 class CNavigation;
 class Raycast;
+class Health;
 END
 
 BEGIN(Client)
 class Pistola;
+class ClintUltimate01Bullet;
 template <typename OWNER, typename ANIM_ENUM>
 class StateContext;
 END
@@ -48,7 +50,6 @@ public:
 public:
 	_vector GetPosition();
 	_vector GetLook();
-	void EnableUltColl() { m_bUltEnable = true; }
 
 public:
 	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
@@ -58,18 +59,19 @@ private: /* For. Component */
 	CModel* m_pModelCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 	CCollider* m_pColliderCom = { nullptr };
-	CCollider* m_pUltimateCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CNavigation* m_pNavigationCom = { nullptr };
 	Pistola* m_pPistolaComL = { nullptr };
 	Pistola* m_pPistolaComR = { nullptr };
 	Raycast* m_pRaycastCom = { nullptr };
+	ClintUltimate01Bullet* m_pUltBulletCom = { nullptr };
 	ClintState* m_pStateContextCom = { nullptr };
+	Health* m_pHealthCom = { nullptr };
 
 private:
 	static _uint Clint_Id;
-	_bool	m_bUltEnable = { false };
+
 private:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();

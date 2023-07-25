@@ -39,8 +39,18 @@ public:
 	virtual HRESULT Render() override;
 
 protected:
+	void Damage(CGameObject* pGameObejct);
+	_bool isMonsterLayer(wstring ObjectName) {
+		return ObjectName == L"Layer_Monster";
+	}
+	
+	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
+
+protected:
 	_double m_LifeSpan = { 1.0 };
 	_double m_TimeAcc = { 0.0 };
+	_float	m_fDamage = { 100.f };
+
 protected: /* For. Component */
 //CShader* m_pShaderCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };

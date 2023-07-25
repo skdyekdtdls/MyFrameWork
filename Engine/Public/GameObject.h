@@ -65,7 +65,6 @@ protected:
 	wstring m_LayerName;
 	INFO m_tInfo;
 	_bool m_bDead;
-
 #ifdef _DEBUG
 	CColliderSphere* m_pPickCollider = { nullptr };
 #endif // DEBUG

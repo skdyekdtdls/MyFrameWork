@@ -7,7 +7,7 @@
 #include "ClintDash.h"
 #include "ClintShoot.h"
 #include "Animation.h"
-
+#include "ClintUltimate01Bullet.h"
 _uint Clint::Clint_Id = 0;
 
 Clint::Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -88,7 +88,9 @@ void Clint::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
 
-	m_bUltEnable = { false };
+	// Enable을 상태에서 해주기 때문에 상태 이전에 Tick이 불려야함
+	if (nullptr != m_pUltBulletCom)
+		m_pUltBulletCom->Tick(TimeDelta);
 
 	if(nullptr != m_pStateContextCom)
 		m_pStateContextCom->Tick(TimeDelta);
@@ -99,9 +101,6 @@ void Clint::Tick(_double TimeDelta)
 
 	if (nullptr != m_pColliderCom)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
-
-	if (nullptr != m_pColliderCom)
-		m_pUltimateCom->Tick(m_pTransformCom->Get_WorldMatrix());
 
 	if (nullptr != m_pPistolaComL && nullptr != m_pPistolaComR)
 	{
@@ -123,16 +122,12 @@ void Clint::Late_Tick(_double TimeDelta)
 	// 렌더러 그룹에 추가
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 	m_pColliderCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BODY);
-	if (m_bUltEnable)
-		m_pUltimateCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BULLET);
+	m_pUltBulletCom->Late_Tick(TimeDelta);
 
 #ifdef _DEBUG
 	//m_pNavigationCom->Render();
 	if (nullptr != m_pColliderCom)
 		m_pRendererCom->Add_DebugGroup(m_pColliderCom);
-
-	if (nullptr != m_pUltimateCom && true == m_bUltEnable)
-		m_pRendererCom->Add_DebugGroup(m_pUltimateCom);
 
 	if(nullptr != m_pRaycastCom)
 		m_pRendererCom->Add_DebugGroup(m_pRaycastCom);
@@ -201,7 +196,7 @@ HRESULT Clint::Add_Components()
 	CRenderer::CRENDERER_DESC tRendererDesc; tRendererDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom, &tRendererDesc), E_FAIL);
 
-	CTransform::CTRANSFORM_DESC TransformDesc{ 7.0, XMConvertToRadians(720.f) }; TransformDesc.pOwner = this;
+	CTransform::CTRANSFORM_DESC TransformDesc{ 7.0, XMConvertToRadians(360.f * 3.f) }; TransformDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
 
@@ -228,23 +223,27 @@ HRESULT Clint::Add_Components()
 	tColliderAABBDesc.vCenter = _float3(0.0f, tColliderAABBDesc.Extents.y, 0.f);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CColliderAABB::ProtoTag(), L"Com_BodyColl", (CComponent**)&m_pColliderCom, &tColliderAABBDesc), E_FAIL);
 
-	CColliderSphere::CCOLLIDER_SPHERE_DESC tUltCollider;
-	tUltCollider.pOwner = this;
-	tUltCollider.fRadius = 5.f;
-	tUltCollider.vCenter = _float3(0.f, tColliderAABBDesc.Extents.y, 0.f);
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CColliderSphere::ProtoTag(), L"Com_UltColl", (CComponent**)&m_pUltimateCom, &tUltCollider), E_FAIL);
-
 	Raycast::RAYCAST_DESC tRaycastDesc;
 	tRaycastDesc.pOwner = this;
 	tRaycastDesc.vCenter = _float3(0.15f, 1.f, 0.f);
 	tRaycastDesc.fLength = { 1.f };
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, Raycast::ProtoTag(), L"Com_Raycast", (CComponent**)&m_pRaycastCom, &tRaycastDesc), E_FAIL);
-	Safe_Release(pGameInstance);
 	
+	ClintUltimate01Bullet::CLINT_BASIC_BULLET_DESC tUltBulletDesc;
+	tUltBulletDesc.pOwner = this;
+	XMStoreFloat4(&tUltBulletDesc.vPosition, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	FAILED_CHECK_RETURN(__super::Add_Composite(ClintUltimate01Bullet::ProtoTag(), L"Com_UltBullet", (CComponent**)&m_pUltBulletCom, &tUltBulletDesc), E_FAIL);
+
 	ClintState::STATE_CONTEXT_DESC tStateContextDesc;
 	tStateContextDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, TEXT("Prototype_Component_ClintState"), L"Com_ClintState", (CComponent**)&m_pStateContextCom, &tStateContextDesc), E_FAIL);
 	
+	Health::HEALTH_DESC tHealthDesc;
+	tHealthDesc.pOwner = this;
+	tHealthDesc.iMaxHp = 100;
+	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, Health::ProtoTag(), L"Com_Health", (CComponent**)&m_pHealthCom, &tHealthDesc), E_FAIL);
+
+	Safe_Release(pGameInstance);
 	return S_OK;
 }
 
@@ -304,13 +303,14 @@ void Clint::Free(void)
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pColliderCom);
-	Safe_Release(m_pUltimateCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pPistolaComL);
 	Safe_Release(m_pPistolaComR);
 	Safe_Release(m_pRaycastCom);
+	Safe_Release(m_pUltBulletCom);
 	Safe_Release(m_pStateContextCom);
+	Safe_Release(m_pHealthCom);
 }
 

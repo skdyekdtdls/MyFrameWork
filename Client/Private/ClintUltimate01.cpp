@@ -1,7 +1,7 @@
 #include "..\Public\ClintUltimate01.h"
 #include "GameInstance.h"
 #include "Clint.h"
-
+#include "ClintUltimate01Bullet.h"
 ClintUltimate01::ClintUltimate01(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: StateMachine<Clint, CLINT_ANIM>(pDevice, pContext)
 {
@@ -34,7 +34,7 @@ void ClintUltimate01::OnStateTick(_double TimeDelta)
 
 	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
 	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
-
+	ClintUltimate01Bullet* pUltBullet = static_cast<ClintUltimate01Bullet*>(m_pOwner->Get_Component(L"Com_"));
 	_byte W = pGameInstance->Get_DIKeyState(DIK_W);
 	_byte A = pGameInstance->Get_DIKeyState(DIK_A);
 	_byte S = pGameInstance->Get_DIKeyState(DIK_S);
@@ -70,7 +70,8 @@ void ClintUltimate01::OnStateTick(_double TimeDelta)
 	if (m_UltTimeAcc > 0.25)
 	{
 		m_UltTimeAcc = 0.0;
-		m_pOwner->EnableUltColl();
+		ClintUltimate01Bullet* pUltBullet = static_cast<ClintUltimate01Bullet*>(m_pOwner->Get_Component(L"Com_UltBullet"));
+		pUltBullet->Enable();
 	}
 }
 

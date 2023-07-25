@@ -3,6 +3,8 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 #include "ISerializable.h"
+#include "Health.h"
+
 BEGIN(Engine)
 
 class CShader;
@@ -13,6 +15,7 @@ class CCollider;
 class CNavigation;
 class CModel;
 class Raycast;
+class Health;
 // Can declare VIBuffer or Model Com
 END
 
@@ -58,8 +61,8 @@ private: /* For. Component */
 	CCollider* m_pColliderCom = { nullptr };
 	Raycast* m_pRaycastCom = { nullptr };
 	AlienPrawnState* m_pStateContextCom = { nullptr };
+	Health* m_pHealthCom = { nullptr };
 	// Can declare VIBuffer or Model Com
-
 
 private:
 	HRESULT Add_Components();

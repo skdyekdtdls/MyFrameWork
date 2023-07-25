@@ -51,9 +51,16 @@ HRESULT Alien_prawn::Initialize(void* pArg)
 void Alien_prawn::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
-
+	m_pHealthCom->CoutHp();
 	m_pModelCom->Play_Animation(TimeDelta);
+	if (nullptr != m_pStateContextCom)
+		m_pStateContextCom->Tick(TimeDelta);
 
+	if (m_pHealthCom->isZeroHP())
+	{
+		m_pStateContextCom->TransitionTo(L"Alien_prawnDead");
+		return;
+	}
 	if (nullptr != m_pColliderCom)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
 	if (nullptr != m_pRaycastCom)
@@ -61,9 +68,6 @@ void Alien_prawn::Tick(_double TimeDelta)
 		m_pRaycastCom->Tick(m_pTransformCom->Get_State(CTransform::STATE_POSITION),
 			m_pTransformCom->Get_State(CTransform::STATE_LOOK));
 	}
-
-	if (nullptr != m_pStateContextCom)
-		m_pStateContextCom->Tick(TimeDelta);
 }
 
 void Alien_prawn::Late_Tick(_double TimeDelta)
@@ -183,6 +187,11 @@ HRESULT Alien_prawn::Add_Components()
 	tStateContextDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, TEXT("Prototype_Component_AlienPrawnState"), L"Com_AlienPrawnState", (CComponent**)&m_pStateContextCom, &tStateContextDesc), E_FAIL);
 
+	Health::HEALTH_DESC tHealthDesc;
+	tHealthDesc.pOwner = this;
+	tHealthDesc.iMaxHp = 1000;
+	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, Health::ProtoTag(), L"Com_Health", (CComponent**)&m_pHealthCom, &tHealthDesc), E_FAIL);
+
 	Safe_Release(pGameInstance);
 	return S_OK;
 }
@@ -243,7 +252,6 @@ void Alien_prawn::Free(void)
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pRaycastCom);
 	Safe_Release(m_pStateContextCom);
-
-	/* Don't Forget Release for the VIBuffer or Model Component*/
+	Safe_Release(m_pHealthCom);
 }
 

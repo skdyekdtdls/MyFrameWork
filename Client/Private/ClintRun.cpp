@@ -40,39 +40,75 @@ void ClintRun::OnStateTick(_double TimeDelta)
 
 	if (W)
 	{
-		pTransform->Go_Direction(TimeDelta, CTransform::DIR_N);
-		pTransform->Turn(WorldAxisY(), WorldAxisZ(), TimeDelta);
-		
-		if (Q)
+		if (D)
 		{
-			m_pStateContext->TransitionTo(L"ClintUltimate01");
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_NE);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_NE), TimeDelta);
+		}
+		else if (A)
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_NW);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_NW), TimeDelta);
+		}
+		else
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_N);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_N), TimeDelta);
 		}
 	}
 	else if (A)
 	{
-		pTransform->Go_Direction(TimeDelta, CTransform::DIR_W);
-		pTransform->Turn(WorldAxisY(), -WorldAxisX(), TimeDelta);
-		if (Q)
+		if (W)
 		{
-			m_pStateContext->TransitionTo(L"ClintUltimate01");
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_NW);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_NW), TimeDelta);
 		}
+		else if (S)
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_SW);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_SW), TimeDelta);
+		}
+		else
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_W);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_W), TimeDelta);
+		}
+
 	}
 	else if (S)
 	{
-		pTransform->Go_Direction(TimeDelta, CTransform::DIR_S);
-		pTransform->Turn(WorldAxisY(), -WorldAxisZ(), TimeDelta);
-		if (Q)
+		if (D)
 		{
-			m_pStateContext->TransitionTo(L"ClintUltimate01");
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_SE);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_SE), TimeDelta);
+		}
+		else if (A)
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_SW);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_SW), TimeDelta);
+		}
+		else
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_S);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_S), TimeDelta);
 		}
 	}
 	else if (D)
 	{
-		pTransform->Go_Direction(TimeDelta, CTransform::DIR_E);
-		pTransform->Turn(WorldAxisY(), WorldAxisX(), TimeDelta);
-		if (Q)
+		if (W)
 		{
-			m_pStateContext->TransitionTo(L"ClintUltimate01");
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_NE);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_NE), TimeDelta);
+		}
+		else if (S)
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_SE);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_SE), TimeDelta);
+		}
+		else
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_E);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_E), TimeDelta);
 		}
 	}
 	else
@@ -80,27 +116,17 @@ void ClintRun::OnStateTick(_double TimeDelta)
 		m_pStateContext->TransitionTo(L"ClintIdle");
 	}
 
+
+	if (Q)
+	{
+		TransitionTo(L"ClintUltimate01");
+	}
+
 	if (Space)
 	{
-		if (W)
-		{
-			pModel->RootMotion(TimeDelta, CTransform::DIR_N);
-		}
-		else if (A)
-		{
-			pModel->RootMotion(TimeDelta, CTransform::DIR_W);
-		}
-		else if (S)
-		{
-			pModel->RootMotion(TimeDelta, CTransform::DIR_S);
-		}
-		else if (D)
-		{
-			pModel->RootMotion(TimeDelta, CTransform::DIR_E);
-		}
-
-		m_pStateContext->TransitionTo(L"ClintDash");
+		TransitionTo(L"ClintDash");
 	}
+
 	else if (pGameInstance->Get_DIMouseState(CInput_Device::DIMK_LBUTTON))
 	{
 		m_pStateContext->TransitionTo(L"ClintShoot");

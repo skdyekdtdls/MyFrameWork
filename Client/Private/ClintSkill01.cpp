@@ -29,9 +29,16 @@ void ClintSkill01::OnStateTick(_double TimeDelta)
 	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
 	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
 
+	_byte Space = pGameInstance->Get_DIKeyState(DIK_SPACE);
+
 	if (pModel->IsAnimationFinished())
 	{
 		TransitionTo(L"ClintIdle");
+	}
+
+	if (Space)
+	{
+		TransitionTo(L"ClintDash");
 	}
 
 	Safe_Release(pGameInstance);

@@ -123,9 +123,8 @@ void ClintShoot::OnStateTick(_double TimeDelta)
 		pTransform->Set_Speed(7.f);
 		pTransform->LookAt(Facade->PickPosOnTerrain());
 		
-		if (true == Calc)
+		if (true == Calc) // 어떤 하체걷기 모션이 재생되어야 할지 계산
 		{
-			
 			_vector vXDir = XMVectorSet(1.f, 0.f, 0.f, 1.f);
 
 			_float fDegreeInXMove;

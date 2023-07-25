@@ -292,6 +292,9 @@
     <Filter Include="02. GameObjects\BackGround\1 모으기용\TreeB2">
       <UniqueIdentifier>{985b44cd-b065-4f96-93f4-16a56953a010}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObjects\Bullet\ClintSkill01Bullet">
+      <UniqueIdentifier>{aa05413b-27bd-4bda-abfd-699019bd1332}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -619,6 +622,9 @@
     <ClInclude Include="..\public\ClintSkill02.h">
       <Filter>02. GameObjects\Clint\State</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ClintSkill01Bullet.h">
+      <Filter>02. GameObjects\Bullet\ClintSkill01Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -932,6 +938,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ClintSkill02.cpp">
       <Filter>02. GameObjects\Clint\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ClintSkill01Bullet.cpp">
+      <Filter>02. GameObjects\Bullet\ClintSkill01Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

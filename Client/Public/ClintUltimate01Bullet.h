@@ -27,6 +27,8 @@ private:
 	ClintUltimate01Bullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	ClintUltimate01Bullet(const ClintUltimate01Bullet& rhs);
 	virtual ~ClintUltimate01Bullet() = default;
+public: // Setter
+	void Enable() { m_bEnable = true; }
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -38,6 +40,7 @@ public:
 private: /* For. Component */
 	//CShader* m_pShaderCom = { nullptr };
 	//CModel* m_pModelCom = { nullptr };
+	CCollider* m_pColliderCom = { nullptr };
 	// Can declare VIBuffer or Model Com
 private:
 	HRESULT Add_Components();
@@ -45,6 +48,7 @@ private:
 
 private:
 	static _uint ClintUltimate01Bullet_Id;
+	_bool m_bEnable = { false };
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_GameObject_ClintUltimate01Bullet"; }

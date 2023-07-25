@@ -130,16 +130,12 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 
 	if (m_TimeAcc >= m_Duration)
 	{
-		if (true == m_isLoop)
-		{
-			m_TimeAcc = 0.f;
-		}
-		else
+		if (true != m_isLoop)
 		{
 			m_isFinished = true;
-			m_TimeAcc = 0.f;
 		}
 
+		m_TimeAcc = 0.f;
 		m_iCurKeyFrame = 0;
 		for (auto& Pair : m_TimeLineEvents)
 		{
@@ -166,9 +162,6 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 			Pair.second.CanPlay = false;
 			Pair.second.Lamda();
 		}
-			
-		//if (FloatEqual(Pair.second.Time, m_TimeAcc, TimeDelta * 1.2))
-		//	Pair.second.Lamda();
 	}
 }
 
@@ -199,8 +192,6 @@ const TIMELINE_EVENT* CAnimation::Get_TimeLineEvent(const _tchar* pTag)
 {
 	return Find_TimeLine(pTag);
 }
-
-
 
 TIMELINE_EVENT* CAnimation::Find_TimeLine(const _tchar* pTag)
 {

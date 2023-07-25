@@ -17,6 +17,7 @@
 #include "ForkLift.h"
 #include "Fiona.h"
 #include "Clint.h"
+#include "ClintUltimate01Bullet.h"
 
 #include "Bush01.h"
 #include "BushA.h"
@@ -227,6 +228,9 @@ HRESULT CLoader::Loading_For_GamePlay()
 	Set_LoadingText(L"충돌체 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CColliderSphere::ProtoTag(),
 		CColliderSphere::Create(m_pDevice, m_pContext)), E_FAIL);
+	
+	Set_LoadingText(L"잡다한거 로딩 중");
+
 
 	Set_LoadingText(L"객체 로딩 중"); // 객체는 마지막에 로딩되어야한다.
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CTerrain::ProtoTag(), CTerrain::Create(m_pDevice, m_pContext)), E_FAIL);
@@ -641,8 +645,6 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Shader_Navigation"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Navigation.hlsl")
 			, VTXPOS_DECL::Elements, VTXPOS_DECL::iNumElements)), E_FAIL);
-		
-	Set_LoadingText(L"충돌체 로딩 중");
 
 	cout << "Clint States" << endl;
 	StateContext<Clint, CLINT_ANIM>* pClintState;
@@ -666,6 +668,10 @@ HRESULT CLoader::Loading_For_IMGUI()
 	pAlienPrawnState->Add_State(Alien_prawnRun::Tag(), Alien_prawnRun::Create(m_pDevice, m_pContext));
 	pAlienPrawnState->Add_State(Alien_prawnAttack::Tag(), Alien_prawnAttack::Create(m_pDevice, m_pContext));
 	pAlienPrawnState->Add_State(Alien_prawnDead::Tag(), Alien_prawnDead::Create(m_pDevice, m_pContext));
+
+	Set_LoadingText(L"잡다한거 로딩 중");
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, Health::ProtoTag(),
+		Health::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	Set_LoadingText(L"객체 로딩 중"); // 객체는 마지막에 로딩되어야한다.
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CTerrain::ProtoTag(), CTerrain::Create(m_pDevice, m_pContext)), E_FAIL);

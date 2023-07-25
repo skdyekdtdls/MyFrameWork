@@ -207,6 +207,7 @@
     <ClInclude Include="..\public\ClintRun.h" />
     <ClInclude Include="..\public\ClintShoot.h" />
     <ClInclude Include="..\public\ClintSkill01.h" />
+    <ClInclude Include="..\public\ClintSkill01Bullet.h" />
     <ClInclude Include="..\public\ClintSkill02.h" />
     <ClInclude Include="..\public\ClintUltimate01.h" />
     <ClInclude Include="..\Public\ClintUltimate01Bullet.h" />
@@ -387,6 +388,7 @@
     <ClCompile Include="..\private\ClintRun.cpp" />
     <ClCompile Include="..\private\ClintShoot.cpp" />
     <ClCompile Include="..\private\ClintSkill01.cpp" />
+    <ClCompile Include="..\private\ClintSkill01Bullet.cpp" />
     <ClCompile Include="..\private\ClintSkill02.cpp" />
     <ClCompile Include="..\private\ClintUltimate01.cpp" />
     <ClCompile Include="..\Private\ClintUltimate01Bullet.cpp" />
