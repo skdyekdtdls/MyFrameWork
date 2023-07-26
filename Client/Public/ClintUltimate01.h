@@ -17,6 +17,7 @@ public:
 	virtual void OnStateTick(_double TimeDelta) override;
 	virtual void OnStateExit() override;
 
+	virtual const _tchar* GetTag() override { return Tag(); }
 private:
 	_double m_TimeAcc = { 0.0 };
 	_double m_Duration = { 6.0 };

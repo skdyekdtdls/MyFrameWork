@@ -16,7 +16,8 @@ public:
 	virtual void OnStateEnter() override;
 	virtual void OnStateTick(_double TimeDelta) override;
 	virtual void OnStateExit() override;
-
+	
+	virtual const _tchar* GetTag() override { return Tag(); }
 public:
 	static const _tchar* Tag() { return L"Alien_prawnDead"; }
 	static Alien_prawnDead* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -25,7 +26,3 @@ public:
 };
 
 END
-
-
-
-

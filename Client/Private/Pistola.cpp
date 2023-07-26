@@ -17,7 +17,6 @@ Pistola::Pistola(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 Pistola::Pistola(const Pistola& rhs)
 	: CGameObject(rhs)
-
 	, m_WorldMatrix(rhs.m_WorldMatrix)
 	, m_AttachedBoneIndex(rhs.m_AttachedBoneIndex)
 {
@@ -48,14 +47,12 @@ HRESULT Pistola::Initialize(void* pArg)
 
 	CModel* pModel = m_pOwner->GetComponent<CModel>();
 	CTransform* pParentTransform = m_pOwner->GetComponent<CTransform>();
-	CBone* pBone = pModel->GetBoneByName(tPistolaDesc.pAttachedBoneName); 
+	CBone* pBone = pModel->GetBoneByName(tPistolaDesc.pAttachedBoneName);
 	m_AttachedBoneIndex = pBone->GetIndex();
 
 	m_pParentWorldMatrix = pParentTransform->Get_WorldFloat4x4Ptr();
 
 	m_pTransformCom->Rotation(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(-90.f));
-
-	
 
 	return S_OK;
 }
@@ -101,7 +98,7 @@ HRESULT Pistola::Render()
 		m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
 
 		m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
-		// m_pModelCom->Bind_Material(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS);
+		
 
 		m_pShaderCom->Begin(0);
 
@@ -110,6 +107,7 @@ HRESULT Pistola::Render()
 
 	// 만약에 모델 컴포넌트 안쓰면 이걸로 쓰면된다.
 	// m_pShaderCom->Begin(0);
+
 }
 
 void Pistola::Attack(_fvector vLook)
@@ -121,6 +119,7 @@ void Pistola::Attack(_fvector vLook)
 
 	tClintBasicBulletDesc.pOwner = this;
 	tClintBasicBulletDesc.vLook = vLook;
+	tClintBasicBulletDesc.fDamage = 100.f;
 	XMStoreFloat4(&tClintBasicBulletDesc.vPosition, XMLoadFloat4x4(&m_WorldMatrix).r[3]);
 
 	Bullet* pBullet;
@@ -198,7 +197,7 @@ void Pistola::AttachingWeapon()
 		pModel->GetMatrixAttacingBone(m_AttachedBoneIndex) * XMLoadFloat4x4(m_pParentWorldMatrix));
 }
 
-void Pistola::ReleaseIf(function<bool(Bullet* pClintBasicBullet)> func)
+void Pistola::ReleaseIf(function<bool(Bullet*)> func)
 {
 	for (auto iter = m_Bullets.begin(); iter != m_Bullets.end();)
 	{

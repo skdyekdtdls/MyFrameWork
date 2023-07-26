@@ -27,6 +27,7 @@ HRESULT CGameObject::Initialize(void* pArg)
 {
 	FAILED_CHECK_RETURN(__super::Initialize(pArg), E_FAIL);
 	CGAMEOBJECT_DESC* pGameObjectDesc = (CGAMEOBJECT_DESC*)pArg;
+
 #ifdef _DEBUG
 	CColliderSphere::CCOLLIDER_SPHERE_DESC tColliderSphereDesc;
 	tColliderSphereDesc.vCenter = { _float3(0.f, tColliderSphereDesc.fRadius * 1.f, 0.f) };

@@ -381,8 +381,11 @@ void CModel::Play_Animation(_double TimeDelta, BODY eBody)
 
 	if (LOWER == eBody)
 	{
-		m_RootMoveDistance = m_Bones[m_RootIndex]->GetTransformationMatrix_43();
-		m_Bones[m_RootIndex]->FixBone();
+		if (-1 != m_RootIndex)
+		{
+			m_RootMoveDistance = m_Bones[m_RootIndex]->GetTransformationMatrix_43();
+			m_Bones[m_RootIndex]->FixBone();
+		}
 	}
 	
 	for (auto& Bone : m_Bones)

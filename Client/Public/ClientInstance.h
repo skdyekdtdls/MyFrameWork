@@ -11,6 +11,7 @@ class CTransform;
 END
 
 BEGIN(Client)
+
 class ClientInstance : public CBase
 {
 	DECLARE_SINGLETON(ClientInstance);
@@ -19,6 +20,7 @@ public:
 	virtual ~ClientInstance() = default;
 
 	_vector GetClintPosition();
+	_matrix GetClintWorldMatrix();
 	class CNavigation* GetClintNavigation();
 	class CTerrain* GetTerrain();
 	_vector PickPosOnTerrain();

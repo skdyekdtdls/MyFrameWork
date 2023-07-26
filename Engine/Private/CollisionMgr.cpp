@@ -54,6 +54,9 @@ void CollisionMgr::CheckByCollGroup(COLL_GROUP eSourGroup, COLL_GROUP eDestGroup
 				tDestCollisionInfo.MyCollName = DestCollider->GetComponentName();
 				XMStoreFloat3(&tDestCollisionInfo.vOverLapVector, -1 * XMLoadFloat3(&tSourCollisionInfo.vOverLapVector));
 				DestCollider->OnCollision(tDestCollisionInfo, TimeDelta);
+
+				SourCollider->SetIsColl(true);
+				DestCollider->SetIsColl(true);
 			}
 		}
 	}

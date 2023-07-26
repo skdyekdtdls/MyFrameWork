@@ -3,7 +3,6 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 #include "ISerializable.h"
-#include "Health.h"
 
 BEGIN(Engine)
 
@@ -73,7 +72,7 @@ private:
 	static _uint Alien_prawn_Id;
 
 public:
-	static const _tchar* ProtoTag() { return L"Prototype_GameObject_Alien_prawn"; }
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_Alien_prawn1"; }
 	static Alien_prawn* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free(void) override;

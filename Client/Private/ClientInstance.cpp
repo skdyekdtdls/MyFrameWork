@@ -16,6 +16,15 @@ _vector ClientInstance::GetClintPosition()
 	return vClintPos;
 }
 
+_matrix ClientInstance::GetClintWorldMatrix()
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	CTransform* pTransform = static_cast<CTransform*>(pGameInstance->Get_ComponentOfClone(pGameInstance->Get_CurLevelIndex(), L"Layer_Player", "Clint1", L"Com_Transform"));
+	Safe_Release(pGameInstance);
+	return pTransform->Get_WorldMatrix();
+}
+
 Clint* ClientInstance::GetClint()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();

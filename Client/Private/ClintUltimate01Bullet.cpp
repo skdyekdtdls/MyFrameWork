@@ -39,14 +39,13 @@ HRESULT ClintUltimate01Bullet::Initialize(void* pArg)
 	CLINT_ULTIMATE01_BULLET_DESC tClintUltimate01BulletDesc;
 	if (nullptr != pArg)
 		tClintUltimate01BulletDesc = *(CLINT_ULTIMATE01_BULLET_DESC*)pArg;
-	m_fDamage = 300.f;
 
 	return S_OK;
 }
 
 void ClintUltimate01Bullet::Tick(_double TimeDelta)
 {
-	m_bEnable = false;
+	__super::Disable();
 	
 	CTransform* pOwnerTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
 	m_pTransformCom->Set_WorldMatrix(pOwnerTransform->Get_WorldMatrix());
@@ -90,7 +89,7 @@ HRESULT ClintUltimate01Bullet::Render()
 	//	m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
 
 	//	m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
-	//	// m_pModelCom->Bind_Material(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS);
+	//	
 
 	//	m_pShaderCom->Begin(0);
 
@@ -110,6 +109,13 @@ HRESULT ClintUltimate01Bullet::Add_Components()
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 	LEVELID eLevelID = static_cast<LEVELID>(pGameInstance->Get_NextLevelIndex());
+
+	CRenderer::CRENDERER_DESC tRendererDesc; tRendererDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom, &tRendererDesc), E_FAIL);
+
+	CTransform::CTRANSFORM_DESC TransformDesc{ 20.0, XMConvertToRadians(720.f) }; TransformDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
+		, &TransformDesc), E_FAIL);
 
 	CShader::CSHADER_DESC tShaderDesc; tShaderDesc.pOwner = this;
 	//FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxMesh*/", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
@@ -170,5 +176,7 @@ void ClintUltimate01Bullet::Free(void)
 	//Safe_Release(m_pShaderCom);
 	//Safe_Release(m_pModelCom);
 	Safe_Release(m_pColliderCom);
+	Safe_Release(m_pTransformCom);
+	Safe_Release(m_pRendererCom);
 
 }

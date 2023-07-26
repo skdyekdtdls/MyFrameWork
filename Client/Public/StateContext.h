@@ -76,6 +76,10 @@ public:
 	{
 		m_pCurState->OnCollision(tCollisionInfo, TimeDelta);
 	}
+	
+	const _tchar* GetCurState() {
+		return m_pCurState->GetTag();
+	}
 
 public:
 	virtual HRESULT Initialize_Prototype() {

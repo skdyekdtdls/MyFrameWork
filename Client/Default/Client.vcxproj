@@ -187,9 +187,16 @@
     <ClInclude Include="..\Public\Alien_prawn.h" />
     <ClInclude Include="..\public\Alien_prawnAttack.h" />
     <ClInclude Include="..\public\Alien_prawnDead.h" />
+    <ClInclude Include="..\public\Alien_prawnHit.h" />
     <ClInclude Include="..\public\Alien_prawnIdle.h" />
     <ClInclude Include="..\public\Alien_prawnRun.h" />
     <ClInclude Include="..\public\BackGround.h" />
+    <ClInclude Include="..\public\BatPotato_RIG.h" />
+    <ClInclude Include="..\public\BatPotato_RIGAttack.h" />
+    <ClInclude Include="..\public\BatPotato_RIGDeath.h" />
+    <ClInclude Include="..\public\BatPotato_RIGHit.h" />
+    <ClInclude Include="..\public\BatPotato_RIGIdle.h" />
+    <ClInclude Include="..\public\BatPotato_RIGRun.h" />
     <ClInclude Include="..\public\Blue_Snow.h" />
     <ClInclude Include="..\public\Bullet.h" />
     <ClInclude Include="..\Public\Bush01.h" />
@@ -214,6 +221,7 @@
     <ClInclude Include="..\public\CraterA.h" />
     <ClInclude Include="..\public\CraterB.h" />
     <ClInclude Include="..\public\CraterC.h" />
+    <ClInclude Include="..\public\EnemyBasicBullet.h" />
     <ClInclude Include="..\Public\ImGuiFileDialog.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
@@ -363,12 +371,19 @@
     <ClCompile Include="..\Private\Alien_prawn.cpp" />
     <ClCompile Include="..\private\Alien_prawnAttack.cpp" />
     <ClCompile Include="..\private\Alien_prawnDead.cpp" />
+    <ClCompile Include="..\private\Alien_prawnHit.cpp" />
     <ClCompile Include="..\private\Alien_prawnIdle.cpp" />
     <ClCompile Include="..\private\Alien_prawnRun.cpp" />
     <ClCompile Include="..\private\BackGround.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\private\BatPotato_RIG.cpp" />
+    <ClCompile Include="..\private\BatPotato_RIGAttack.cpp" />
+    <ClCompile Include="..\private\BatPotato_RIGDeath.cpp" />
+    <ClCompile Include="..\private\BatPotato_RIGHit.cpp" />
+    <ClCompile Include="..\private\BatPotato_RIGIdle.cpp" />
+    <ClCompile Include="..\private\BatPotato_RIGRun.cpp" />
     <ClCompile Include="..\private\Blue_Snow.cpp" />
     <ClCompile Include="..\private\Bullet.cpp" />
     <ClCompile Include="..\Private\Bush01.cpp" />
@@ -395,6 +410,7 @@
     <ClCompile Include="..\private\CraterA.cpp" />
     <ClCompile Include="..\private\CraterB.cpp" />
     <ClCompile Include="..\private\CraterC.cpp" />
+    <ClCompile Include="..\private\EnemyBasicBullet.cpp" />
     <ClCompile Include="..\Private\ImGuiFileDialog.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>

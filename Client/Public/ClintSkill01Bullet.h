@@ -48,6 +48,11 @@ private:
 	HRESULT SetUp_ShaderResources();
 
 private:
+	CRenderer* m_pRendererCom = { nullptr };
+	CTransform* m_pTransformCom = { nullptr };
+	CCollider* m_pColliderCom = { nullptr };
+
+private:
 	static _uint ClintBasicBullet_Id;
 
 public:

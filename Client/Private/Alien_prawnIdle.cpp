@@ -35,7 +35,7 @@ void Alien_prawnIdle::OnStateTick(_double TimeDelta)
 	
 	if (m_TimeAcc >= 2.0)
 	{
-		m_pStateContext->TransitionTo(L"Alien_prawnRun");
+		TransitionTo(L"Alien_prawnRun");
 	}
 
 	Safe_Release(pGameInstance);

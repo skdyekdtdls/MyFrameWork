@@ -3,6 +3,10 @@
 #include "Client_Defines.h"
 #include "StateMachine.h"
 
+BEGIN(End)
+class TimeCounter;
+END
+
 BEGIN(Client)
 class Alien_prawn;
 class Alien_prawnIdle final : public StateMachine<Alien_prawn, ALIEN_PRAWN_ANIM>
@@ -19,6 +23,7 @@ public:
 
 	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
 
+	virtual const _tchar* GetTag() override { return Tag(); }
 private:
 	_double m_TimeAcc = { 0.0 };
 

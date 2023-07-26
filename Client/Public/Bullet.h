@@ -18,12 +18,12 @@ END
 
 BEGIN(Client)
 class Bullet abstract : public CGameObject
-
 {
 public:
 	typedef struct tagBulletDesc : public tagCGameObjectDesc
 	{
 		tagBulletDesc() : tagCGameObjectDesc() {}
+		_float fDamage;
 	}CLINT_BASIC_BULLET_DESC;
 
 protected:
@@ -38,7 +38,10 @@ public:
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
 
-protected:
+public: // Setter
+	void Enable() { m_bEnable = true; }
+	void Disable() { m_bEnable = false; }
+
 	void Damage(CGameObject* pGameObejct);
 	_bool isMonsterLayer(wstring ObjectName) {
 		return ObjectName == L"Layer_Monster";
@@ -47,20 +50,8 @@ protected:
 	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
 
 protected:
-	_double m_LifeSpan = { 1.0 };
-	_double m_TimeAcc = { 0.0 };
 	_float	m_fDamage = { 100.f };
-
-protected: /* For. Component */
-//CShader* m_pShaderCom = { nullptr };
-	CRenderer* m_pRendererCom = { nullptr };
-	CTransform* m_pTransformCom = { nullptr };
-	CColliderSphere* m_pColliderCom = { nullptr };
-
-private:
-	void LifeSpan(_double TimeDelta);
-	HRESULT Add_Components();
-	HRESULT SetUp_ShaderResources();
+	_bool	m_bEnable = { true };
 
 public:
 	virtual void Free(void) override;

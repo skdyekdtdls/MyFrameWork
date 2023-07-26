@@ -77,7 +77,7 @@ HRESULT ClintSkill01Bullet::Render()
 	//	m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
 
 	//	m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
-	//	// m_pModelCom->Bind_Material(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS);
+	//	
 
 	//	m_pShaderCom->Begin(0);
 
@@ -97,6 +97,13 @@ HRESULT ClintSkill01Bullet::Add_Components()
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 	LEVELID eLevelID = static_cast<LEVELID>(pGameInstance->Get_NextLevelIndex());
+
+	CRenderer::CRENDERER_DESC tRendererDesc; tRendererDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom, &tRendererDesc), E_FAIL);
+
+	CTransform::CTRANSFORM_DESC TransformDesc{ 20.0, XMConvertToRadians(720.f) }; TransformDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
+		, &TransformDesc), E_FAIL);
 
 	CShader::CSHADER_DESC tShaderDesc; tShaderDesc.pOwner = this;
 	//FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxMesh*/", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
@@ -150,6 +157,9 @@ void ClintSkill01Bullet::Free(void)
 	--ClintBasicBullet_Id;
 	//Safe_Release(m_pShaderCom);
 	//Safe_Release(m_pModelCom);
+	Safe_Release(m_pRendererCom);
+	Safe_Release(m_pTransformCom);
+	Safe_Release(m_pColliderCom);
 
 }
 

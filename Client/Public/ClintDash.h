@@ -16,6 +16,7 @@ public:
 	virtual void OnStateTick(_double TimeDelta) override;
 	virtual void OnStateExit() override;
 
+	virtual const _tchar* GetTag() override { return Tag(); }
 private:
 	void SetDashDir(class CModel* pModel, class CTransform* pTransform);
 

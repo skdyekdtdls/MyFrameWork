@@ -3,7 +3,6 @@
 
 #include "Client_Defines.h"
 #include "Bullet.h"
-#include "ISerializable.h"
 BEGIN(Engine)
 
 class CShader;
@@ -13,6 +12,7 @@ class CTransform;
 class CCollider;
 class CNavigation;
 class CModel;
+class TimeCounter;
 // Can declare VIBuffer or Model Com
 END
 
@@ -39,16 +39,20 @@ public:
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
 
+public:
+	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
+
 private: /* For. Component */
 	//CShader* m_pShaderCom = { nullptr };
 	//CModel* m_pModelCom = { nullptr };
+	CRenderer* m_pRendererCom = { nullptr };
+	CTransform* m_pTransformCom = { nullptr };
+	CCollider* m_pColliderCom = { nullptr };
+	TimeCounter* m_pTimeCounterCom = { nullptr };
 
 private:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();
-
-public:
-	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
 
 private:
 	static _uint ClintBasicBullet_Id;

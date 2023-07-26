@@ -17,6 +17,7 @@ public:
 	virtual void OnStateTick(_double TimeDelta) override;
 	virtual void OnStateExit() override;
 
+	virtual const _tchar* GetTag() override { return Tag(); }
 private:
 	_int iAttackIndex = { 0 };
 private:

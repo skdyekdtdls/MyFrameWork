@@ -68,7 +68,6 @@ HRESULT Clint::Initialize(void* pArg)
 	// 모델 재생속도 조정
 	m_pModelCom->SetAnimationPlaySpeedByIndex(1.5, CLINT_ULTIMATE01, LOWER);
 	m_pModelCom->SetAnimationPlaySpeedByIndex(1.5, CLINT_ULTIMATE01, UPPER);
-	
 
 	// 총쏘기 지속시간을 조정.
 	CAnimation* pAnimation;
@@ -154,7 +153,6 @@ HRESULT Clint::Render()
 		m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
 
 		m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
-		//m_pModelCom->Bind_Material(m_pShaderCom, "g_NormalTexture", i, TextureType_NORMALS);
 
 		m_pShaderCom->Begin(0);
 
@@ -231,6 +229,7 @@ HRESULT Clint::Add_Components()
 	
 	ClintUltimate01Bullet::CLINT_BASIC_BULLET_DESC tUltBulletDesc;
 	tUltBulletDesc.pOwner = this;
+	tUltBulletDesc.fDamage = 300.f;
 	XMStoreFloat4(&tUltBulletDesc.vPosition, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 	FAILED_CHECK_RETURN(__super::Add_Composite(ClintUltimate01Bullet::ProtoTag(), L"Com_UltBullet", (CComponent**)&m_pUltBulletCom, &tUltBulletDesc), E_FAIL);
 

@@ -55,6 +55,7 @@
 #include "Alien_prawnRun.h"
 #include "Alien_prawnAttack.h"
 #include "Alien_prawnDead.h"
+#include "Alien_prawnHit.h"
 #include "ClintBasicBullet.h"
 #include "ClintUltimate01Bullet.h"
 #include "VIBuffer_Cube.h"
@@ -84,6 +85,12 @@
 #include "SM_Barriletes.h"
 #include "LargeVolcanicRock_002_Red_Desert.h"
 
+#include "BatPotato_RIG.h"
+#include "BatPotato_RIGAttack.h"
+#include "BatPotato_RIGDeath.h"
+#include "BatPotato_RIGHit.h"
+#include "BatPotato_RIGIdle.h"
+#include "BatPotato_RIGRun.h"
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext)
 	: m_pDevice(pDevice)
 	, m_pContext(pDeviceContext)
@@ -274,7 +281,6 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Cube::ProtoTag(),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext)), E_FAIL);
 
-
 	CVIBuffer_Rect_Instance::INSTANCEDESC tVIBufferRectInstanceDesc;
 	ZeroStruct(tVIBufferRectInstanceDesc);
 	tVIBufferRectInstanceDesc.vRange = _float3(10.f, 4.f, 10.f); tVIBufferRectInstanceDesc.vSpeed = _uint2(2, 10);
@@ -301,14 +307,190 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
 		, TEXT("Prototype_Component_Model_Clint"), pModel), E_FAIL);
 
-	cout << "--- Alien_prawn ---" << endl;
+	cout << "--- Alien_prawn1 ---" << endl;
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix, 2); pModel->LoadAssimp("Alien_prawn.dat");
-	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/Alien_prawn/Animation.myanim"));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix, 2); pModel->LoadAssimp("Alien_prawn1.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/Alien_prawn1/Animation.myanim"));
 	upper.clear(); lower.clear();
 	pModel->GroupingBones(upper, lower);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
-		, TEXT("Prototype_Component_Model_Alien_prawn"), pModel), E_FAIL);
+		, TEXT("Prototype_Component_Model_Alien_prawn1"), pModel), E_FAIL);
+
+	cout << "--- Alien_prawn2 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Alien_prawn2.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/Alien_prawn1/Animation.myanim"));
+	upper.clear(); lower.clear();
+	pModel->GroupingBones(upper, lower);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_Alien_prawn2"), pModel), E_FAIL);
+
+	cout << "--- Alien_prawn3 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Alien_prawn3.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/Alien_prawn1/Animation.myanim"));
+	upper.clear(); lower.clear();
+	pModel->GroupingBones(upper, lower);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_Alien_prawn3"), pModel), E_FAIL);
+
+	cout << "--- Alien_prawnCharger ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Alien_prawnCharger1.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/Alien_prawn1/Animation.myanim"));
+	upper.clear(); lower.clear();
+	pModel->GroupingBones(upper, lower);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_Alien_prawnCharger1"), pModel), E_FAIL);
+
+	cout << "--- Alien_prawnCharger2 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Alien_prawnCharger2.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/Alien_prawn1/Animation.myanim"));
+	upper.clear(); lower.clear();
+	pModel->GroupingBones(upper, lower);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_Alien_prawnCharger2"), pModel), E_FAIL);
+
+
+	cout << "--- BatPotato_RIG1 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("BatPotato_RIG1.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/BatPotato_RIG1/Animation.myanim"));
+	upper.clear(); lower.clear();
+	pModel->GroupingBones(upper, lower);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_BatPotato_RIG1"), pModel), E_FAIL);
+
+	cout << "--- BatPotato_RIG2 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("BatPotato_RIG2.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/BatPotato_RIG1/Animation.myanim"));
+	upper.clear(); lower.clear();
+	pModel->GroupingBones(upper, lower);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_BatPotato_RIG2"), pModel), E_FAIL);
+
+	/*
+	cout << "--- CannonSpider ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("CannonSpider.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/CannonSpider/Animation.myanim"));
+	upper.clear(); lower.clear();
+	pModel->GroupingBones(upper, lower);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_CannonSpider"), pModel), E_FAIL);
+
+
+	cout << "--- CrystalGolem ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("CrystalGolem.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/CrystalGolem/Animation.myanim"));
+	upper.clear(); lower.clear();
+	pModel->GroupingBones(upper, lower);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_CrystalGolem"), pModel), E_FAIL);
+
+
+	cout << "--- Kemmeth_Bird ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Kemmeth_Bird.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/Kemmeth_Bird/Animation.myanim"));
+	upper.clear(); lower.clear();
+	pModel->GroupingBones(upper, lower);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_Kemmeth_Bird"), pModel), E_FAIL);
+
+
+	cout << "--- MicroSpider1 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("MicroSpider1.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/MicroSpider/Animation.myanim"));
+	upper.clear(); lower.clear();
+	pModel->GroupingBones(upper, lower);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_MicroSpider1"), pModel), E_FAIL);
+
+
+	cout << "--- MicroSpider2 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("MicroSpider2.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/MicroSpider/Animation.myanim"));
+	upper.clear(); lower.clear();
+	pModel->GroupingBones(upper, lower);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_MicroSpider2"), pModel), E_FAIL);
+
+	cout << "--- Queen_Moggoth_Rig ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Queen_Moggoth_Rig.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/Queen_Moggoth_Rig/Animation.myanim"));
+	upper.clear(); lower.clear();
+	pModel->GroupingBones(upper, lower);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_Queen_Moggoth_Rig"), pModel), E_FAIL);
+
+
+	cout << "--- Spider1 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Spider1.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/Spider/Animation.myanim"));
+	upper.clear(); lower.clear();
+	pModel->GroupingBones(upper, lower);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_Spider1"), pModel), E_FAIL);
+
+
+	cout << "--- Spider2 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Spider2.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/Spider/Animation.myanim"));
+	upper.clear(); lower.clear();
+	pModel->GroupingBones(upper, lower);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_Spider2"), pModel), E_FAIL);
+
+
+
+	cout << "--- Spider2 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Spider2.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/Spider/Animation.myanim"));
+	upper.clear(); lower.clear();
+	pModel->GroupingBones(upper, lower);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_Spider2"), pModel), E_FAIL);
+
+
+	cout << "--- Spider3 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Spider3.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/Spider/Animation.myanim"));
+	upper.clear(); lower.clear();
+	pModel->GroupingBones(upper, lower);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_Spider3"), pModel), E_FAIL);
+
+
+	cout << "--- SummonSpider1 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SummonSpider1.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/SummonSpider/Animation.myanim"));
+	upper.clear(); lower.clear();
+	pModel->GroupingBones(upper, lower);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SummonSpider1"), pModel), E_FAIL);
+
+
+	cout << "--- SummonSpider2 ---" << endl;
+	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SummonSpider2.dat");
+	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/SummonSpider/Animation.myanim"));
+	upper.clear(); lower.clear();
+	pModel->GroupingBones(upper, lower);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
+		, TEXT("Prototype_Component_Model_SummonSpider2"), pModel), E_FAIL);*/
+
 
 	// Static_Meshes
 
@@ -646,9 +828,10 @@ HRESULT CLoader::Loading_For_IMGUI()
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_Navigation.hlsl")
 			, VTXPOS_DECL::Elements, VTXPOS_DECL::iNumElements)), E_FAIL);
 
+	Set_LoadingText(L"상태 로딩 중");
+
 	cout << "Clint States" << endl;
 	StateContext<Clint, CLINT_ANIM>* pClintState;
-	Set_LoadingText(L"상태 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_ClintState"),
 		pClintState = StateContext<Clint, CLINT_ANIM>::Create(m_pDevice, m_pContext)), E_FAIL);
 	pClintState->Add_State(ClintIdle::Tag(), ClintIdle::Create(m_pDevice, m_pContext));
@@ -661,13 +844,23 @@ HRESULT CLoader::Loading_For_IMGUI()
 
 	cout << "Alien_prawn States" << endl;
 	StateContext<Alien_prawn, ALIEN_PRAWN_ANIM>* pAlienPrawnState;
-	Set_LoadingText(L"상태 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_AlienPrawnState"),
 		pAlienPrawnState = StateContext<Alien_prawn, ALIEN_PRAWN_ANIM>::Create(m_pDevice, m_pContext)), E_FAIL);
 	pAlienPrawnState->Add_State(Alien_prawnIdle::Tag(), Alien_prawnIdle::Create(m_pDevice, m_pContext));
 	pAlienPrawnState->Add_State(Alien_prawnRun::Tag(), Alien_prawnRun::Create(m_pDevice, m_pContext));
 	pAlienPrawnState->Add_State(Alien_prawnAttack::Tag(), Alien_prawnAttack::Create(m_pDevice, m_pContext));
 	pAlienPrawnState->Add_State(Alien_prawnDead::Tag(), Alien_prawnDead::Create(m_pDevice, m_pContext));
+	pAlienPrawnState->Add_State(Alien_prawnHit::Tag(), Alien_prawnHit::Create(m_pDevice, m_pContext));
+
+	cout << "BatPotato_RIG States" << endl;
+	StateContext<BatPotato_RIG, BATPOTATO_RIG_ANIM>* pBatPotatoState;
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_BatPotatoRIGState"),
+		pBatPotatoState = StateContext<BatPotato_RIG, BATPOTATO_RIG_ANIM>::Create(m_pDevice, m_pContext)), E_FAIL);
+	pBatPotatoState->Add_State(BatPotato_RIGAttack::Tag(), BatPotato_RIGAttack::Create(m_pDevice, m_pContext));
+	pBatPotatoState->Add_State(BatPotato_RIGDeath::Tag(), BatPotato_RIGDeath::Create(m_pDevice, m_pContext));
+	pBatPotatoState->Add_State(BatPotato_RIGHit::Tag(), BatPotato_RIGHit::Create(m_pDevice, m_pContext));
+	pBatPotatoState->Add_State(BatPotato_RIGIdle::Tag(), BatPotato_RIGIdle::Create(m_pDevice, m_pContext));
+	pBatPotatoState->Add_State(BatPotato_RIGRun::Tag(), BatPotato_RIGRun::Create(m_pDevice, m_pContext));
 
 	Set_LoadingText(L"잡다한거 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, Health::ProtoTag(),
@@ -733,6 +926,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(ClintUltimate01Bullet::ProtoTag(), ClintUltimate01Bullet::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Pistola::ProtoTag(), Pistola::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Alien_prawn::ProtoTag(), Alien_prawn::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BatPotato_RIG::ProtoTag(), BatPotato_RIG::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	Set_LoadingText(L"로딩 완료");
 

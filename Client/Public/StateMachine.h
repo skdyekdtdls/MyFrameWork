@@ -64,6 +64,8 @@ public:
 		m_pStateContext->TransitionTo(pTag);
 	}
 
+	virtual const _tchar* GetTag() = 0;
+
 	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta) {};
 
 protected:

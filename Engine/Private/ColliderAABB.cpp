@@ -43,7 +43,7 @@ HRESULT CColliderAABB::Initialize(void* pArg)
 void CColliderAABB::Tick(_fmatrix TransformMatrix)
 {
 	__super::Tick(TransformMatrix);
-	
+
 	m_pBoundingBox_Origin->Transform(*m_pBoundingBox, Remove_Rotation(TransformMatrix));
 }
 
@@ -66,17 +66,16 @@ _bool CColliderAABB::Intersect(CCollider* pOtherCollider, COLLISION_INFO& Collis
 		if (!XMVector4Equal(vRayDir, XMVectorZero()))
 		{
 			m_isColl = m_pBoundingBox->Intersects(pRaycast->GetRayOrigin(), vRayDir, fLength);
-				if (m_isColl)
-				{
-					if (fLength >= pRaycast->GetLength())
-						m_isColl = false;
-				}
+			if (m_isColl)
+			{
+				if (fLength >= pRaycast->GetLength())
+					m_isColl = false;
+			}
 		}
 	}
 	break;
 	}
 
-	pOtherCollider->SetIsColl(m_isColl);
 	return m_isColl;
 }
 

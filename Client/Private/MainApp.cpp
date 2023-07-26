@@ -121,8 +121,6 @@ HRESULT CMainApp::Ready_Prototype_Component_For_Static()
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/ShaderFiles/Shader_VtxTexInstance.hlsl")
 			, VTXRECTINSTANCE_DECL::Elements, VTXRECTINSTANCE_DECL::iNumElements)), E_FAIL);
 
-
-
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, CVIBuffer_Rect::ProtoTag(),
 		CVIBuffer_Rect::Create(m_pDevice, m_pContext)), E_FAIL);
 
@@ -140,6 +138,9 @@ HRESULT CMainApp::Ready_Prototype_Component_For_Static()
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, Raycast::ProtoTag(),
 		Raycast::Create(m_pDevice, m_pContext)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TimeCounter::ProtoTag(),
+		TimeCounter::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	Safe_AddRef(m_pRenderer);
 

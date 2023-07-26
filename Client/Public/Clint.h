@@ -15,6 +15,7 @@ class CCollider;
 class CNavigation;
 class Raycast;
 class Health;
+class TimeCounter;
 END
 
 BEGIN(Client)
@@ -68,7 +69,6 @@ private: /* For. Component */
 	ClintUltimate01Bullet* m_pUltBulletCom = { nullptr };
 	ClintState* m_pStateContextCom = { nullptr };
 	Health* m_pHealthCom = { nullptr };
-
 private:
 	static _uint Clint_Id;
 

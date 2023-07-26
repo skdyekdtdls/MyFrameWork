@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "Alien_prawnIdle.h"
 #include "StateContext.h"
+#include "Bullet.h"
 _uint Alien_prawn::Alien_prawn_Id = 0;
 
 /* Don't Forget Release for the VIBuffer or Model Component*/
@@ -51,7 +52,7 @@ HRESULT Alien_prawn::Initialize(void* pArg)
 void Alien_prawn::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
-	m_pHealthCom->CoutHp();
+	
 	m_pModelCom->Play_Animation(TimeDelta);
 	if (nullptr != m_pStateContextCom)
 		m_pStateContextCom->Tick(TimeDelta);
@@ -63,6 +64,7 @@ void Alien_prawn::Tick(_double TimeDelta)
 	}
 	if (nullptr != m_pColliderCom)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
+
 	if (nullptr != m_pRaycastCom)
 	{
 		m_pRaycastCom->Tick(m_pTransformCom->Get_State(CTransform::STATE_POSITION),
@@ -72,18 +74,21 @@ void Alien_prawn::Tick(_double TimeDelta)
 
 void Alien_prawn::Late_Tick(_double TimeDelta)
 {
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
-
 	__super::Late_Tick(TimeDelta);
 
-	if (pGameInstance->isIn_WorldSpace(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f))
+	if (Facade->isRender(m_pRendererCom, m_pTransformCom))
 	{
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
-		m_pColliderCom->Add_ColliderGroup(COLL_GROUP::MONSTER_BODY);
-	}
 
-	Safe_Release(pGameInstance);
+		// Dead상태가 아니면 콜라이더 넣음
+		if (0 != lstrcmp(L"Alien_prawnDead", m_pStateContextCom->GetCurState()))
+			m_pColliderCom->Add_ColliderGroup(COLL_GROUP::MONSTER_BODY);
+	}
+#ifdef _DEBUG
+	if (nullptr != m_pColliderCom)
+		m_pRendererCom->Add_DebugGroup(m_pColliderCom);
+	m_pRendererCom->Add_DebugGroup(m_pRaycastCom);
+#endif
 }
 
 HRESULT Alien_prawn::Render()
@@ -100,28 +105,22 @@ HRESULT Alien_prawn::Render()
 	{
 		m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
 
-		m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
-		// m_pModelCom->Bind_Material(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS);
+		FAILED_CHECK_RETURN(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE), E_FAIL);
 
 		m_pShaderCom->Begin(0);
 
 		m_pModelCom->Render(i);
 	}
-
-#ifdef _DEBUG
-	 if (nullptr != m_pColliderCom)
-		m_pColliderCom->Render();
-	 if (nullptr != m_pRaycastCom)
-		m_pRaycastCom->Render();
-#endif
 }
 
 void Alien_prawn::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
-	if (L"Prototype_GameObject_Pistola" == tCollisionInfo.pOtherGameObject->GetInfo().wstrKey)
+	// 총알은 피스톨라가 가지고 있어서 레이어가 없다..
+	if (dynamic_cast<Bullet*>(tCollisionInfo.pOtherGameObject))
 	{
-		m_pStateContextCom->TransitionTo(TEXT("Alien_prawnDead"));
+		m_pStateContextCom->TransitionTo(TEXT("Alien_prawnHit"));
 	}
+
 	// 바디콜라이더 끼리 부딪친 경우.
 	if (tCollisionInfo.MyCollName == TEXT("Com_BodyColl")
 		&& tCollisionInfo.OtherCollName == TEXT("Com_BodyColl")
@@ -152,10 +151,8 @@ HRESULT Alien_prawn::Add_Components()
 	Safe_AddRef(pGameInstance);
 	LEVELID eLevelID = static_cast<LEVELID>(pGameInstance->Get_NextLevelIndex());
 
-	/* For.Com_Renderer */
 	CRenderer::CRENDERER_DESC tRendererDesc; tRendererDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom, &tRendererDesc), E_FAIL);
-	// no texture now, you have to add texture later
 
 	CTransform::CTRANSFORM_DESC TransformDesc{ 7.0, XMConvertToRadians(720.f) }; TransformDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
@@ -165,7 +162,20 @@ HRESULT Alien_prawn::Add_Components()
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxAnimMesh", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
 
 	CModel::CMODEL_DESC tModelDesc; tModelDesc.pOwner = this;
-	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Alien_prawn", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+
+	_uint iRand = rand() % 3;
+	switch (iRand)
+	{
+	case 0:
+		FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Alien_prawnCharger1", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+		break;
+	case 1:
+		FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Alien_prawnCharger2", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+		break;
+	case 2:
+		FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Alien_prawnCharger3", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+		break;
+	}
 
 	CColliderAABB::CCOLLIDER_AABB_DESC tColliderAABBDesc;
 	tColliderAABBDesc.pOwner = this;
