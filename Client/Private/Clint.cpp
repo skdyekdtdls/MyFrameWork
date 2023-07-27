@@ -62,6 +62,7 @@ HRESULT Clint::Initialize(void* pArg)
 		m_pPistolaComR->Attack(GetLook());
 		}), UPPER);
 
+	// 상태 초기화
 	if(nullptr != m_pStateContextCom)
 		m_pStateContextCom->TransitionTo(L"ClintIdle");
 

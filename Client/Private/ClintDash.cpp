@@ -40,7 +40,7 @@ void ClintDash::OnStateTick(_double TimeDelta)
 
 	if (pModel->IsAnimationFinished(LOWER))
 	{
-		m_pStateContext->TransitionTo(L"ClintIdle");
+		TransitionTo(L"ClintIdle");
 	}
 
 	pModel->RootMotion(TimeDelta, pTransform->GetCurDirection());

@@ -1,21 +1,21 @@
-#include "ClintBasicBullet.h"
+#include "BatPotato_RIGBullet.h"
 #include "GameInstance.h"
 
-_uint ClintBasicBullet::ClintBasicBullet_Id = 0;
+_uint BatPotato_RIGBullet::BatPotato_RIGBullet_Id = 0;
 
 /* Don't Forget Release for the VIBuffer or Model Component*/
 
-ClintBasicBullet::ClintBasicBullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+BatPotato_RIGBullet::BatPotato_RIGBullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: Bullet(pDevice, pContext)
 {
 }
 
-ClintBasicBullet::ClintBasicBullet(const ClintBasicBullet& rhs)
+BatPotato_RIGBullet::BatPotato_RIGBullet(const BatPotato_RIGBullet& rhs)
 	: Bullet(rhs)
 {
 }
 
-HRESULT ClintBasicBullet::Initialize_Prototype()
+HRESULT BatPotato_RIGBullet::Initialize_Prototype()
 {
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
@@ -23,7 +23,8 @@ HRESULT ClintBasicBullet::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT ClintBasicBullet::Initialize(void* pArg)
+
+HRESULT BatPotato_RIGBullet::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -31,55 +32,63 @@ HRESULT ClintBasicBullet::Initialize(void* pArg)
 	if (FAILED(Add_Components()))
 		return E_FAIL;
 
-	++ClintBasicBullet_Id;
-	m_tInfo.wstrName = TO_WSTR("ClintBasicBullet" + to_string(ClintBasicBullet_Id));
+	++BatPotato_RIGBullet_Id;
+	m_tInfo.wstrName = TO_WSTR("BatPotato_RIGBullet" + to_string(BatPotato_RIGBullet_Id));
 	m_tInfo.wstrKey = ProtoTag();
-	m_tInfo.ID = ClintBasicBullet_Id;
+	m_tInfo.ID = BatPotato_RIGBullet_Id;
 
-	CLINT_BASIC_BULLET_DESC tClintBasicBulletDesc;
+	tagBatPotato_RIGBulletDesc tBatPotato_RIGBulletDesc;
 	if (nullptr != pArg)
-		tClintBasicBulletDesc = *(CLINT_BASIC_BULLET_DESC*)pArg;
-	m_pTransformCom->Set_State(CTransform::STATE_LOOK, tClintBasicBulletDesc.vLook);
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tClintBasicBulletDesc.vPosition));
-	
-	m_pTimeCounterCom->Enable();
+		tBatPotato_RIGBulletDesc = *(tagBatPotato_RIGBulletDesc*)pArg;
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tBatPotato_RIGBulletDesc.vPosition));
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, tBatPotato_RIGBulletDesc.vLook);
 
+	m_pTimeCounterCom->Reset();
+	m_pTimeCounterCom->DisEnable();
+	m_bEnable = false;
 	return S_OK;
 }
 
-void ClintBasicBullet::Tick(_double TimeDelta)
+void BatPotato_RIGBullet::Tick(_double TimeDelta)
 {
+	if (false == m_bEnable)
+		return;
+
 	__super::Tick(TimeDelta);
+	
 	m_pTimeCounterCom->Tick(TimeDelta);
 
 	// ¼ö¸í
 	if (m_pTimeCounterCom->isEuqalWith(1.0))
-		__super::SetDead();
+		m_bEnable = false;
 
 	m_pTransformCom->Go_Straight(TimeDelta);
 
 	if (nullptr != m_pColliderCom)
 	{
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
-		m_pColliderCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BULLET);
+		m_pColliderCom->Add_ColliderGroup(COLL_GROUP::MONSTER_BULLET);
 	}
 
 	// 	m_pModelCom->Play_Animation(TimeDelta);
 }
 
-void ClintBasicBullet::Late_Tick(_double TimeDelta)
+void BatPotato_RIGBullet::Late_Tick(_double TimeDelta)
 {
+	if (false == m_bEnable)
+		return;
+
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
 	__super::Late_Tick(TimeDelta);
-	
+
 	m_pRendererCom->Add_DebugGroup(m_pColliderCom);
-	
+
 	Safe_Release(pGameInstance);
 }
 
-HRESULT ClintBasicBullet::Render()
+HRESULT BatPotato_RIGBullet::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
@@ -109,7 +118,7 @@ HRESULT ClintBasicBullet::Render()
 #endif
 }
 
-HRESULT ClintBasicBullet::Add_Components()
+HRESULT BatPotato_RIGBullet::Add_Components()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
@@ -126,12 +135,12 @@ HRESULT ClintBasicBullet::Add_Components()
 	//FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxMesh*/", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
 
 	CModel::CMODEL_DESC tModelDesc; tModelDesc.pOwner = this;
-	//FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, /*L"Prototype_Component_Model_", L"Com_Model"*/, (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+	//FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_VtxAnimMesh", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
 
 	CColliderSphere::CCOLLIDER_SPHERE_DESC tColliderSphereDesc;
 	tColliderSphereDesc.pOwner = this;
 	tColliderSphereDesc.fRadius = { 0.2f };
-	tColliderSphereDesc.vCenter = _float3(0.0f, 0.f, 0.f);
+	tColliderSphereDesc.vCenter = _float3(0.0f, 1.f, 0.f);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CColliderSphere::ProtoTag(), L"Com_BodyColl", (CComponent**)&m_pColliderCom, &tColliderSphereDesc), E_FAIL);
 
 	TimeCounter::TIME_COUNTER_DESC tTimeCounterDesc;
@@ -142,7 +151,7 @@ HRESULT ClintBasicBullet::Add_Components()
 	return S_OK;
 }
 
-HRESULT ClintBasicBullet::SetUp_ShaderResources()
+HRESULT BatPotato_RIGBullet::SetUp_ShaderResources()
 {
 	_float4x4 MyMatrix = m_pTransformCom->Get_WorldFloat4x4();
 	//FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &MyMatrix), E_FAIL);
@@ -161,7 +170,15 @@ HRESULT ClintBasicBullet::SetUp_ShaderResources()
 	return S_OK;
 }
 
-void ClintBasicBullet::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
+void BatPotato_RIGBullet::Ready(_fvector vLook, _fvector vPosition)
+{
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPosition);
+	m_pTimeCounterCom->Reset();
+	m_pTimeCounterCom->Enable();
+}
+
+void BatPotato_RIGBullet::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
 	if (__super::isMonsterLayer(tCollisionInfo.OtherGameObjectLayerName))
 	{
@@ -170,35 +187,35 @@ void ClintBasicBullet::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _do
 	}
 }
 
-ClintBasicBullet* ClintBasicBullet::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+BatPotato_RIGBullet* BatPotato_RIGBullet::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	ClintBasicBullet* pInstance = new ClintBasicBullet(pDevice, pContext);
+	BatPotato_RIGBullet* pInstance = new BatPotato_RIGBullet(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created ClintBasicBullet");
+		MSG_BOX("Failed to Created BatPotato_RIGBullet");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-Bullet* ClintBasicBullet::Clone(void* pArg)
+Bullet* BatPotato_RIGBullet::Clone(void* pArg)
 {
-	ClintBasicBullet* pInstance = new ClintBasicBullet(*this);
+	BatPotato_RIGBullet* pInstance = new BatPotato_RIGBullet(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned ClintBasicBullet");
+		MSG_BOX("Failed to Cloned BatPotato_RIGBullet");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-void ClintBasicBullet::Free(void)
+void BatPotato_RIGBullet::Free(void)
 {
 	__super::Free();
 
-	--ClintBasicBullet_Id;
+	--BatPotato_RIGBullet_Id;
 	//Safe_Release(m_pShaderCom);
 	//Safe_Release(m_pModelCom);
 	Safe_Release(m_pRendererCom);

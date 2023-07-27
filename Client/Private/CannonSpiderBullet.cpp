@@ -1,21 +1,19 @@
-#include "ClintBasicBullet.h"
+#include "CannonSpiderBullet.h"
 #include "GameInstance.h"
 
-_uint ClintBasicBullet::ClintBasicBullet_Id = 0;
+_uint CannonSpiderBullet::CannonSpiderBullet_Id = 0;
 
-/* Don't Forget Release for the VIBuffer or Model Component*/
-
-ClintBasicBullet::ClintBasicBullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CannonSpiderBullet::CannonSpiderBullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: Bullet(pDevice, pContext)
 {
 }
 
-ClintBasicBullet::ClintBasicBullet(const ClintBasicBullet& rhs)
+CannonSpiderBullet::CannonSpiderBullet(const CannonSpiderBullet& rhs)
 	: Bullet(rhs)
 {
 }
 
-HRESULT ClintBasicBullet::Initialize_Prototype()
+HRESULT CannonSpiderBullet::Initialize_Prototype()
 {
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
@@ -23,7 +21,7 @@ HRESULT ClintBasicBullet::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT ClintBasicBullet::Initialize(void* pArg)
+HRESULT CannonSpiderBullet::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -31,23 +29,22 @@ HRESULT ClintBasicBullet::Initialize(void* pArg)
 	if (FAILED(Add_Components()))
 		return E_FAIL;
 
-	++ClintBasicBullet_Id;
-	m_tInfo.wstrName = TO_WSTR("ClintBasicBullet" + to_string(ClintBasicBullet_Id));
+	++CannonSpiderBullet_Id;
+	m_tInfo.wstrName = TO_WSTR("CannonSpiderBullet" + to_string(CannonSpiderBullet_Id));
 	m_tInfo.wstrKey = ProtoTag();
-	m_tInfo.ID = ClintBasicBullet_Id;
+	m_tInfo.ID = CannonSpiderBullet_Id;
 
-	CLINT_BASIC_BULLET_DESC tClintBasicBulletDesc;
+	tagCannonSpiderBulletDesc tCannonSpiderBulletDesc;
 	if (nullptr != pArg)
-		tClintBasicBulletDesc = *(CLINT_BASIC_BULLET_DESC*)pArg;
-	m_pTransformCom->Set_State(CTransform::STATE_LOOK, tClintBasicBulletDesc.vLook);
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tClintBasicBulletDesc.vPosition));
-	
+		tCannonSpiderBulletDesc = *(tagCannonSpiderBulletDesc*)pArg;
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCannonSpiderBulletDesc.vPosition));
+
 	m_pTimeCounterCom->Enable();
 
 	return S_OK;
 }
 
-void ClintBasicBullet::Tick(_double TimeDelta)
+void CannonSpiderBullet::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
 	m_pTimeCounterCom->Tick(TimeDelta);
@@ -61,25 +58,25 @@ void ClintBasicBullet::Tick(_double TimeDelta)
 	if (nullptr != m_pColliderCom)
 	{
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
-		m_pColliderCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BULLET);
+		m_pColliderCom->Add_ColliderGroup(COLL_GROUP::MONSTER_BULLET);
 	}
 
 	// 	m_pModelCom->Play_Animation(TimeDelta);
 }
 
-void ClintBasicBullet::Late_Tick(_double TimeDelta)
+void CannonSpiderBullet::Late_Tick(_double TimeDelta)
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
 	__super::Late_Tick(TimeDelta);
-	
+
 	m_pRendererCom->Add_DebugGroup(m_pColliderCom);
-	
+
 	Safe_Release(pGameInstance);
 }
 
-HRESULT ClintBasicBullet::Render()
+HRESULT CannonSpiderBullet::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
@@ -109,7 +106,7 @@ HRESULT ClintBasicBullet::Render()
 #endif
 }
 
-HRESULT ClintBasicBullet::Add_Components()
+HRESULT CannonSpiderBullet::Add_Components()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
@@ -126,7 +123,7 @@ HRESULT ClintBasicBullet::Add_Components()
 	//FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxMesh*/", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
 
 	CModel::CMODEL_DESC tModelDesc; tModelDesc.pOwner = this;
-	//FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, /*L"Prototype_Component_Model_", L"Com_Model"*/, (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+	//FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_VtxAnimMesh", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
 
 	CColliderSphere::CCOLLIDER_SPHERE_DESC tColliderSphereDesc;
 	tColliderSphereDesc.pOwner = this;
@@ -138,11 +135,12 @@ HRESULT ClintBasicBullet::Add_Components()
 	tTimeCounterDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, TimeCounter::ProtoTag(), L"Com_TimeCounter", (CComponent**)&m_pTimeCounterCom, &tTimeCounterDesc), E_FAIL);
 
+
 	Safe_Release(pGameInstance);
 	return S_OK;
 }
 
-HRESULT ClintBasicBullet::SetUp_ShaderResources()
+HRESULT CannonSpiderBullet::SetUp_ShaderResources()
 {
 	_float4x4 MyMatrix = m_pTransformCom->Get_WorldFloat4x4();
 	//FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &MyMatrix), E_FAIL);
@@ -161,7 +159,7 @@ HRESULT ClintBasicBullet::SetUp_ShaderResources()
 	return S_OK;
 }
 
-void ClintBasicBullet::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
+void CannonSpiderBullet::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
 	if (__super::isMonsterLayer(tCollisionInfo.OtherGameObjectLayerName))
 	{
@@ -170,35 +168,35 @@ void ClintBasicBullet::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _do
 	}
 }
 
-ClintBasicBullet* ClintBasicBullet::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CannonSpiderBullet* CannonSpiderBullet::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	ClintBasicBullet* pInstance = new ClintBasicBullet(pDevice, pContext);
+	CannonSpiderBullet* pInstance = new CannonSpiderBullet(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created ClintBasicBullet");
+		MSG_BOX("Failed to Created CannonSpiderBullet");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-Bullet* ClintBasicBullet::Clone(void* pArg)
+Bullet* CannonSpiderBullet::Clone(void* pArg)
 {
-	ClintBasicBullet* pInstance = new ClintBasicBullet(*this);
+	CannonSpiderBullet* pInstance = new CannonSpiderBullet(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned ClintBasicBullet");
+		MSG_BOX("Failed to Cloned CannonSpiderBullet");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-void ClintBasicBullet::Free(void)
+void CannonSpiderBullet::Free(void)
 {
 	__super::Free();
 
-	--ClintBasicBullet_Id;
+	--CannonSpiderBullet_Id;
 	//Safe_Release(m_pShaderCom);
 	//Safe_Release(m_pModelCom);
 	Safe_Release(m_pRendererCom);

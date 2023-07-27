@@ -12,6 +12,8 @@
 #include "LargeVolcanicRock_002_Red_Desert.h"
 #include "Alien_prawn.h"
 #include "BatPotato_RIG.h"
+#include "CannonSpider.h"
+
 CLevel_Imgui::CLevel_Imgui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -121,10 +123,13 @@ void CLevel_Imgui::Ready_Layer_Monster(const _tchar* pLayerTag)
 	//tAlienPrawnDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
 	//pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, Alien_prawn::ProtoTag(), pLayerTag, &tAlienPrawnDesc);
 
-	BatPotato_RIG::BATPOTATO_RIG_DESC tBatPotatoRigDesc;
+	/*BatPotato_RIG::BATPOTATO_RIG_DESC tBatPotatoRigDesc;
 	tBatPotatoRigDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
-  	pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, BatPotato_RIG::ProtoTag(), pLayerTag, &tBatPotatoRigDesc);
+  	pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, BatPotato_RIG::ProtoTag(), pLayerTag, &tBatPotatoRigDesc);*/
 
+	CannonSpider::tagCannonSpiderDesc tCannonSpiderDesc;
+	tCannonSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, CannonSpider::ProtoTag(), pLayerTag, &tCannonSpiderDesc);
 	Safe_Release(pGameInstance);
 }
 

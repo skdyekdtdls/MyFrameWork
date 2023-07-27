@@ -191,6 +191,7 @@
     <ClInclude Include="..\public\Alien_prawnIdle.h" />
     <ClInclude Include="..\public\Alien_prawnRun.h" />
     <ClInclude Include="..\public\BackGround.h" />
+    <ClInclude Include="..\public\BatPotato_RIGBullet.h" />
     <ClInclude Include="..\public\BatPotato_RIG.h" />
     <ClInclude Include="..\public\BatPotato_RIGAttack.h" />
     <ClInclude Include="..\public\BatPotato_RIGDeath.h" />
@@ -205,6 +206,14 @@
     <ClInclude Include="..\public\BushC.h" />
     <ClInclude Include="..\public\Cage.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
+    <ClInclude Include="..\public\CannonSpider.h" />
+    <ClInclude Include="..\public\CannonSpiderAttack.h" />
+    <ClInclude Include="..\public\CannonSpiderBullet.h" />
+    <ClInclude Include="..\public\CannonSpiderDead.h" />
+    <ClInclude Include="..\public\CannonSpiderHit.h" />
+    <ClInclude Include="..\public\CannonSpiderIdle.h" />
+    <ClInclude Include="..\public\CannonSpiderRun.h" />
+    <ClInclude Include="..\public\CannonSpiderSearch.h" />
     <ClInclude Include="..\public\Cave.h" />
     <ClInclude Include="..\public\ClientInstance.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
@@ -221,7 +230,6 @@
     <ClInclude Include="..\public\CraterA.h" />
     <ClInclude Include="..\public\CraterB.h" />
     <ClInclude Include="..\public\CraterC.h" />
-    <ClInclude Include="..\public\EnemyBasicBullet.h" />
     <ClInclude Include="..\Public\ImGuiFileDialog.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
@@ -378,6 +386,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\private\BatPotato_RIGBullet.cpp" />
     <ClCompile Include="..\private\BatPotato_RIG.cpp" />
     <ClCompile Include="..\private\BatPotato_RIGAttack.cpp" />
     <ClCompile Include="..\private\BatPotato_RIGDeath.cpp" />
@@ -395,6 +404,14 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\private\CannonSpider.cpp" />
+    <ClCompile Include="..\private\CannonSpiderAttack.cpp" />
+    <ClCompile Include="..\private\CannonSpiderBullet.cpp" />
+    <ClCompile Include="..\private\CannonSpiderDead.cpp" />
+    <ClCompile Include="..\private\CannonSpiderHit.cpp" />
+    <ClCompile Include="..\private\CannonSpiderIdle.cpp" />
+    <ClCompile Include="..\private\CannonSpiderRun.cpp" />
+    <ClCompile Include="..\private\CannonSpiderSearch.cpp" />
     <ClCompile Include="..\private\Cave.cpp" />
     <ClCompile Include="..\private\ClientInstance.cpp" />
     <ClCompile Include="..\private\Clint.cpp" />
@@ -410,7 +427,6 @@
     <ClCompile Include="..\private\CraterA.cpp" />
     <ClCompile Include="..\private\CraterB.cpp" />
     <ClCompile Include="..\private\CraterC.cpp" />
-    <ClCompile Include="..\private\EnemyBasicBullet.cpp" />
     <ClCompile Include="..\Private\ImGuiFileDialog.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>

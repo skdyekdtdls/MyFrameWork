@@ -163,17 +163,17 @@ HRESULT Alien_prawn::Add_Components()
 
 	CModel::CMODEL_DESC tModelDesc; tModelDesc.pOwner = this;
 
-	_uint iRand = rand() % 3;
-	switch (iRand)
+	
+	switch (RandomIntFrom_A_To_B(0, 2))
 	{
 	case 0:
-		FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Alien_prawnCharger1", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+		FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Alien_prawn1", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
 		break;
 	case 1:
-		FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Alien_prawnCharger2", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+		FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Alien_prawn2", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
 		break;
 	case 2:
-		FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Alien_prawnCharger3", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+		FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Alien_prawn3", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
 		break;
 	}
 

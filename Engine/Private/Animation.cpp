@@ -130,12 +130,15 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 
 	if (m_TimeAcc >= m_Duration)
 	{
-		if (true != m_isLoop)
+		if (false == m_isLoop)
 		{
 			m_isFinished = true;
 		}
-
-		m_TimeAcc = 0.f;
+		else
+		{
+			m_TimeAcc = 0.f;
+		}
+		
 		m_iCurKeyFrame = 0;
 		for (auto& Pair : m_TimeLineEvents)
 		{

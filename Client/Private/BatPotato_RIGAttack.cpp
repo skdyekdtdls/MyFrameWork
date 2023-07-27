@@ -30,7 +30,9 @@ void BatPotato_RIGAttack::OnStateTick(_double TimeDelta)
 
 	if (pModel->IsAnimationFinished())
 		TransitionTo(L"BatPotato_RIGIdle");
-
+	else
+		pModel->RootMotion(TimeDelta, pTransform->Get_State(CTransform::STATE_LOOK));
+	
 	Safe_Release(pGameInstance);
 }
 

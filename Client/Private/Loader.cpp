@@ -91,6 +91,17 @@
 #include "BatPotato_RIGHit.h"
 #include "BatPotato_RIGIdle.h"
 #include "BatPotato_RIGRun.h"
+#include "BatPotato_RIGBullet.h"
+
+#include "CannonSpider.h"
+#include "CannonSpiderBullet.h"
+#include "CannonSpiderAttack.h"
+#include "CannonSpiderDead.h"
+#include "CannonSpiderIdle.h"
+#include "CannonSpiderHit.h"
+#include "CannonSpiderRun.h"
+#include "CannonSpiderSearch.h"
+
 CLoader::CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext)
 	: m_pDevice(pDevice)
 	, m_pContext(pDeviceContext)
@@ -315,7 +326,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 	pModel->GroupingBones(upper, lower);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
 		, TEXT("Prototype_Component_Model_Alien_prawn1"), pModel), E_FAIL);
-
+	
 	cout << "--- Alien_prawn2 ---" << endl;
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Alien_prawn2.dat");
@@ -352,10 +363,9 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
 		, TEXT("Prototype_Component_Model_Alien_prawnCharger2"), pModel), E_FAIL);
 
-
 	cout << "--- BatPotato_RIG1 ---" << endl;
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("BatPotato_RIG1.dat");
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix, 2); pModel->LoadAssimp("BatPotato_RIG1.dat");
 	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/BatPotato_RIG1/Animation.myanim"));
 	upper.clear(); lower.clear();
 	pModel->GroupingBones(upper, lower);
@@ -364,17 +374,16 @@ HRESULT CLoader::Loading_For_IMGUI()
 
 	cout << "--- BatPotato_RIG2 ---" << endl;
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("BatPotato_RIG2.dat");
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix, 2); pModel->LoadAssimp("BatPotato_RIG2.dat");
 	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/BatPotato_RIG1/Animation.myanim"));
 	upper.clear(); lower.clear();
 	pModel->GroupingBones(upper, lower);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
 		, TEXT("Prototype_Component_Model_BatPotato_RIG2"), pModel), E_FAIL);
 
-	/*
 	cout << "--- CannonSpider ---" << endl;
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("CannonSpider.dat");
+	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix, 2); pModel->LoadAssimp("CannonSpider.dat");
 	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/CannonSpider/Animation.myanim"));
 	upper.clear(); lower.clear();
 	pModel->GroupingBones(upper, lower);
@@ -382,6 +391,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 		, TEXT("Prototype_Component_Model_CannonSpider"), pModel), E_FAIL);
 
 
+	/*
 	cout << "--- CrystalGolem ---" << endl;
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("CrystalGolem.dat");
@@ -862,6 +872,17 @@ HRESULT CLoader::Loading_For_IMGUI()
 	pBatPotatoState->Add_State(BatPotato_RIGIdle::Tag(), BatPotato_RIGIdle::Create(m_pDevice, m_pContext));
 	pBatPotatoState->Add_State(BatPotato_RIGRun::Tag(), BatPotato_RIGRun::Create(m_pDevice, m_pContext));
 
+	cout << "CannonSpider States" << endl;
+	StateContext<CannonSpider, CANNON_SPIDER_ANIM>* pCannonSpiderState;
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_CannonSpiderState"),
+		pCannonSpiderState = StateContext<CannonSpider, CANNON_SPIDER_ANIM>::Create(m_pDevice, m_pContext)), E_FAIL);
+	pCannonSpiderState->Add_State(CannonSpiderAttack::Tag(), CannonSpiderAttack::Create(m_pDevice, m_pContext));
+	pCannonSpiderState->Add_State(CannonSpiderDead::Tag(), CannonSpiderDead::Create(m_pDevice, m_pContext));
+	pCannonSpiderState->Add_State(CannonSpiderHit::Tag(), CannonSpiderHit::Create(m_pDevice, m_pContext));
+	pCannonSpiderState->Add_State(CannonSpiderIdle::Tag(), CannonSpiderIdle::Create(m_pDevice, m_pContext));
+	pCannonSpiderState->Add_State(CannonSpiderRun::Tag(), CannonSpiderRun::Create(m_pDevice, m_pContext));
+	pCannonSpiderState->Add_State(CannonSpiderSearch::Tag(), CannonSpiderSearch::Create(m_pDevice, m_pContext));
+
 	Set_LoadingText(L"잡다한거 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, Health::ProtoTag(),
 		Health::Create(m_pDevice, m_pContext)), E_FAIL);
@@ -927,6 +948,9 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Pistola::ProtoTag(), Pistola::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Alien_prawn::ProtoTag(), Alien_prawn::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BatPotato_RIG::ProtoTag(), BatPotato_RIG::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BatPotato_RIGBullet::ProtoTag(), BatPotato_RIGBullet::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CannonSpider::ProtoTag(), CannonSpider::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CannonSpiderBullet::ProtoTag(), CannonSpiderBullet::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	Set_LoadingText(L"로딩 완료");
 

@@ -26,7 +26,6 @@ void BatPotato_RIGHit::OnStateTick(_double TimeDelta)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
-	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
 
 	if (pModel->IsAnimationFinished())
 		TransitionTo(L"BatPotato_RIGRun");

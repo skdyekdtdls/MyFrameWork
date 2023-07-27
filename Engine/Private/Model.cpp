@@ -346,17 +346,17 @@ void CModel::Play_Animation(_double TimeDelta, BODY eBody)
 	_uint iPrevAnimIndex = m_iPrevAnimIndex[eBody];
 
 	// 루프애니메이션이 아닐 경우 NextAnimtion으로 넘어감.
-	if (false == m_Animations[eBody][iCurrentAnimIndex]->m_isLoop)
-	{
-		if (m_Animations[eBody][iCurrentAnimIndex]->IsFinished())
-		{
-			_uint iNextAnimIndex = m_Animations[eBody][iCurrentAnimIndex]->m_iNextIndex;
-			if (-1 != iNextAnimIndex)
-			{
-				Set_AnimByIndex(iNextAnimIndex, eBody);
-			}
-		}
-	}
+	//if (false == m_Animations[eBody][iCurrentAnimIndex]->m_isLoop)
+	//{
+	//	if (m_Animations[eBody][iCurrentAnimIndex]->IsFinished())
+	//	{
+	//		_uint iNextAnimIndex = m_Animations[eBody][iCurrentAnimIndex]->m_iNextIndex;
+	//		if (-1 != iNextAnimIndex)
+	//		{
+	//			Set_AnimByIndex(iNextAnimIndex, eBody);
+	//		}
+	//	}
+	//}
 
 	// 만약 애니메이션의 변경이 일어나면 보간 시작
 	if (iPrevAnimIndex != iCurrentAnimIndex)
@@ -396,7 +396,7 @@ void CModel::Play_Animation(_double TimeDelta, BODY eBody)
 
 _bool CModel::IsAnimationFinished(BODY eBody)
 {
-	if (m_Animations[eBody][m_iPrevAnimIndex[eBody]]->IsFinished())
+	if (m_Animations[eBody][m_iCurrentAnimIndex[eBody]]->IsFinished())
 	{
 		m_PrevMoveDistance = { 0.f };
 		m_RootMoveDistance = { 0.f };
@@ -495,6 +495,7 @@ void CModel::ResetAnimation(_int iIndex, BODY eBody)
 		m_Animations[eBody][m_iCurrentAnimIndex[eBody]]->Reset();
 		return;
 	}
+
 	m_Animations[eBody][iIndex]->Reset();
 }
 
@@ -505,6 +506,17 @@ void CModel::RootMotion(_double TimeDelta, CTransform::DIRECTION eDir)
 
 	// 길이를 구해줘야한다.
 	pTransform->Go_Direction(TimeDelta, eDir, fLength);
+
+	m_PrevMoveDistance = m_RootMoveDistance;
+}
+
+void CModel::RootMotion(_double TimeDelta, _fvector vDir)
+{
+	CTransform* pTransform = m_pOwner->GetComponent<CTransform>();
+	_float fLength = -m_RootMoveDistance - -m_PrevMoveDistance;
+
+	// 길이를 구해줘야한다.
+	pTransform->Go_Direction(TimeDelta, vDir, fLength);
 
 	m_PrevMoveDistance = m_RootMoveDistance;
 }

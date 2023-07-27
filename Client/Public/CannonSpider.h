@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "Client_Defines.h"
@@ -13,12 +12,11 @@ class CTransform;
 class CCollider;
 class CNavigation;
 class CModel;
-class Raycast;
-class Health;
-// Can declare VIBuffer or Model Com
+class TimeCounter;
 END
 
 BEGIN(Client)
+
 class Bullet;
 
 template<typename OWNER, typename ANIM_ENUM>
@@ -27,18 +25,18 @@ class StateContext;
 END
 
 BEGIN(Client)
-class BatPotato_RIG final : public CGameObject
+class CannonSpider final : public CGameObject
 {
-	typedef StateContext<BatPotato_RIG, BATPOTATO_RIG_ANIM> BatPotatoRIGState;
+	typedef StateContext<CannonSpider, CANNON_SPIDER_ANIM> CannonSpiderState;
 public:
-	typedef struct tagBatPotato_RIGDesc : public tagCGameObjectDesc
+	typedef struct tagCannonSpiderDesc : public tagCGameObjectDesc
 	{
-		tagBatPotato_RIGDesc() : tagCGameObjectDesc() {}
-	}BATPOTATO_RIG_DESC;
+		tagCannonSpiderDesc() : tagCGameObjectDesc() {}
+	};
 private:
-	BatPotato_RIG(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	BatPotato_RIG(const BatPotato_RIG& rhs);
-	virtual ~BatPotato_RIG() = default;
+	CannonSpider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CannonSpider(const CannonSpider& rhs);
+	virtual ~CannonSpider() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -47,17 +45,17 @@ public:
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
 
-	virtual void OnCollision(CCollider::COLLISION_INFO pCollisionInfo, _double TimeDelta) override;	
+	void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
 
 private: /* For. Component */
 	CShader* m_pShaderCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
-	CNavigation* m_pNavigationCom = { nullptr };
 	CCollider* m_pColliderCom = { nullptr };
+	CannonSpiderState* m_pStateContextCom = { nullptr };
+	CNavigation* m_pNavigationCom = { nullptr };
 	Raycast* m_pRaycastCom = { nullptr };
-	BatPotatoRIGState* m_pStateContextCom = { nullptr };
 	Health* m_pHealthCom = { nullptr };
 	Bullet* m_pBullet = { nullptr };
 	// Can declare VIBuffer or Model Com
@@ -67,13 +65,12 @@ private:
 	HRESULT SetUp_ShaderResources();
 
 private:
-	static _uint BatPotato_RIG_Id;
+	static _uint CannonSpider_Id;
 
 public:
-	static const _tchar* ProtoTag() { return L"Prototype_GameObject_BatPotato_RIG1"; }
-	static BatPotato_RIG* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_CannonSpider"; }
+	static CannonSpider* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free(void) override;
 };
 END
-

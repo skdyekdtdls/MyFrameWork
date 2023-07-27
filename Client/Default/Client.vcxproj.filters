@@ -295,14 +295,23 @@
     <Filter Include="02. GameObjects\Bullet\ClintSkill01Bullet">
       <UniqueIdentifier>{aa05413b-27bd-4bda-abfd-699019bd1332}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\Bullet\EnemyBasicBullet">
-      <UniqueIdentifier>{3774745c-a397-42cb-9c46-d3734b64efac}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObjects\BatPotato_RIG">
       <UniqueIdentifier>{e3ab52b9-279c-4b10-8bb3-7f2f5c314374}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObjects\BatPotato_RIG\State">
       <UniqueIdentifier>{283b0177-4004-4ace-b478-6b8fae4ed161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Bullet\BatPotato_Bullet">
+      <UniqueIdentifier>{28656146-1947-483a-8009-064c7586b20c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\CannonSpider">
+      <UniqueIdentifier>{461f05e3-dba6-4502-9782-54a7299cfc62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\CannonSpider\State">
+      <UniqueIdentifier>{b9fb6df7-c922-4b64-ba5d-00df7c6ead30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Bullet\CannonSpiderBullet">
+      <UniqueIdentifier>{a7b45dff-fecb-489c-87d3-49e87d520503}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -634,9 +643,6 @@
     <ClInclude Include="..\public\ClintSkill01Bullet.h">
       <Filter>02. GameObjects\Bullet\ClintSkill01Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\EnemyBasicBullet.h">
-      <Filter>02. GameObjects\Bullet\EnemyBasicBullet</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Alien_prawnHit.h">
       <Filter>02. GameObjects\Alien_prawn\State</Filter>
     </ClInclude>
@@ -657,6 +663,33 @@
     </ClInclude>
     <ClInclude Include="..\public\BatPotato_RIGIdle.h">
       <Filter>02. GameObjects\BatPotato_RIG\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BatPotato_RIGBullet.h">
+      <Filter>02. GameObjects\Bullet\BatPotato_Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CannonSpider.h">
+      <Filter>02. GameObjects\CannonSpider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CannonSpiderBullet.h">
+      <Filter>02. GameObjects\Bullet\CannonSpiderBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CannonSpiderSearch.h">
+      <Filter>02. GameObjects\CannonSpider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CannonSpiderDead.h">
+      <Filter>02. GameObjects\CannonSpider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CannonSpiderHit.h">
+      <Filter>02. GameObjects\CannonSpider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CannonSpiderIdle.h">
+      <Filter>02. GameObjects\CannonSpider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CannonSpiderRun.h">
+      <Filter>02. GameObjects\CannonSpider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CannonSpiderAttack.h">
+      <Filter>02. GameObjects\CannonSpider\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -975,9 +1008,6 @@
     <ClCompile Include="..\private\ClintSkill01Bullet.cpp">
       <Filter>02. GameObjects\Bullet\ClintSkill01Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\EnemyBasicBullet.cpp">
-      <Filter>02. GameObjects\Bullet\EnemyBasicBullet</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Alien_prawnHit.cpp">
       <Filter>02. GameObjects\Alien_prawn\State</Filter>
     </ClCompile>
@@ -998,6 +1028,33 @@
     </ClCompile>
     <ClCompile Include="..\private\BatPotato_RIGRun.cpp">
       <Filter>02. GameObjects\BatPotato_RIG\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BatPotato_RIGBullet.cpp">
+      <Filter>02. GameObjects\Bullet\BatPotato_Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CannonSpider.cpp">
+      <Filter>02. GameObjects\CannonSpider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CannonSpiderBullet.cpp">
+      <Filter>02. GameObjects\Bullet\CannonSpiderBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CannonSpiderDead.cpp">
+      <Filter>02. GameObjects\CannonSpider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CannonSpiderHit.cpp">
+      <Filter>02. GameObjects\CannonSpider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CannonSpiderIdle.cpp">
+      <Filter>02. GameObjects\CannonSpider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CannonSpiderRun.cpp">
+      <Filter>02. GameObjects\CannonSpider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CannonSpiderSearch.cpp">
+      <Filter>02. GameObjects\CannonSpider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CannonSpiderAttack.cpp">
+      <Filter>02. GameObjects\CannonSpider\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

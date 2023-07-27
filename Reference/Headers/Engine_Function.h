@@ -140,6 +140,17 @@ static float RadianBetweenVectors(FXMVECTOR _v1, FXMVECTOR _v2)
 	return radian;
 }
 
+static int RandomIntFrom_A_To_B(int A, int B)
+{
+	if (A == 0 && B == 0)
+		return 0;
+
+	if (A > B)
+		std::swap(A, B);
+
+	return rand() % (B - A + 1) + A;
+}
+
 // 두 벡터 사이의 Degree를 구하는 함수.
 static float DegreeBetweenVectors(FXMVECTOR _v1, FXMVECTOR _v2)
 {

@@ -63,6 +63,8 @@ public:
 		return m_PivotMatrix;
 	}
 
+	
+	
 public: /* Setter */
 	virtual void Set_AnimByIndex(_uint iAnimIndex, BODY eBody = LOWER);
 	void Set_AnimByName(const char* pName, BODY eBody = LOWER);
@@ -95,7 +97,7 @@ public:
 	// 인자로 아무것도 들어오지 않거나 음수가 들어오면 현재 애니메이션 리셋
 	virtual void ResetAnimation(_int iIndex = -1, BODY eBody = LOWER);
 	void RootMotion(_double TimeDelta, CTransform::DIRECTION eDir);
-	
+	void RootMotion(_double TimeDelta, _fvector vDir);
 	_matrix GetMatrixAttacingBone(_uint iBoneIndex);
 
 public:
