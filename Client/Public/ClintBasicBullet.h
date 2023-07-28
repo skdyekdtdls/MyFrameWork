@@ -39,6 +39,15 @@ public:
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
 
+	void Reset(void* pArg);
+	
+
+	virtual void SetDead() override
+	{
+		__super::SetDead();
+		ObjectPool<ClintBasicBullet>::GetInstance()->PushPool(this);
+	}
+
 public:
 	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
 

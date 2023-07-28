@@ -310,8 +310,11 @@
     <Filter Include="02. GameObjects\CannonSpider\State">
       <UniqueIdentifier>{b9fb6df7-c922-4b64-ba5d-00df7c6ead30}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\Bullet\CannonSpiderBullet">
+    <Filter Include="02. GameObjects\CannonSpider\CannonSpiderBullet">
       <UniqueIdentifier>{a7b45dff-fecb-489c-87d3-49e87d520503}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Bullet\ObjectPool">
+      <UniqueIdentifier>{595cb5ed-d0a5-4561-a8a9-860764dd91cd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -671,7 +674,7 @@
       <Filter>02. GameObjects\CannonSpider</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CannonSpiderBullet.h">
-      <Filter>02. GameObjects\Bullet\CannonSpiderBullet</Filter>
+      <Filter>02. GameObjects\CannonSpider\CannonSpiderBullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CannonSpiderSearch.h">
       <Filter>02. GameObjects\CannonSpider\State</Filter>
@@ -690,6 +693,9 @@
     </ClInclude>
     <ClInclude Include="..\public\CannonSpiderAttack.h">
       <Filter>02. GameObjects\CannonSpider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ObjectPool.h">
+      <Filter>02. GameObjects\Bullet\ObjectPool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1036,7 +1042,7 @@
       <Filter>02. GameObjects\CannonSpider</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CannonSpiderBullet.cpp">
-      <Filter>02. GameObjects\Bullet\CannonSpiderBullet</Filter>
+      <Filter>02. GameObjects\CannonSpider\CannonSpiderBullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CannonSpiderDead.cpp">
       <Filter>02. GameObjects\CannonSpider\State</Filter>
@@ -1055,6 +1061,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CannonSpiderAttack.cpp">
       <Filter>02. GameObjects\CannonSpider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ObjectPool.cpp">
+      <Filter>02. GameObjects\Bullet\ObjectPool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -39,9 +39,6 @@ public:
 	virtual HRESULT Render() override;
 
 public: // Setter
-	void Enable() { m_bEnable = true; }
-	void Disable() { m_bEnable = false; }
-
 	void Damage(CGameObject* pGameObejct);
 	_bool isMonsterLayer(wstring ObjectName) {
 		return ObjectName == L"Layer_Monster";

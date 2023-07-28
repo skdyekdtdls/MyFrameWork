@@ -26,7 +26,7 @@ public:
 public:
 	void Reset();
 	void Enable() { m_bEnable = true; }
-	void DisEnable() { m_bEnable = false; }
+	void Disable() { m_bEnable = false; }
 	_bool isEuqalWith(_double Time);
 	_bool isGreaterThan(_double Time);
 	_bool isLessThan(_double Time);

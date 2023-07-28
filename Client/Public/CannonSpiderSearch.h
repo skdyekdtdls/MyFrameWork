@@ -24,10 +24,13 @@ public:
 
 private:
 	LOGIC m_eCurLogic = { LOGIC_END };
-	
+	_bool m_bStartTime = { false };
+	_double m_TimeAcc = { 0.0 };
+
 private:
 	void RandomLogic();
 	void SetAnimIndexByCurLogic();
+	void SetCurLook(class CTransform* pTransform);
 	void CurLogicUpdate(const _double& TimeDelta);
 
 	void Logic1(const _double& TimeDelta);

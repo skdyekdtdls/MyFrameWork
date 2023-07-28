@@ -133,6 +133,7 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 		if (false == m_isLoop)
 		{
 			m_isFinished = true;
+			m_TimeAcc = 0.0;
 		}
 		else
 		{
@@ -156,7 +157,6 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 		pChannel->Invalidate_TransformationMatrix(Bones, m_TimeAcc, &m_ChannelCurrentKeyFrames[iChannelIndex++], eBody);
 	}
 
-	// 나중에는 상체만 실행하던지, 하체만 실행하던지, 아니면 상속을하던지 고쳐야함.
 	for (auto& Pair : m_TimeLineEvents)
 	{
 		// 시간값이 일치하면 실행한다.

@@ -3,6 +3,7 @@
 #include "Level.h"
 #include "Level_Loading.h"
 #include "ClientInstance.h"
+
 #ifdef _DEBUG
 #include "ImWindow_Manager.h"
 #endif // DEBUG
@@ -227,6 +228,9 @@ void CMainApp::Free()
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
+	ObjectPool<class ClintBasicBullet>::DestroyInstance();
+	ObjectPool<class BatPotato_RIGBullet>::DestroyInstance();
+
 #ifdef _DEBUG
 	CImWindow_Manager::DestroyInstance();
 #endif // DEBUG

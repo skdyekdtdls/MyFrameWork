@@ -70,7 +70,7 @@ private:
 private:
 	// idle attack run
 	static _uint Alien_prawn_Id;
-
+	
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_GameObject_Alien_prawn1"; }
 	static Alien_prawn* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

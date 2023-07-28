@@ -54,7 +54,9 @@ void ClintBasicBullet::Tick(_double TimeDelta)
 
 	// ¼ö¸í
 	if (m_pTimeCounterCom->isEuqalWith(1.0))
+	{
 		__super::SetDead();
+	}
 
 	m_pTransformCom->Go_Straight(TimeDelta);
 
@@ -107,6 +109,12 @@ HRESULT ClintBasicBullet::Render()
 #ifdef _DEBUG
 
 #endif
+}
+
+void ClintBasicBullet::Reset(void* pArg)
+{	
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, ((CLINT_BASIC_BULLET_DESC*)pArg)->vLook);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&((CLINT_BASIC_BULLET_DESC*)pArg)->vPosition));
 }
 
 HRESULT ClintBasicBullet::Add_Components()

@@ -299,6 +299,7 @@
     <ClInclude Include="..\public\MineCrystalsD.h" />
     <ClInclude Include="..\public\MineCrystalsE.h" />
     <ClInclude Include="..\public\MineCrystalsF.h" />
+    <ClInclude Include="..\public\ObjectPool.h" />
     <ClInclude Include="..\public\Pistola.h" />
     <ClInclude Include="..\public\ClintBasicBullet.h" />
     <ClInclude Include="..\public\Red_Snow.h" />
@@ -510,6 +511,7 @@
     <ClCompile Include="..\private\MineCrystalsD.cpp" />
     <ClCompile Include="..\private\MineCrystalsE.cpp" />
     <ClCompile Include="..\private\MineCrystalsF.cpp" />
+    <ClCompile Include="..\private\ObjectPool.cpp" />
     <ClCompile Include="..\private\Pistola.cpp" />
     <ClCompile Include="..\private\ClintBasicBullet.cpp" />
     <ClCompile Include="..\private\Red_Snow.cpp" />

@@ -23,7 +23,6 @@ HRESULT BatPotato_RIGBullet::Initialize_Prototype()
 	return S_OK;
 }
 
-
 HRESULT BatPotato_RIGBullet::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
@@ -40,11 +39,11 @@ HRESULT BatPotato_RIGBullet::Initialize(void* pArg)
 	tagBatPotato_RIGBulletDesc tBatPotato_RIGBulletDesc;
 	if (nullptr != pArg)
 		tBatPotato_RIGBulletDesc = *(tagBatPotato_RIGBulletDesc*)pArg;
+
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tBatPotato_RIGBulletDesc.vPosition));
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, tBatPotato_RIGBulletDesc.vLook);
 
-	m_pTimeCounterCom->Reset();
-	m_pTimeCounterCom->DisEnable();
+	m_pTimeCounterCom->Disable();
 	m_bEnable = false;
 	return S_OK;
 }
@@ -58,7 +57,6 @@ void BatPotato_RIGBullet::Tick(_double TimeDelta)
 	
 	m_pTimeCounterCom->Tick(TimeDelta);
 
-	// ¼ö¸í
 	if (m_pTimeCounterCom->isEuqalWith(1.0))
 		m_bEnable = false;
 
@@ -180,10 +178,10 @@ void BatPotato_RIGBullet::Ready(_fvector vLook, _fvector vPosition)
 
 void BatPotato_RIGBullet::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
-	if (__super::isMonsterLayer(tCollisionInfo.OtherGameObjectLayerName))
+	if (0 == strcmp(tCollisionInfo.OtherGameObejctName.c_str(), "Clint1"))
 	{
 		__super::Damage(tCollisionInfo.pOtherGameObject);
-		SetDead();
+		Disable();
 	}
 }
 

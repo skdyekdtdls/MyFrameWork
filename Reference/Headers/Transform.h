@@ -113,6 +113,7 @@ public:
 	// 이전 프레임과 현재 프레임 사이의 위치 변화율을 반환합니다.
 	_float3 DeltaPosition();
 
+
 private:
 	CTRANSFORM_DESC			m_TransformDesc;
 	DIRECTION				m_eCurDirection;

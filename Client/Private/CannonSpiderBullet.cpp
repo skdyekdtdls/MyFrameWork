@@ -39,19 +39,24 @@ HRESULT CannonSpiderBullet::Initialize(void* pArg)
 		tCannonSpiderBulletDesc = *(tagCannonSpiderBulletDesc*)pArg;
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCannonSpiderBulletDesc.vPosition));
 
-	m_pTimeCounterCom->Enable();
+	m_pTimeCounterCom->Disable();
+	m_bEnable = false;
 
 	return S_OK;
 }
 
 void CannonSpiderBullet::Tick(_double TimeDelta)
 {
+	if (false == m_bEnable)
+		return;
+
 	__super::Tick(TimeDelta);
 	m_pTimeCounterCom->Tick(TimeDelta);
 
-	// ¼ö¸í
-	if (m_pTimeCounterCom->isEuqalWith(1.0))
-		__super::SetDead();
+	if (m_pTimeCounterCom->isGreaterThan(1.0))
+	{
+		Disable();
+	}	
 
 	m_pTransformCom->Go_Straight(TimeDelta);
 
@@ -66,6 +71,9 @@ void CannonSpiderBullet::Tick(_double TimeDelta)
 
 void CannonSpiderBullet::Late_Tick(_double TimeDelta)
 {
+	if (false == m_bEnable)
+		return;
+
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
@@ -106,6 +114,14 @@ HRESULT CannonSpiderBullet::Render()
 #endif
 }
 
+void CannonSpiderBullet::Ready(_fvector vLook, _fvector vPosition)
+{
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPosition);
+	m_pTimeCounterCom->Reset();
+	m_pTimeCounterCom->Enable();
+}
+
 HRESULT CannonSpiderBullet::Add_Components()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
@@ -115,7 +131,7 @@ HRESULT CannonSpiderBullet::Add_Components()
 	CRenderer::CRENDERER_DESC tRendererDesc; tRendererDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom, &tRendererDesc), E_FAIL);
 
-	CTransform::CTRANSFORM_DESC TransformDesc{ 20.0, XMConvertToRadians(720.f) }; TransformDesc.pOwner = this;
+	CTransform::CTRANSFORM_DESC TransformDesc{ 10.0, XMConvertToRadians(720.f) }; TransformDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
 
@@ -127,14 +143,13 @@ HRESULT CannonSpiderBullet::Add_Components()
 
 	CColliderSphere::CCOLLIDER_SPHERE_DESC tColliderSphereDesc;
 	tColliderSphereDesc.pOwner = this;
-	tColliderSphereDesc.fRadius = { 0.2f };
+	tColliderSphereDesc.fRadius = { 1.f };
 	tColliderSphereDesc.vCenter = _float3(0.0f, 0.f, 0.f);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CColliderSphere::ProtoTag(), L"Com_BodyColl", (CComponent**)&m_pColliderCom, &tColliderSphereDesc), E_FAIL);
 
 	TimeCounter::TIME_COUNTER_DESC tTimeCounterDesc;
 	tTimeCounterDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, TimeCounter::ProtoTag(), L"Com_TimeCounter", (CComponent**)&m_pTimeCounterCom, &tTimeCounterDesc), E_FAIL);
-
 
 	Safe_Release(pGameInstance);
 	return S_OK;
@@ -161,10 +176,10 @@ HRESULT CannonSpiderBullet::SetUp_ShaderResources()
 
 void CannonSpiderBullet::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
-	if (__super::isMonsterLayer(tCollisionInfo.OtherGameObjectLayerName))
+	if (0 == strcmp(tCollisionInfo.OtherGameObejctName.c_str(), "Clint1"))
 	{
 		__super::Damage(tCollisionInfo.pOtherGameObject);
-		SetDead();
+		Disable();
 	}
 }
 

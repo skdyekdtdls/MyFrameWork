@@ -29,7 +29,7 @@ HRESULT CannonSpider::Initialize(void* pArg)
 
 	if (FAILED(Add_Components()))
 		return E_FAIL;
-
+	
 	// 태그초기화
 	++CannonSpider_Id;
 	m_tInfo.wstrName = TO_WSTR("CannonSpider" + to_string(CannonSpider_Id));
@@ -37,7 +37,24 @@ HRESULT CannonSpider::Initialize(void* pArg)
 	m_tInfo.ID = CannonSpider_Id;
 
 	// 상태 초기화
-	m_pStateContextCom->TransitionTo(L"CannonSpiderSearch");
+	m_pStateContextCom->TransitionTo(L"CannonSpiderIdle");
+
+	// 노티파이 초기화. 활성화시키고, 3방향으로 준비한다음에 쏨.
+	m_pModelCom->Add_TimeLineEvent("CannonSpider_Attack01", L"Attack01", TIMELINE_EVENT(50.f, [this]() {
+		_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+		_vector vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+		_matrix matRotY = XMMatrixRotationY(XMConvertToRadians(-30.f));
+		vLook = XMVector3TransformNormal(vLook, matRotY);
+
+		for (auto pBullet : m_pBullets)
+		{
+			pBullet->Enable();
+			static_cast<CannonSpiderBullet*>(pBullet)->Ready(vLook, vPosition);
+
+			_matrix matRotY = XMMatrixRotationY(XMConvertToRadians(+30.f));
+			vLook = XMVector3TransformNormal(vLook, matRotY);
+		}
+	}), LOWER);
 
 	// Desc초기화
 	tagCannonSpiderDesc tCloneDesc;
@@ -66,7 +83,8 @@ void CannonSpider::Tick(_double TimeDelta)
 	if (nullptr != m_pColliderCom)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
 
-	// m_pBullet->Tick(TimeDelta);
+	for (auto& Bullet : m_pBullets)
+		Bullet->Tick(TimeDelta);
 
 	if (nullptr != m_pRaycastCom)
 	{
@@ -88,7 +106,8 @@ void CannonSpider::Late_Tick(_double TimeDelta)
 			m_pColliderCom->Add_ColliderGroup(COLL_GROUP::MONSTER_BODY);
 	}
 
-	m_pBullet->Late_Tick(TimeDelta);
+	for (auto& Bullet : m_pBullets)
+		Bullet->Late_Tick(TimeDelta);
 
 #ifdef _DEBUG
 	if (nullptr != m_pColliderCom)
@@ -150,7 +169,7 @@ HRESULT CannonSpider::Add_Components()
 	CRenderer::CRENDERER_DESC tRendererDesc; tRendererDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom, &tRendererDesc), E_FAIL);
 
-	CTransform::CTRANSFORM_DESC TransformDesc{ 7.0, XMConvertToRadians(720.f) }; TransformDesc.pOwner = this;
+	CTransform::CTRANSFORM_DESC TransformDesc{ 3.0, XMConvertToRadians(90.f) }; TransformDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
 
@@ -169,7 +188,7 @@ HRESULT CannonSpider::Add_Components()
 	Raycast::RAYCAST_DESC tRaycastDesc;
 	tRaycastDesc.pOwner = this;
 	tRaycastDesc.vCenter = _float3(0.0f, 1.f, 0.f);
-	tRaycastDesc.fLength = { 6.f };
+	tRaycastDesc.fLength = { 20.f };
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, Raycast::ProtoTag(), L"Com_RayDetect", (CComponent**)&m_pRaycastCom, &tRaycastDesc), E_FAIL);
 
 	CannonSpiderState::STATE_CONTEXT_DESC tStateContextDesc;
@@ -185,11 +204,19 @@ HRESULT CannonSpider::Add_Components()
 	tHealthDesc.iMaxHp = 1200;
 	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, Health::ProtoTag(), L"Com_Health", (CComponent**)&m_pHealthCom, &tHealthDesc), E_FAIL);
 
-	CannonSpiderBullet::tagCannonSpiderBulletDesc tBulletDesc;
-	tBulletDesc.pOwner = this;
-	tBulletDesc.fDamage = 10.f;
-	XMStoreFloat4(&tBulletDesc.vPosition, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-	FAILED_CHECK_RETURN(__super::Add_Composite(CannonSpiderBullet::ProtoTag(), L"Com_SpiderBullet", (CComponent**)&m_pBullet, &tBulletDesc), E_FAIL);
+	// 총알 3개추가
+	m_pBullets.clear();
+	const _tchar* ComTag[3] = { L"Com_SpiderBullet1", L"Com_SpiderBullet2", L"Com_SpiderBullet3" };
+	for (size_t i = 0; i < 3; ++i)
+	{
+		CannonSpiderBullet* pCannonSpiderBullet;
+		CannonSpiderBullet::tagCannonSpiderBulletDesc tBulletDesc;
+		tBulletDesc.pOwner = this;
+		tBulletDesc.fDamage = 10.f;
+		XMStoreFloat4(&tBulletDesc.vPosition, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		FAILED_CHECK_RETURN(__super::Add_Composite(CannonSpiderBullet::ProtoTag(), ComTag[i], (CComponent**)&pCannonSpiderBullet, &tBulletDesc), E_FAIL);
+		m_pBullets.push_back(pCannonSpiderBullet);
+	}
 
 	Safe_Release(pGameInstance);
 	return S_OK;
@@ -253,6 +280,10 @@ void CannonSpider::Free(void)
 	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pRaycastCom);
 	Safe_Release(m_pHealthCom);
-	Safe_Release(m_pBullet);
+
+	for (auto Bullet : m_pBullets)
+		Safe_Release(Bullet);
+	m_pBullets.clear();
+	
 	/* Don't Forget Release for the VIBuffer or Model Component*/
 }

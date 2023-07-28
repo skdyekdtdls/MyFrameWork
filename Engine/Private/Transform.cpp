@@ -413,6 +413,8 @@ void CTransform::Scaled(const _float3& vScale)
 
 }
 
+
+
 _float3 CTransform::DeltaPosition()
 {
 	return _float3(m_WorldMatrix.m[STATE_POSITION][0] - m_PrevWorldMatrix.m[STATE_POSITION][0]

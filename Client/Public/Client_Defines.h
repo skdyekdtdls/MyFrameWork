@@ -2,6 +2,7 @@
 #include <windows.h>
 #include "Client_Enum.h"
 #include "ClientInstance.h"
+#include "ObjectPool.h"
 
 #ifdef _DEBUG
 #define IMGUI_DEFINE_MATH_OPERATORS

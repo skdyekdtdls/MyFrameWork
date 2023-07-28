@@ -30,10 +30,23 @@ void CannonSpiderSearch::OnStateTick(_double TimeDelta)
 	Safe_AddRef(pGameInstance);
 	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
 	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
-	if (pModel->IsAnimationFinished())
+	
+	if (m_bStartTime)
 	{
+		m_TimeAcc += TimeDelta;
+	}
+	
+	if (m_bStartTime && m_TimeAcc >= 3.f)
+	{
+		m_bStartTime = false;
+		m_TimeAcc = 0.0;
+	}
+	if (pModel->IsAnimationFinished() && false == m_bStartTime)
+	{
+		m_bStartTime = { true };
 		RandomLogic();
 		SetAnimIndexByCurLogic();
+		//SetCurLook(pTransform);
 		CurLogicUpdate(TimeDelta);
 	}
 
@@ -66,12 +79,31 @@ void CannonSpiderSearch::SetAnimIndexByCurLogic()
 	{
 	case Client::CannonSpiderSearch::LOGIC1:
 		SetAnimIndex(CANNON_SPIDER_TURN180_L, LOWER);
+		cout << "CANNON_SPIDER_TURN180_L" << endl;
 		break;
 	case Client::CannonSpiderSearch::LOGIC2:
 		SetAnimIndex(CANNON_SPIDER_TURN90_L, LOWER);
+		cout << "CANNON_SPIDER_TURN90_L" << endl;
 		break;
 	case Client::CannonSpiderSearch::LOGIC3:
 		SetAnimIndex(CANNON_SPIDER_TURN90_R, LOWER);
+		cout << "CANNON_SPIDER_TURN90_R" << endl;
+		break;
+	}
+}
+
+void CannonSpiderSearch::SetCurLook(CTransform* pTransform)
+{
+	switch (m_eCurLogic)
+	{
+	case Client::CannonSpiderSearch::LOGIC1:
+		pTransform->Rotation(WorldAxisY(), XMConvertToRadians(180.f));
+		break;
+	case Client::CannonSpiderSearch::LOGIC2:
+		pTransform->Rotation(WorldAxisY(), XMConvertToRadians(-90.f));
+		break;
+	case Client::CannonSpiderSearch::LOGIC3:
+		pTransform->Rotation(WorldAxisY(), XMConvertToRadians(90.f));
 		break;
 	}
 }

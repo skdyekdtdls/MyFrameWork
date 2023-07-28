@@ -163,7 +163,6 @@ HRESULT Alien_prawn::Add_Components()
 
 	CModel::CMODEL_DESC tModelDesc; tModelDesc.pOwner = this;
 
-	
 	switch (RandomIntFrom_A_To_B(0, 2))
 	{
 	case 0:

@@ -3,6 +3,7 @@
 #include "Model.h"
 #include "Bone.h"
 #include "ClintBasicBullet.h"
+
 _uint Pistola::Pistola_Id = 0;
 
 /* Don't Forget Release for the VIBuffer or Model Component*/
@@ -122,8 +123,11 @@ void Pistola::Attack(_fvector vLook)
 	tClintBasicBulletDesc.fDamage = 100.f;
 	XMStoreFloat4(&tClintBasicBulletDesc.vPosition, XMLoadFloat4x4(&m_WorldMatrix).r[3]);
 
-	Bullet* pBullet;
-	pBullet = static_cast<Bullet*>(pGameInstance->Clone_GameObject(ClintBasicBullet::ProtoTag(), &tClintBasicBulletDesc));
+	
+	Bullet* pBullet = ObjectPool<ClintBasicBullet>::GetInstance()->PopPool(ClintBasicBullet::ProtoTag(), &tClintBasicBulletDesc);
+	//pBullet = static_cast<Bullet*>(pGameInstance->Clone_GameObject(ClintBasicBullet::ProtoTag(), &tClintBasicBulletDesc));
+	cout << ObjectPool<ClintBasicBullet>::GetInstance()->GetCount() << endl;
+
 	PushBackBullet((pBullet));
 
 	Safe_Release(pGameInstance);
