@@ -81,6 +81,7 @@ HRESULT Clint::Initialize(void* pArg)
 		tCloneDesc = *(CGAMEOBJECT_DESC*)pArg;
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
 
+	m_pUltBulletCom->Disable();
 	return S_OK; 
 }
 
@@ -88,12 +89,12 @@ void Clint::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
 
-	// Enable을 상태에서 해주기 때문에 상태 이전에 Tick이 불려야함
-	if (nullptr != m_pUltBulletCom)
-		m_pUltBulletCom->Tick(TimeDelta);
-
 	if(nullptr != m_pStateContextCom)
 		m_pStateContextCom->Tick(TimeDelta);
+
+	// Enable을 상태에서 해주기 때문에 상태 이후에 Tick이 불려야함
+	if (nullptr != m_pUltBulletCom)
+		m_pUltBulletCom->Tick(TimeDelta);
 
 	// TransfomationMatirx의 값을 갱신하고 CombinedTransformationMatrix를 순차적으로 갱신
 	m_pModelCom->Play_Animation(TimeDelta, LOWER);
@@ -228,7 +229,7 @@ HRESULT Clint::Add_Components()
 	tRaycastDesc.fLength = { 1.f };
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, Raycast::ProtoTag(), L"Com_Raycast", (CComponent**)&m_pRaycastCom, &tRaycastDesc), E_FAIL);
 	
-	ClintUltimate01Bullet::CLINT_BASIC_BULLET_DESC tUltBulletDesc;
+	ClintUltimate01Bullet::tagBulletDesc tUltBulletDesc;
 	tUltBulletDesc.pOwner = this;
 	tUltBulletDesc.fDamage = 300.f;
 	XMStoreFloat4(&tUltBulletDesc.vPosition, m_pTransformCom->Get_State(CTransform::STATE_POSITION));

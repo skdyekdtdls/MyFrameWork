@@ -24,6 +24,11 @@ public:
 	HRESULT Ready_Prototype_Component_For_Static();
 	HRESULT Ready_Font();
 	HRESULT Ready_Gara();
+
+	// 풀 이니셜 후 해제.
+	HRESULT Ready_Pool();
+
+
 private: /* For Prototype */
 	CRenderer* m_pRenderer = { nullptr };
 

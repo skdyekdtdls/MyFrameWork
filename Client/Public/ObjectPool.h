@@ -27,72 +27,69 @@ public:
         }
     }
 
-    void PushPool(CLASSNAME* object)
+    void PushPool(CLASSNAME* pObject)
     {
-        m_ObjectList.push_back(object);
+        m_ObjectList.push_back(pObject);
     }
 
+    // 내부적으로 ResetPool이 불린다.
     CLASSNAME* PopPool(const _tchar* pTag, void* pArg)
     {
-        CLASSNAME* object;
+        CLASSNAME* pObject;
         if (m_ObjectList.empty())
         {
             CGameInstance* pGameInstance = CGameInstance::GetInstance();
             Safe_AddRef(pGameInstance);
-            
-            object = static_cast<CLASSNAME*>(pGameInstance->Clone_GameObject(pTag, pArg));
-            ++m_ObjectCount;
+
+            pObject = static_cast<CLASSNAME*>(pGameInstance->Clone_GameObject(pTag, pArg));
+            m_pInstances.push_back(pObject);
 
             Safe_Release(pGameInstance);
         }
         else
         {
-            object = m_ObjectList.front();
+            pObject = m_ObjectList.front();
             m_ObjectList.pop_front();
-            object->Reset(pArg);
         }
-
-        return object;
+        pObject->ResetPool(pArg);
+        NULL_CHECK_RETURN(pObject, nullptr);
+        return pObject;
     }
 
     _uint GetCount()
     {
-        return m_ObjectCount;
+        return m_pInstances.size();
     }
 
+    _uint GetSize()
+    {
+        return m_ObjectList.size();
+    }
 private:
     ID3D11Device* m_pDevice = { nullptr };
     ID3D11DeviceContext* m_pContext = { nullptr };
 
-    static std::list<CLASSNAME*> m_ObjectList;
-    static int m_ObjectCount;
+    list<CLASSNAME*> m_ObjectList; // 보관하고 내보내는 용도
+    list<CLASSNAME*> m_pInstances; // 지우기용도
 
+public:
     virtual void Free() override
     {
         Safe_Release(m_pDevice);
         Safe_Release(m_pContext);
 
-        for (auto object : m_ObjectList)
-        {
-            Safe_Release(object);
-        }
-
         m_ObjectList.clear();
+        for (auto pObject : m_pInstances)
+        {
+            Safe_Release(pObject);
+        }
+        m_pInstances.clear();
     }
 };
-
-template<typename CLASSNAME>
-std::list<CLASSNAME*> ObjectPool<CLASSNAME>::m_ObjectList;
-
-template<typename CLASSNAME>
-int ObjectPool<CLASSNAME>::m_ObjectCount = 0;
-
-
 
 // ImpleSingleton
 template<typename CLASSNAME>
 ObjectPool<CLASSNAME>* ObjectPool<CLASSNAME>::m_pInstance = nullptr;
-
 template<typename CLASSNAME>
 ObjectPool<CLASSNAME>* ObjectPool<CLASSNAME>::GetInstance(void) {
     if (nullptr == m_pInstance) {
@@ -100,7 +97,6 @@ ObjectPool<CLASSNAME>* ObjectPool<CLASSNAME>::GetInstance(void) {
     }
     return m_pInstance;
 }
-
 template<typename CLASSNAME>
 unsigned long ObjectPool<CLASSNAME>::DestroyInstance(void) {
     unsigned long dwRefCnt = { 0 };

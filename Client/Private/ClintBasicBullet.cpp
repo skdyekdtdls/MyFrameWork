@@ -53,9 +53,9 @@ void ClintBasicBullet::Tick(_double TimeDelta)
 	m_pTimeCounterCom->Tick(TimeDelta);
 
 	// ¼ö¸í
-	if (m_pTimeCounterCom->isEuqalWith(1.0))
+	if (m_pTimeCounterCom->isGreaterThan(1.0))
 	{
-		__super::SetDead();
+		SetDead();
 	}
 
 	m_pTransformCom->Go_Straight(TimeDelta);
@@ -111,10 +111,19 @@ HRESULT ClintBasicBullet::Render()
 #endif
 }
 
-void ClintBasicBullet::Reset(void* pArg)
+void ClintBasicBullet::ResetPool(void* pArg)
 {	
+	m_bDead = false;
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, ((CLINT_BASIC_BULLET_DESC*)pArg)->vLook);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&((CLINT_BASIC_BULLET_DESC*)pArg)->vPosition));
+}
+
+void ClintBasicBullet::SetDead()
+{
+	__super::SetDead();
+	ObjectPool<ClintBasicBullet>::GetInstance()->PushPool(this);
+	m_pTimeCounterCom->Reset();
+	m_pTimeCounterCom->Disable();
 }
 
 HRESULT ClintBasicBullet::Add_Components()

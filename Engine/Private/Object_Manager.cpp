@@ -43,7 +43,6 @@ CGameObject* CObject_Manager::Add_GameObject(_uint iLevelIndex, const _tchar* pP
 
 	if (nullptr == pGameObject)
 	{
-		Safe_Release(pGameObject);
 		return nullptr;
 	}
 
@@ -136,6 +135,34 @@ CGameObject* CObject_Manager::Clone_GameObject(const _tchar* pPrototypeTag, void
 		return nullptr;
 
 	return pGameObject;
+}
+
+unordered_map<const _tchar*, CLayer*>::iterator CObject_Manager::LayerBegin(_uint iLevelIndex)
+{
+	if (m_pLayers[iLevelIndex].begin() != m_pLayers[iLevelIndex].end())
+	{
+		return m_pLayers[iLevelIndex].begin();
+	}
+	return LayerEnd(iLevelIndex);
+}
+
+unordered_map<const _tchar*, CLayer*>::iterator CObject_Manager::LayerEnd(_uint iLevelIndex)
+{
+	return m_pLayers[iLevelIndex].end();
+}
+
+// 내부적으로 addref를 한다
+void CObject_Manager::AddToLayer(_uint iLevelIndex, const _tchar* pLayerTag, CGameObject* pGameObject)
+{
+	CLayer* pLayer = Find_LayerByName(iLevelIndex, pLayerTag);
+	if (nullptr == pLayer)
+	{
+		pLayer = CLayer::Create(pLayerTag);
+		m_pLayers[iLevelIndex].emplace(pLayerTag, pLayer);
+	}
+
+	Safe_AddRef(pGameObject);
+	pLayer->Add_GameObject(pGameObject);
 }
 
 void CObject_Manager::Free()

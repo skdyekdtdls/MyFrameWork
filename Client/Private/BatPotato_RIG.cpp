@@ -45,7 +45,6 @@ HRESULT BatPotato_RIG::Initialize(void* pArg)
 	
 	// 노티파이 초기화. 활성화시키고, 준비한다음에 쏨.
 	m_pModelCom->Add_TimeLineEvent("BatPotato_Attack01", L"Attack01", TIMELINE_EVENT(40.f, [this]() {
-		m_pBullet->Enable();
 		static_cast<BatPotato_RIGBullet*>(m_pBullet)->Ready(m_pTransformCom->Get_State(CTransform::STATE_LOOK)
 			, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 		}), LOWER);

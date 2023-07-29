@@ -38,25 +38,22 @@ HRESULT CannonSpiderBullet::Initialize(void* pArg)
 	if (nullptr != pArg)
 		tCannonSpiderBulletDesc = *(tagCannonSpiderBulletDesc*)pArg;
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCannonSpiderBulletDesc.vPosition));
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, tCannonSpiderBulletDesc.vLook);
 
 	m_pTimeCounterCom->Disable();
-	m_bEnable = false;
 
 	return S_OK;
 }
 
 void CannonSpiderBullet::Tick(_double TimeDelta)
 {
-	if (false == m_bEnable)
-		return;
-
 	__super::Tick(TimeDelta);
 	m_pTimeCounterCom->Tick(TimeDelta);
 
-	if (m_pTimeCounterCom->isGreaterThan(1.0))
+	if (m_pTimeCounterCom->isGreaterThan(2.0))
 	{
-		Disable();
-	}	
+		SetDead();
+	}
 
 	m_pTransformCom->Go_Straight(TimeDelta);
 
@@ -71,9 +68,6 @@ void CannonSpiderBullet::Tick(_double TimeDelta)
 
 void CannonSpiderBullet::Late_Tick(_double TimeDelta)
 {
-	if (false == m_bEnable)
-		return;
-
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
@@ -114,12 +108,20 @@ HRESULT CannonSpiderBullet::Render()
 #endif
 }
 
-void CannonSpiderBullet::Ready(_fvector vLook, _fvector vPosition)
+void CannonSpiderBullet::ResetPool(void* pArg)
 {
-	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPosition);
-	m_pTimeCounterCom->Reset();
+	m_bDead = false;
+	m_pTransformCom->Set_State(CTransform::STATE_LOOK, ((tagCannonSpiderBulletDesc*)(pArg))->vLook);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&((tagCannonSpiderBulletDesc*)pArg)->vPosition));
 	m_pTimeCounterCom->Enable();
+}
+
+void CannonSpiderBullet::SetDead()
+{
+	__super::SetDead();
+	ObjectPool<CannonSpiderBullet>::GetInstance()->PushPool(this);
+	m_pTimeCounterCom->Reset();
+	m_pTimeCounterCom->Disable();
 }
 
 HRESULT CannonSpiderBullet::Add_Components()
@@ -143,7 +145,7 @@ HRESULT CannonSpiderBullet::Add_Components()
 
 	CColliderSphere::CCOLLIDER_SPHERE_DESC tColliderSphereDesc;
 	tColliderSphereDesc.pOwner = this;
-	tColliderSphereDesc.fRadius = { 1.f };
+	tColliderSphereDesc.fRadius = { 0.5f };
 	tColliderSphereDesc.vCenter = _float3(0.0f, 0.f, 0.f);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CColliderSphere::ProtoTag(), L"Com_BodyColl", (CComponent**)&m_pColliderCom, &tColliderSphereDesc), E_FAIL);
 
@@ -179,7 +181,7 @@ void CannonSpiderBullet::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _
 	if (0 == strcmp(tCollisionInfo.OtherGameObejctName.c_str(), "Clint1"))
 	{
 		__super::Damage(tCollisionInfo.pOtherGameObject);
-		Disable();
+		SetDead();
 	}
 }
 

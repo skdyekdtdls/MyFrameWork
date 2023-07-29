@@ -18,3 +18,8 @@ _ulong CBase::Release()
 
 	return m_dwRefCnt--;
 }
+
+void CBase::CoutRefCnt()
+{
+	cout << m_dwRefCnt << endl;
+}

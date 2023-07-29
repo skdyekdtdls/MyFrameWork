@@ -127,9 +127,9 @@ static float RadianBetweenVectors(FXMVECTOR _v1, FXMVECTOR _v2)
 	XMVECTOR v2 = XMVector3Normalize(_v2);
 
 	float fDot = XMVectorGetX(XMVector3Dot(v1, v2));
-	Saturate(fDot, -1.f, 1.f);
-	XMVECTOR cross = XMVector3Cross(_v1, _v2);
-	float crossY = XMVectorGetY(cross); // Z 값을 얻습니다. Z 축은 두 벡터의 수평면에 수직입니다.
+	Saturate(fDot, -1.f, 1.f); // fDot에 수정된 값을 할당
+	XMVECTOR cross = XMVector3Cross(v1, v2); // 여기서는 노말라이즈된 벡터를 사용하는 것이 더 올바릅니다.
+	float crossY = XMVectorGetY(cross); // Y 값을 얻습니다. Z 축은 두 벡터의 수평면에 수직입니다.
 	float radian = acos(fDot);
 
 	if (0 < crossY)
@@ -140,10 +140,11 @@ static float RadianBetweenVectors(FXMVECTOR _v1, FXMVECTOR _v2)
 	return radian;
 }
 
+
 static int RandomIntFrom_A_To_B(int A, int B)
 {
-	if (A == 0 && B == 0)
-		return 0;
+	if (A == B)
+		return A;
 
 	if (A > B)
 		std::swap(A, B);
@@ -199,5 +200,13 @@ static void CoutVector(_fvector vector)
 static void CoutFloat3(_float3 vector)
 {
 	cout << vector.x << "\t" << vector.y << "\t" << vector.z << endl;
+}
+
+static void CoutMatrix(_fmatrix matrix)
+{
+	CoutVector(matrix.r[0]);
+	CoutVector(matrix.r[1]);
+	CoutVector(matrix.r[2]);
+	CoutVector(matrix.r[3]);
 }
 #endif

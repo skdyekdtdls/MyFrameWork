@@ -230,6 +230,22 @@
     <ClInclude Include="..\public\CraterA.h" />
     <ClInclude Include="..\public\CraterB.h" />
     <ClInclude Include="..\public\CraterC.h" />
+    <ClInclude Include="..\public\CrystalGolem.h" />
+    <ClInclude Include="..\public\CrystalGolemAppear.h" />
+    <ClInclude Include="..\public\CrystalGolemAttack.h" />
+    <ClInclude Include="..\public\CrystalGolemAttackArea02Bullet.h" />
+    <ClInclude Include="..\public\CrystalGolemAttackAreaBullet.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\public\CrystalGolemAttackRangeBullet.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\public\CrystalGolemDead.h" />
+    <ClInclude Include="..\public\CrystalGolemIdle.h" />
+    <ClInclude Include="..\public\CrystalGolemRun.h" />
+    <ClInclude Include="..\Public\CrystalGolemTurn180.h" />
     <ClInclude Include="..\Public\ImGuiFileDialog.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
@@ -329,6 +345,12 @@
     <ClInclude Include="..\public\SM_TrozoPared.h" />
     <ClInclude Include="..\public\SM_Wall01.h" />
     <ClInclude Include="..\public\SM_Wall02.h" />
+    <ClInclude Include="..\public\Spider.h" />
+    <ClInclude Include="..\public\SpiderAttack.h" />
+    <ClInclude Include="..\public\SpiderDead.h" />
+    <ClInclude Include="..\public\SpiderHit.h" />
+    <ClInclude Include="..\public\SpiderIdle.h" />
+    <ClInclude Include="..\public\SpiderRun.h" />
     <ClInclude Include="..\Public\StateContext.h" />
     <ClInclude Include="..\Public\StateMachine.h" />
     <ClInclude Include="..\public\Terrain.h" />
@@ -428,6 +450,22 @@
     <ClCompile Include="..\private\CraterA.cpp" />
     <ClCompile Include="..\private\CraterB.cpp" />
     <ClCompile Include="..\private\CraterC.cpp" />
+    <ClCompile Include="..\private\CrystalGolem.cpp" />
+    <ClCompile Include="..\private\CrystalGolemAppear.cpp" />
+    <ClCompile Include="..\private\CrystalGolemAttack.cpp" />
+    <ClCompile Include="..\private\CrystalGolemAttackArea02Bullet.cpp" />
+    <ClCompile Include="..\private\CrystalGolemAttackAreaBullet.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\private\CrystalGolemAttackRangeBullet.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\private\CrystalGolemDead.cpp" />
+    <ClCompile Include="..\private\CrystalGolemIdle.cpp" />
+    <ClCompile Include="..\private\CrystalGolemRun.cpp" />
+    <ClCompile Include="..\Private\CrystalGolemTurn180.cpp" />
     <ClCompile Include="..\Private\ImGuiFileDialog.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -511,7 +549,6 @@
     <ClCompile Include="..\private\MineCrystalsD.cpp" />
     <ClCompile Include="..\private\MineCrystalsE.cpp" />
     <ClCompile Include="..\private\MineCrystalsF.cpp" />
-    <ClCompile Include="..\private\ObjectPool.cpp" />
     <ClCompile Include="..\private\Pistola.cpp" />
     <ClCompile Include="..\private\ClintBasicBullet.cpp" />
     <ClCompile Include="..\private\Red_Snow.cpp" />
@@ -541,6 +578,12 @@
     <ClCompile Include="..\private\SM_TrozoPared.cpp" />
     <ClCompile Include="..\private\SM_Wall01.cpp" />
     <ClCompile Include="..\private\SM_Wall02.cpp" />
+    <ClCompile Include="..\private\Spider.cpp" />
+    <ClCompile Include="..\private\SpiderAttack.cpp" />
+    <ClCompile Include="..\private\SpiderDead.cpp" />
+    <ClCompile Include="..\private\SpiderHit.cpp" />
+    <ClCompile Include="..\private\SpiderIdle.cpp" />
+    <ClCompile Include="..\private\SpiderRun.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>

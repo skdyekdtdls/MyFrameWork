@@ -103,6 +103,10 @@ public:/* Setter */
 		m_iParentIndex = iParentIndex;
 	}
 
+	_matrix Get_TransformationMatrix() {
+		return XMLoadFloat4x4(&m_TransformationMatrix);
+	}
+
 public:
 	HRESULT Initialize(aiNode* pAINode, CBone* pParent, _uint iIndex);
 	void Invalidate_CombinedTransformationMatrix(const CModel::BONES& Bones);

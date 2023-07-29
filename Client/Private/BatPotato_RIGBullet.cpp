@@ -181,7 +181,6 @@ void BatPotato_RIGBullet::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, 
 	if (0 == strcmp(tCollisionInfo.OtherGameObejctName.c_str(), "Clint1"))
 	{
 		__super::Damage(tCollisionInfo.pOtherGameObject);
-		Disable();
 	}
 }
 

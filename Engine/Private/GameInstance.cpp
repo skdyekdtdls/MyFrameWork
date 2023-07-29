@@ -150,6 +150,24 @@ CGameObject* CGameInstance::Clone_GameObject(const _tchar* pPrototypeTag, void* 
 	return m_pObject_Manager->Clone_GameObject(pPrototypeTag, pArg);
 }
 
+void CGameInstance::AddToLayer(_uint iLevelIndex, const _tchar* pLayerTag, CGameObject* pGameObject)
+{
+	if (nullptr == m_pObject_Manager)
+		return;
+
+	return m_pObject_Manager->AddToLayer(iLevelIndex, pLayerTag, pGameObject);
+}
+
+unordered_map<const _tchar*, CLayer*>::iterator CGameInstance::LayerBegin(_uint iLevelIndex)
+{
+	return m_pObject_Manager->LayerBegin(iLevelIndex);
+}
+
+unordered_map<const _tchar*, CLayer*>::iterator CGameInstance::LayerEnd(_uint iLevelIndex)
+{
+	return m_pObject_Manager->LayerEnd(iLevelIndex);
+}
+
 void CGameInstance::Serialization(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 {
 	if (nullptr == m_pObject_Manager)

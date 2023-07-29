@@ -57,7 +57,6 @@ private: /* For. Component */
 	CNavigation* m_pNavigationCom = { nullptr };
 	Raycast* m_pRaycastCom = { nullptr };
 	Health* m_pHealthCom = { nullptr };
-	list<Bullet*> m_pBullets = { nullptr };
 	// Can declare VIBuffer or Model Com
 
 private:

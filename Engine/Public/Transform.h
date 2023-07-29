@@ -80,6 +80,7 @@ public:
 	{
 		m_TransformDesc.SpeedPerSec = fSpeed;
 	}
+
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
@@ -88,7 +89,6 @@ public:
 
 public:
 	void Chase_Lerp(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance);
-
 
 	void Go_Straight(_double TimeDelta, class CNavigation* pNavigation = nullptr);
 	void Go_Backward(_double TimeDelta, class CNavigation* pNavigation = nullptr);
@@ -104,7 +104,7 @@ public:
 
 	// 항등 상태를 기준으로 지정한 각만큼 회전시킨다.
 	void Rotation(_fvector vAxis, _float fRadian);
-
+	void RotationBack();
 	void Rotation(_fmatrix RotationMatrixX, _fmatrix RotationMatrixY, _fmatrix RotationMatrixZ);
 	void Turn(_fvector vAxis, _double TimeDelta);
 	void Turn(_fvector vAxis, _fvector vTargetVector, _double TimeDelta);
@@ -113,6 +113,7 @@ public:
 	// 이전 프레임과 현재 프레임 사이의 위치 변화율을 반환합니다.
 	_float3 DeltaPosition();
 
+	_bool isFront(_fvector vPosition, _float fDistance = FLT_MAX, _float fDegree = 180.f);
 
 private:
 	CTRANSFORM_DESC			m_TransformDesc;

@@ -28,7 +28,7 @@ HRESULT Bullet::Initialize(void* pArg)
 		return E_FAIL;
 
 	if(nullptr != pArg)
-		m_fDamage = reinterpret_cast<CLINT_BASIC_BULLET_DESC*>(pArg)->fDamage;
+		m_fDamage = reinterpret_cast<tagBulletDesc*>(pArg)->fDamage;
 
 	return S_OK;
 }

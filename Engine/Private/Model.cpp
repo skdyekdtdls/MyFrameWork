@@ -522,7 +522,7 @@ void CModel::RootMotion(_double TimeDelta, _fvector vDir)
 }
 
 // 뼈오프셋 * 뼈 컴바인 * 모델피벗에 대한 메트릭스(내부적으로 0,1,2행 노말라이즈)를 반환
-_matrix CModel::GetMatrixAttacingBone(_uint iBoneIndex)
+_matrix CModel::GetBoneOCPMatrix(_uint iBoneIndex)
 {
 	if (iBoneIndex > m_Bones.size())
 		return _matrix();

@@ -29,8 +29,8 @@ void CannonSpiderRun::OnStateTick(_double TimeDelta)
 	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
 	Raycast* pRaycast = static_cast<Raycast*>(m_pOwner->Get_Component(L"Com_RayDetect"));
 	CCollider* pCollider = static_cast<CCollider*>(m_pOwner->Get_Component(L"Com_BodyColl"));
-	CNavigation* pNavigation = static_cast<CNavigation*>(m_pOwner->Get_Component(L"Com_Navigation"));
 
+	CNavigation* pNavigation = static_cast<CNavigation*>(m_pOwner->Get_Component(L"Com_Navigation"));
 	_vector vClintPos = Facade->GetClintPosition();
 	_vector vMyPos = pTransform->Get_State(CTransform::STATE_POSITION);
 	_vector vTargetVector = vClintPos - vMyPos;

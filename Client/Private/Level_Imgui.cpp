@@ -13,7 +13,8 @@
 #include "Alien_prawn.h"
 #include "BatPotato_RIG.h"
 #include "CannonSpider.h"
-
+#include "CrystalGolem.h"
+#include "Spider.h"
 CLevel_Imgui::CLevel_Imgui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -114,22 +115,27 @@ void CLevel_Imgui::Ready_Layer_Monster(const _tchar* pLayerTag)
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
-
-	// 몬스터 레이어 생성을 위해서 생성했다가 바로지움.
-	CGameObject* pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, CCube::ProtoTag(), pLayerTag);
-	pGameInstance->Delete_GameObject(LEVEL_IMGUI, L"Layer_Monster", pGameObject->Get_Name());
 	
 	//Alien_prawn::ALIEN_PRAWN_DESC tAlienPrawnDesc;
 	//tAlienPrawnDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
-	//pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, Alien_prawn::ProtoTag(), pLayerTag, &tAlienPrawnDesc);
+	//pGameInstance->Add_GameObject(LEVEL_IMGUI, Alien_prawn::ProtoTag(), pLayerTag, &tAlienPrawnDesc);
 
 	/*BatPotato_RIG::BATPOTATO_RIG_DESC tBatPotatoRigDesc;
 	tBatPotatoRigDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
-  	pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, BatPotato_RIG::ProtoTag(), pLayerTag, &tBatPotatoRigDesc);*/
+  	pGameInstance->Add_GameObject(LEVEL_IMGUI, BatPotato_RIG::ProtoTag(), pLayerTag, &tBatPotatoRigDesc);*/
 
-	CannonSpider::tagCannonSpiderDesc tCannonSpiderDesc;
-	tCannonSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
-	pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, CannonSpider::ProtoTag(), pLayerTag, &tCannonSpiderDesc);
+	//CannonSpider::tagCannonSpiderDesc tCannonSpiderDesc;
+	//tCannonSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	//pGameInstance->Add_GameObject(LEVEL_IMGUI, CannonSpider::ProtoTag(), pLayerTag, &tCannonSpiderDesc);
+
+	//CrystalGolem::tagCrystalGolemDesc tCrystalGolemDesc;
+	//tCrystalGolemDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	//pGameInstance->Add_GameObject(LEVEL_IMGUI, CrystalGolem::ProtoTag(), pLayerTag, &tCrystalGolemDesc);
+
+	Spider::tagSpiderDesc tSpiderDesc;
+	tSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, Spider::ProtoTag(), pLayerTag, &tSpiderDesc);
+
 	Safe_Release(pGameInstance);
 }
 

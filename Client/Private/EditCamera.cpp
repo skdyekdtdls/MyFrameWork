@@ -172,24 +172,23 @@ void CEditCamera::PlayMode_Late_Tick(_double TimeDelta)
 {
 }
 
+// 어떤 객체를 클릭했는지에 대한 정보를 만들어준다.
 void CEditCamera::Picking()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
+	// 레이어 순환 바꾸기
 	_bool bResult = { false };
 	m_isPicking = { true };
-	for (_uint i = 0; i < pGameInstance->GetNumLayers(LEVEL_IMGUI); ++i)
+	for (auto iter = pGameInstance->LayerBegin(LEVEL_IMGUI); iter != pGameInstance->LayerEnd(LEVEL_IMGUI); ++iter)
 	{
-		for (auto& LayerPair : pGameInstance->GetLayers()[i])
+		for (auto& GameObject : iter->second->GetGameObjects())
 		{
-			for (auto& GameObject : LayerPair.second->GetGameObjects())
+			PICK_DESC tPickDesc;
+			if (GameObject->Picked(tPickDesc, m_tMouseRay))
 			{
-				PICK_DESC tPickDesc;
-				if (GameObject->Picked(tPickDesc, m_tMouseRay))
-				{
-					AddPickDesc(tPickDesc);
-				}
+				AddPickDesc(tPickDesc);
 			}
 		}
 	}

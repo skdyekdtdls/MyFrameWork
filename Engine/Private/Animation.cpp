@@ -133,11 +133,10 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 		if (false == m_isLoop)
 		{
 			m_isFinished = true;
-			m_TimeAcc = 0.0;
 		}
 		else
 		{
-			m_TimeAcc = 0.f;
+			m_TimeAcc = 0.0;
 		}
 		
 		m_iCurKeyFrame = 0;
@@ -156,6 +155,10 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 
 		pChannel->Invalidate_TransformationMatrix(Bones, m_TimeAcc, &m_ChannelCurrentKeyFrames[iChannelIndex++], eBody);
 	}
+
+	// 위에다 넣으면 보간이 고장나고 안넣자니 타임라인이 고장나서 여기다 둘 수 밖에없었음.
+	if (m_TimeAcc >= m_Duration && false == m_isLoop)
+		m_TimeAcc = 0.0;
 
 	for (auto& Pair : m_TimeLineEvents)
 	{

@@ -24,7 +24,7 @@ public:
 	{
 		tagBulletDesc() : tagCGameObjectDesc() {}
 		_float fDamage;
-	}CLINT_BASIC_BULLET_DESC;
+	};
 
 protected:
 	Bullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -45,6 +45,9 @@ public: // Setter
 	}
 	
 	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
+
+public: // Getter
+	_float GetDamage() { return m_fDamage; }
 
 protected:
 	_float	m_fDamage = { 100.f };

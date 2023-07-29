@@ -3,6 +3,9 @@
 #include "Level.h"
 #include "Level_Loading.h"
 #include "ClientInstance.h"
+#include "CrystalGolemAttackAreaBullet.h"
+#include "CrystalGolemAttackArea02Bullet.h"
+#include "CrystalGolemAttackRangeBullet.h"
 
 #ifdef _DEBUG
 #include "ImWindow_Manager.h"
@@ -46,6 +49,8 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(Ready_Font()))
 		return E_FAIL;
+
+	Ready_Pool();
 
 	return S_OK;
 }
@@ -202,6 +207,18 @@ HRESULT CMainApp::Ready_Gara()
 	return S_OK;
 }
 
+HRESULT CMainApp::Ready_Pool()
+{
+	ObjectPool<class ClintBasicBullet>::GetInstance()->Initialize(m_pDevice, m_pContext);
+	ObjectPool<class BatPotato_RIGBullet>::GetInstance()->Initialize(m_pDevice, m_pContext);
+	ObjectPool<class CannonSpiderBullet>::GetInstance()->Initialize(m_pDevice, m_pContext);
+	ObjectPool<class CrystalGolemAttackAreaBullet>::GetInstance()->Initialize(m_pDevice, m_pContext);
+	ObjectPool<class CrystalGolemAttackArea02Bullet>::GetInstance()->Initialize(m_pDevice, m_pContext);
+	ObjectPool<class CrystalGolemAttackRangeBullet>::GetInstance()->Initialize(m_pDevice, m_pContext);
+
+	return S_OK; // 풀 이니셜 후 해제.
+}
+
 HRESULT CMainApp::Open_Level(LEVELID eLevelIndex)
 {
 	if (nullptr == m_pGameInstance)
@@ -230,7 +247,10 @@ void CMainApp::Free()
 	Safe_Release(m_pGameInstance);
 	ObjectPool<class ClintBasicBullet>::DestroyInstance();
 	ObjectPool<class BatPotato_RIGBullet>::DestroyInstance();
-
+	ObjectPool<class CannonSpiderBullet>::DestroyInstance();
+	ObjectPool<class CrystalGolemAttackAreaBullet>::DestroyInstance();
+	ObjectPool<class CrystalGolemAttackArea02Bullet>::DestroyInstance();
+	ObjectPool<class CrystalGolemAttackRangeBullet>::DestroyInstance();
 #ifdef _DEBUG
 	CImWindow_Manager::DestroyInstance();
 #endif // DEBUG

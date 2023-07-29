@@ -62,8 +62,6 @@ public:
 	_float4x4 GetPivotMatrix() {
 		return m_PivotMatrix;
 	}
-
-	
 	
 public: /* Setter */
 	virtual void Set_AnimByIndex(_uint iAnimIndex, BODY eBody = LOWER);
@@ -98,7 +96,7 @@ public:
 	virtual void ResetAnimation(_int iIndex = -1, BODY eBody = LOWER);
 	void RootMotion(_double TimeDelta, CTransform::DIRECTION eDir);
 	void RootMotion(_double TimeDelta, _fvector vDir);
-	_matrix GetMatrixAttacingBone(_uint iBoneIndex);
+	_matrix GetBoneOCPMatrix(_uint iBoneIndex);
 
 public:
 	HRESULT Bind_Material(class CShader* pShader, const char* pConstantName, _uint iMeshIndex, TextureType MaterialType);

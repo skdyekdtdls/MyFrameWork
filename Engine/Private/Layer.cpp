@@ -49,8 +49,7 @@ void CLayer::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 
 HRESULT CLayer::Add_GameObject(CGameObject* pGameObject)
 {
-	if (nullptr == pGameObject)
-		return E_FAIL;
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 
 	m_pGameObjects.push_back(pGameObject);
 	pGameObject->SetLayerName(m_tInfo.wstrName);
@@ -76,9 +75,13 @@ HRESULT CLayer::Delete_GameObject(string strName)
 void CLayer::Tick(_double TimeDelta)
 {
 	ReleaseGameObject();
-
+	
 	for (auto& GameObject : m_pGameObjects)
 	{
+		if (m_tInfo.wstrName == L"Layer_Bullet")
+		{
+			int a = 0;
+		}
 		GameObject->Tick(TimeDelta);
 	}
 }

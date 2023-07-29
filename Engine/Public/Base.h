@@ -14,6 +14,10 @@ public:
 	_ulong AddRef();
 	_ulong Release();
 
+#ifdef _DEBUG
+	void CoutRefCnt();
+#endif
+
 protected:
 	_ulong m_dwRefCnt = { 0 };
 public:

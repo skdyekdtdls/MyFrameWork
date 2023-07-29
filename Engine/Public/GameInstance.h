@@ -64,6 +64,9 @@ public: /* For Object_Manager*/
 	_uint GetNumLayers(_uint iLevelIndex);
 	LAYERS* GetLayers();
 	CGameObject* Clone_GameObject(const _tchar * pPrototypeTag, void* pArg);
+	void AddToLayer(_uint iLevelIndex, const _tchar * pLayerTag, CGameObject * pGameObject);
+	unordered_map<const _tchar*, CLayer*>::iterator LayerBegin(_uint iLevelIndex);
+	unordered_map<const _tchar*, CLayer*>::iterator LayerEnd(_uint iLevelIndex);
 
 	void Serialization(HANDLE hFile, DWORD & dwByte, _uint iLevelIndex);
 	void Deserialization(HANDLE hFile, DWORD & dwByte, _uint iLevelIndex);

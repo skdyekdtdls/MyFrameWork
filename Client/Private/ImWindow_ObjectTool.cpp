@@ -174,22 +174,12 @@ void CImWindow_ObjectTool::ObjectPlace()
 		tag = L"Prototype_GameObject_" + TO_WSTR(Skeletal_Mesh_items[Skeletal_Mesh_item_current]);
 	
 	ImGui::Begin("Select Layer");
-	int iCount = 0;
 	
-	for (_uint i = 0; i < pGameInstance->GetNumLayers(LEVEL_IMGUI); ++i)
-	{
-		iCount = 0;
-		for (auto& LayerPair : pGameInstance->GetLayers()[i])
-		{
-			char szTmp[MAX_PATH];
-			TO_CHAR(LayerPair.first, szTmp);
-			if (ImGui::RadioButton(szTmp, &m_bRadioButton, iCount)) {
-				strcpy_s(m_szCurItemLabel, szTmp);
-			}
-
-			iCount++;
-		}
-	}
+	if (ImGui::RadioButton("Layer_BackGround", &m_bRadioButton, 0)) { strcpy_s(m_szCurItemLabel, "Layer_BackGround"); }
+	if (ImGui::RadioButton("Layer_Player", &m_bRadioButton, 1)) {strcpy_s(m_szCurItemLabel, "Layer_Player");}
+	if (ImGui::RadioButton("Layer_Monster", &m_bRadioButton, 2)) { strcpy_s(m_szCurItemLabel, "Layer_Monster"); }
+	if (ImGui::RadioButton("Layer_Bullet", &m_bRadioButton, 4)) {strcpy_s(m_szCurItemLabel, "Layer_Bullet");}
+	if (ImGui::RadioButton("Layer_Camera", &m_bRadioButton, 3)) {strcpy_s(m_szCurItemLabel, "Layer_Camera");}
 
 	ImGui::End();
 

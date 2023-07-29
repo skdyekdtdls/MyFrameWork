@@ -67,21 +67,11 @@ void Pistola::Tick(_double TimeDelta)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 
 	AttachingWeapon();
-
-	ReleaseIf([](Bullet* pClintBasicBullet) {
-		return pClintBasicBullet->GetDead();
-		});
-
-	for (auto& Bullet : m_Bullets)
-		Bullet->Tick(TimeDelta);
 }
 
 void Pistola::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
-
-	for (auto& Bullet : m_Bullets)
-		Bullet->Late_Tick(TimeDelta);
 }
 
 HRESULT Pistola::Render()
@@ -99,7 +89,6 @@ HRESULT Pistola::Render()
 		m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
 
 		m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
-		
 
 		m_pShaderCom->Begin(0);
 
@@ -123,12 +112,8 @@ void Pistola::Attack(_fvector vLook)
 	tClintBasicBulletDesc.fDamage = 100.f;
 	XMStoreFloat4(&tClintBasicBulletDesc.vPosition, XMLoadFloat4x4(&m_WorldMatrix).r[3]);
 
-	
 	Bullet* pBullet = ObjectPool<ClintBasicBullet>::GetInstance()->PopPool(ClintBasicBullet::ProtoTag(), &tClintBasicBulletDesc);
-	//pBullet = static_cast<Bullet*>(pGameInstance->Clone_GameObject(ClintBasicBullet::ProtoTag(), &tClintBasicBulletDesc));
-	cout << ObjectPool<ClintBasicBullet>::GetInstance()->GetCount() << endl;
-
-	PushBackBullet((pBullet));
+	pGameInstance->AddToLayer(pGameInstance->Get_CurLevelIndex(), L"Layer_Bullet", pBullet);
 
 	Safe_Release(pGameInstance);
 }
@@ -187,32 +172,13 @@ HRESULT Pistola::SetUp_ShaderResources()
 	return S_OK;
 }
 
-void Pistola::PushBackBullet(Bullet* pClintBasicBullet)
-{
-	m_Bullets.push_back(pClintBasicBullet);
-}
-
 // ¹«±â¸¦ »À¿¡ ºÙ¿©ÁÜ.
 void Pistola::AttachingWeapon()
 {
 	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
 
 	XMStoreFloat4x4(&m_WorldMatrix, m_pTransformCom->Get_WorldMatrix() *
-		pModel->GetMatrixAttacingBone(m_AttachedBoneIndex) * XMLoadFloat4x4(m_pParentWorldMatrix));
-}
-
-void Pistola::ReleaseIf(function<bool(Bullet*)> func)
-{
-	for (auto iter = m_Bullets.begin(); iter != m_Bullets.end();)
-	{
-		if (func(*iter))
-		{
-			Safe_Release(*iter);
-			iter = m_Bullets.erase(iter);
-		}
-		else
-			++iter;
-	}
+		pModel->GetBoneOCPMatrix(m_AttachedBoneIndex) * XMLoadFloat4x4(m_pParentWorldMatrix));
 }
 
 Pistola* Pistola::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -249,7 +215,4 @@ void Pistola::Free(void)
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pRendererCom);
 	/* Don't Forget Release for the VIBuffer or Model Component*/
-
-	for (auto& Bullet : m_Bullets)
-		Safe_Release(Bullet);
 }

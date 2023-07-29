@@ -45,8 +45,9 @@ HRESULT ClintUltimate01Bullet::Initialize(void* pArg)
 
 void ClintUltimate01Bullet::Tick(_double TimeDelta)
 {
-	__super::Disable();
-	
+	if (false == m_bEnable)
+		return;
+
 	CTransform* pOwnerTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
 	m_pTransformCom->Set_WorldMatrix(pOwnerTransform->Get_WorldMatrix());
 	m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
@@ -72,6 +73,7 @@ void ClintUltimate01Bullet::Late_Tick(_double TimeDelta)
 #endif
 
 	Safe_Release(pGameInstance);
+	m_bEnable = false;
 }
 
 HRESULT ClintUltimate01Bullet::Render()

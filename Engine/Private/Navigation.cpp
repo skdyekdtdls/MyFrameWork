@@ -104,6 +104,7 @@ _bool CNavigation::is_Move(_fvector vPosition)
 		// ÀÌ¿ôÀÌ ÀÖ´Ù¸é
 		if (-1 != iNeighborIndex)
 		{
+
 			while (true)
 			{
 				// ´õ ÀÌ»ó ÀÌ¿ô ÀÎµ¦½º°¡ Á¸ÀçÇÏÁö ¾ÊÀ¸¸é Å»Ãâ
@@ -113,6 +114,8 @@ _bool CNavigation::is_Move(_fvector vPosition)
 				// ÀÌ¿ôÀÎµ¦½º¸¦ Ã£À¸¸é Å»Ãâ
 				if (true == m_Cells[iNeighborIndex]->is_In(vPosition, &iNeighborIndex, eNeighbor))
 					break;
+
+
 			}	
 			m_tNaviDesc.iCurrentIndex = iNeighborIndex;
 			return true;

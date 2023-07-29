@@ -354,6 +354,17 @@ void CTransform::Rotation(_fvector vAxis, _float fRadian)
 	Set_State(STATE_LOOK, XMVector3TransformNormal(vLook, RotationMatrix));
 }
 
+void CTransform::RotationBack()
+{
+	m_WorldMatrix._11 *= -1.f;
+	m_WorldMatrix._12 *= -1.f;
+	m_WorldMatrix._13 *= -1.f;
+
+	m_WorldMatrix._31 *= -1.f;
+	m_WorldMatrix._32 *= -1.f;
+	m_WorldMatrix._33 *= -1.f;
+}
+
 void CTransform::Rotation(_fmatrix RotationMatrixX, _fmatrix RotationMatrixY, _fmatrix RotationMatrixZ)
 {
 	_float3 vScale = Get_Scaled();
@@ -387,6 +398,9 @@ void CTransform::Turn(_fvector vAxis, _fvector _vTargetVector, _double TimeDelta
 	_float fCross = XMVectorGetY(XMVector3Cross(vLook, vTargetVector));
 	_float fDegree = fabs(DegreeBetweenVectors(vTargetVector, vLook));
 
+	if (DegreeBetweenVectors(_vTargetVector, Get_State(STATE_LOOK)) < 3.f)
+		return;
+
 	// 0도 = 360도이기 때문에 360도에서도 더 이상 회전 안시키려고 넣은 코드.
 	if (fDegree > 359.9f)
 		fDegree = 0.f;
@@ -413,14 +427,33 @@ void CTransform::Scaled(const _float3& vScale)
 
 }
 
-
-
 _float3 CTransform::DeltaPosition()
 {
 	return _float3(m_WorldMatrix.m[STATE_POSITION][0] - m_PrevWorldMatrix.m[STATE_POSITION][0]
 	, m_WorldMatrix.m[STATE_POSITION][1] - m_PrevWorldMatrix.m[STATE_POSITION][1]
 	, m_WorldMatrix.m[STATE_POSITION][2] - m_PrevWorldMatrix.m[STATE_POSITION][2]);
 }
+
+_bool CTransform::isFront(_fvector vPosition, _float fDistance, _float fDegree)
+{
+	_vector vMyPosition = Get_State(CTransform::STATE_POSITION);
+	_vector vDir = vPosition - vMyPosition;
+	_vector vLook = Get_State(CTransform::STATE_LOOK);
+
+	if (XMVectorGetX(XMVector3Length(vDir)) > fDistance)
+		return false;
+
+	vDir = XMVector3Normalize(vDir);
+	vLook = XMVector3Normalize(vLook);
+
+	float fDot = XMVectorGetX(XMVector3Dot(vDir, vLook));
+	float fRadian = acos(fDot);
+	fRadian *= 2.f;
+
+	return fRadian < XMConvertToRadians(fDegree);;
+}
+
+
 
 _vector CTransform::DirectionVector(DIRECTION eDir)
 {

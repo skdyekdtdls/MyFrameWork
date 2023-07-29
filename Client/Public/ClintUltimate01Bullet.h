@@ -35,6 +35,9 @@ public:
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
 
+	void Enable() { m_bEnable = true; }
+	void Disable() { m_bEnable = false; };
+
 private: /* For. Component */
 	//CShader* m_pShaderCom = { nullptr };
 	//CModel* m_pModelCom = { nullptr };

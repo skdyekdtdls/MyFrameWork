@@ -24,6 +24,7 @@ public:
 	typedef struct tagCannonSpiderBulletDesc : public tagBulletDesc
 	{
 		tagCannonSpiderBulletDesc() : tagBulletDesc() {}
+		_vector vLook;
 	};
 
 private:
@@ -38,7 +39,8 @@ public:
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
 
-	void Ready(_fvector vLook, _fvector vPosition);
+	void ResetPool(void* pArg);
+	virtual void SetDead() override;
 
 public:
 	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
