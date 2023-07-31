@@ -7,7 +7,7 @@ BEGIN(Engine)
 class ENGINE_DLL Health final : public CComponent
 {
 public:
-	using HealthToken = list<function<void(int)>>::iterator;
+	using Functor = function<void()>;
 
 public:
 	typedef struct tagHealthDesc : public tagComponentDesc
@@ -35,29 +35,43 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 
 public:
-	void TakeDamage(int iAmount);
-	void Heal(int iAmount);
+	void TakeDamage(_uint iAmount);
+	void Heal(_uint iAmount);
 	_bool isZeroHP();
+	_float HPPercent();
 
 public:
-	HealthToken Subscribe(function<void(int)> CallBack)
+	// 이벤트 등록 
+	void Subscribe(const _tchar* pTag, function<void()> CallBack)
 	{
-		m_SubscribersFunc.push_back(CallBack);
-		return --m_SubscribersFunc.end();
+		m_SubscribersFunc.emplace(pTag, CallBack);
 	}
 	
-	void UnSubscribe(HealthToken Token)
+	// 이벤트 해제
+	void UnSubscribe(const _tchar* pTag) {
+		m_SubscribersFunc.erase(pTag);  
+	}
+
+	// for문 순회도중에 지워지면 안되니까 지연처리해서 펑션 삭제
+	void UnSubscribeDelay(const _tchar* pTag)
 	{
-		m_SubscribersFunc.erase(Token);
+		Functor Func = Find_Func(pTag);
+
+		m_ToBeRemoved.emplace(pTag, Func);
 	}
 
 private:
 	_int m_iMaxHp;
 	_int m_iCurrentHp;
-	list<function<void(int)> > m_SubscribersFunc;
+	
+	unordered_map<const _tchar*, Functor> m_SubscribersFunc;
+	unordered_map<const _tchar*, Functor> m_ToBeRemoved;
+	//list<Functor*> m_SubscribersFunc;
+	//list<Functor> m_ToBeRemoved;
 
 private:
 	void Notify();
+	Functor Find_Func(const _tchar* pTag);
 
 public:
 	// If this component is the VIBuffer Com or the Shader Com, Delete ProtoTag().

@@ -70,14 +70,16 @@ void CGameObject::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double 
 
 }
 
-#ifdef _DEBUG
 _bool CGameObject::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 {
+// 지형 클릭 위치 구해야되서 게임오브젝트꺼만 막아놨음.
+#ifdef DEBUG
 	if (!HasTransformCom())
 		return false;
 
 	if (nullptr == m_pPickCollider)
 		return false;
+	
 
 	_float3 vPosFloat3 = GetPosition();
 
@@ -89,10 +91,10 @@ _bool CGameObject::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 		tPickDesc.pPickedObject = this;
 		return true;
 	}
+#endif // DEBUG
 	
 	return false;
 }
-#endif
 
 
 #ifdef _DEBUG

@@ -29,9 +29,11 @@ class StateContext;
 END
 
 BEGIN(Client)
-class Spider final : public CGameObject
+class Spider : public CGameObject
 {
+protected:
 	typedef StateContext<Spider, SPIDER_ANIM> SpiderState;
+
 public:
 	typedef struct tagSpiderDesc : public tagCGameObjectDesc
 	{
@@ -64,6 +66,7 @@ private: /* For. Component */
 	// Can declare VIBuffer or Model Com
 
 private:
+	HRESULT SetUp_Notify();
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();
 

@@ -16,7 +16,8 @@ void SpiderIdle::OnStateEnter()
 {
 	__super::OnStateEnter();
 
-	SetAnimIndex(SPIDER_ANIM_END, LOWER);
+	SetAnimIndex(SPIDER_IDLE, LOWER);
+	m_TimeAcc = { 0.0 };
 }
 
 void SpiderIdle::OnStateTick(_double TimeDelta)
@@ -27,6 +28,10 @@ void SpiderIdle::OnStateTick(_double TimeDelta)
 	Safe_AddRef(pGameInstance);
 	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
 	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
+	m_TimeAcc += TimeDelta;
+
+	if (m_TimeAcc > 1.0)
+		TransitionTo(L"SpiderRun");
 
 	Safe_Release(pGameInstance);
 }
@@ -38,12 +43,7 @@ void SpiderIdle::OnStateExit()
 
 void SpiderIdle::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
-	// 플레이어랑 레이랑 충돌하면 공격상태로 전환
-	if (tCollisionInfo.pMyCollider == m_pOwner->GetComponent<Raycast>() &&
-		tCollisionInfo.pOtherGameObject->GetInfo().wstrKey == TEXT("Prototype_GameObject_Clint"))
-	{
-		TransitionTo(L"SpiderAttack");
-	}
+
 }
 
 StateMachine<Spider, SPIDER_ANIM>* SpiderIdle::Clone(void* pArg)

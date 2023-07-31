@@ -31,7 +31,7 @@ public:
 	_bool isGreaterThan(_double Time);
 	_bool isLessThan(_double Time);
 	_bool EveryPer(_double Time);
-
+	_double TimeElapse();
 private:
 	_double m_TimeAcc[COUNTER_END];
 	_bool	m_bEnable = { false };

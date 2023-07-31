@@ -76,6 +76,11 @@ _bool TimeCounter::EveryPer(_double Time)
 	return false;
 }
 
+_double TimeCounter::TimeElapse()
+{
+	return m_TimeAcc[NORMAL];
+}
+
 TimeCounter* TimeCounter::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	TimeCounter* pInstance = new TimeCounter(pDevice, pContext);

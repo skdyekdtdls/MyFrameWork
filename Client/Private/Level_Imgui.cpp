@@ -15,6 +15,7 @@
 #include "CannonSpider.h"
 #include "CrystalGolem.h"
 #include "Spider.h"
+#include "Queen_Moggoth.h"
 CLevel_Imgui::CLevel_Imgui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -132,9 +133,13 @@ void CLevel_Imgui::Ready_Layer_Monster(const _tchar* pLayerTag)
 	//tCrystalGolemDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
 	//pGameInstance->Add_GameObject(LEVEL_IMGUI, CrystalGolem::ProtoTag(), pLayerTag, &tCrystalGolemDesc);
 
-	Spider::tagSpiderDesc tSpiderDesc;
-	tSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
-	pGameInstance->Add_GameObject(LEVEL_IMGUI, Spider::ProtoTag(), pLayerTag, &tSpiderDesc);
+	//Spider::tagSpiderDesc tSpiderDesc;
+	//tSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	//pGameInstance->Add_GameObject(LEVEL_IMGUI, Spider::ProtoTag(), pLayerTag, &tSpiderDesc);
+
+	Queen_Moggoth::tagQueen_MoggothDesc tQueenMoggothDesc;
+	tQueenMoggothDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, Queen_Moggoth::ProtoTag(), pLayerTag, &tQueenMoggothDesc);
 
 	Safe_Release(pGameInstance);
 }

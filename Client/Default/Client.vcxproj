@@ -52,7 +52,7 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <EnableUnitySupport>true</EnableUnitySupport>
+    <EnableUnitySupport>false</EnableUnitySupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -270,7 +270,7 @@
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\public\Cube.h" />
     <ClInclude Include="..\public\EditCamera.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\ImMode.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -316,8 +316,26 @@
     <ClInclude Include="..\public\MineCrystalsE.h" />
     <ClInclude Include="..\public\MineCrystalsF.h" />
     <ClInclude Include="..\public\ObjectPool.h" />
+    <ClInclude Include="..\public\P1Attack01.h" />
+    <ClInclude Include="..\public\P1Attack02.h" />
+    <ClInclude Include="..\public\P1Attack03.h" />
+    <ClInclude Include="..\public\P1Attack04.h" />
+    <ClInclude Include="..\public\P2Attack01.h" />
+    <ClInclude Include="..\public\P2Attack02.h" />
+    <ClInclude Include="..\public\P2Attack03.h" />
+    <ClInclude Include="..\public\P2Attack04.h" />
     <ClInclude Include="..\public\Pistola.h" />
     <ClInclude Include="..\public\ClintBasicBullet.h" />
+    <ClInclude Include="..\public\Queen_Moggoth.h" />
+    <ClInclude Include="..\public\Queen_MoggothAppear.h" />
+    <ClInclude Include="..\public\Queen_MoggothAttack.h" />
+    <ClInclude Include="..\Public\Queen_MoggothAttackP2.h" />
+    <ClInclude Include="..\public\Queen_MoggothDead.h" />
+    <ClInclude Include="..\public\Queen_MoggothIdle.h" />
+    <ClInclude Include="..\public\Queen_MoggothIdleP2.h" />
+    <ClInclude Include="..\public\Queen_MoggothWalk.h" />
+    <ClInclude Include="..\public\Queen_MoggothWalkP2.h" />
+    <ClInclude Include="..\public\Queen_Moggoth_P1_TO_P2.h" />
     <ClInclude Include="..\public\Red_Snow.h" />
     <ClInclude Include="..\public\Sky.h" />
     <ClInclude Include="..\public\SM_Barriletes.h" />
@@ -346,7 +364,9 @@
     <ClInclude Include="..\public\SM_Wall01.h" />
     <ClInclude Include="..\public\SM_Wall02.h" />
     <ClInclude Include="..\public\Spider.h" />
+    <ClInclude Include="..\public\SpiderAppear.h" />
     <ClInclude Include="..\public\SpiderAttack.h" />
+    <ClInclude Include="..\public\SpiderBullet.h" />
     <ClInclude Include="..\public\SpiderDead.h" />
     <ClInclude Include="..\public\SpiderHit.h" />
     <ClInclude Include="..\public\SpiderIdle.h" />
@@ -489,7 +509,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\private\EditCamera.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\ImMode.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -549,8 +569,26 @@
     <ClCompile Include="..\private\MineCrystalsD.cpp" />
     <ClCompile Include="..\private\MineCrystalsE.cpp" />
     <ClCompile Include="..\private\MineCrystalsF.cpp" />
+    <ClCompile Include="..\private\P1Attack01.cpp" />
+    <ClCompile Include="..\private\P1Attack02.cpp" />
+    <ClCompile Include="..\private\P1Attack03.cpp" />
+    <ClCompile Include="..\private\P1Attack04.cpp" />
+    <ClCompile Include="..\private\P2Attack01.cpp" />
+    <ClCompile Include="..\private\P2Attack02.cpp" />
+    <ClCompile Include="..\private\P2Attack03.cpp" />
+    <ClCompile Include="..\private\P2Attack04.cpp" />
     <ClCompile Include="..\private\Pistola.cpp" />
     <ClCompile Include="..\private\ClintBasicBullet.cpp" />
+    <ClCompile Include="..\private\Queen_Moggoth.cpp" />
+    <ClCompile Include="..\private\Queen_MoggothAppear.cpp" />
+    <ClCompile Include="..\private\Queen_MoggothAttack.cpp" />
+    <ClCompile Include="..\private\Queen_MoggothAttackP2.cpp" />
+    <ClCompile Include="..\private\Queen_MoggothDead.cpp" />
+    <ClCompile Include="..\private\Queen_MoggothIdle.cpp" />
+    <ClCompile Include="..\private\Queen_MoggothIdleP2.cpp" />
+    <ClCompile Include="..\private\Queen_MoggothWalk.cpp" />
+    <ClCompile Include="..\private\Queen_MoggothWalkP2.cpp" />
+    <ClCompile Include="..\private\Queen_Moggoth_P1_TO_P2.cpp" />
     <ClCompile Include="..\private\Red_Snow.cpp" />
     <ClCompile Include="..\private\Sky.cpp" />
     <ClCompile Include="..\private\SM_Barriletes.cpp" />
@@ -579,7 +617,9 @@
     <ClCompile Include="..\private\SM_Wall01.cpp" />
     <ClCompile Include="..\private\SM_Wall02.cpp" />
     <ClCompile Include="..\private\Spider.cpp" />
+    <ClCompile Include="..\private\SpiderAppear.cpp" />
     <ClCompile Include="..\private\SpiderAttack.cpp" />
+    <ClCompile Include="..\private\SpiderBullet.cpp" />
     <ClCompile Include="..\private\SpiderDead.cpp" />
     <ClCompile Include="..\private\SpiderHit.cpp" />
     <ClCompile Include="..\private\SpiderIdle.cpp" />

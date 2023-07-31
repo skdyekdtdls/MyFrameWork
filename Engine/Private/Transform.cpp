@@ -297,6 +297,12 @@ void CTransform::Go_Direction(_double TimeDelta, _fvector _vDir, _float fLength)
 	}
 }
 
+void CTransform::Jump(_float TimeElapse, _float fPower)
+{
+	m_WorldMatrix._42 = fPower * TimeElapse - (9.8f * TimeElapse * TimeElapse) * 0.5f;
+	m_WorldMatrix._42 = max(m_WorldMatrix._42, 0.f);
+}
+
 void CTransform::Chase_Lerp(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance)
 {
 	//현재 내 위치

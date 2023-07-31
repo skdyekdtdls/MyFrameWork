@@ -59,7 +59,6 @@ _vector ClientInstance::PickPosOnTerrain()
 	CTerrain* pTerrain = GetTerrain();
 	return pTerrain->PickPos();
 }
-
 RAY ClientInstance::GetMouseRay(ID3D11DeviceContext* pContext)
 {
 	::POINT	ptMouse{};

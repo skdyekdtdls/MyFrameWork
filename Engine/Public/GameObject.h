@@ -49,9 +49,10 @@ public:
 
 	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
 
-#ifdef _DEBUG
 public:
 	virtual _bool Picked(_Inout_ PICK_DESC& tPickDesc, const RAY& tMouseRay);
+
+#ifdef _DEBUG
 	_float GetPickSphereRadius();
 	void ReleaseFreePickCollider();
 	void SetPickRadius(_float fRadius);

@@ -23,6 +23,8 @@ public:
 	_matrix GetClintWorldMatrix();
 	class CNavigation* GetClintNavigation();
 	class CTerrain* GetTerrain();
+
+
 	_vector PickPosOnTerrain();
 
 	RAY GetMouseRay(ID3D11DeviceContext* pContext);

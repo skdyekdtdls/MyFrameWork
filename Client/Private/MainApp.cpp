@@ -6,7 +6,15 @@
 #include "CrystalGolemAttackAreaBullet.h"
 #include "CrystalGolemAttackArea02Bullet.h"
 #include "CrystalGolemAttackRangeBullet.h"
-
+#include "SpiderBullet.h"
+#include "P1Attack01.h"
+#include "P1Attack02.h"
+#include "P1Attack03.h"
+#include "P1Attack04.h"
+#include "P2Attack01.h"
+#include "P2Attack02.h"
+#include "P2Attack03.h"
+#include "P2Attack04.h"
 #ifdef _DEBUG
 #include "ImWindow_Manager.h"
 #endif // DEBUG
@@ -37,13 +45,10 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(Ready_Prototype_Component_For_Static()))
 		return E_FAIL;
-#ifdef _DEBUG
-	if (FAILED(Open_Level(LEVEL_IMGUI)))
-		return E_FAIL;
-#else
+
 	if(FAILED(Open_Level(LEVEL_LOGO)))
 		return E_FAIL;
-#endif
+
 	//if (FAILED(Ready_Gara()))
 	//	return E_FAIL;
 
@@ -215,6 +220,14 @@ HRESULT CMainApp::Ready_Pool()
 	ObjectPool<class CrystalGolemAttackAreaBullet>::GetInstance()->Initialize(m_pDevice, m_pContext);
 	ObjectPool<class CrystalGolemAttackArea02Bullet>::GetInstance()->Initialize(m_pDevice, m_pContext);
 	ObjectPool<class CrystalGolemAttackRangeBullet>::GetInstance()->Initialize(m_pDevice, m_pContext);
+	ObjectPool<class P1Attack01>::GetInstance()->Initialize(m_pDevice, m_pContext);
+	ObjectPool<class P1Attack02>::GetInstance()->Initialize(m_pDevice, m_pContext);
+	ObjectPool<class P1Attack03>::GetInstance()->Initialize(m_pDevice, m_pContext);
+	ObjectPool<class P1Attack04>::GetInstance()->Initialize(m_pDevice, m_pContext);
+	ObjectPool<class P2Attack01>::GetInstance()->Initialize(m_pDevice, m_pContext);
+	ObjectPool<class P2Attack02>::GetInstance()->Initialize(m_pDevice, m_pContext);
+	ObjectPool<class P2Attack03>::GetInstance()->Initialize(m_pDevice, m_pContext);
+	ObjectPool<class P2Attack04>::GetInstance()->Initialize(m_pDevice, m_pContext);
 
 	return S_OK; // 풀 이니셜 후 해제.
 }
@@ -251,6 +264,14 @@ void CMainApp::Free()
 	ObjectPool<class CrystalGolemAttackAreaBullet>::DestroyInstance();
 	ObjectPool<class CrystalGolemAttackArea02Bullet>::DestroyInstance();
 	ObjectPool<class CrystalGolemAttackRangeBullet>::DestroyInstance();
+	ObjectPool<class P1Attack01>::DestroyInstance();
+	ObjectPool<class P1Attack02>::DestroyInstance();
+	ObjectPool<class P1Attack03>::DestroyInstance();
+	ObjectPool<class P1Attack04>::DestroyInstance();
+	ObjectPool<class P2Attack01>::DestroyInstance();
+	ObjectPool<class P2Attack02>::DestroyInstance();
+	ObjectPool<class P2Attack03>::DestroyInstance();
+	ObjectPool<class P2Attack04>::DestroyInstance();
 #ifdef _DEBUG
 	CImWindow_Manager::DestroyInstance();
 #endif // DEBUG

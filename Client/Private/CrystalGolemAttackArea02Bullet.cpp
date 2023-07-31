@@ -65,9 +65,9 @@ void CrystalGolemAttackArea02Bullet::Late_Tick(_double TimeDelta)
 	Safe_AddRef(pGameInstance);
 
 	__super::Late_Tick(TimeDelta);
-
+	#ifdef _DEBUG
 	m_pRendererCom->Add_DebugGroup(m_pColliderCom);
-
+#endif
 	Safe_Release(pGameInstance);
 }
 

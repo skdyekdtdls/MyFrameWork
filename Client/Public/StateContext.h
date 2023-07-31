@@ -15,7 +15,7 @@
 #pragma once
 #include "Component.h"
 #include "StateContext.h"
-#include "StateMachine.h"
+//#include "StateMachine.h"
 #include "GameInstance.h"
 BEGIN(Client)
 template <typename OWNER, typename ANIM_ENUM>

@@ -148,8 +148,9 @@ static int RandomIntFrom_A_To_B(int A, int B)
 
 	if (A > B)
 		std::swap(A, B);
-
-	return rand() % (B - A + 1) + A;
+	// -3 ~ 3
+	// 
+	return (rand() % (B - A + 1)) + A;
 }
 
 // 두 벡터 사이의 Degree를 구하는 함수.
@@ -174,18 +175,18 @@ static void DegreeClipping(_float& fDegree)
 	}	
 }
 
-bool IsPointOnLineSegment(FXMVECTOR A, FXMVECTOR B, FXMVECTOR P)
-{
-	DirectX::FXMVECTOR AB = DirectX::XMVectorSubtract(B, A);
-	DirectX::FXMVECTOR AP = DirectX::XMVectorSubtract(P, A);
-	DirectX::FXMVECTOR BP = DirectX::XMVectorSubtract(P, B);
-
-	float dotABAP = DirectX::XMVectorGetX(DirectX::XMVector3Dot(AB, AP));
-	float dotABAB = DirectX::XMVectorGetX(DirectX::XMVector3Dot(AB, AB));
-	float dotBAPB = DirectX::XMVectorGetX(DirectX::XMVector3Dot(DirectX::XMVectorNegate(AB), BP));
-
-	return (dotABAP >= 0.f && dotABAP <= dotABAB && dotBAPB >= 0.f);
-}
+//bool IsPointOnLineSegment(FXMVECTOR A, FXMVECTOR B, FXMVECTOR P)
+//{
+//	DirectX::FXMVECTOR AB = DirectX::XMVectorSubtract(B, A);
+//	DirectX::FXMVECTOR AP = DirectX::XMVectorSubtract(P, A);
+//	DirectX::FXMVECTOR BP = DirectX::XMVectorSubtract(P, B);
+//
+//	float dotABAP = DirectX::XMVectorGetX(DirectX::XMVector3Dot(AB, AP));
+//	float dotABAB = DirectX::XMVectorGetX(DirectX::XMVector3Dot(AB, AB));
+//	float dotBAPB = DirectX::XMVectorGetX(DirectX::XMVector3Dot(DirectX::XMVectorNegate(AB), BP));
+//
+//	return (dotABAP >= 0.f && dotABAP <= dotABAB && dotBAPB >= 0.f);
+//}
 
 static XMVECTOR WorldAxisX() { return XMVectorSet(1.f, 0.f, 0.f, 0.f); }
 static XMVECTOR WorldAxisY() { return XMVectorSet(0.f, 1.f, 0.f, 0.f); }

@@ -81,7 +81,6 @@ HRESULT CTerrain::Render()
 	return S_OK;
 }
 
-#ifdef _DEBUG
 _bool CTerrain::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 {
 	_bool bResult = { false };
@@ -97,6 +96,7 @@ _bool CTerrain::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 
 	_float fMinDist = FLT_MAX;
 
+	// ÄõµåÆ®¸®·Î Å½»ö
 	bResult = m_pVIBufferCom->IsPicked(vRayOrigin, vRayDir, fMinDist);
 	
 	if (bResult)
@@ -115,7 +115,6 @@ _bool CTerrain::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 	return bResult;
 }
 
-#endif DEBUG
 
 HRESULT CTerrain::Add_Components()
 {	

@@ -1,7 +1,7 @@
 #include "Spider.h"
 #include "GameInstance.h"
 #include "StateContext.h"
-#include "Bullet.h"
+#include "SpiderBullet.h"
 
 _uint Spider::Spider_Id = 0;
 
@@ -38,13 +38,16 @@ HRESULT Spider::Initialize(void* pArg)
 	m_tInfo.ID = Spider_Id;
 
 	// 상태 초기화
-	m_pStateContextCom->TransitionTo(L"SpiderIdle");
+	m_pStateContextCom->TransitionTo(L"SpiderAppear");
 
 	// Desc초기화
 	tagSpiderDesc tCloneDesc;
 	if (nullptr != pArg)
 		tCloneDesc = *(tagSpiderDesc*)pArg;
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
+
+	// 노티파이 초기화
+	SetUp_Notify();
 
 	return S_OK;
 }
@@ -138,6 +141,81 @@ void Spider::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeD
 	m_pStateContextCom->OnCollision(tCollisionInfo, TimeDelta);
 }
 
+HRESULT Spider::SetUp_Notify()
+{
+
+	m_pModelCom->Add_TimeLineEvent("spider_attack", L"SpiderAttack", TIMELINE_EVENT(25.0, [this]() {
+		CGameInstance* pGameInstance = CGameInstance::GetInstance();
+		Safe_AddRef(pGameInstance);
+		// TODO
+		SpiderBullet::tagSpiderBulletDesc tBulletDesc;
+		_vector vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+		_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+
+		tBulletDesc.pOwner = this;
+		tBulletDesc.fDamage = 10.f;
+		vPosition += vLook * 1.f;
+		XMStoreFloat4(&tBulletDesc.vPosition, vPosition);
+
+		Bullet* pBullet = ObjectPool<SpiderBullet>::GetInstance()->PopPool(SpiderBullet::ProtoTag(), &tBulletDesc);
+
+		pGameInstance->AddToLayer(pGameInstance->Get_CurLevelIndex(), L"Layer_Bullet", pBullet);
+
+		Safe_Release(pGameInstance);
+		}));
+
+	m_pModelCom->Add_TimeLineEvent("spider_attack_b", L"SpiderAttack", TIMELINE_EVENT(25.0, [this]() {
+		CGameInstance* pGameInstance = CGameInstance::GetInstance();
+		Safe_AddRef(pGameInstance);
+		// TODO
+		SpiderBullet::tagSpiderBulletDesc tBulletDesc;
+		_vector vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+		_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+
+		tBulletDesc.pOwner = this;
+		tBulletDesc.fDamage = 10.f;
+		vPosition += vLook * 1.f;
+		XMStoreFloat4(&tBulletDesc.vPosition, vPosition);
+
+		Bullet* pBullet = ObjectPool<SpiderBullet>::GetInstance()->PopPool(SpiderBullet::ProtoTag(), &tBulletDesc);
+
+		pGameInstance->AddToLayer(pGameInstance->Get_CurLevelIndex(), L"Layer_Bullet", pBullet);
+
+		Safe_Release(pGameInstance);
+
+		}));
+
+	m_pModelCom->Add_TimeLineEvent("spider_attack_mid", L"SpiderAttack", TIMELINE_EVENT(25.0, [this]() {
+		CGameInstance* pGameInstance = CGameInstance::GetInstance();
+		Safe_AddRef(pGameInstance);
+		// TODO
+		SpiderBullet::tagSpiderBulletDesc tBulletDesc;
+		_vector vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+		_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+
+		tBulletDesc.pOwner = this;
+		tBulletDesc.fDamage = 10.f;
+		vPosition += vLook * 1.f;
+		XMStoreFloat4(&tBulletDesc.vPosition, vPosition);
+
+		Bullet* pBullet = ObjectPool<SpiderBullet>::GetInstance()->PopPool(SpiderBullet::ProtoTag(), &tBulletDesc);
+
+		pGameInstance->AddToLayer(pGameInstance->Get_CurLevelIndex(), L"Layer_Bullet", pBullet);
+
+		Safe_Release(pGameInstance);
+
+		}));
+
+
+	// spider_attack      75.0
+	// spider_attack_b    75.0
+	// spider_attack_mid  75.0
+
+
+
+	return S_OK;
+}
+
 HRESULT Spider::Add_Components()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
@@ -154,8 +232,33 @@ HRESULT Spider::Add_Components()
 	CShader::CSHADER_DESC tShaderDesc; tShaderDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxAnimMesh", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
 
+	//_uint iLogic = RandomIntFrom_A_To_B(0, 6);
+	
 	CModel::CMODEL_DESC tModelDesc; tModelDesc.pOwner = this;
-	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_MicroSpider1", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+	switch (6)
+	{
+	case 0:
+		FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_MicroSpider1", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+		break;
+	case 1:
+		FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_MicroSpider2", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+		break;
+	case 2:
+		FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Spider1", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+		break;
+	case 3:
+		FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Spider2", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+		break;
+	case 4:
+		FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_Spider3", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+		break;
+	case 5:
+		FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_SummonSpider1", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+		break;
+	case 6:
+		FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_SummonSpider2", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+		break;
+	}
 
 	CColliderAABB::CCOLLIDER_AABB_DESC tColliderAABBDesc;
 	tColliderAABBDesc.pOwner = this;
@@ -166,7 +269,7 @@ HRESULT Spider::Add_Components()
 	Raycast::RAYCAST_DESC tRaycastDesc;
 	tRaycastDesc.pOwner = this;
 	tRaycastDesc.vCenter = _float3(0.0f, 1.f, 0.f);
-	tRaycastDesc.fLength = { 6.f };
+	tRaycastDesc.fLength = { 1.f };
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, Raycast::ProtoTag(), L"Com_RayDetect", (CComponent**)&m_pRaycastCom, &tRaycastDesc), E_FAIL);
 
 	CNavigation::CNAVIGATION_DESC tNavigationdesc; tNavigationdesc.pOwner = this;

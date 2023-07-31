@@ -1,4 +1,3 @@
-#ifdef _DEBUG
 #include "EditCamera.h"
 #include "Terrain.h"
 #include "GameInstance.h"
@@ -12,6 +11,7 @@
 #include "Layer.h"
 #include "Model.h"
 #include "Bone.h"
+
 CEditCamera::CEditCamera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
 {
@@ -310,4 +310,3 @@ void CEditCamera::Free(void)
 
 	ClearPickDesc();
 }
-#endif

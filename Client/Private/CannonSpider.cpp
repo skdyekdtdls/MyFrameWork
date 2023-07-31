@@ -70,7 +70,7 @@ HRESULT CannonSpider::Initialize(void* pArg)
 	if (nullptr != pArg)
 		tCloneDesc = *(tagCannonSpiderDesc*)pArg;
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
-	m_pNavigationCom->FindIndex(XMLoadFloat4(&tCloneDesc.vPosition));
+
 	return S_OK;
 }
 

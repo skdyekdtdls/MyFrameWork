@@ -18,7 +18,7 @@ void Alien_prawnRun::OnStateEnter()
 
 	SetAnimIndex(ALIEN_PRAWN_RUN, LOWER);
 }
-
+// 밥먹고와서 보스해!
 void Alien_prawnRun::OnStateTick(_double TimeDelta)
 {
 	__super::OnStateTick(TimeDelta);
@@ -31,8 +31,11 @@ void Alien_prawnRun::OnStateTick(_double TimeDelta)
 	CCollider* pCollider = static_cast<CCollider*>(m_pOwner->Get_Component(L"Com_BodyColl"));
 
 	_vector vClintPos = Facade->GetClintPosition();
+	_vector vMyPos = pTransform->Get_State(CTransform::STATE_POSITION);
+	_vector vTargetVector = vClintPos - vMyPos;
+
 	pTransform->Chase(vClintPos, TimeDelta, 0.5f);
-	pTransform->LookAt(vClintPos);
+	pTransform->Turn(WorldAxisY(), vTargetVector, TimeDelta);
 
 	// 절두체 안에 있으면 콜라이더 그룹 추가.
 	if (pGameInstance->isIn_WorldSpace(pTransform->Get_State(CTransform::STATE_POSITION), 1.f))

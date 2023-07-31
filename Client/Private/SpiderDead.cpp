@@ -16,7 +16,7 @@ void SpiderDead::OnStateEnter()
 {
 	__super::OnStateEnter();
 
-	SetAnimIndex(SPIDER_ANIM_END, LOWER);
+	SetAnimIndex(SPIDER_STUNNED, LOWER);
 }
 
 void SpiderDead::OnStateTick(_double TimeDelta)
@@ -28,6 +28,9 @@ void SpiderDead::OnStateTick(_double TimeDelta)
 	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
 	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
 
+	if (pModel->IsAnimationFinished())
+		m_pOwner->SetDead();
+
 	Safe_Release(pGameInstance);
 }
 
@@ -38,12 +41,7 @@ void SpiderDead::OnStateExit()
 
 void SpiderDead::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
-	// 플레이어랑 레이랑 충돌하면 공격상태로 전환
-	if (tCollisionInfo.pMyCollider == m_pOwner->GetComponent<Raycast>() &&
-		tCollisionInfo.pOtherGameObject->GetInfo().wstrKey == TEXT("Prototype_GameObject_Clint"))
-	{
-		TransitionTo(L"SpiderAttack");
-	}
+
 }
 
 StateMachine<Spider, SPIDER_ANIM>* SpiderDead::Clone(void* pArg)

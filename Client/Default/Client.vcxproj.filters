@@ -334,11 +334,23 @@
     <Filter Include="02. GameObjects\Spider">
       <UniqueIdentifier>{9247a020-d7e1-44ee-90c4-d0e8d05f17fa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\Queen_Mogos">
-      <UniqueIdentifier>{3276df48-e1d3-4c23-8a53-7357fe2fe99e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObjects\Spider\State">
       <UniqueIdentifier>{5ea9892b-224b-43b7-8d90-06977bebf7e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Spider\Bullet">
+      <UniqueIdentifier>{42ac1293-ed3b-44dd-b96f-4b2bbe49f525}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Queen_Moggoth">
+      <UniqueIdentifier>{3276df48-e1d3-4c23-8a53-7357fe2fe99e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Queen_Moggoth\Bullet">
+      <UniqueIdentifier>{bb0b22ba-e154-4880-b47e-1ec87b309f77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Queen_Moggoth\State">
+      <UniqueIdentifier>{e97d622e-9443-42ac-b162-6b30a5c34b6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Queen_Moggoth\State\Phase2">
+      <UniqueIdentifier>{7451d677-f01a-4343-b2f3-8e2779121a32}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -769,6 +781,66 @@
     <ClInclude Include="..\public\SpiderHit.h">
       <Filter>02. GameObjects\Spider\State</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\SpiderAppear.h">
+      <Filter>02. GameObjects\Spider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SpiderBullet.h">
+      <Filter>02. GameObjects\Spider\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Queen_Moggoth.h">
+      <Filter>02. GameObjects\Queen_Moggoth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Queen_MoggothIdle.h">
+      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Queen_MoggothAppear.h">
+      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Queen_MoggothAttack.h">
+      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Queen_MoggothDead.h">
+      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Queen_MoggothWalk.h">
+      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Queen_MoggothIdleP2.h">
+      <Filter>02. GameObjects\Queen_Moggoth\State\Phase2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Queen_MoggothWalkP2.h">
+      <Filter>02. GameObjects\Queen_Moggoth\State\Phase2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Queen_MoggothAttackP2.h">
+      <Filter>02. GameObjects\Queen_Moggoth\State\Phase2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Queen_Moggoth_P1_TO_P2.h">
+      <Filter>02. GameObjects\Queen_Moggoth\State\Phase2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\P1Attack04.h">
+      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\P1Attack01.h">
+      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\P1Attack02.h">
+      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\P1Attack03.h">
+      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\P2Attack01.h">
+      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\P2Attack02.h">
+      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\P2Attack03.h">
+      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\P2Attack04.h">
+      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -1181,6 +1253,66 @@
     </ClCompile>
     <ClCompile Include="..\private\SpiderHit.cpp">
       <Filter>02. GameObjects\Spider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SpiderAppear.cpp">
+      <Filter>02. GameObjects\Spider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SpiderBullet.cpp">
+      <Filter>02. GameObjects\Spider\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_Moggoth.cpp">
+      <Filter>02. GameObjects\Queen_Moggoth</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_MoggothIdle.cpp">
+      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_MoggothAppear.cpp">
+      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_MoggothAttack.cpp">
+      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_MoggothDead.cpp">
+      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_MoggothWalk.cpp">
+      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_MoggothAttackP2.cpp">
+      <Filter>02. GameObjects\Queen_Moggoth\State\Phase2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_MoggothIdleP2.cpp">
+      <Filter>02. GameObjects\Queen_Moggoth\State\Phase2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_MoggothWalkP2.cpp">
+      <Filter>02. GameObjects\Queen_Moggoth\State\Phase2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_Moggoth_P1_TO_P2.cpp">
+      <Filter>02. GameObjects\Queen_Moggoth\State\Phase2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\P1Attack01.cpp">
+      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\P1Attack02.cpp">
+      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\P1Attack03.cpp">
+      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\P1Attack04.cpp">
+      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\P2Attack01.cpp">
+      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\P2Attack02.cpp">
+      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\P2Attack03.cpp">
+      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\P2Attack04.cpp">
+      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

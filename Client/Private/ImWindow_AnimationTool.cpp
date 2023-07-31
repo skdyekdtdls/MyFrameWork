@@ -108,7 +108,7 @@ void CImWindow_AnimationTool::Tick()
 
 	}
 
-	// 현재 클릭된 애니메이션 인덱스를 표시
+	// 현재 클릭된 뼈 인덱스를 표시
 	string CurChannelIndex = "Current Bone Index : " + to_string(Bone_item_current);
 	ImGui::Text(CurChannelIndex.c_str());
 

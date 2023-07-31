@@ -9,7 +9,7 @@
 #include "ClientInstance.h"
 #include "IStateMachine.h"
 #include "Collider.h"
-//#include "StateContext.h"
+#include "StateContext.h"
 
 BEGIN(Client)
 

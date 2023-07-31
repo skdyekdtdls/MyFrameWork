@@ -20,6 +20,10 @@ public:
 	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta) override;
 
 	virtual const _tchar* GetTag() override { return Tag(); }
+
+private:
+	_double m_TimeAcc;
+
 public:
 	static const _tchar* Tag() { return L"SpiderIdle"; }
 	static SpiderIdle* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

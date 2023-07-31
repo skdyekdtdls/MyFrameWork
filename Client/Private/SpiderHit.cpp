@@ -16,7 +16,15 @@ void SpiderHit::OnStateEnter()
 {
 	__super::OnStateEnter();
 
-	SetAnimIndex(SPIDER_ANIM_END, LOWER);
+	_uint iLogic = RandomIntFrom_A_To_B(0, 1);
+	switch (iLogic)
+	{
+	case 0:
+		SetAnimIndex(SPIDER_HIT, LOWER); 
+		break;
+	case 1:
+		SetAnimIndex(SPIDER_HIT_B, LOWER);
+	}
 }
 
 void SpiderHit::OnStateTick(_double TimeDelta)
@@ -28,6 +36,9 @@ void SpiderHit::OnStateTick(_double TimeDelta)
 	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
 	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
 
+	if (pModel->IsAnimationFinished())
+		TransitionTo(L"SpiderRun");
+
 	Safe_Release(pGameInstance);
 }
 
@@ -38,12 +49,7 @@ void SpiderHit::OnStateExit()
 
 void SpiderHit::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
-	// 플레이어랑 레이랑 충돌하면 공격상태로 전환
-	if (tCollisionInfo.pMyCollider == m_pOwner->GetComponent<Raycast>() &&
-		tCollisionInfo.pOtherGameObject->GetInfo().wstrKey == TEXT("Prototype_GameObject_Clint"))
-	{
-		TransitionTo(L"SpiderAttack");
-	}
+
 }
 
 StateMachine<Spider, SPIDER_ANIM>* SpiderHit::Clone(void* pArg)
