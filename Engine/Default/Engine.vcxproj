@@ -37,6 +37,7 @@
     <ClInclude Include="..\public\Font_Manager.h" />
     <ClInclude Include="..\public\Health.h" />
     <ClInclude Include="..\public\TimeCounter.h" />
+    <ClInclude Include="..\public\VIBuffer_DynamicRect.h" />
     <ClInclude Include="..\public\VIBuffer_Instancing.h" />
     <ClInclude Include="..\public\VIBuffer_Point_Instance.h" />
     <ClInclude Include="..\public\VIBuffer_Rect_Instance.h" />
@@ -99,6 +100,7 @@
     <ClCompile Include="..\private\Font_Manager.cpp" />
     <ClCompile Include="..\private\Health.cpp" />
     <ClCompile Include="..\private\TimeCounter.cpp" />
+    <ClCompile Include="..\private\VIBuffer_DynamicRect.cpp" />
     <ClCompile Include="..\private\VIBuffer_Instancing.cpp" />
     <ClCompile Include="..\private\VIBuffer_Point_Instance.cpp" />
     <ClCompile Include="..\private\VIBuffer_Rect_Instance.cpp" />

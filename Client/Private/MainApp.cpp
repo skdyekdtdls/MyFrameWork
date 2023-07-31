@@ -88,8 +88,14 @@ HRESULT CMainApp::Render()
 	m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 1.f, 1.f));
 	m_pGameInstance->Clear_DepthStencil_View();
 
-	m_pRenderer->Draw_RenderGroup();
+	::POINT	ptMouse{};
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+	_uint2 WinSize = m_pGameInstance->GetViewPortSize(m_pContext);
 
+	m_pRenderer->Draw_RenderGroup();
+	wstring tmp = to_wstring(ptMouse.x) + L" " + to_wstring(WinSize.y - ptMouse.y);
+	m_pGameInstance->Render_Font(L"Font_135", tmp.c_str(), _float2(ptMouse.x, ptMouse.y), XMVectorSet(1.0, 0.4118, 0.7059, 1.f));
 #ifdef _DEBUG
 	CImWindow_Manager::GetInstance()->Render();
 #endif
@@ -145,6 +151,9 @@ HRESULT CMainApp::Ready_Prototype_Component_For_Static()
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, CVIBuffer_Cube::ProtoTag(),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, CVIBuffer_DynamicRect::ProtoTag(),
+		CVIBuffer_DynamicRect::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
 		CTransform::Create(m_pDevice, m_pContext)), E_FAIL);

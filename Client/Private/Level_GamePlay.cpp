@@ -34,7 +34,6 @@ HRESULT CLevel_GamePlay::Initialize()
 	// ·Îµå
 	LoadLevel();
 
-
 	return S_OK;
 }
 

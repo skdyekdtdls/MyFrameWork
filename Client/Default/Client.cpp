@@ -142,7 +142,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         pGameInstance->Set_Timer(TEXT("Timer_Default"));
         dwAccelTime += pGameInstance->Get_Timer(TEXT("Timer_Default"));
 
-        if (dwAccelTime >= 1 / 60.0)
+        if (1/*dwAccelTime >= 1 / 60.0*/)
         {
             if (g_ResizeWidth != 0 && g_ResizeHeight != 0)
             {

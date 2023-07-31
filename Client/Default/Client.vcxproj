@@ -246,6 +246,7 @@
     <ClInclude Include="..\public\CrystalGolemIdle.h" />
     <ClInclude Include="..\public\CrystalGolemRun.h" />
     <ClInclude Include="..\Public\CrystalGolemTurn180.h" />
+    <ClInclude Include="..\public\Image.h" />
     <ClInclude Include="..\Public\ImGuiFileDialog.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
@@ -326,6 +327,7 @@
     <ClInclude Include="..\public\P2Attack04.h" />
     <ClInclude Include="..\public\Pistola.h" />
     <ClInclude Include="..\public\ClintBasicBullet.h" />
+    <ClInclude Include="..\public\PlayerHP.h" />
     <ClInclude Include="..\public\Queen_Moggoth.h" />
     <ClInclude Include="..\public\Queen_MoggothAppear.h" />
     <ClInclude Include="..\public\Queen_MoggothAttack.h" />
@@ -381,6 +383,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="UIStrategy.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\IMGUI\backends\imgui_impl_dx11.cpp">
@@ -486,6 +489,7 @@
     <ClCompile Include="..\private\CrystalGolemIdle.cpp" />
     <ClCompile Include="..\private\CrystalGolemRun.cpp" />
     <ClCompile Include="..\Private\CrystalGolemTurn180.cpp" />
+    <ClCompile Include="..\private\Image.cpp" />
     <ClCompile Include="..\Private\ImGuiFileDialog.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -579,6 +583,7 @@
     <ClCompile Include="..\private\P2Attack04.cpp" />
     <ClCompile Include="..\private\Pistola.cpp" />
     <ClCompile Include="..\private\ClintBasicBullet.cpp" />
+    <ClCompile Include="..\private\PlayerHP.cpp" />
     <ClCompile Include="..\private\Queen_Moggoth.cpp" />
     <ClCompile Include="..\private\Queen_MoggothAppear.cpp" />
     <ClCompile Include="..\private\Queen_MoggothAttack.cpp" />
@@ -632,6 +637,7 @@
     <ClCompile Include="..\private\TreeB1.cpp" />
     <ClCompile Include="..\private\TreeB2.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="UIStrategy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc" />

@@ -8,6 +8,8 @@
 #include "ClintShoot.h"
 #include "Animation.h"
 #include "ClintUltimate01Bullet.h"
+#include "PlayerHP.h"
+
 _uint Clint::Clint_Id = 0;
 
 Clint::Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -244,6 +246,8 @@ HRESULT Clint::Add_Components()
 	tHealthDesc.pOwner = this;
 	tHealthDesc.iMaxHp = 100;
 	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, Health::ProtoTag(), L"Com_Health", (CComponent**)&m_pHealthCom, &tHealthDesc), E_FAIL);
+
+
 
 	Safe_Release(pGameInstance);
 	return S_OK;

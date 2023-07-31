@@ -46,15 +46,13 @@ HRESULT CBackGround::Initialize(void* pArg)
 void CBackGround::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
-
-	
 }
 
 void CBackGround::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
 	if(nullptr != m_pRendererCom)
-		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this);
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
 }
 
 HRESULT CBackGround::Render()

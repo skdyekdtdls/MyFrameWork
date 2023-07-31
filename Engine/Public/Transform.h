@@ -88,6 +88,8 @@ public:
 	_vector DirectionVector(DIRECTION eDir);
 
 public:
+	// UI전용 함수
+	void SetUIPosition(_float2 Position);
 	void Chase_Lerp(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance);
 
 	void Go_Straight(_double TimeDelta, class CNavigation* pNavigation = nullptr);

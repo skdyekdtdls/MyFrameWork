@@ -18,7 +18,11 @@
 #include "Fiona.h"
 #include "Clint.h"
 #include "ClintUltimate01Bullet.h"
+#include "Image.h"
+// UI
+#include "PlayerHP.h"
 
+// Static Mesh
 #include "Bush01.h"
 #include "BushA.h"
 #include "BushB.h"
@@ -970,7 +974,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 
 	Set_LoadingText(L"텍스처 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Terrain"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Terrain/Tile%d.dds", 2))), E_FAIL);
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Art/Misc/John/Materials/TexturesCom_RockyDirt_1024_B__3_.png", 1))), E_FAIL);
 	
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Terrain_Brush"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Terrain/Brush.png"))), E_FAIL);
@@ -980,6 +984,24 @@ HRESULT CLoader::Loading_For_IMGUI()
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Snow"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../../Resources/Textures/Snow/Snow.png"), 1)), E_FAIL);
+
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_T_WeaponSelected_Arrow"),
+	//	CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Killsquad/GUI/HUD/PlayerHUD/Textures/T_WeaponSelected_Arrow.png"), 1)), E_FAIL);
+
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_UI_SquareShape_bar"),
+	//	CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Killsquad/GUI/HUD/LifeHUD/Core/Textures/UI_SquareShape_bar.png"), 1)), E_FAIL);
+
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_DNA"),
+	//	CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Killsquad/GUI/HUD/ResourcesHUD/DNA.png"), 1)), E_FAIL);
+
+	//FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_UI_skills_decorationGlow"),
+	//	CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Killsquad/GUI/HUD/Skills/UI_skills_decorationGlow.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_CustomUI"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/CustomUI.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_UI_KS_Radar"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Killsquad/GUI/Minimap/OldTextures/UI_KS_Radar.dds"), 1)), E_FAIL);
 
 	Set_LoadingText(L"버퍼 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Terrain::ProtoTag(),
@@ -1682,6 +1704,8 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(P2Attack02::ProtoTag(), P2Attack02::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(P2Attack03::ProtoTag(), P2Attack03::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(P2Attack04::ProtoTag(), P2Attack04::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(PlayerHP::ProtoTag(), PlayerHP::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Image::ProtoTag(), Image::Create(m_pDevice, m_pContext)), E_FAIL);
 	Set_LoadingText(L"로딩 완료");
 
 	m_isFinished = true;

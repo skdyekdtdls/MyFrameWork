@@ -160,6 +160,9 @@
     <ClCompile Include="..\private\TimeCounter.cpp">
       <Filter>01. Utility\03. Components\TimeConuter</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_DynamicRect.cpp">
+      <Filter>01. Utility\03. Components\VIBuffer\Rect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Graphic_Device.h">
@@ -341,6 +344,9 @@
     </ClInclude>
     <ClInclude Include="..\public\TimeCounter.h">
       <Filter>01. Utility\03. Components\TimeConuter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_DynamicRect.h">
+      <Filter>01. Utility\03. Components\VIBuffer\Rect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -16,6 +16,8 @@
 #include "CrystalGolem.h"
 #include "Spider.h"
 #include "Queen_Moggoth.h"
+#include "PlayerHP.h"
+#include "Image.h"
 CLevel_Imgui::CLevel_Imgui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -32,6 +34,7 @@ HRESULT CLevel_Imgui::Initialize()
 	Ready_Layer_Camera(TEXT("Layer_Camera"));
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_Effect(TEXT("Layer_Effect"));
+	Ready_Layer_UI(TEXT("Layer_UI"));
 }
 
 void CLevel_Imgui::Tick(_double TimeDelta)
@@ -160,6 +163,42 @@ void CLevel_Imgui::Ready_Layer_Effect(const _tchar* pLayerTag)
 	Safe_AddRef(pGameInstance);
 
 	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, CBlue_Snow::ProtoTag(), pLayerTag));
+
+	Safe_Release(pGameInstance);
+}
+
+void CLevel_Imgui::Ready_Layer_UI(const _tchar* pLayerTag)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	CGameObject* pGameObject;
+	Image::tagImageDesc tImageDesc;
+	/*
+	tImageDesc.Pos = _float2(842, g_iWinSizeY - 615);
+	tImageDesc.Size = _float2(80, 80);
+	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_T_WeaponSelected_Arrow");
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
+
+	tImageDesc.Pos = _float2(1181, g_iWinSizeY - 33);
+	tImageDesc.Size = _float2(20, 20);
+	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_DNA");
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
+
+	tImageDesc.Pos = _float2(1181, g_iWinSizeY - 33);
+	tImageDesc.Size = _float2(-20, 20);
+	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_DNA");
+	pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc);
+	*/
+
+	tImageDesc.Pos = _float2(g_iWinSizeX - 150, (g_iWinSizeY - 607));
+	tImageDesc.Size = _float2(210, 210);
+	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_UI_KS_Radar");
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
+
+	tImageDesc.Pos = _float2(g_iWinSizeX >> 1, g_iWinSizeY >> 1);
+	tImageDesc.Size = _float2(g_iWinSizeX, g_iWinSizeY);
+	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_CustomUI");
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
 
 	Safe_Release(pGameInstance);
 }

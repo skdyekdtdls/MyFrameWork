@@ -21,6 +21,7 @@ END
 BEGIN(Client)
 class Pistola;
 class ClintUltimate01Bullet;
+class PlayerHP;
 template <typename OWNER, typename ANIM_ENUM>
 class StateContext;
 END
@@ -69,6 +70,7 @@ private: /* For. Component */
 	ClintUltimate01Bullet* m_pUltBulletCom = { nullptr };
 	ClintState* m_pStateContextCom = { nullptr };
 	Health* m_pHealthCom = { nullptr };
+	list<PlayerHP*> m_PlayerHPs = { nullptr };
 
 private:
 	static _uint Clint_Id;

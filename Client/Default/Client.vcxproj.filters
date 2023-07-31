@@ -352,6 +352,12 @@
     <Filter Include="02. GameObjects\Queen_Moggoth\State\Phase2">
       <UniqueIdentifier>{7451d677-f01a-4343-b2f3-8e2779121a32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObjects\Image">
+      <UniqueIdentifier>{e0804eef-199b-40f2-9f8d-a5f4a8b2c72d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Image\PlayerHP">
+      <UniqueIdentifier>{de05395e-5e1f-46d2-af88-64eaf2697a78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -841,6 +847,15 @@
     <ClInclude Include="..\public\P2Attack04.h">
       <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\PlayerHP.h">
+      <Filter>02. GameObjects\Image\PlayerHP</Filter>
+    </ClInclude>
+    <ClInclude Include="UIStrategy.h">
+      <Filter>02. GameObjects\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Image.h">
+      <Filter>02. GameObjects\Image</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -1313,6 +1328,15 @@
     </ClCompile>
     <ClCompile Include="..\private\P2Attack04.cpp">
       <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PlayerHP.cpp">
+      <Filter>02. GameObjects\Image\PlayerHP</Filter>
+    </ClCompile>
+    <ClCompile Include="UIStrategy.cpp">
+      <Filter>02. GameObjects\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Image.cpp">
+      <Filter>02. GameObjects\Image</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

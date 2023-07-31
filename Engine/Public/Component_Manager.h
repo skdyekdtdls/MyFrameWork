@@ -17,6 +17,7 @@
 #include "VIBuffer_Point_Instance.h"
 #include "Health.h"
 #include "TimeCounter.h"
+#include "VIBuffer_DynamicRect.h"
 
 BEGIN(Engine)
 class ENGINE_DLL CComponent_Manager final : public CBase
