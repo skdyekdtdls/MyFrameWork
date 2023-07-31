@@ -154,14 +154,14 @@ void CEditCamera::EditMode_Tick(_double TimeDelta)
 
 void CEditCamera::PlayMode_Tick(_double TimeDelta)
 {
+	// 카메라 위치 계산
 	_vector ClintPos = Facade->GetClintPosition();
 	_vector Offset = XMLoadFloat4(&m_OffsetPos);
 	_vector OffsetPos;
-	
 	OffsetPos = ClintPos + Offset;
-	
 	m_pTransform->Set_State(CTransform::STATE_POSITION, OffsetPos);
 	m_pTransform->LookAt(ClintPos);
+
 }
 
 void CEditCamera::EditMode_Late_Tick(_double TimeDelta)
@@ -181,7 +181,11 @@ void CEditCamera::Picking()
 	// 레이어 순환 바꾸기
 	_bool bResult = { false };
 	m_isPicking = { true };
+#ifdef _DEBUG
 	for (auto iter = pGameInstance->LayerBegin(LEVEL_IMGUI); iter != pGameInstance->LayerEnd(LEVEL_IMGUI); ++iter)
+#else
+	for (auto iter = pGameInstance->LayerBegin(LEVEL_GAMEPLAY); iter != pGameInstance->LayerEnd(LEVEL_GAMEPLAY); ++iter)
+#endif
 	{
 		for (auto& GameObject : iter->second->GetGameObjects())
 		{

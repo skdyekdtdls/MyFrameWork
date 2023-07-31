@@ -35,7 +35,6 @@ public: /* For Graphic_Device*/
 	HRESULT Clear_DepthStencil_View();
 	HRESULT Present();
 	_uint2 GetViewPortSize(ID3D11DeviceContext * pContext);
-
 public: /* For Input_Device*/
 	_byte	Get_DIKeyState(_ubyte ubyKeyID);
 	_byte	Get_DIMouseState(CInput_Device::MOUSEKEYSTATE eMouseID);

@@ -35,13 +35,14 @@ HRESULT Clint::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	if (FAILED(Add_Components()))
-		return E_FAIL;
-
 	++Clint_Id;
 	m_tInfo.wstrName = TO_WSTR("Clint" + to_string(Clint_Id));
 	m_tInfo.wstrKey = ProtoTag();
 	m_tInfo.ID = Clint_Id;
+
+	if (FAILED(Add_Components()))
+		return E_FAIL;
+
 
 	// 노티파이.
 	_double AttackInterval = { 12.0 };

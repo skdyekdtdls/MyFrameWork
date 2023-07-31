@@ -32,7 +32,7 @@ void CLevel_Logo::Late_Tick(_double TimeDelta)
 		CGameInstance* pGameInstance = CGameInstance::GetInstance();
 		Safe_AddRef(pGameInstance);
 
-		CLevel* pLevel = CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_IMGUI);
+		CLevel* pLevel = CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY);
 
 		if (FAILED(pGameInstance->Open_Level(LEVEL_LOADING, pLevel)))
 		{
@@ -59,8 +59,7 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOGO, CBackGround::ProtoTag(), pLayerTag)))
-		return E_FAIL;
+	pGameInstance->Add_GameObject(LEVEL_LOGO, CBackGround::ProtoTag(), pLayerTag);
 
 	Safe_Release(pGameInstance);
 	return S_OK;

@@ -3,6 +3,10 @@
 #include "Level.h"
 #include "Level_Loading.h"
 #include "ClientInstance.h"
+#include "CannonSpiderBullet.h"
+#include "BatPotato_RIGBullet.h"
+#include "ClintBasicBullet.h"
+
 #include "CrystalGolemAttackAreaBullet.h"
 #include "CrystalGolemAttackArea02Bullet.h"
 #include "CrystalGolemAttackRangeBullet.h"
@@ -46,9 +50,13 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Ready_Prototype_Component_For_Static()))
 		return E_FAIL;
 
+#ifdef _DEBUG
+	if (FAILED(Open_Level(LEVEL_IMGUI)))
+		return E_FAIL;
+#else
 	if(FAILED(Open_Level(LEVEL_LOGO)))
 		return E_FAIL;
-
+#endif
 	//if (FAILED(Ready_Gara()))
 	//	return E_FAIL;
 

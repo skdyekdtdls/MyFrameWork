@@ -44,19 +44,21 @@ void CTerrain::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
 
+	RAY tRay = Facade->GetMouseRay(m_pContext);
+
+	PICK_DESC tPickDesc;
+	if (false == XMVector4EqualInt(XMVectorIsNaN(XMLoadFloat4(&tRay.vRayDir)), XMVectorTrueInt()))
+	{
+		Picked(tPickDesc, tRay);
+	}
+
+
 #ifdef _DEBUG
 	// ¸¶¿ì½ºÁÂÇ¥ µû¶ó´Ù´Ô.
 	if (m_bShowBrush)
 	{
-		RAY tRay = Facade->GetMouseRay(m_pContext);
-		PICK_DESC tPickDesc;
-		if (false == XMVector4EqualInt(XMVectorIsNaN(XMLoadFloat4(&tRay.vRayDir)), XMVectorTrueInt()))
-		{
-			Picked(tPickDesc, tRay);
-		}
+		m_pRendererCom->Add_DebugGroup(m_pNavigationCom);
 	}
-
-	m_pRendererCom->Add_DebugGroup(m_pNavigationCom);
 #endif // _DEBUG
 }
 
@@ -168,7 +170,9 @@ HRESULT CTerrain::SetUp_ShaderResources()
 
 	FAILED_CHECK_RETURN(m_pTextureCom[TYPE_DIFFUSE]->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture"), E_FAIL);
 	//FAILED_CHECK_RETURN(m_pTextureCom[TYPE_MASK]->Bind_ShaderResources(m_pShaderCom, "g_MaskTexture"), E_FAIL);
+#ifdef _DEBUG
 	FAILED_CHECK_RETURN(m_pTextureCom[TYPE_BRUSH]->Bind_ShaderResources(m_pShaderCom, "g_BrushTexture"), E_FAIL);
+#endif
 
 	Safe_Release(pGameInstance);
 

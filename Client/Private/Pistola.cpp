@@ -46,8 +46,8 @@ HRESULT Pistola::Initialize(void* pArg)
 	
 	PISTOLA_DESC tPistolaDesc = *static_cast<PISTOLA_DESC*>(pArg);
 
-	CModel* pModel = m_pOwner->GetComponent<CModel>();
-	CTransform* pParentTransform = m_pOwner->GetComponent<CTransform>();
+	CModel* pModel = dynamic_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
+	CTransform* pParentTransform = dynamic_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
 	CBone* pBone = pModel->GetBoneByName(tPistolaDesc.pAttachedBoneName);
 	m_AttachedBoneIndex = pBone->GetIndex();
 
