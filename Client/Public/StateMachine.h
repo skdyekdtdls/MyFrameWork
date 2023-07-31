@@ -9,7 +9,7 @@
 #include "ClientInstance.h"
 #include "IStateMachine.h"
 #include "Collider.h"
-#include "StateContext.h"
+//#include "StateContext.h"
 
 BEGIN(Client)
 
@@ -25,7 +25,7 @@ public:
 	}STATE_MACHINE_DESC;
 
 protected:
-	StateMachine() {};
+	StateMachine() = default;
 	StateMachine(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		: m_pDevice(pDevice)
 		, m_pContext(pContext)
