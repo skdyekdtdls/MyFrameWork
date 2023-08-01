@@ -121,29 +121,44 @@ void CLevel_Imgui::Ready_Layer_Monster(const _tchar* pLayerTag)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 	
-	//Alien_prawn::ALIEN_PRAWN_DESC tAlienPrawnDesc;
-	//tAlienPrawnDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
-	//pGameInstance->Add_GameObject(LEVEL_IMGUI, Alien_prawn::ProtoTag(), pLayerTag, &tAlienPrawnDesc);
+	/*Alien_prawn::ALIEN_PRAWN_DESC tAlienPrawnDesc;
+	tAlienPrawnDesc.vPosition = _float4(11.f, 0.f, 10.f, 1.f);
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, Alien_prawn::ProtoTag(), pLayerTag, &tAlienPrawnDesc);
 
-	/*BatPotato_RIG::BATPOTATO_RIG_DESC tBatPotatoRigDesc;
-	tBatPotatoRigDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
-  	pGameInstance->Add_GameObject(LEVEL_IMGUI, BatPotato_RIG::ProtoTag(), pLayerTag, &tBatPotatoRigDesc);*/
+	tAlienPrawnDesc.vPosition = _float4(110.f, 0.f, 10.f, 1.f);
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, Alien_prawn::ProtoTag(), pLayerTag, &tAlienPrawnDesc);
 
-	//CannonSpider::tagCannonSpiderDesc tCannonSpiderDesc;
-	//tCannonSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
-	//pGameInstance->Add_GameObject(LEVEL_IMGUI, CannonSpider::ProtoTag(), pLayerTag, &tCannonSpiderDesc);
+	tAlienPrawnDesc.vPosition = _float4(11.f, 0.f, 10.f, 1.f);
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, Alien_prawn::ProtoTag(), pLayerTag, &tAlienPrawnDesc);
 
+	BatPotato_RIG::BATPOTATO_RIG_DESC tBatPotatoRigDesc;
+	tBatPotatoRigDesc.vPosition = _float4(12.f, 0.f, 10.f, 1.f);
+  	pGameInstance->Add_GameObject(LEVEL_IMGUI, BatPotato_RIG::ProtoTag(), pLayerTag, &tBatPotatoRigDesc);
+	
+	CannonSpider::tagCannonSpiderDesc tCannonSpiderDesc;
+	tCannonSpiderDesc.vPosition = _float4(13.f, 0.f, 10.f, 1.f);
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, CannonSpider::ProtoTag(), pLayerTag, &tCannonSpiderDesc);*/
+	
 	//CrystalGolem::tagCrystalGolemDesc tCrystalGolemDesc;
 	//tCrystalGolemDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
 	//pGameInstance->Add_GameObject(LEVEL_IMGUI, CrystalGolem::ProtoTag(), pLayerTag, &tCrystalGolemDesc);
+	
+	/*Spider::tagSpiderDesc tSpiderDesc;
+	tSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, Spider::ProtoTag(), pLayerTag, &tSpiderDesc);
 
-	//Spider::tagSpiderDesc tSpiderDesc;
-	//tSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
-	//pGameInstance->Add_GameObject(LEVEL_IMGUI, Spider::ProtoTag(), pLayerTag, &tSpiderDesc);
+	tSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, Spider::ProtoTag(), pLayerTag, &tSpiderDesc);
 
-	Queen_Moggoth::tagQueen_MoggothDesc tQueenMoggothDesc;
-	tQueenMoggothDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
-	pGameInstance->Add_GameObject(LEVEL_IMGUI, Queen_Moggoth::ProtoTag(), pLayerTag, &tQueenMoggothDesc);
+	tSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, Spider::ProtoTag(), pLayerTag, &tSpiderDesc);
+
+	tSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, Spider::ProtoTag(), pLayerTag, &tSpiderDesc);*/
+
+	//Queen_Moggoth::tagQueen_MoggothDesc tQueenMoggothDesc;
+	//tQueenMoggothDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	//pGameInstance->Add_GameObject(LEVEL_IMGUI, Queen_Moggoth::ProtoTag(), pLayerTag, &tQueenMoggothDesc);
 
 	Safe_Release(pGameInstance);
 }
@@ -222,16 +237,39 @@ void CLevel_Imgui::Ready_Layer_UI(const _tchar* pLayerTag)
 	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_LifeBar_BG");
 	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
 
-	
 	tImageDesc.Size = _float2(14, 4);
 	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_UI_dash");
 	for (_uint i = 0; i < 3; ++i)
 	{
-		tImageDesc.Pos = _float2((g_iWinSizeX >> 1) - 40 + i * (tImageDesc.Size.x + 5), (g_iWinSizeY >> 1) + 88);
+		tImageDesc.Pos = _float2((g_iWinSizeX >> 1) - 40 + i * (tImageDesc.Size.x + 5), (g_iWinSizeY >> 1) + 87);
 		pImage = static_cast<Image*>(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
 		pImage->SetPass(2);
 	}
 	
+	tDynamicImageDesc.Pos = _float2(532, 96);
+	tDynamicImageDesc.Size = _float2(70, 70);
+	tDynamicImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_QSkill");
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, DynamicImage::ProtoTag(), pLayerTag, &tDynamicImageDesc));
+
+	tDynamicImageDesc.Pos = _float2(532 + 80, 96);
+	tDynamicImageDesc.Size = _float2(60, 60);
+	tDynamicImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_WSkill");
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, DynamicImage::ProtoTag(), pLayerTag, &tDynamicImageDesc));
+
+	tDynamicImageDesc.Pos = _float2(532 + 160, 96);
+	tDynamicImageDesc.Size = _float2(70, 70);
+	tDynamicImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_ESkill");
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, DynamicImage::ProtoTag(), pLayerTag, &tDynamicImageDesc));
+
+	tDynamicImageDesc.Pos = _float2(532 + 240, 96);
+	tDynamicImageDesc.Size = _float2(70, 70);
+	tDynamicImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_RSkill");
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, DynamicImage::ProtoTag(), pLayerTag, &tDynamicImageDesc));
+
+	tDynamicImageDesc.Pos = _float2(652, 37);
+	tDynamicImageDesc.Size = _float2(280, 14);
+	tDynamicImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_ExpBar");
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, DynamicImage::ProtoTag(), pLayerTag, &tDynamicImageDesc));
 
 	Safe_Release(pGameInstance);
 }

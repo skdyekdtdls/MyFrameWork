@@ -358,6 +358,9 @@
     <Filter Include="95. Design\Singleton">
       <UniqueIdentifier>{a8f915ac-652e-4ad6-9db2-953d7bcc5e73}</UniqueIdentifier>
     </Filter>
+    <Filter Include="95. Design\Component">
+      <UniqueIdentifier>{e2933bfb-1918-482f-a492-214a8579e2b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -859,6 +862,9 @@
     <ClInclude Include="..\Public\DynamicImage.h">
       <Filter>02. GameObjects\Image</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\PlayerLevel.h">
+      <Filter>95. Design\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -1343,6 +1349,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\DynamicImage.cpp">
       <Filter>02. GameObjects\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PlayerLevel.cpp">
+      <Filter>95. Design\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

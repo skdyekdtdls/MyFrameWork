@@ -329,6 +329,7 @@
     <ClInclude Include="..\public\Pistola.h" />
     <ClInclude Include="..\public\ClintBasicBullet.h" />
     <ClInclude Include="..\public\PlayerHP.h" />
+    <ClInclude Include="..\public\PlayerLevel.h" />
     <ClInclude Include="..\public\Queen_Moggoth.h" />
     <ClInclude Include="..\public\Queen_MoggothAppear.h" />
     <ClInclude Include="..\public\Queen_MoggothAttack.h" />
@@ -586,6 +587,7 @@
     <ClCompile Include="..\private\Pistola.cpp" />
     <ClCompile Include="..\private\ClintBasicBullet.cpp" />
     <ClCompile Include="..\private\PlayerHP.cpp" />
+    <ClCompile Include="..\private\PlayerLevel.cpp" />
     <ClCompile Include="..\private\Queen_Moggoth.cpp" />
     <ClCompile Include="..\private\Queen_MoggothAppear.cpp" />
     <ClCompile Include="..\private\Queen_MoggothAttack.cpp" />

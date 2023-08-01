@@ -1,4 +1,4 @@
-#include "..\Public\Loader.h"
+#include "../Public/Loader.h"
 #include "GameInstance.h"
 #include <process.h>
 #include "SM_Cliff01.h"
@@ -967,6 +967,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 {
 	if (nullptr == m_pGameInstance)
 		return E_FAIL;
+
 	_matrix		PivotMatrix = XMMatrixIdentity();
 	CModel* pModel;
 	vector<_uint> upper;
@@ -1005,6 +1006,27 @@ HRESULT CLoader::Loading_For_IMGUI()
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_UI_dash"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Killsquad/GUI/HUD/LifeHUD/Core/UI_dash.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_T_CircularMask"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Game/NewGUI/Buttons/Textures/ProgressBar/T_CircularMask.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_BasicAttack"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/BasicAttack.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_QSkill"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/QSkill.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_WSkill"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/WSkill.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_ESkill"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/ESkill.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_RSkill"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/RSkill.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_ExpBar"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/ExpBar.png"), 1)), E_FAIL);
 
 	Set_LoadingText(L"버퍼 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Terrain::ProtoTag(),
@@ -1228,7 +1250,6 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
 		, TEXT("Prototype_Component_Model_SM_LargePlainsBoulder002_Red_Desert"), pModel), E_FAIL);
 
-
 	cout << "--- SM_LargePlainsBoulder003 ---" << endl;
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_LargePlainsBoulder003.dat");
@@ -1241,7 +1262,6 @@ HRESULT CLoader::Loading_For_IMGUI()
 	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("SM_MountainRock.dat");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
 		, TEXT("Prototype_Component_Model_SM_MountainRock"), pModel), E_FAIL);
-
 
 	cout << "--- SM_MountainRock_Closed ---" << endl;
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
@@ -1262,7 +1282,6 @@ HRESULT CLoader::Loading_For_IMGUI()
 	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix); pModel->LoadAssimp("Kemmekh_wall.dat");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
 		, TEXT("Prototype_Component_Model_Kemmekh_wall"), pModel), E_FAIL);
-
 
 	cout << "--- SM_Wall02 ---" << endl;
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
@@ -1707,7 +1726,6 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(P2Attack02::ProtoTag(), P2Attack02::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(P2Attack03::ProtoTag(), P2Attack03::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(P2Attack04::ProtoTag(), P2Attack04::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(PlayerHP::ProtoTag(), PlayerHP::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Image::ProtoTag(), Image::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(DynamicImage::ProtoTag(), DynamicImage::Create(m_pDevice, m_pContext)), E_FAIL);
 	Set_LoadingText(L"로딩 완료");
