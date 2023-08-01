@@ -325,9 +325,6 @@
     <Filter Include="95. Design\ObjectPool">
       <UniqueIdentifier>{595cb5ed-d0a5-4561-a8a9-860764dd91cd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="95. Design\Facade">
-      <UniqueIdentifier>{a8f915ac-652e-4ad6-9db2-953d7bcc5e73}</UniqueIdentifier>
-    </Filter>
     <Filter Include="95. Design\State">
       <UniqueIdentifier>{7e99ae27-de02-4990-843a-128f82b81472}</UniqueIdentifier>
     </Filter>
@@ -357,6 +354,9 @@
     </Filter>
     <Filter Include="02. GameObjects\Image\PlayerHP">
       <UniqueIdentifier>{de05395e-5e1f-46d2-af88-64eaf2697a78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. Design\Singleton">
+      <UniqueIdentifier>{a8f915ac-652e-4ad6-9db2-953d7bcc5e73}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -761,7 +761,7 @@
       <Filter>02. GameObjects\CrystalGolem\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ClientInstance.h">
-      <Filter>95. Design\Facade</Filter>
+      <Filter>95. Design\Singleton</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\StateMachine.h">
       <Filter>95. Design\State</Filter>
@@ -854,6 +854,9 @@
       <Filter>02. GameObjects\Image</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Image.h">
+      <Filter>02. GameObjects\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DynamicImage.h">
       <Filter>02. GameObjects\Image</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1249,7 +1252,7 @@
       <Filter>02. GameObjects\CrystalGolem\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ClientInstance.cpp">
-      <Filter>95. Design\Facade</Filter>
+      <Filter>95. Design\Singleton</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Spider.cpp">
       <Filter>02. GameObjects\Spider</Filter>
@@ -1336,6 +1339,9 @@
       <Filter>02. GameObjects\Image</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Image.cpp">
+      <Filter>02. GameObjects\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DynamicImage.cpp">
       <Filter>02. GameObjects\Image</Filter>
     </ClCompile>
   </ItemGroup>

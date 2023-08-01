@@ -35,7 +35,7 @@ void Queen_MoggothWalkP2::OnStateTick(_double TimeDelta)
 	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
 	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
 
-	_vector vClintPos = Facade->GetClintPosition();
+	_vector vClintPos = Single->GetClintPosition();
 	_vector vMyPos = m_pTransform->Get_State(CTransform::STATE_POSITION);
 	_vector vTargetVector = vClintPos - vMyPos;
 	m_pTransform->Turn(WorldAxisY(), vTargetVector, TimeDelta);

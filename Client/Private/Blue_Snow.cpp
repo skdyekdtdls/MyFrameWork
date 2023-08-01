@@ -41,7 +41,7 @@ void CBlue_Snow::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
 
-	if (Facade->isRender(m_pRendererCom, m_pTransformCom, 5.f))
+	if (Single->isRender(m_pRendererCom, m_pTransformCom, 5.f))
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this);
 }
 

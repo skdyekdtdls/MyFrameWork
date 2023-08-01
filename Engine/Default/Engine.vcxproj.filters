@@ -348,6 +348,9 @@
     <ClInclude Include="..\public\VIBuffer_DynamicRect.h">
       <Filter>01. Utility\03. Components\VIBuffer\Rect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\IObserver.h">
+      <Filter>98. Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">

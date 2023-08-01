@@ -75,10 +75,10 @@ void CCollider::SetupResources()
 
 	CPipeLine* pPipeLine = CPipeLine::GetInstance();
 	Safe_AddRef(pPipeLine);
-
+	
 	_float4x4 ViewMatrix = pPipeLine->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
 	m_pEffect->SetView(XMLoadFloat4x4(&ViewMatrix));
-
+	
 	_float4x4 ProjMatrix = pPipeLine->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
 	m_pEffect->SetProjection(XMLoadFloat4x4(&ProjMatrix));
 

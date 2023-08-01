@@ -37,5 +37,5 @@ public:
 	virtual void Free(void) override;
 };
 
-#define Facade ClientInstance::GetInstance() 
+#define Single ClientInstance::GetInstance() 
 END

@@ -246,6 +246,7 @@
     <ClInclude Include="..\public\CrystalGolemIdle.h" />
     <ClInclude Include="..\public\CrystalGolemRun.h" />
     <ClInclude Include="..\Public\CrystalGolemTurn180.h" />
+    <ClInclude Include="..\Public\DynamicImage.h" />
     <ClInclude Include="..\public\Image.h" />
     <ClInclude Include="..\Public\ImGuiFileDialog.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -489,6 +490,7 @@
     <ClCompile Include="..\private\CrystalGolemIdle.cpp" />
     <ClCompile Include="..\private\CrystalGolemRun.cpp" />
     <ClCompile Include="..\Private\CrystalGolemTurn180.cpp" />
+    <ClCompile Include="..\Private\DynamicImage.cpp" />
     <ClCompile Include="..\private\Image.cpp" />
     <ClCompile Include="..\Private\ImGuiFileDialog.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

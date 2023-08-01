@@ -45,7 +45,6 @@ HRESULT Clint::Initialize(void* pArg)
 	if (FAILED(Add_Components()))
 		return E_FAIL;
 
-
 	// 노티파이.
 	_double AttackInterval = { 12.0 };
 	_double Start = { 1.0 };

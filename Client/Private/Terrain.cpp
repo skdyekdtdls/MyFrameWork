@@ -44,7 +44,7 @@ void CTerrain::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
 
-	RAY tRay = Facade->GetMouseRay(m_pContext);
+	RAY tRay = Single->GetMouseRay(m_pContext);
 
 	PICK_DESC tPickDesc;
 	if (false == XMVector4EqualInt(XMVectorIsNaN(XMLoadFloat4(&tRay.vRayDir)), XMVectorTrueInt()))

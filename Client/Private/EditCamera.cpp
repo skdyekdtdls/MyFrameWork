@@ -155,7 +155,7 @@ void CEditCamera::EditMode_Tick(_double TimeDelta)
 void CEditCamera::PlayMode_Tick(_double TimeDelta)
 {
 	// 카메라 위치 계산
-	_vector ClintPos = Facade->GetClintPosition();
+	_vector ClintPos = Single->GetClintPosition();
 	_vector Offset = XMLoadFloat4(&m_OffsetPos);
 	_vector OffsetPos;
 	OffsetPos = ClintPos + Offset;

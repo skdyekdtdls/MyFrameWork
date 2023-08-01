@@ -33,7 +33,7 @@ void Queen_MoggothWalk::OnStateTick(_double TimeDelta)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);	
 
-	_vector vClintPos = Facade->GetClintPosition();
+	_vector vClintPos = Single->GetClintPosition();
 	_vector vMyPos = m_pTransform->Get_State(CTransform::STATE_POSITION);
 	_vector vTargetVector = vClintPos - vMyPos;
 	m_pTransform->Turn(WorldAxisY(), vTargetVector, TimeDelta);

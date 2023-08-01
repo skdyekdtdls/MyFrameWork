@@ -69,7 +69,8 @@ void CrystalGolemAttackAreaBullet::Late_Tick(_double TimeDelta)
 
 	__super::Late_Tick(TimeDelta);
 
-	#ifdef _DEBUG
+	
+#ifdef _DEBUG
 	m_pRendererCom->Add_DebugGroup(m_pColliderCom);
 #endif
 

@@ -44,7 +44,7 @@ HRESULT Queen_Moggoth::Initialize(void* pArg)
 	m_tInfo.ID = Queen_Moggoth_Id;
 
 	// 상태 초기화
-	m_pStateContextCom->TransitionTo(L"Queen_MoggothAttackP2");
+	m_pStateContextCom->TransitionTo(L"Queen_MoggothAppear");
 
 	// 옵저버
 	m_pHealthCom->Subscribe(L"PhaseChange", [this]() {
@@ -106,7 +106,7 @@ void Queen_Moggoth::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
 
-	if (Facade->isRender(m_pRendererCom, m_pTransformCom))
+	if (Single->isRender(m_pRendererCom, m_pTransformCom))
 	{
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 
@@ -218,7 +218,7 @@ HRESULT Queen_Moggoth::SetUp_Notify()
 		tResetDesc.fDamage = 10.f;
 		tResetDesc.pOwner = this;
 		DirectX::XMStoreFloat4(&tResetDesc.vPosition, vPosition);
-		tResetDesc.vTargetPos = Facade->GetClintPosition();
+		tResetDesc.vTargetPos = Single->GetClintPosition();
 
 		pBullet = ObjectPool<P1Attack01>::GetInstance()->PopPool(P1Attack01::ProtoTag(), &tResetDesc);
 		pGameInstance->AddToLayer(pGameInstance->Get_CurLevelIndex(), L"Layer_Bullet", pBullet);
@@ -399,7 +399,7 @@ HRESULT Queen_Moggoth::SetUp_Notify()
 	//	tResetDesc.fDamage = 10.f;
 	//	tResetDesc.pOwner = this;
 	//	DirectX::XMStoreFloat4(&tResetDesc.vPosition, vPosition);
-	//	tResetDesc.vTargetPos = Facade->GetClintPosition();
+	//	tResetDesc.vTargetPos = Single->GetClintPosition();
 
 	//	pBullet = ObjectPool<P2Attack04>::GetInstance()->PopPool(P2Attack04::ProtoTag(), &tResetDesc);
 	//	pGameInstance->AddToLayer(pGameInstance->Get_CurLevelIndex(), L"Layer_Bullet", pBullet);

@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL Health final : public CComponent
+class ENGINE_DLL Health final : public CComponent, public IObserver
 {
 public:
 	using Functor = function<void()>;

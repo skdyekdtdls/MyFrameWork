@@ -32,7 +32,7 @@ void CrystalGolemRun::OnStateTick(_double TimeDelta)
 
 	pCollider->Add_ColliderGroup(COLL_GROUP::MONSTER_DETECT);
 
-	if (false == pTransform->isFront(Facade->GetClintPosition()))
+	if (false == pTransform->isFront(Single->GetClintPosition()))
 	{
 		m_TimeAcc += TimeDelta;
 		if (m_TimeAcc >= 3.f)
@@ -42,7 +42,7 @@ void CrystalGolemRun::OnStateTick(_double TimeDelta)
 		m_TimeAcc = { 0.0 };
 
 	CNavigation* pNavigation = static_cast<CNavigation*>(m_pOwner->Get_Component(L"Com_Navigation"));
-	_vector vClintPos = Facade->GetClintPosition();
+	_vector vClintPos = Single->GetClintPosition();
 	_vector vMyPos = pTransform->Get_State(CTransform::STATE_POSITION);
 	_vector vTargetVector = vClintPos - vMyPos;
 

@@ -20,9 +20,8 @@ void Queen_MoggothAttackP2::OnStateEnter()
 
 	// 중복패턴 막음.
 	while (m_ePattern == m_ePrevPattern)
-		m_ePattern = static_cast<PATTERN>(RandomIntFrom_A_To_B(ATTACK01, PATTERN_END - 1));
+		m_ePattern = static_cast<PATTERN>(RandomIntFrom_A_To_B(ATTACK01, PATTERN_END - 2));
 	m_ePrevPattern = m_ePattern;
-	m_ePattern = ATTACK04;
 
 	// 값들 초기화
 	SetAnimIndexByPattern();
@@ -133,7 +132,7 @@ void Queen_MoggothAttackP2::Attack04(const _double& TimeDelta)
 	case 1:
 		m_TimeAcc += TimeDelta;
 		m_TimeAccShot += TimeDelta;
-		_vector vClintPos = Facade->GetClintPosition();
+		_vector vClintPos = Single->GetClintPosition();
 		_vector vMyPos = m_pTransform->Get_State(CTransform::STATE_POSITION);
 		_vector vTargetVector = vClintPos - vMyPos;
 		m_pTransform->Turn(WorldAxisY(), vTargetVector, TimeDelta);

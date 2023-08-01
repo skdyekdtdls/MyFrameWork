@@ -53,9 +53,8 @@ void P1Attack02::Tick(_double TimeDelta)
 	m_pTimeCounterCom->Tick(TimeDelta);
 
 	// 수명
+	if (m_pTimeCounterCom->isEuqalWith(1.0)) // 지우세요
 	__super::SetDead();
-
-	m_pTransformCom->Go_Straight(TimeDelta);
 
 	if (nullptr != m_pColliderCom)
 	{
@@ -72,7 +71,8 @@ void P1Attack02::Late_Tick(_double TimeDelta)
 	Safe_AddRef(pGameInstance);
 
 	__super::Late_Tick(TimeDelta);
-	#ifdef _DEBUG
+	
+#ifdef _DEBUG
 	m_pRendererCom->Add_DebugGroup(m_pColliderCom);
 #endif
 	Safe_Release(pGameInstance);

@@ -121,7 +121,7 @@ void ClintShoot::OnStateTick(_double TimeDelta)
 		else
 			SetAnimIndex(CLINT_SHOOT, LOWER);
 		pTransform->Set_Speed(7.f);
-		pTransform->LookAt(Facade->PickPosOnTerrain());
+		pTransform->LookAt(Single->PickPosOnTerrain());
 		
 		if (true == Calc) // 어떤 하체걷기 모션이 재생되어야 할지 계산
 		{

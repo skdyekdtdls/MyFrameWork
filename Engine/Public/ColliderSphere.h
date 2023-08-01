@@ -34,7 +34,6 @@ public:
 #endif
 
 private:
-	_float m_fRadius;
 	BoundingSphere* m_pBoudingSphere_Origin = { nullptr };
 	BoundingSphere* m_pBoudingSphere = { nullptr };
 	

@@ -25,7 +25,7 @@ HRESULT CGraphic_Device::Ready_Graphic_Device(HWND hWnd, GRAPHICDESC::WINMODE eW
 
 	if (FAILED(Ready_DepthStencilRenderTargetView(iWinCX, iWinCY)))
 		return E_FAIL;
-
+	
 	ID3D11RenderTargetView* pRTVs[1] = {
 		m_pBackBufferRTV,
 	};

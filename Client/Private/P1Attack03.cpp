@@ -52,6 +52,7 @@ void P1Attack03::Tick(_double TimeDelta)
 	m_pTimeCounterCom->Tick(TimeDelta);
 
 	// 수명
+	if (m_pTimeCounterCom->isEuqalWith(1.0)) // 지우세요
 	__super::SetDead();
 
 	if (nullptr != m_pColliderCom)

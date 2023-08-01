@@ -44,7 +44,7 @@ void PlayerHP::Tick(_double TimeDelta)
 	__super::Tick(TimeDelta);
 	_vector vOffsetPos = XMLoadFloat4(&m_OffsetPos);
 	m_pTransformCom->SetUIPosition(_float2(640 + m_OffsetPos.x, 440 + m_OffsetPos.y));
-	//_vector vPos = Facade->GetClintPosition() + vOffsetPos;
+	//_vector vPos = Single->GetClintPosition() + vOffsetPos;
 	//vPos.m128_f32[2] = 0.0f;
 	//vPos.m128_f32[3] = 0.1f;
 	

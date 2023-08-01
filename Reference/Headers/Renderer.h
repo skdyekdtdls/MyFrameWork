@@ -59,8 +59,6 @@ private:
 	class CShader*			m_pShader = { nullptr };
 	_float4x4				m_WorldMatrix, m_ViewMatrix, m_ProjMatrix;
 
-
-
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_Component_Renderer"; }
 	static CRenderer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

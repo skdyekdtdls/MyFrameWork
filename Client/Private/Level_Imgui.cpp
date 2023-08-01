@@ -18,6 +18,7 @@
 #include "Queen_Moggoth.h"
 #include "PlayerHP.h"
 #include "Image.h"
+#include "DynamicImage.h"
 CLevel_Imgui::CLevel_Imgui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -171,8 +172,11 @@ void CLevel_Imgui::Ready_Layer_UI(const _tchar* pLayerTag)
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
-	CGameObject* pGameObject;
+	Image* pImage;
+	DynamicImage* pDynamicImage;
+	DynamicImage::tagDynamicImageDesc tDynamicImageDesc;
 	Image::tagImageDesc tImageDesc;
+	
 	/*
 	tImageDesc.Pos = _float2(842, g_iWinSizeY - 615);
 	tImageDesc.Size = _float2(80, 80);
@@ -199,6 +203,35 @@ void CLevel_Imgui::Ready_Layer_UI(const _tchar* pLayerTag)
 	tImageDesc.Size = _float2(g_iWinSizeX, g_iWinSizeY);
 	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_CustomUI");
 	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
+
+	tImageDesc.Pos = _float2(g_iWinSizeX - 150, (g_iWinSizeY - 607));
+	tImageDesc.Size = _float2(20, 20);
+	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_ui_radar_player_icon");
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
+
+	tDynamicImageDesc.Pos = _float2(g_iWinSizeX >> 1, (g_iWinSizeY >> 1) + 100);
+	tDynamicImageDesc.Size = _float2(100, 16);
+	tDynamicImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_LifeBar");
+	tDynamicImageDesc.pObserver = dynamic_cast<IObserver*>(pGameInstance->Get_ComponentOfClone(
+		pGameInstance->Get_NextLevelIndex(), L"Layer_Player", "Clint1", L"Com_Health"));
+	NULL_CHECK(tDynamicImageDesc.pObserver);
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, DynamicImage::ProtoTag(), pLayerTag, &tDynamicImageDesc));
+
+	tImageDesc.Pos = _float2(g_iWinSizeX >> 1, (g_iWinSizeY >> 1) + 100);
+	tImageDesc.Size = _float2(100, 16);
+	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_LifeBar_BG");
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
+
+	
+	tImageDesc.Size = _float2(14, 4);
+	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_UI_dash");
+	for (_uint i = 0; i < 3; ++i)
+	{
+		tImageDesc.Pos = _float2((g_iWinSizeX >> 1) - 40 + i * (tImageDesc.Size.x + 5), (g_iWinSizeY >> 1) + 88);
+		pImage = static_cast<Image*>(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
+		pImage->SetPass(2);
+	}
+	
 
 	Safe_Release(pGameInstance);
 }

@@ -53,6 +53,7 @@ void P1Attack04::Tick(_double TimeDelta)
 	m_pTimeCounterCom->Tick(TimeDelta);
 
 	// 수명
+	if (m_pTimeCounterCom->isEuqalWith(1.0)) // 지우세요
 	__super::SetDead();
 
 	if (nullptr != m_pColliderCom)
@@ -71,7 +72,8 @@ void P1Attack04::Late_Tick(_double TimeDelta)
 
 	__super::Late_Tick(TimeDelta);
 
-	#ifdef _DEBUG
+	
+#ifdef _DEBUG
 	m_pRendererCom->Add_DebugGroup(m_pColliderCom);
 #endif
 

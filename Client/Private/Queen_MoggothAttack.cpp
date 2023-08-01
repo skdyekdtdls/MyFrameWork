@@ -18,9 +18,9 @@ void Queen_MoggothAttack::OnStateEnter()
 
 	// 중복패턴 막음.
 	while (m_ePattern == m_ePrevPattern)
-		m_ePattern = static_cast<PATTERN>(RandomIntFrom_A_To_B(ATTACK01, PATTERN_END - 2));
+		m_ePattern = static_cast<PATTERN>(RandomIntFrom_A_To_B(ATTACK01, PATTERN_END - 1));
 	m_ePrevPattern = m_ePattern;
-	m_ePattern = ATTACK04;
+
 	// 값들 초기화
 	SetAnimIndexByPattern();
 	m_iLogic = 0;

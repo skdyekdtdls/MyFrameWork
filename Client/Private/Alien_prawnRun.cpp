@@ -30,7 +30,7 @@ void Alien_prawnRun::OnStateTick(_double TimeDelta)
 	Raycast* pRaycast = static_cast<Raycast*>(m_pOwner->Get_Component(L"Com_RayDetect"));
 	CCollider* pCollider = static_cast<CCollider*>(m_pOwner->Get_Component(L"Com_BodyColl"));
 
-	_vector vClintPos = Facade->GetClintPosition();
+	_vector vClintPos = Single->GetClintPosition();
 	_vector vMyPos = pTransform->Get_State(CTransform::STATE_POSITION);
 	_vector vTargetVector = vClintPos - vMyPos;
 

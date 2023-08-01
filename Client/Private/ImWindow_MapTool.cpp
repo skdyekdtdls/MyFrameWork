@@ -32,7 +32,7 @@ void CImWindow_MapTool::Tick()
 		// 터레인의 셀들을 가져와서 푸쉬백을 해준다.
 		for (size_t i = 0; i < m_pImMgr->GetCellNum(); ++i)
 			Cell_Index_items.push_back(to_string(i));
-		m_pCurTerrain = Facade->GetTerrain();
+		m_pCurTerrain = Single->GetTerrain();
 		m_bStart = false;
 	}
 

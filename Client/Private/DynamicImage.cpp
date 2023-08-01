@@ -1,18 +1,19 @@
-#include "..\Public\Image.h"
+#include "..\Public\DynamicImage.h"
 #include "GameInstance.h"
 
-Image::Image(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+DynamicImage::DynamicImage(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
 }
 
-Image::Image(const Image& rhs)
+DynamicImage::DynamicImage(const DynamicImage& rhs)
 	: CGameObject(rhs)
+	, m_fRatio(1.f)
 {
 
 }
 
-HRESULT Image::Initialize_Prototype()
+HRESULT DynamicImage::Initialize_Prototype()
 {
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
@@ -20,16 +21,17 @@ HRESULT Image::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT Image::Initialize(void* pArg)
+HRESULT DynamicImage::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	if (FAILED(Add_Components(((tagImageDesc*)pArg)->pTextureProtoTag)))
+	if (FAILED(Add_Components(((tagDynamicImageDesc*)pArg)->pTextureProtoTag)))
 		return E_FAIL;
-	_float2 fSize = ((tagImageDesc*)pArg)->Size;
-	_float2 fPos = ((tagImageDesc*)pArg)->Pos;
-
+	_float2 fSize = ((tagDynamicImageDesc*)pArg)->Size;
+	_float2 fPos = ((tagDynamicImageDesc*)pArg)->Pos;
+	m_pObserver = ((tagDynamicImageDesc*)pArg)->pObserver;
+	
 	m_pTransformCom->Scaled(_float3(fSize.x, fSize.y, 1.f));
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(fPos.x - 0.5f * g_iWinSizeX
 		, fPos.y - 0.5f * g_iWinSizeY, 0.f, 1.f));
@@ -40,19 +42,19 @@ HRESULT Image::Initialize(void* pArg)
 	return S_OK;
 }
 
-void Image::Tick(_double TimeDelta)
+void DynamicImage::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
 }
 
-void Image::Late_Tick(_double TimeDelta)
+void DynamicImage::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
 	if (nullptr != m_pRendererCom)
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
 }
 
-HRESULT Image::Render()
+HRESULT DynamicImage::Render()
 {
 	FAILED_CHECK_RETURN(__super::Render(), E_FAIL);
 	FAILED_CHECK_RETURN(SetUp_ShaderResources(), E_FAIL);
@@ -62,7 +64,7 @@ HRESULT Image::Render()
 	return S_OK;
 }
 
-HRESULT Image::SetUp_ShaderResources()
+HRESULT DynamicImage::SetUp_ShaderResources()
 {
 	_float4x4 WorldMatrix = m_pTransformCom->Get_WorldFloat4x4();
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &WorldMatrix), E_FAIL);
@@ -73,11 +75,12 @@ HRESULT Image::SetUp_ShaderResources()
 	return S_OK;
 }
 
-HRESULT Image::Add_Components(const _tchar* pTextureProtoTag)
+HRESULT DynamicImage::Add_Components(const _tchar* pTextureProtoTag)
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 	LEVELID eNextLevel = static_cast<LEVELID>(pGameInstance->Get_NextLevelIndex());
+
 	/* For.Com_Renderer */
 	CRenderer::CRENDERER_DESC tRendererDesc; tRendererDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom, &tRendererDesc), E_FAIL);
@@ -106,32 +109,32 @@ HRESULT Image::Add_Components(const _tchar* pTextureProtoTag)
 	return S_OK;
 }
 
-Image* Image::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+DynamicImage* DynamicImage::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	Image* pInstance = new Image(pDevice, pContext);
+	DynamicImage* pInstance = new DynamicImage(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created Image");
+		MSG_BOX("Failed to Created DynamicImage");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
 
-CGameObject* Image::Clone(void* pArg)
+CGameObject* DynamicImage::Clone(void* pArg)
 {
-	Image* pInstance = new Image(*this);
+	DynamicImage* pInstance = new DynamicImage(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned Image");
+		MSG_BOX("Failed to Cloned DynamicImage");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-void Image::Free()
+void DynamicImage::Free()
 {
 	__super::Free();
 

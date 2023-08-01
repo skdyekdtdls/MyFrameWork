@@ -91,7 +91,7 @@ void CrystalGolem::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
 
-	if (Facade->isRender(m_pRendererCom, m_pTransformCom))
+	if (Single->isRender(m_pRendererCom, m_pTransformCom))
 	{
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 
@@ -138,7 +138,7 @@ void CrystalGolem::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double
 	Bullet* pBullet;
 	if (pBullet = dynamic_cast<Bullet*>(tCollisionInfo.pOtherGameObject))
 	{
-		if (m_pTransformCom->isFront(Facade->GetClintPosition()))
+		if (m_pTransformCom->isFront(Single->GetClintPosition()))
 		{
 			cout << "¹æ¾î" << endl;
 
