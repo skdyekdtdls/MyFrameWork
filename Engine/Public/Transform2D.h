@@ -51,7 +51,7 @@ public:
 public:
 	_vector GetPosition();
 	void SetPosition(_fvector vPosition);
-
+	void SetDepth(_float fDepth);
 private:
 	CTRANSFORM2D_DESC			m_TransformDesc;
 	_float4x4					m_WorldMatrix;

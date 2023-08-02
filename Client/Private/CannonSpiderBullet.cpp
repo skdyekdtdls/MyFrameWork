@@ -42,6 +42,8 @@ HRESULT CannonSpiderBullet::Initialize(void* pArg)
 
 	m_pTimeCounterCom->Disable();
 
+	m_fDamage = 3.f;
+
 	return S_OK;
 }
 
@@ -73,7 +75,8 @@ void CannonSpiderBullet::Late_Tick(_double TimeDelta)
 
 	__super::Late_Tick(TimeDelta);
 
-	#ifdef _DEBUG
+	
+#ifdef _DEBUG
 	m_pRendererCom->Add_DebugGroup(m_pColliderCom);
 #endif
 

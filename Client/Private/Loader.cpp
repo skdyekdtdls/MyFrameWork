@@ -19,7 +19,11 @@
 #include "Fiona.h"
 #include "Clint.h"
 #include "ClintUltimate01Bullet.h"
+
 // UI
+#include "PlayerHP.h"
+#include "BossHP.h"
+#include "MonsterHP.h"
 #include "Image.h"
 #include "DynamicImage.h"
 #include "FontUI.h"
@@ -268,6 +272,7 @@ HRESULT CLoader::Loading_For_GamePlay()
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Cube::ProtoTag(),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext)), E_FAIL);
+
 
 	CVIBuffer_Rect_Instance::INSTANCEDESC tVIBufferRectInstanceDesc;
 	ZeroStruct(tVIBufferRectInstanceDesc);
@@ -1030,12 +1035,26 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_ExpBar"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/ExpBar.png"), 1)), E_FAIL);
 
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Boss_HP_BG"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/Boss_HP_BG.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Boss_HPBar"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/Boss_HPBar.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_MonsterHp_BG"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/MonsterHp_BG.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_MonsterHpBar"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/MonsterHpBar.png"), 1)), E_FAIL);
+
 	Set_LoadingText(L"버퍼 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Terrain::ProtoTag(),
 		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Art/Misc/John/Materials/TexturesCom_SmoothRock_1024_heightmap.bmp"))), E_FAIL);
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Cube::ProtoTag(),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext)), E_FAIL);
+
+
 
 
 	CVIBuffer_Rect_Instance::INSTANCEDESC tVIBufferRectInstanceDesc;
@@ -1733,6 +1752,9 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(DynamicImage::ProtoTag(), DynamicImage::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(FontUI::ProtoTag(), FontUI::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(PlayerLevel::ProtoTag(), PlayerLevel::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(PlayerHP::ProtoTag(), PlayerHP::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BossHP::ProtoTag(), BossHP::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(MonsterHP::ProtoTag(), MonsterHP::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	Set_LoadingText(L"로딩 완료");
 

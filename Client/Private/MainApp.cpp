@@ -19,6 +19,7 @@
 #include "P2Attack02.h"
 #include "P2Attack03.h"
 #include "P2Attack04.h"
+
 #ifdef _DEBUG
 #include "ImWindow_Manager.h"
 #endif // DEBUG
@@ -172,6 +173,9 @@ HRESULT CMainApp::Ready_Prototype_Component_For_Static()
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TimeCounter::ProtoTag(),
 		TimeCounter::Create(m_pDevice, m_pContext)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, Observer::ProtoTag(),
+		Observer::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	Safe_AddRef(m_pRenderer);
 

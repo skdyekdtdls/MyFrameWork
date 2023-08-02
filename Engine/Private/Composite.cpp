@@ -53,7 +53,7 @@ HRESULT CComposite::Add_Component(_uint iLevelIndex, const _tchar* pPrototypeTag
 	m_Components.emplace(pComponentTag, pComponent);
 
 	*ppOut = pComponent;
-
+	
 	pComponent->SetComponentName(pComponentTag);
 
 	Safe_AddRef(pComponent);

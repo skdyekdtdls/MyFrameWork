@@ -17,11 +17,13 @@ class CCollider;
 class CNavigation;
 class CModel;
 class TimeCounter;
+class Observer;
 END
 
 BEGIN(Client)
 
 class Bullet;
+class BossHP;
 
 template<typename OWNER, typename ANIM_ENUM>
 class StateContext;
@@ -61,8 +63,7 @@ private: /* For. Component */
 	Queen_MoggothState* m_pStateContextCom = { nullptr };
 	CNavigation* m_pNavigationCom = { nullptr };
 	Raycast* m_pRaycastCom = { nullptr };
-	Health* m_pHealthCom = { nullptr };
-	// Can declare VIBuffer or Model Com
+	BossHP* m_pHealthCom = { nullptr };
 
 private:
 	HRESULT Add_Components();

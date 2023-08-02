@@ -180,6 +180,11 @@ void CTransform2D::SetPosition(_fvector vPosition)
 	m_WorldMatrix._42 = vPosition.m128_f32[1];
 }
 
+void CTransform2D::SetDepth(_float fDepth)
+{
+	m_WorldMatrix._43 = fDepth;
+}
+
 
 CTransform2D* CTransform2D::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {

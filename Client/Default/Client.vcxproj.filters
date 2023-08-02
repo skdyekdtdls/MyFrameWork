@@ -103,9 +103,6 @@
     <Filter Include="99. Headers">
       <UniqueIdentifier>{7f29dc09-5d22-4a8c-bee2-2ba4da6fc61d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\Pistola">
-      <UniqueIdentifier>{69474a77-3ef1-4de8-ac82-53697982adad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObjects\Terrain">
       <UniqueIdentifier>{f002b723-511b-4b3c-aa44-e8f6b37d7d74}</UniqueIdentifier>
     </Filter>
@@ -301,9 +298,6 @@
     <Filter Include="95. Design\Singleton">
       <UniqueIdentifier>{a8f915ac-652e-4ad6-9db2-953d7bcc5e73}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\PlayerLevel">
-      <UniqueIdentifier>{fb4d6704-c072-4204-8c34-d1c6740d0a05}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObjects\UI">
       <UniqueIdentifier>{e0804eef-199b-40f2-9f8d-a5f4a8b2c72d}</UniqueIdentifier>
     </Filter>
@@ -363,6 +357,24 @@
     </Filter>
     <Filter Include="95. Design\Observer">
       <UniqueIdentifier>{901fe516-51d5-44c7-ad5f-88978ac82eac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Pistola">
+      <UniqueIdentifier>{69474a77-3ef1-4de8-ac82-53697982adad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\PlayerLevel">
+      <UniqueIdentifier>{fb4d6704-c072-4204-8c34-d1c6740d0a05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\HP">
+      <UniqueIdentifier>{8431b795-6625-4b12-8be8-ae4a242198a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\HP\PlayerHP">
+      <UniqueIdentifier>{131a08a8-b0db-44aa-a478-cba8c1629dc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\HP\MonsterHP">
+      <UniqueIdentifier>{8313f1f6-20e7-45f9-80d3-3a72e5531a85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\HP\BossHP">
+      <UniqueIdentifier>{0de3641e-9be2-40cb-9ded-adcce4ed0d9a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -865,6 +877,18 @@
     <ClInclude Include="..\Public\FontUI.h">
       <Filter>02. GameObjects\UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\HP.h">
+      <Filter>02. GameObjects\HP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MonsterHP.h">
+      <Filter>02. GameObjects\HP\MonsterHP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BossHP.h">
+      <Filter>02. GameObjects\HP\BossHP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PlayerHP.h">
+      <Filter>02. GameObjects\HP\PlayerHP</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -1349,6 +1373,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\FontUI.cpp">
       <Filter>02. GameObjects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HP.cpp">
+      <Filter>02. GameObjects\HP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MonsterHP.cpp">
+      <Filter>02. GameObjects\HP\MonsterHP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BossHP.cpp">
+      <Filter>02. GameObjects\HP\BossHP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PlayerHP.cpp">
+      <Filter>02. GameObjects\HP\PlayerHP</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

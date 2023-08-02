@@ -20,9 +20,9 @@ END
 
 BEGIN(Client)
 class PlayerLevel;
+class PlayerHP;
 class Pistola;
 class ClintUltimate01Bullet;
-class PlayerHP;
 template <typename OWNER, typename ANIM_ENUM>
 class StateContext;
 END
@@ -70,9 +70,10 @@ private: /* For. Component */
 	Raycast* m_pRaycastCom = { nullptr };
 	ClintUltimate01Bullet* m_pUltBulletCom = { nullptr };
 	ClintState* m_pStateContextCom = { nullptr };
-	Health* m_pHealthCom = { nullptr };
-	PlayerLevel* m_pPlayerLevelCom{ nullptr };
+	PlayerLevel* m_pPlayerLevelCom = { nullptr };
+	PlayerHP* m_pPlayerHP = { nullptr };
 
+	
 private:
 	static _uint Clint_Id;
 

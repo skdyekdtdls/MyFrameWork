@@ -43,7 +43,7 @@ HRESULT SpiderBullet::Initialize(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tSpiderBulletDesc.vPosition));
 
 	m_pTimeCounterCom->Enable();
-
+	m_fDamage = 5.f;
 	return S_OK;
 }
 
@@ -71,7 +71,8 @@ void SpiderBullet::Late_Tick(_double TimeDelta)
 
 	__super::Late_Tick(TimeDelta);
 
-	#ifdef _DEBUG
+	
+#ifdef _DEBUG
 	m_pRendererCom->Add_DebugGroup(m_pColliderCom);
 #endif
 

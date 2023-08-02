@@ -43,6 +43,8 @@ HRESULT BatPotato_RIGBullet::Initialize(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tBatPotato_RIGBulletDesc.vPosition));
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, tBatPotato_RIGBulletDesc.vLook);
 
+	m_fDamage = 5.f;
+
 	m_pTimeCounterCom->Disable();
 	m_bEnable = false;
 	return S_OK;

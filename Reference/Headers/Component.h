@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Base.h"
-#include "IObserver.h"
 
 BEGIN(Engine)
 class CGameObject;

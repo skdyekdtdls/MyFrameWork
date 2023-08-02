@@ -131,17 +131,17 @@ void CLevel_Imgui::Ready_Layer_Monster(const _tchar* pLayerTag)
 	tAlienPrawnDesc.vPosition = _float4(11.f, 0.f, 10.f, 1.f);
 	pGameInstance->Add_GameObject(LEVEL_IMGUI, Alien_prawn::ProtoTag(), pLayerTag, &tAlienPrawnDesc);
 
-	BatPotato_RIG::BATPOTATO_RIG_DESC tBatPotatoRigDesc;
-	tBatPotatoRigDesc.vPosition = _float4(12.f, 0.f, 10.f, 1.f);
-  	pGameInstance->Add_GameObject(LEVEL_IMGUI, BatPotato_RIG::ProtoTag(), pLayerTag, &tBatPotatoRigDesc);
+	//BatPotato_RIG::BATPOTATO_RIG_DESC tBatPotatoRigDesc;
+	//tBatPotatoRigDesc.vPosition = _float4(12.f, 0.f, 10.f, 1.f);
+  	//pGameInstance->Add_GameObject(LEVEL_IMGUI, BatPotato_RIG::ProtoTag(), pLayerTag, &tBatPotatoRigDesc);
 	
-	CannonSpider::tagCannonSpiderDesc tCannonSpiderDesc;
-	tCannonSpiderDesc.vPosition = _float4(13.f, 0.f, 10.f, 1.f);
-	pGameInstance->Add_GameObject(LEVEL_IMGUI, CannonSpider::ProtoTag(), pLayerTag, &tCannonSpiderDesc);
+	//CannonSpider::tagCannonSpiderDesc tCannonSpiderDesc;
+	//tCannonSpiderDesc.vPosition = _float4(13.f, 0.f, 10.f, 1.f);
+	//pGameInstance->Add_GameObject(LEVEL_IMGUI, CannonSpider::ProtoTag(), pLayerTag, &tCannonSpiderDesc);
 	
-	CrystalGolem::tagCrystalGolemDesc tCrystalGolemDesc;
-	tCrystalGolemDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
-	pGameInstance->Add_GameObject(LEVEL_IMGUI, CrystalGolem::ProtoTag(), pLayerTag, &tCrystalGolemDesc);
+	//CrystalGolem::tagCrystalGolemDesc tCrystalGolemDesc;
+	//tCrystalGolemDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	//pGameInstance->Add_GameObject(LEVEL_IMGUI, CrystalGolem::ProtoTag(), pLayerTag, &tCrystalGolemDesc);*/
 	
 	/*Spider::tagSpiderDesc tSpiderDesc;
 	tSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
@@ -222,19 +222,6 @@ void CLevel_Imgui::Ready_Layer_UI(const _tchar* pLayerTag)
 	tImageDesc.Pos = _float2(g_iWinSizeX - 150, (g_iWinSizeY - 607));
 	tImageDesc.Size = _float2(20, 20);
 	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_ui_radar_player_icon");
-	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
-
-	tDynamicImageDesc.Pos = _float2(g_iWinSizeX >> 1, (g_iWinSizeY >> 1) + 100);
-	tDynamicImageDesc.Size = _float2(100, 16);
-	tDynamicImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_LifeBar");
-	tDynamicImageDesc.pObserver = dynamic_cast<IObserver*>(pGameInstance->Get_ComponentOfClone(
-		pGameInstance->Get_NextLevelIndex(), L"Layer_Player", "Clint1", L"Com_Health"));
-	NULL_CHECK(tDynamicImageDesc.pObserver);
-	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, DynamicImage::ProtoTag(), pLayerTag, &tDynamicImageDesc));
-
-	tImageDesc.Pos = _float2(g_iWinSizeX >> 1, (g_iWinSizeY >> 1) + 100);
-	tImageDesc.Size = _float2(100, 16);
-	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_LifeBar_BG");
 	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
 
 	tImageDesc.Size = _float2(14, 4);

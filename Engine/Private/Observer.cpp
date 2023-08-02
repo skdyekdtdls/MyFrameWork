@@ -1,15 +1,32 @@
 #include "..\Public\Observer.h"
 
+Observer::Observer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CComponent()
+{
+}
+
+Observer::Observer(const Observer& rhs)
+	: CComponent(rhs)
+{
+}
 
 HRESULT Observer::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-void Observer::ResetPool()
+HRESULT Observer::Initialize(void* pArg)
 {
-	m_SubscribersFunc.clear();
-	m_ToBeRemoved.clear();
+	__super::Initialize(pArg);
+
+	return S_OK;
+}
+
+void Observer::UnSubscribeDelay(const _tchar* pTag)
+{
+	Functor Func = Find_Func(pTag);
+
+	m_ToBeRemoved.emplace(pTag, Func);
 }
 
 void Observer::Notify()

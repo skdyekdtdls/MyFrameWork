@@ -26,8 +26,14 @@ void DynamicImage::ImageDepth(_float Depth)
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 	Saturate(Depth, 0.f, 1.f);
 	vPos.m128_f32[2] = Depth;
-
+	m_pTransformCom->SetPosition()
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPos);
+}
+
+void DynamicImage::SetPosition(_float2 vPos)
+{
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x - 0.5f * g_iWinSizeX
+		, vPos.y - 0.5f * g_iWinSizeY, 0.f, 1.f));
 }
 
 HRESULT DynamicImage::Initialize(void* pArg)
@@ -39,7 +45,6 @@ HRESULT DynamicImage::Initialize(void* pArg)
 		return E_FAIL;
 	_float2 fSize = ((tagDynamicImageDesc*)pArg)->Size;
 	_float2 fPos = ((tagDynamicImageDesc*)pArg)->Pos;
-	m_pObserver = ((tagDynamicImageDesc*)pArg)->pObserver;
 	
 	m_pTransformCom->Scaled(_float3(fSize.x, fSize.y, 1.f));
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(fPos.x - 0.5f * g_iWinSizeX
@@ -70,13 +75,17 @@ HRESULT DynamicImage::Initialize(void* pArg)
 
 void DynamicImage::Tick(_double TimeDelta)
 {
+	if (false == m_bEnable)
+		return;
+
 	__super::Tick(TimeDelta);
 }
 
 void DynamicImage::Late_Tick(_double TimeDelta)
 {
+	if (false == m_bEnable)
+		return;
 	__super::Late_Tick(TimeDelta);
-
 	if (m_bLerp)
 	{
 		m_TimeAcc += TimeDelta;

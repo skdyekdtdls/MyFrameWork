@@ -53,8 +53,8 @@ private:
 	_float m_fMaxExp = { 100.f };
 	
 private:
-	void LevelUp();
 	HRESULT Add_Components(_float4 vPosition, _float fScale);
+	void LevelUp();
 
 private:
 	static _uint PlayerLevel_Id;

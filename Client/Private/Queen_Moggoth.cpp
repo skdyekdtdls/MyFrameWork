@@ -9,6 +9,7 @@
 #include "P2Attack02.h"
 #include "P2Attack03.h"
 #include "P2Attack04.h"
+#include "BossHP.h"
 _uint Queen_Moggoth::Queen_Moggoth_Id = 0;
 
 Queen_Moggoth::Queen_Moggoth(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -47,13 +48,22 @@ HRESULT Queen_Moggoth::Initialize(void* pArg)
 	m_pStateContextCom->TransitionTo(L"Queen_MoggothAppear");
 
 	// 옵저버
-	m_pHealthCom->Subscribe(L"PhaseChange", [this]() {
+	m_pHealthCom->GetObserver()->Subscribe(L"PhaseChange", [this]() {
 		if (m_pHealthCom->HPPercent() < 50.f)
 		{
 			m_pStateContextCom->TransitionTo(L"Queen_Moggoth_P1_TO_P2");
-			m_pHealthCom->UnSubscribeDelay(L"PhaseChange");
+			m_pHealthCom->GetObserver()->UnSubscribeDelay(L"PhaseChange");
 		}
 		});
+
+	m_pHealthCom->GetObserver()->Subscribe(L"Death", [this]() {
+		if (m_pHealthCom->isZeroHP())
+		{
+			m_pStateContextCom->TransitionTo(L"Queen_MoggothDead");
+			return;
+		}
+		});
+
 
 	// Desc초기화
 	tagQueen_MoggothDesc tCloneDesc;
@@ -82,15 +92,9 @@ void Queen_Moggoth::Tick(_double TimeDelta)
 	Safe_Release(pGameInstance);
 
 	m_pModelCom->Play_Animation(TimeDelta);
-
+	m_pHealthCom->Tick(TimeDelta);
 	if (nullptr != m_pStateContextCom)
 		m_pStateContextCom->Tick(TimeDelta);
-
-	if (m_pHealthCom->isZeroHP())
-	{
-		m_pStateContextCom->TransitionTo(L"Queen_MoggothDead");
-		return;
-	}
 
 	if (nullptr != m_pColliderCom)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
@@ -105,11 +109,11 @@ void Queen_Moggoth::Tick(_double TimeDelta)
 void Queen_Moggoth::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
-
+	m_pHealthCom->Late_Tick(TimeDelta);
 	if (Single->isRender(m_pRendererCom, m_pTransformCom))
 	{
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
-
+		
 		// Dead상태가 아니면 콜라이더 넣음
 		if (0 != lstrcmp(L"Queen_MoggothDead", m_pStateContextCom->GetCurState()))
 			m_pColliderCom->Add_ColliderGroup(COLL_GROUP::MONSTER_BODY);
@@ -173,7 +177,6 @@ HRESULT Queen_Moggoth::Add_Components()
 	tColliderAABBDesc.Extents = _float3(1.f, 1.f, 1.f);
 	tColliderAABBDesc.vCenter = _float3(0.f, tColliderAABBDesc.Extents.y, 0.f);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CColliderAABB::ProtoTag(), L"Com_BodyColl", (CComponent**)&m_pColliderCom, &tColliderAABBDesc), E_FAIL);
-
 	
 	tColliderAABBDesc.pOwner = this;
 	tColliderAABBDesc.Extents = _float3(2.f, 2.f, 2.f);
@@ -194,10 +197,9 @@ HRESULT Queen_Moggoth::Add_Components()
 	tStateContextDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, TEXT("Prototype_Component_Queen_MoggothState"), L"Com_StateContext", (CComponent**)&m_pStateContextCom, &tStateContextDesc), E_FAIL);
 
-	Health::HEALTH_DESC tHealthDesc;
+	BossHP::tagBossHPDesc tHealthDesc;
 	tHealthDesc.pOwner = this;
-	tHealthDesc.iMaxHp = 1000;
-	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, Health::ProtoTag(), L"Com_Health", (CComponent**)&m_pHealthCom, &tHealthDesc), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Composite(BossHP::ProtoTag(), L"Com_HP", (CComponent**)&m_pHealthCom, &tHealthDesc), E_FAIL);
 
 	Safe_Release(pGameInstance);
 	return S_OK;
@@ -247,7 +249,6 @@ HRESULT Queen_Moggoth::SetUp_Notify()
 		Safe_Release(pGameInstance);
 
 		}));
-
 
 	m_pModelCom->Add_TimeLineEvent("Queen_Moggoth_P1_Attack03", L"P1_Attack03", TIMELINE_EVENT(80.0, [this]() {
 		CGameInstance* pGameInstance = CGameInstance::GetInstance();

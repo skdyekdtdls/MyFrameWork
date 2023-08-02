@@ -199,6 +199,7 @@
     <ClInclude Include="..\public\BatPotato_RIGIdle.h" />
     <ClInclude Include="..\public\BatPotato_RIGRun.h" />
     <ClInclude Include="..\public\Blue_Snow.h" />
+    <ClInclude Include="..\public\BossHP.h" />
     <ClInclude Include="..\public\Bullet.h" />
     <ClInclude Include="..\Public\Bush01.h" />
     <ClInclude Include="..\public\BushA.h" />
@@ -248,6 +249,7 @@
     <ClInclude Include="..\Public\CrystalGolemTurn180.h" />
     <ClInclude Include="..\Public\DynamicImage.h" />
     <ClInclude Include="..\Public\FontUI.h" />
+    <ClInclude Include="..\public\HP.h" />
     <ClInclude Include="..\public\Image.h" />
     <ClInclude Include="..\Public\ImGuiFileDialog.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -318,6 +320,7 @@
     <ClInclude Include="..\public\MineCrystalsD.h" />
     <ClInclude Include="..\public\MineCrystalsE.h" />
     <ClInclude Include="..\public\MineCrystalsF.h" />
+    <ClInclude Include="..\public\MonsterHP.h" />
     <ClInclude Include="..\public\ObjectPool.h" />
     <ClInclude Include="..\public\P1Attack01.h" />
     <ClInclude Include="..\public\P1Attack02.h" />
@@ -329,6 +332,7 @@
     <ClInclude Include="..\public\P2Attack04.h" />
     <ClInclude Include="..\public\Pistola.h" />
     <ClInclude Include="..\public\ClintBasicBullet.h" />
+    <ClInclude Include="..\public\PlayerHP.h" />
     <ClInclude Include="..\public\PlayerLevel.h" />
     <ClInclude Include="..\public\Queen_Moggoth.h" />
     <ClInclude Include="..\public\Queen_MoggothAppear.h" />
@@ -441,6 +445,7 @@
     <ClCompile Include="..\private\BatPotato_RIGIdle.cpp" />
     <ClCompile Include="..\private\BatPotato_RIGRun.cpp" />
     <ClCompile Include="..\private\Blue_Snow.cpp" />
+    <ClCompile Include="..\private\BossHP.cpp" />
     <ClCompile Include="..\private\Bullet.cpp" />
     <ClCompile Include="..\Private\Bush01.cpp" />
     <ClCompile Include="..\private\BushA.cpp" />
@@ -492,6 +497,7 @@
     <ClCompile Include="..\Private\CrystalGolemTurn180.cpp" />
     <ClCompile Include="..\Private\DynamicImage.cpp" />
     <ClCompile Include="..\Private\FontUI.cpp" />
+    <ClCompile Include="..\private\HP.cpp" />
     <ClCompile Include="..\private\Image.cpp" />
     <ClCompile Include="..\Private\ImGuiFileDialog.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -576,6 +582,7 @@
     <ClCompile Include="..\private\MineCrystalsD.cpp" />
     <ClCompile Include="..\private\MineCrystalsE.cpp" />
     <ClCompile Include="..\private\MineCrystalsF.cpp" />
+    <ClCompile Include="..\private\MonsterHP.cpp" />
     <ClCompile Include="..\private\P1Attack01.cpp" />
     <ClCompile Include="..\private\P1Attack02.cpp" />
     <ClCompile Include="..\private\P1Attack03.cpp" />
@@ -586,6 +593,7 @@
     <ClCompile Include="..\private\P2Attack04.cpp" />
     <ClCompile Include="..\private\Pistola.cpp" />
     <ClCompile Include="..\private\ClintBasicBullet.cpp" />
+    <ClCompile Include="..\private\PlayerHP.cpp" />
     <ClCompile Include="..\private\PlayerLevel.cpp" />
     <ClCompile Include="..\private\Queen_Moggoth.cpp" />
     <ClCompile Include="..\private\Queen_MoggothAppear.cpp" />

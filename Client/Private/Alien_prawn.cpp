@@ -3,6 +3,8 @@
 #include "Alien_prawnIdle.h"
 #include "StateContext.h"
 #include "Bullet.h"
+#include "MonsterHP.h"
+
 _uint Alien_prawn::Alien_prawn_Id = 0;
 
 /* Don't Forget Release for the VIBuffer or Model Component*/
@@ -46,6 +48,16 @@ HRESULT Alien_prawn::Initialize(void* pArg)
 	
 	// 상태 초기화
 	m_pStateContextCom->TransitionTo(L"Alien_prawnIdle");
+
+	// 옵저버 이벤트 추가
+	m_pMonsterHP->GetObserver()->Subscribe(L"isZeroHP", [this]() {
+		if (m_pMonsterHP->isZeroHP())
+		{
+			m_pStateContextCom->TransitionTo(L"Alien_prawnDead");
+		}
+		});
+	m_pMonsterHP->Disable();
+
 	return S_OK;
 }
 
@@ -57,11 +69,8 @@ void Alien_prawn::Tick(_double TimeDelta)
 	if (nullptr != m_pStateContextCom)
 		m_pStateContextCom->Tick(TimeDelta);
 
-	if (m_pHealthCom->isZeroHP())
-	{
-		m_pStateContextCom->TransitionTo(L"Alien_prawnDead");
-		return;
-	}
+	m_pMonsterHP->Tick(TimeDelta);
+	
 	if (nullptr != m_pColliderCom)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
 
@@ -75,7 +84,7 @@ void Alien_prawn::Tick(_double TimeDelta)
 void Alien_prawn::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
-
+	m_pMonsterHP->Late_Tick(TimeDelta);
 	if (Single->isRender(m_pRendererCom, m_pTransformCom))
 	{
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
@@ -84,6 +93,7 @@ void Alien_prawn::Late_Tick(_double TimeDelta)
 		if (0 != lstrcmp(L"Alien_prawnDead", m_pStateContextCom->GetCurState()))
 			m_pColliderCom->Add_ColliderGroup(COLL_GROUP::MONSTER_BODY);
 	}
+
 #ifdef _DEBUG
 	if (nullptr != m_pColliderCom)
 		m_pRendererCom->Add_DebugGroup(m_pColliderCom);
@@ -196,10 +206,9 @@ HRESULT Alien_prawn::Add_Components()
 	tStateContextDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, TEXT("Prototype_Component_AlienPrawnState"), L"Com_AlienPrawnState", (CComponent**)&m_pStateContextCom, &tStateContextDesc), E_FAIL);
 
-	Health::HEALTH_DESC tHealthDesc;
-	tHealthDesc.pOwner = this;
-	tHealthDesc.iMaxHp = 1000;
-	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, Health::ProtoTag(), L"Com_Health", (CComponent**)&m_pHealthCom, &tHealthDesc), E_FAIL);
+	MonsterHP::tagMonsterHPDesc tMonsterHPDesc;
+	tMonsterHPDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Composite(MonsterHP::ProtoTag(), L"Com_HP", (CComponent**)&m_pMonsterHP, &tMonsterHPDesc), E_FAIL);
 
 	Safe_Release(pGameInstance);
 	return S_OK;
@@ -261,6 +270,6 @@ void Alien_prawn::Free(void)
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pRaycastCom);
 	Safe_Release(m_pStateContextCom);
-	Safe_Release(m_pHealthCom);
+	Safe_Release(m_pMonsterHP);
 }
 

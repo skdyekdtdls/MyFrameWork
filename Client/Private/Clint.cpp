@@ -9,6 +9,8 @@
 #include "Animation.h"
 #include "ClintUltimate01Bullet.h"
 #include "PlayerLevel.h"
+#include "PlayerHP.h"
+
 _uint Clint::Clint_Id = 0;
 
 Clint::Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -92,17 +94,6 @@ HRESULT Clint::Initialize(void* pArg)
 void Clint::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
-
-
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
-
-	if (pGameInstance->Get_DIKeyState(DIK_I))
-	{
-		m_pPlayerLevelCom->AddExp(1.f);
-	}
-	Safe_Release(pGameInstance);
-
 	if(nullptr != m_pStateContextCom)
 		m_pStateContextCom->Tick(TimeDelta);
 
@@ -128,6 +119,8 @@ void Clint::Tick(_double TimeDelta)
 		m_pRaycastCom->Tick(m_pTransformCom->Get_State(CTransform::STATE_POSITION),
 			m_pTransformCom->Get_State(CTransform::STATE_LOOK));
 	}
+
+	m_pPlayerHP->Tick(TimeDelta);
 }
 
 void Clint::Late_Tick(_double TimeDelta)
@@ -152,6 +145,8 @@ void Clint::Late_Tick(_double TimeDelta)
 		m_pPistolaComL->Late_Tick(TimeDelta);
 		m_pPistolaComR->Late_Tick(TimeDelta);
 	}
+
+	m_pPlayerHP->Late_Tick(TimeDelta);
 }
 
 HRESULT Clint::Render()
@@ -253,10 +248,9 @@ HRESULT Clint::Add_Components()
 	tStateContextDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, TEXT("Prototype_Component_ClintState"), L"Com_ClintState", (CComponent**)&m_pStateContextCom, &tStateContextDesc), E_FAIL);
 	
-	Health::HEALTH_DESC tHealthDesc;
+	PlayerHP::tagPlayerHPDesc tHealthDesc;
 	tHealthDesc.pOwner = this;
-	tHealthDesc.iMaxHp = 100;
-	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, Health::ProtoTag(), L"Com_Health", (CComponent**)&m_pHealthCom, &tHealthDesc), E_FAIL);
+	FAILED_CHECK_RETURN(__super::Add_Composite(PlayerHP::ProtoTag(), L"Com_HP", (CComponent**)&m_pPlayerHP, &tHealthDesc), E_FAIL);
 
 	PlayerLevel::tagPlayerLevelDesc tLevelDesc;
 	tLevelDesc.pOwner = this;
@@ -333,6 +327,6 @@ void Clint::Free(void)
 	Safe_Release(m_pUltBulletCom);
 	Safe_Release(m_pStateContextCom);
 	Safe_Release(m_pPlayerLevelCom);
-	Safe_Release(m_pHealthCom);
+	Safe_Release(m_pPlayerHP);
 }
 

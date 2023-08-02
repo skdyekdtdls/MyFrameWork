@@ -1,7 +1,9 @@
 #include "..\Public\Queen_MoggothAttack.h"
 #include "GameInstance.h"
 #include "Queen_Moggoth.h"
-#include "Health.h"
+#include "HP.h"
+#include "PlayerHP.h"
+
 Queen_MoggothAttack::Queen_MoggothAttack(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: StateMachine<Queen_Moggoth, QUEEN_MOGGOTH_ANIM>(pDevice, pContext)
 {
@@ -20,7 +22,7 @@ void Queen_MoggothAttack::OnStateEnter()
 	while (m_ePattern == m_ePrevPattern)
 		m_ePattern = static_cast<PATTERN>(RandomIntFrom_A_To_B(ATTACK01, PATTERN_END - 1));
 	m_ePrevPattern = m_ePattern;
-
+	m_ePattern = ATTACK04;
 	// 값들 초기화
 	SetAnimIndexByPattern();
 	m_iLogic = 0;
@@ -67,7 +69,12 @@ void Queen_MoggothAttack::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, 
 	if (tCollisionInfo.MyCollName == L"Com_Attack04Coll"
 		&& 0 == strcmp(tCollisionInfo.OtherGameObejctName.c_str(), "Clint1"))
 	{
-		Health* pHealth = (tCollisionInfo.pOtherGameObject)->GetComponent<Health>();
+		//HP* pHP = dynamic_cast<HP*>(m_pOwner->Get_Component(L"Com_HP"));
+
+		//if (pHP)
+		//	pHP->TakeDamage(static_cast<_uint>(1.f));
+		
+		HP* pHealth = (tCollisionInfo.pOtherGameObject)->GetComponent<HP>();
 		pHealth->TakeDamage(1);
 	}
 }

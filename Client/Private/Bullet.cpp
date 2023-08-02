@@ -1,6 +1,6 @@
 #include "Bullet.h"
 #include "GameInstance.h"
-
+#include "HP.h"
 /* Don't Forget Release for the VIBuffer or Model Component*/
 
 Bullet::Bullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -72,10 +72,10 @@ HRESULT Bullet::Render()
 
 void Bullet::Damage(CGameObject* pGameObejct)
 {
-	Health* pHealth = dynamic_cast<Health*>(pGameObejct->Get_Component(L"Com_Health"));
+	HP* pHP = dynamic_cast<HP*>(pGameObejct->Get_Component(L"Com_HP"));
 
-	if (pHealth)
-		pHealth->TakeDamage(m_fDamage);
+	if (pHP)
+		pHP->TakeDamage(static_cast<_uint>(m_fDamage));
 }
 
 void Bullet::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
