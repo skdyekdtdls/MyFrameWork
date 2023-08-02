@@ -27,6 +27,9 @@ public:
 	typedef struct tagMonsterHPDesc : public tagCGameObjectDesc
 	{
 		tagMonsterHPDesc() = default;
+		_float2 fSize;
+		_float fMaxHP = 1000.f;
+		_float2 vOffset = _float2(0.f, 75.f);
 	};
 
 protected:
@@ -61,17 +64,17 @@ private:
 	Observer* m_pObserver = { nullptr };
 	FontUI* m_pFontUI = { nullptr };
 	TimeCounter* m_pTimeCounter = { nullptr };
-	CTransform* m_pOwnerTransform = { nullptr };
 
+	CTransform* m_pOwnerTransform = { nullptr };
 private:
 	void SetAmount(const _uint& iAmount);
 
 private:
 	_bool m_bEnable = { true };
 	_uint m_iAmount = { 0 };
-
+	_float2 m_vOffset;
 public:
-	HRESULT Add_Components();
+	HRESULT Add_Components(_float2 fSize);
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_GameObject_MonsterHP"; }

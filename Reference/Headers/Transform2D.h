@@ -48,6 +48,8 @@ public:
 	
 	_float Get_AulerDegree();
 	_float2 GetScale();
+	_float4x4 Get_WorldFloat4x4() { return m_WorldMatrix; }
+
 public:
 	_vector GetPosition();
 	void SetPosition(_fvector vPosition);

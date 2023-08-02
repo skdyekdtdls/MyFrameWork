@@ -19,6 +19,7 @@ class TimeCounter;
 END
 
 BEGIN(Client)
+class SkillUI;
 class PlayerLevel;
 class PlayerHP;
 class Pistola;
@@ -72,8 +73,8 @@ private: /* For. Component */
 	ClintState* m_pStateContextCom = { nullptr };
 	PlayerLevel* m_pPlayerLevelCom = { nullptr };
 	PlayerHP* m_pPlayerHP = { nullptr };
+	vector<SkillUI*> m_pSKillUIs = { nullptr };
 
-	
 private:
 	static _uint Clint_Id;
 

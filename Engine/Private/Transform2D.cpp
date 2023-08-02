@@ -4,8 +4,7 @@ CTransform2D::CTransform2D(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CComponent(pDevice, pContext)
 	, m_TransformDesc(CTRANSFORM2D_DESC())
 {
-	_matrix matIdentity = XMMatrixIdentity();
-	XMStoreFloat4x4(&m_WorldMatrix, matIdentity);
+	XMStoreFloat4x4(&m_WorldMatrix, XMMatrixIdentity());
 }
 
 CTransform2D::CTransform2D(const CTransform2D& rhs)

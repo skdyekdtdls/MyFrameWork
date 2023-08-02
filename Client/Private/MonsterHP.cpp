@@ -26,24 +26,26 @@ HRESULT MonsterHP::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
-
-	if (FAILED(Add_Components()))
+	
+	if (FAILED(Add_Components(((tagMonsterHPDesc*)pArg)->fSize)))
 		return E_FAIL;
 
 	m_pDynamicImage->SetRatio(1.f);
 	m_pObserver->Subscribe(L"TakeDamage", [this]() {
-		m_pHealthCom->TakeDamage(m_iAmount);
 		m_pDynamicImage->SetRatioLerp(m_pHealthCom->HPPercent() * 0.01f);
 		Enable();
 		});
 
 	m_pImage->ImageDepth(0.0f);
 	m_pDynamicImage->ImageDepth(0.001f);
-	m_pDynamicImage->SetPass(1);
 	m_pDynamicImage->SetRatio(1.f);
 	m_pOwnerTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
-
+	m_pHealthCom->SetMaxHP(((tagMonsterHPDesc*)pArg)->fMaxHP);
+	m_pHealthCom->SetCurrentHP(((tagMonsterHPDesc*)pArg)->fMaxHP);
+	
+	m_vOffset = ((tagMonsterHPDesc*)pArg)->vOffset;
 	Disable();
+
 	return S_OK;
 }
 
@@ -60,8 +62,9 @@ void MonsterHP::Tick(_double TimeDelta)
 	m_pDynamicImage->Tick(TimeDelta);
 	m_pImage->Tick(TimeDelta);
 
-	_vector vPos = m_pOwnerTransform->Get_State(CTransform::STATE_POSITION);
-	m_pDynamicImage->SetPosition(_float2(vPos.m128_f32[0], vPos.m128_f32[1]));
+	_float2 vPos = m_pOwnerTransform->GetScreenPos(g_iWinSizeX, g_iWinSizeY);
+	m_pDynamicImage->SetPosition(vPos.x + m_vOffset.x, g_iWinSizeY - vPos.y + m_vOffset.y);
+	m_pImage->SetPosition(vPos.x + m_vOffset.x, g_iWinSizeY - vPos.y + m_vOffset.y);
 }
 
 void MonsterHP::Late_Tick(_double TimeDelta)
@@ -77,12 +80,15 @@ void MonsterHP::Late_Tick(_double TimeDelta)
 void MonsterHP::TakeDamage(_uint iAmount)
 {
 	SetAmount(iAmount);
+	m_pHealthCom->TakeDamage(m_iAmount);
 	m_pObserver->Notify();
+
 }
 
 void MonsterHP::Heal(_uint iAmount)
 {
 	SetAmount(iAmount);
+	m_pHealthCom->Heal(m_iAmount);
 	m_pObserver->Notify();
 }
 
@@ -106,7 +112,7 @@ void MonsterHP::SetAmount(const _uint& iAmount)
 	m_iAmount = iAmount;
 }
 
-HRESULT MonsterHP::Add_Components()
+HRESULT MonsterHP::Add_Components(_float2 fSize)
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
@@ -114,13 +120,13 @@ HRESULT MonsterHP::Add_Components()
 
 	DynamicImage::tagDynamicImageDesc tDynamicImageDesc;
 	tDynamicImageDesc.Pos = _float2(400, 400);
-	tDynamicImageDesc.Size = _float2(100, 50);
+	tDynamicImageDesc.Size = fSize;
 	tDynamicImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_MonsterHpBar");
 	__super::Add_Composite(DynamicImage::ProtoTag(), L"Com_MonsterHpBar", (CComponent**)&m_pDynamicImage, &tDynamicImageDesc);
 
 	Image::tagImageDesc tImageDesc;
 	tImageDesc.Pos = _float2(400, 400);
-	tImageDesc.Size = _float2(100, 50);
+	tImageDesc.Size = fSize;
 	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_MonsterHp_BG");
 	__super::Add_Composite(Image::ProtoTag(), L"Com_MonsterHp_BG", (CComponent**)&m_pImage, &tImageDesc);
 	

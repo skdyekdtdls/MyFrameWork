@@ -38,6 +38,7 @@ public:
 
 	void SetPass(_uint iPass) { m_iPass = iPass; }
 	void ImageDepth(_float Depth);
+	void SetPosition(_float xPos, _float yPos);
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };

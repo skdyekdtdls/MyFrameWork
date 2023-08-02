@@ -40,9 +40,9 @@ public:
 	void SetRatioLerp(_float fRatio);
 	void SetPass(_uint iPass) { m_iPass = iPass; }
 	void ImageDepth(_float Depth);
-	void SetPosition(_float2 vPos);
-
+	void SetPosition(_float xPos, _float yPos);
 	void SetEnable(_bool bEnable) { m_bEnable = bEnable; }
+
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };

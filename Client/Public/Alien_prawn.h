@@ -14,7 +14,6 @@ class CCollider;
 class CNavigation;
 class CModel;
 class Raycast;
-class Health;
 // Can declare VIBuffer or Model Com
 END
 

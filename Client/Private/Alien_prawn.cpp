@@ -126,7 +126,7 @@ HRESULT Alien_prawn::Render()
 void Alien_prawn::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
 	// 총알은 피스톨라가 가지고 있어서 레이어가 없다..
-	if (dynamic_cast<Bullet*>(tCollisionInfo.pOtherGameObject))
+	if (dynamic_cast<Bullet*>(tCollisionInfo.pOtherGameObject) && false == m_pMonsterHP->isZeroHP())
 	{
 		m_pStateContextCom->TransitionTo(TEXT("Alien_prawnHit"));
 	}
@@ -208,6 +208,7 @@ HRESULT Alien_prawn::Add_Components()
 
 	MonsterHP::tagMonsterHPDesc tMonsterHPDesc;
 	tMonsterHPDesc.pOwner = this;
+	tMonsterHPDesc.fSize = _float2(60, 15);
 	FAILED_CHECK_RETURN(__super::Add_Composite(MonsterHP::ProtoTag(), L"Com_HP", (CComponent**)&m_pMonsterHP, &tMonsterHPDesc), E_FAIL);
 
 	Safe_Release(pGameInstance);
@@ -272,4 +273,3 @@ void Alien_prawn::Free(void)
 	Safe_Release(m_pStateContextCom);
 	Safe_Release(m_pMonsterHP);
 }
-

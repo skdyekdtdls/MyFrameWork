@@ -2,6 +2,8 @@
 #include "GameInstance.h"
 #include "StateContext.h"
 #include "CannonSpiderBullet.h"
+#include "MonsterHP.h"
+
 _uint CannonSpider::CannonSpider_Id = 0;
 
 CannonSpider::CannonSpider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -71,6 +73,15 @@ HRESULT CannonSpider::Initialize(void* pArg)
 		tCloneDesc = *(tagCannonSpiderDesc*)pArg;
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
 
+	// 옵저버 이벤트 추가
+	m_pMonsterHP->GetObserver()->Subscribe(L"isZeroHP", [this]() {
+		if (m_pMonsterHP->isZeroHP())
+		{
+			m_pStateContextCom->TransitionTo(L"CannonSpiderDead");
+		}
+		});
+	m_pMonsterHP->Disable();
+
 	return S_OK;
 }
 
@@ -83,11 +94,7 @@ void CannonSpider::Tick(_double TimeDelta)
 	if (nullptr != m_pStateContextCom)
 		m_pStateContextCom->Tick(TimeDelta);
 
-	if (m_pHealthCom->isZeroHP())
-	{
-		m_pStateContextCom->TransitionTo(L"CannonSpiderDead");
-		return;
-	}
+	m_pMonsterHP->Tick(TimeDelta);
 
 	if (nullptr != m_pColliderCom)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
@@ -102,7 +109,7 @@ void CannonSpider::Tick(_double TimeDelta)
 void CannonSpider::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
-
+	m_pMonsterHP->Late_Tick(TimeDelta);
 	if (Single->isRender(m_pRendererCom, m_pTransformCom))
 	{
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
@@ -144,7 +151,7 @@ HRESULT CannonSpider::Render()
 void CannonSpider::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
 	// 총알은 레이어가 없다..
-	if (dynamic_cast<Bullet*>(tCollisionInfo.pOtherGameObject))
+	if (dynamic_cast<Bullet*>(tCollisionInfo.pOtherGameObject) && false == m_pMonsterHP->isZeroHP())
 	{
 		m_pStateContextCom->TransitionTo(TEXT("CannonSpiderIdle"));
 		m_pStateContextCom->TransitionTo(TEXT("CannonSpiderHit"));
@@ -202,10 +209,10 @@ HRESULT CannonSpider::Add_Components()
 	tNavigationdesc.iCurrentIndex = { 0 };
 	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, CNavigation::ProtoTag(), L"Com_Navigation", (CComponent**)&m_pNavigationCom, &tNavigationdesc), E_FAIL);
 
-	Health::HEALTH_DESC tHealthDesc;
-	tHealthDesc.pOwner = this;
-	tHealthDesc.iMaxHp = 1200;
-	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, Health::ProtoTag(), L"Com_Health", (CComponent**)&m_pHealthCom, &tHealthDesc), E_FAIL);
+	MonsterHP::tagMonsterHPDesc tMonsterHPDesc;
+	tMonsterHPDesc.pOwner = this;
+	tMonsterHPDesc.fSize = _float2(60, 15);
+	FAILED_CHECK_RETURN(__super::Add_Composite(MonsterHP::ProtoTag(), L"Com_HP", (CComponent**)&m_pMonsterHP, &tMonsterHPDesc), E_FAIL);
 
 	Safe_Release(pGameInstance);
 	return S_OK;
@@ -268,7 +275,6 @@ void CannonSpider::Free(void)
 	Safe_Release(m_pStateContextCom);
 	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pRaycastCom);
-	Safe_Release(m_pHealthCom);
-	
+	Safe_Release(m_pMonsterHP);
 	/* Don't Forget Release for the VIBuffer or Model Component*/
 }

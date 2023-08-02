@@ -149,7 +149,13 @@ HRESULT CRenderer::Draw_RenderGroup()
 	}
 #endif // _DEBUG
 
-	if (FAILED(Render_UI()))
+	if (FAILED(Render_UI_NB()))
+	{
+		CONSOLE_MSG("CRenderer::Draw_RenderGroup : \t 줄 번호 : " << __LINE__);
+		return E_FAIL;
+	}
+
+	if (FAILED(Render_UI_B()))
 	{
 		CONSOLE_MSG("CRenderer::Draw_RenderGroup : \t 줄 번호 : " << __LINE__);
 		return E_FAIL;
@@ -302,16 +308,30 @@ HRESULT CRenderer::Render_Blend()
 	return hr;
 }                  
 
-HRESULT CRenderer::Render_UI()
+HRESULT CRenderer::Render_UI_NB()
 {
 	HRESULT hr = S_OK;
-	for (auto& pGameObject : m_RenderObjects[RENDER_UI])
+	for (auto& pGameObject : m_RenderObjects[RENDER_UI_NB])
 	{
 		hr = pGameObject->Render();
 
 		Safe_Release(pGameObject);
 	}
-	m_RenderObjects[RENDER_UI].clear();
+	m_RenderObjects[RENDER_UI_NB].clear();
+
+	return hr;
+}
+
+HRESULT CRenderer::Render_UI_B()
+{
+	HRESULT hr = S_OK;
+	for (auto& pGameObject : m_RenderObjects[RENDER_UI_B])
+	{
+		hr = pGameObject->Render();
+
+		Safe_Release(pGameObject);
+	}
+	m_RenderObjects[RENDER_UI_B].clear();
 
 	return hr;
 }

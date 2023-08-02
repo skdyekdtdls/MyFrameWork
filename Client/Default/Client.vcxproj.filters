@@ -376,6 +376,9 @@
     <Filter Include="02. GameObjects\HP\BossHP">
       <UniqueIdentifier>{0de3641e-9be2-40cb-9ded-adcce4ed0d9a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObjects\Skill">
+      <UniqueIdentifier>{63ac0d20-5fb5-425d-89ae-eea81842c48b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -889,6 +892,12 @@
     <ClInclude Include="..\public\PlayerHP.h">
       <Filter>02. GameObjects\HP\PlayerHP</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\SkillQ.h">
+      <Filter>02. GameObjects\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SkillUI.h">
+      <Filter>02. GameObjects\Skill</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -1385,6 +1394,12 @@
     </ClCompile>
     <ClCompile Include="..\private\PlayerHP.cpp">
       <Filter>02. GameObjects\HP\PlayerHP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SkillQ.cpp">
+      <Filter>02. GameObjects\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SkillUI.cpp">
+      <Filter>02. GameObjects\Skill</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

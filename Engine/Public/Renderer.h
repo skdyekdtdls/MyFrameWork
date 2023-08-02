@@ -13,7 +13,7 @@ public:
 	}CRENDERER_DESC;
 
 public:
-	enum RENDERGROUP { RENDER_PRIORITY, RENDER_NONBLEND, RENDER_NONLIGHT, RENDER_BLEND, RENDER_UI, RENDER_FONT, RENDER_END };
+	enum RENDERGROUP { RENDER_PRIORITY, RENDER_NONBLEND, RENDER_NONLIGHT, RENDER_BLEND, RENDER_UI_NB, RENDER_UI_B, RENDER_FONT, RENDER_END };
 
 private:
 	CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -43,7 +43,8 @@ private:
 	HRESULT Render_Deferred();
 	HRESULT Render_NonLight();
 	HRESULT Render_Blend();
-	HRESULT Render_UI();
+	HRESULT Render_UI_NB();
+	HRESULT Render_UI_B();
 	HRESULT Render_Font();
 
 private:

@@ -22,7 +22,7 @@ END
 BEGIN(Client)
 
 class Bullet;
-
+class MonsterHP;
 template<typename OWNER, typename ANIM_ENUM>
 class StateContext;
 
@@ -62,7 +62,7 @@ private: /* For. Component */
 	SpiderState* m_pStateContextCom = { nullptr };
 	CNavigation* m_pNavigationCom = { nullptr };
 	Raycast* m_pRaycastCom = { nullptr };
-	Health* m_pHealthCom = { nullptr };
+	MonsterHP* m_pMonsterHP = { nullptr };
 	// Can declare VIBuffer or Model Com
 
 private:

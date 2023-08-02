@@ -28,7 +28,7 @@ public:
 	}
 
 	void SetMaxHP(_uint iMaxHp) { m_iMaxHp = iMaxHp; }
-
+	void SetCurrentHP(_uint iCurrentHP) { m_iCurrentHp = iCurrentHP; }
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg) override;

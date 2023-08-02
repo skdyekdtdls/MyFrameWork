@@ -27,6 +27,7 @@
 #include "Image.h"
 #include "DynamicImage.h"
 #include "FontUI.h"
+#include "SkillUI.h"
 
 // Static Mesh
 #include "Bush01.h"
@@ -1017,8 +1018,8 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_T_CircularMask"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Game/NewGUI/Buttons/Textures/ProgressBar/T_CircularMask.png"), 1)), E_FAIL);
 
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_BasicAttack"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/BasicAttack.png"), 1)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_BasicAttackUI"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/BasicAttackUI.png"), 1)), E_FAIL);
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_QSkill"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/QSkill.png"), 1)), E_FAIL);
@@ -1755,6 +1756,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(PlayerHP::ProtoTag(), PlayerHP::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BossHP::ProtoTag(), BossHP::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(MonsterHP::ProtoTag(), MonsterHP::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SkillUI::ProtoTag(), SkillUI::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	Set_LoadingText(L"로딩 완료");
 

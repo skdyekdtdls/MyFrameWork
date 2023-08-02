@@ -5,7 +5,7 @@
 #include "CrystalGolemAttackAreaBullet.h"
 #include "CrystalGolemAttackArea02Bullet.h"
 #include "CrystalGolemAttackRangeBullet.h"
-
+#include "MonsterHP.h"
 _uint CrystalGolem::CrystalGolem_Id = 0;
 
 CrystalGolem::CrystalGolem(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -52,6 +52,15 @@ HRESULT CrystalGolem::Initialize(void* pArg)
 	// 노티파이 초기화
 	Add_Notify();
 
+	// 옵저버 이벤트 추가
+	m_pMonsterHP->GetObserver()->Subscribe(L"isZeroHP", [this]() {
+		if (m_pMonsterHP->isZeroHP())
+		{
+			m_pStateContextCom->TransitionTo(L"CrystalGolemDead");
+		}
+		});
+	m_pMonsterHP->Disable();
+
 	return S_OK;
 }
 
@@ -71,11 +80,7 @@ void CrystalGolem::Tick(_double TimeDelta)
 	if (nullptr != m_pStateContextCom)
 		m_pStateContextCom->Tick(TimeDelta);
 
-	if (m_pHealthCom->isZeroHP())
-	{
-		m_pStateContextCom->TransitionTo(L"CrystalGolemDead");
-		return;
-	}
+	m_pMonsterHP->Tick(TimeDelta);
 
 	if (nullptr != m_pColliderCom)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
@@ -90,7 +95,7 @@ void CrystalGolem::Tick(_double TimeDelta)
 void CrystalGolem::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
-
+	m_pMonsterHP->Late_Tick(TimeDelta);
 	if (Single->isRender(m_pRendererCom, m_pTransformCom))
 	{
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
@@ -135,14 +140,14 @@ HRESULT CrystalGolem::Render()
 void CrystalGolem::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
 	// 총알은 레이어가 없다..
-	Bullet* pBullet;
-	if (pBullet = dynamic_cast<Bullet*>(tCollisionInfo.pOtherGameObject))
+	Bullet* pBullet = dynamic_cast<Bullet*>(tCollisionInfo.pOtherGameObject);
+	if (pBullet && false == m_pMonsterHP->isZeroHP())
 	{
 		if (m_pTransformCom->isFront(Single->GetClintPosition()))
 		{
 			cout << "방어" << endl;
 
-			m_pHealthCom->Heal(pBullet->GetDamage());
+			m_pMonsterHP->Heal(pBullet->GetDamage());
 		}	
 	}
 
@@ -198,10 +203,11 @@ HRESULT CrystalGolem::Add_Components()
 	tStateContextDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, TEXT("Prototype_Component_CrystalGolemState"), L"Com_StateContext", (CComponent**)&m_pStateContextCom, &tStateContextDesc), E_FAIL);
 
-	Health::HEALTH_DESC tHealthDesc;
-	tHealthDesc.pOwner = this;
-	tHealthDesc.iMaxHp = 3000;
-	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, Health::ProtoTag(), L"Com_Health", (CComponent**)&m_pHealthCom, &tHealthDesc), E_FAIL);
+	MonsterHP::tagMonsterHPDesc tMonsterHPDesc;
+	tMonsterHPDesc.pOwner = this;
+	tMonsterHPDesc.fSize = _float2(240, 30);
+	tMonsterHPDesc.fMaxHP = 3000.f;
+	FAILED_CHECK_RETURN(__super::Add_Composite(MonsterHP::ProtoTag(), L"Com_HP", (CComponent**)&m_pMonsterHP, &tMonsterHPDesc), E_FAIL);
 
 	Safe_Release(pGameInstance);
 	return S_OK;
@@ -309,6 +315,6 @@ void CrystalGolem::Free(void)
 	Safe_Release(m_pStateContextCom);
 	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pColliderDectect);
-	Safe_Release(m_pHealthCom);
+	Safe_Release(m_pMonsterHP);
 	/* Don't Forget Release for the VIBuffer or Model Component*/
 }

@@ -39,6 +39,8 @@ public:
 	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
 
 public:
+	_float2 GetScreenPos(_uint iWinSizeX, _uint iWinSizeY);
+
 	DIRECTION GetCurDirection() {
 		return m_eCurDirection;
 	}

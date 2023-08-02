@@ -30,9 +30,8 @@ HRESULT Image::Initialize(void* pArg)
 	_float2 fSize = ((tagImageDesc*)pArg)->Size;
 	_float2 fPos = ((tagImageDesc*)pArg)->Pos;
 
-	m_pTransformCom->Scaled(_float3(fSize.x, fSize.y, 1.f));
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(fPos.x - 0.5f * g_iWinSizeX
-		, fPos.y - 0.5f * g_iWinSizeY, 0.01f, 1.f));
+	m_pTransformCom->Scaled(fSize);
+	this->SetPosition(fPos.x, fPos.y);
 
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(g_iWinSizeX, g_iWinSizeY, 0.f, 1.f));
@@ -50,7 +49,7 @@ void Image::Late_Tick(_double TimeDelta)
 	__super::Late_Tick(TimeDelta);
 
 	if (nullptr != m_pRendererCom)
-		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI_B, this);
 }
 
 HRESULT Image::Render()
@@ -65,11 +64,14 @@ HRESULT Image::Render()
 
 void Image::ImageDepth(_float Depth)
 {
-	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 	Saturate(Depth, 0.f, 1.f);
-	vPos.m128_f32[2] = Depth;
-	
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPos);
+	m_pTransformCom->SetDepth(Depth);
+}
+
+void Image::SetPosition(_float xPos, _float yPos)
+{
+	m_pTransformCom->SetPosition(
+		XMVectorSet(xPos - 0.5f * g_iWinSizeX, yPos - 0.5f * g_iWinSizeY, 0.f, 1.f));
 }
 
 HRESULT Image::SetUp_ShaderResources()
@@ -93,8 +95,8 @@ HRESULT Image::Add_Components(const _tchar* pTextureProtoTag)
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom, &tRendererDesc), E_FAIL);
 
 	/* For.Com_Transform */
-	CTransform::CTRANSFORM_DESC TransformDesc{ 3.0, XMConvertToRadians(60.f) };	TransformDesc.pOwner = this;
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
+	CTransform2D::CTRANSFORM2D_DESC TransformDesc{ 3.0, XMConvertToRadians(60.f) };	TransformDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform2D::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
 
 	/* For.Com_VIBuffer_Rect */

@@ -20,7 +20,7 @@ class TimeCounter;
 END
 
 BEGIN(Client)
-
+class MonsterHP;
 class Bullet;
 
 template<typename OWNER, typename ANIM_ENUM>
@@ -60,7 +60,7 @@ private: /* For. Component */
 	CrystalGolemState* m_pStateContextCom = { nullptr };
 	CNavigation* m_pNavigationCom = { nullptr };
 	CCollider* m_pColliderDectect = { nullptr };
-	Health* m_pHealthCom = { nullptr };
+	MonsterHP* m_pMonsterHP = { nullptr };
 	// Can declare VIBuffer or Model Com
 
 private:

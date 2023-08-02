@@ -345,6 +345,8 @@
     <ClInclude Include="..\public\Queen_MoggothWalkP2.h" />
     <ClInclude Include="..\public\Queen_Moggoth_P1_TO_P2.h" />
     <ClInclude Include="..\public\Red_Snow.h" />
+    <ClInclude Include="..\public\SkillUI.h" />
+    <ClInclude Include="..\public\SkillQ.h" />
     <ClInclude Include="..\public\Sky.h" />
     <ClInclude Include="..\public\SM_Barriletes.h" />
     <ClInclude Include="..\public\SM_Cliff01.h" />
@@ -606,6 +608,8 @@
     <ClCompile Include="..\private\Queen_MoggothWalkP2.cpp" />
     <ClCompile Include="..\private\Queen_Moggoth_P1_TO_P2.cpp" />
     <ClCompile Include="..\private\Red_Snow.cpp" />
+    <ClCompile Include="..\private\SkillUI.cpp" />
+    <ClCompile Include="..\private\SkillQ.cpp" />
     <ClCompile Include="..\private\Sky.cpp" />
     <ClCompile Include="..\private\SM_Barriletes.cpp" />
     <ClCompile Include="..\private\SM_Cliff01.cpp" />

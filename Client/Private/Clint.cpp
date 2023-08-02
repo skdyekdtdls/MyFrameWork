@@ -10,7 +10,7 @@
 #include "ClintUltimate01Bullet.h"
 #include "PlayerLevel.h"
 #include "PlayerHP.h"
-
+#include "SkillUI.h"
 _uint Clint::Clint_Id = 0;
 
 Clint::Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -22,7 +22,7 @@ Clint::Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 Clint::Clint(const Clint& rhs)
 	: CGameObject(rhs)
 {
-
+	m_pSKillUIs.reserve(1);
 }
 
 HRESULT Clint::Initialize_Prototype()
@@ -120,6 +120,9 @@ void Clint::Tick(_double TimeDelta)
 			m_pTransformCom->Get_State(CTransform::STATE_LOOK));
 	}
 
+	for (auto SkillUIs : m_pSKillUIs)
+		SkillUIs->Tick(TimeDelta);
+
 	m_pPlayerHP->Tick(TimeDelta);
 }
 
@@ -132,6 +135,9 @@ void Clint::Late_Tick(_double TimeDelta)
 	m_pColliderCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BODY);
 	m_pUltBulletCom->Late_Tick(TimeDelta);
 	m_pPlayerLevelCom->Late_Tick(TimeDelta);
+	for (auto SkillUIs : m_pSKillUIs)
+		SkillUIs->Late_Tick(TimeDelta);
+
 #ifdef _DEBUG
 	//m_pNavigationCom->Render();
 	if (nullptr != m_pColliderCom)
@@ -258,6 +264,12 @@ HRESULT Clint::Add_Components()
 	tLevelDesc.fScale = 0.6f;
 	FAILED_CHECK_RETURN(__super::Add_Composite(PlayerLevel::ProtoTag(), L"Com_PlayerLevel", (CComponent**)&m_pPlayerLevelCom, &tLevelDesc), E_FAIL);
 	
+	SkillUI::tagSkillUIDesc tSkillUIDesc;
+	tSkillUIDesc.pOwner = this;
+	tSkillUIDesc.fSize = _float2(80.f, 80.f);
+	tSkillUIDesc.SkillTextureTag = L"Prototype_Component_Texture_QSkill";
+	tSkillUIDesc.vPosition = _float4(532, 96, 0.f, 1.f);
+	FAILED_CHECK_RETURN(__super::Add_Composite(SkillUI::ProtoTag(), L"Com_SkillUI1", (CComponent**)&m_pSKillUIs[0], &tSkillUIDesc), E_FAIL);
 	Safe_Release(pGameInstance);
 	return S_OK;
 }
@@ -328,5 +340,7 @@ void Clint::Free(void)
 	Safe_Release(m_pStateContextCom);
 	Safe_Release(m_pPlayerLevelCom);
 	Safe_Release(m_pPlayerHP);
+	for (auto SkillUI : m_pSKillUIs)
+		Safe_Release(SkillUI);
 }
 

@@ -3,6 +3,7 @@
 
 DynamicImage::DynamicImage(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
+	, m_fRatio(1.f)
 {
 }
 
@@ -21,21 +22,6 @@ HRESULT DynamicImage::Initialize_Prototype()
 	return S_OK;
 }
 
-void DynamicImage::ImageDepth(_float Depth)
-{
-	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-	Saturate(Depth, 0.f, 1.f);
-	vPos.m128_f32[2] = Depth;
-	m_pTransformCom->SetPosition()
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPos);
-}
-
-void DynamicImage::SetPosition(_float2 vPos)
-{
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(vPos.x - 0.5f * g_iWinSizeX
-		, vPos.y - 0.5f * g_iWinSizeY, 0.f, 1.f));
-}
-
 HRESULT DynamicImage::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
@@ -46,9 +32,8 @@ HRESULT DynamicImage::Initialize(void* pArg)
 	_float2 fSize = ((tagDynamicImageDesc*)pArg)->Size;
 	_float2 fPos = ((tagDynamicImageDesc*)pArg)->Pos;
 	
-	m_pTransformCom->Scaled(_float3(fSize.x, fSize.y, 1.f));
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(fPos.x - 0.5f * g_iWinSizeX
-		, fPos.y - 0.5f * g_iWinSizeY, 0.f, 1.f));
+	m_pTransformCom->Scaled(fSize);
+	this->SetPosition(fPos.x , fPos.y);
 
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(g_iWinSizeX, g_iWinSizeY, 0.f, 1.f));
@@ -71,6 +56,18 @@ HRESULT DynamicImage::Initialize(void* pArg)
 	m_pVertices[3].vTexCoord = { _float2(0.f, 1.f) };
 
 	return S_OK;
+}
+
+void DynamicImage::ImageDepth(_float Depth)
+{
+	Saturate(Depth, 0.f, 1.f);
+	m_pTransformCom->SetDepth(Depth);
+}
+
+void DynamicImage::SetPosition(_float xPos, _float yPos)
+{
+	m_pTransformCom->SetPosition(
+		XMVectorSet(xPos - 0.5f * g_iWinSizeX, yPos - 0.5f * g_iWinSizeY, 0.f, 1.f));
 }
 
 void DynamicImage::Tick(_double TimeDelta)
@@ -97,7 +94,7 @@ void DynamicImage::Late_Tick(_double TimeDelta)
 		}
 	}
 
-	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI_B, this);
 }
 
 HRESULT DynamicImage::Render()
@@ -163,8 +160,8 @@ HRESULT DynamicImage::Add_Components(const _tchar* pTextureProtoTag)
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom, &tRendererDesc), E_FAIL);
 
 	/* For.Com_Transform */
-	CTransform::CTRANSFORM_DESC TransformDesc{ 3.0, XMConvertToRadians(60.f) };	TransformDesc.pOwner = this;
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
+	CTransform2D::CTRANSFORM2D_DESC TransformDesc{ 3.0, XMConvertToRadians(60.f) };	TransformDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform2D::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
 
 	/* For.Com_VIBuffer_Rect */
