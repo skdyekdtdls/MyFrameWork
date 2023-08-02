@@ -112,12 +112,6 @@
     <Filter Include="95. Design">
       <UniqueIdentifier>{9fee6d61-7134-49a7-80ea-1709fc05a4f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\Alien_prawn">
-      <UniqueIdentifier>{10d9fee3-e69b-46b4-8358-6c472ed3a48e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\Alien_prawn\State">
-      <UniqueIdentifier>{4b5d004c-3499-435d-b084-65a739a18a47}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObjects\Clint\State">
       <UniqueIdentifier>{eed5c57d-67f0-4b6c-9e18-2c1fcf6604d9}</UniqueIdentifier>
     </Filter>
@@ -295,32 +289,8 @@
     <Filter Include="02. GameObjects\Bullet\ClintSkill01Bullet">
       <UniqueIdentifier>{aa05413b-27bd-4bda-abfd-699019bd1332}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\BatPotato_RIG">
-      <UniqueIdentifier>{e3ab52b9-279c-4b10-8bb3-7f2f5c314374}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BatPotato_RIG\State">
-      <UniqueIdentifier>{283b0177-4004-4ace-b478-6b8fae4ed161}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObjects\Bullet\BatPotato_Bullet">
       <UniqueIdentifier>{28656146-1947-483a-8009-064c7586b20c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\CannonSpider">
-      <UniqueIdentifier>{461f05e3-dba6-4502-9782-54a7299cfc62}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\CannonSpider\State">
-      <UniqueIdentifier>{b9fb6df7-c922-4b64-ba5d-00df7c6ead30}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\CannonSpider\CannonSpiderBullet">
-      <UniqueIdentifier>{a7b45dff-fecb-489c-87d3-49e87d520503}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\CrystalGolem">
-      <UniqueIdentifier>{c84edd22-6f75-471a-a8d0-3edf4f66e41e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\CrystalGolem\State">
-      <UniqueIdentifier>{53a3acfc-a277-49ce-8d9b-dc91cea019f5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\CrystalGolem\Bullet">
-      <UniqueIdentifier>{e9ad03a8-43fd-4966-a10c-78cc4d5398f5}</UniqueIdentifier>
     </Filter>
     <Filter Include="95. Design\ObjectPool">
       <UniqueIdentifier>{595cb5ed-d0a5-4561-a8a9-860764dd91cd}</UniqueIdentifier>
@@ -328,38 +298,71 @@
     <Filter Include="95. Design\State">
       <UniqueIdentifier>{7e99ae27-de02-4990-843a-128f82b81472}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\Spider">
-      <UniqueIdentifier>{9247a020-d7e1-44ee-90c4-d0e8d05f17fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\Spider\State">
-      <UniqueIdentifier>{5ea9892b-224b-43b7-8d90-06977bebf7e9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\Spider\Bullet">
-      <UniqueIdentifier>{42ac1293-ed3b-44dd-b96f-4b2bbe49f525}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\Queen_Moggoth">
-      <UniqueIdentifier>{3276df48-e1d3-4c23-8a53-7357fe2fe99e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\Queen_Moggoth\Bullet">
-      <UniqueIdentifier>{bb0b22ba-e154-4880-b47e-1ec87b309f77}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\Queen_Moggoth\State">
-      <UniqueIdentifier>{e97d622e-9443-42ac-b162-6b30a5c34b6f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\Queen_Moggoth\State\Phase2">
-      <UniqueIdentifier>{7451d677-f01a-4343-b2f3-8e2779121a32}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\Image">
-      <UniqueIdentifier>{e0804eef-199b-40f2-9f8d-a5f4a8b2c72d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\Image\PlayerHP">
-      <UniqueIdentifier>{de05395e-5e1f-46d2-af88-64eaf2697a78}</UniqueIdentifier>
-    </Filter>
     <Filter Include="95. Design\Singleton">
       <UniqueIdentifier>{a8f915ac-652e-4ad6-9db2-953d7bcc5e73}</UniqueIdentifier>
     </Filter>
-    <Filter Include="95. Design\Component">
-      <UniqueIdentifier>{e2933bfb-1918-482f-a492-214a8579e2b5}</UniqueIdentifier>
+    <Filter Include="02. GameObjects\PlayerLevel">
+      <UniqueIdentifier>{fb4d6704-c072-4204-8c34-d1c6740d0a05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\UI">
+      <UniqueIdentifier>{e0804eef-199b-40f2-9f8d-a5f4a8b2c72d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster">
+      <UniqueIdentifier>{cd81bdd3-6163-4656-92c4-daa00e68fbf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\Alien_prawn">
+      <UniqueIdentifier>{10d9fee3-e69b-46b4-8358-6c472ed3a48e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\Alien_prawn\State">
+      <UniqueIdentifier>{4b5d004c-3499-435d-b084-65a739a18a47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\BatPotato_RIG">
+      <UniqueIdentifier>{e3ab52b9-279c-4b10-8bb3-7f2f5c314374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\BatPotato_RIG\State">
+      <UniqueIdentifier>{283b0177-4004-4ace-b478-6b8fae4ed161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\CannonSpider">
+      <UniqueIdentifier>{461f05e3-dba6-4502-9782-54a7299cfc62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\CannonSpider\State">
+      <UniqueIdentifier>{b9fb6df7-c922-4b64-ba5d-00df7c6ead30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\CannonSpider\CannonSpiderBullet">
+      <UniqueIdentifier>{a7b45dff-fecb-489c-87d3-49e87d520503}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\CrystalGolem">
+      <UniqueIdentifier>{c84edd22-6f75-471a-a8d0-3edf4f66e41e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\CrystalGolem\State">
+      <UniqueIdentifier>{53a3acfc-a277-49ce-8d9b-dc91cea019f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\CrystalGolem\Bullet">
+      <UniqueIdentifier>{e9ad03a8-43fd-4966-a10c-78cc4d5398f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\Queen_Moggoth">
+      <UniqueIdentifier>{3276df48-e1d3-4c23-8a53-7357fe2fe99e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\Queen_Moggoth\Bullet">
+      <UniqueIdentifier>{bb0b22ba-e154-4880-b47e-1ec87b309f77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\Queen_Moggoth\State">
+      <UniqueIdentifier>{e97d622e-9443-42ac-b162-6b30a5c34b6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\Queen_Moggoth\State\Phase2">
+      <UniqueIdentifier>{7451d677-f01a-4343-b2f3-8e2779121a32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\Spider">
+      <UniqueIdentifier>{9247a020-d7e1-44ee-90c4-d0e8d05f17fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\Spider\State">
+      <UniqueIdentifier>{5ea9892b-224b-43b7-8d90-06977bebf7e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\Spider\Bullet">
+      <UniqueIdentifier>{42ac1293-ed3b-44dd-b96f-4b2bbe49f525}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. Design\Observer">
+      <UniqueIdentifier>{901fe516-51d5-44c7-ad5f-88978ac82eac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -484,25 +487,25 @@
       <Filter>02. GameObjects\Clint\State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Alien_prawn.h">
-      <Filter>02. GameObjects\Alien_prawn</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Alien_prawnIdle.h">
-      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Client_Enum.h">
       <Filter>99. Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Alien_prawnRun.h">
-      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Alien_prawnAttack.h">
-      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ClintBasicBullet.h">
       <Filter>02. GameObjects\Bullet\ClintBasicBullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Alien_prawnDead.h">
-      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ClintUltimate01.h">
       <Filter>02. GameObjects\Clint\State</Filter>
@@ -683,85 +686,85 @@
       <Filter>02. GameObjects\Bullet\ClintSkill01Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Alien_prawnHit.h">
-      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BatPotato_RIG.h">
-      <Filter>02. GameObjects\BatPotato_RIG</Filter>
+      <Filter>02. GameObjects\Monster\BatPotato_RIG</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BatPotato_RIGRun.h">
-      <Filter>02. GameObjects\BatPotato_RIG\State</Filter>
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BatPotato_RIGAttack.h">
-      <Filter>02. GameObjects\BatPotato_RIG\State</Filter>
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BatPotato_RIGDeath.h">
-      <Filter>02. GameObjects\BatPotato_RIG\State</Filter>
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BatPotato_RIGHit.h">
-      <Filter>02. GameObjects\BatPotato_RIG\State</Filter>
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BatPotato_RIGIdle.h">
-      <Filter>02. GameObjects\BatPotato_RIG\State</Filter>
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BatPotato_RIGBullet.h">
       <Filter>02. GameObjects\Bullet\BatPotato_Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CannonSpider.h">
-      <Filter>02. GameObjects\CannonSpider</Filter>
+      <Filter>02. GameObjects\Monster\CannonSpider</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CannonSpiderBullet.h">
-      <Filter>02. GameObjects\CannonSpider\CannonSpiderBullet</Filter>
+      <Filter>02. GameObjects\Monster\CannonSpider\CannonSpiderBullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CannonSpiderSearch.h">
-      <Filter>02. GameObjects\CannonSpider\State</Filter>
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CannonSpiderDead.h">
-      <Filter>02. GameObjects\CannonSpider\State</Filter>
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CannonSpiderHit.h">
-      <Filter>02. GameObjects\CannonSpider\State</Filter>
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CannonSpiderIdle.h">
-      <Filter>02. GameObjects\CannonSpider\State</Filter>
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CannonSpiderRun.h">
-      <Filter>02. GameObjects\CannonSpider\State</Filter>
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CannonSpiderAttack.h">
-      <Filter>02. GameObjects\CannonSpider\State</Filter>
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ObjectPool.h">
       <Filter>95. Design\ObjectPool</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CrystalGolem.h">
-      <Filter>02. GameObjects\CrystalGolem</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CrystalGolemIdle.h">
-      <Filter>02. GameObjects\CrystalGolem\State</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CrystalGolemDead.h">
-      <Filter>02. GameObjects\CrystalGolem\State</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CrystalGolemRun.h">
-      <Filter>02. GameObjects\CrystalGolem\State</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CrystalGolemAppear.h">
-      <Filter>02. GameObjects\CrystalGolem\State</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CrystalGolemAttack.h">
-      <Filter>02. GameObjects\CrystalGolem\State</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CrystalGolemTurn180.h">
-      <Filter>02. GameObjects\CrystalGolem\State</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CrystalGolemAttackArea02Bullet.h">
-      <Filter>02. GameObjects\CrystalGolem\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CrystalGolemAttackAreaBullet.h">
-      <Filter>02. GameObjects\CrystalGolem\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CrystalGolemAttackRangeBullet.h">
-      <Filter>02. GameObjects\CrystalGolem\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ClientInstance.h">
       <Filter>95. Design\Singleton</Filter>
@@ -773,97 +776,94 @@
       <Filter>95. Design\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Spider.h">
-      <Filter>02. GameObjects\Spider</Filter>
+      <Filter>02. GameObjects\Monster\Spider</Filter>
     </ClInclude>
     <ClInclude Include="..\public\SpiderAttack.h">
-      <Filter>02. GameObjects\Spider\State</Filter>
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\SpiderIdle.h">
-      <Filter>02. GameObjects\Spider\State</Filter>
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\SpiderRun.h">
-      <Filter>02. GameObjects\Spider\State</Filter>
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\SpiderDead.h">
-      <Filter>02. GameObjects\Spider\State</Filter>
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\SpiderHit.h">
-      <Filter>02. GameObjects\Spider\State</Filter>
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\SpiderAppear.h">
-      <Filter>02. GameObjects\Spider\State</Filter>
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\SpiderBullet.h">
-      <Filter>02. GameObjects\Spider\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\Spider\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Queen_Moggoth.h">
-      <Filter>02. GameObjects\Queen_Moggoth</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Queen_MoggothIdle.h">
-      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Queen_MoggothAppear.h">
-      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Queen_MoggothAttack.h">
-      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Queen_MoggothDead.h">
-      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Queen_MoggothWalk.h">
-      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Queen_MoggothIdleP2.h">
-      <Filter>02. GameObjects\Queen_Moggoth\State\Phase2</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State\Phase2</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Queen_MoggothWalkP2.h">
-      <Filter>02. GameObjects\Queen_Moggoth\State\Phase2</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State\Phase2</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Queen_MoggothAttackP2.h">
-      <Filter>02. GameObjects\Queen_Moggoth\State\Phase2</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State\Phase2</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Queen_Moggoth_P1_TO_P2.h">
-      <Filter>02. GameObjects\Queen_Moggoth\State\Phase2</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State\Phase2</Filter>
     </ClInclude>
     <ClInclude Include="..\public\P1Attack04.h">
-      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\P1Attack01.h">
-      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\P1Attack02.h">
-      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\P1Attack03.h">
-      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\P2Attack01.h">
-      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\P2Attack02.h">
-      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\P2Attack03.h">
-      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\P2Attack04.h">
-      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\PlayerHP.h">
-      <Filter>02. GameObjects\Image\PlayerHP</Filter>
-    </ClInclude>
-    <ClInclude Include="UIStrategy.h">
-      <Filter>02. GameObjects\Image</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Image.h">
-      <Filter>02. GameObjects\Image</Filter>
+      <Filter>02. GameObjects\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\DynamicImage.h">
-      <Filter>02. GameObjects\Image</Filter>
+      <Filter>02. GameObjects\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\public\PlayerLevel.h">
-      <Filter>95. Design\Component</Filter>
+      <Filter>02. GameObjects\PlayerLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FontUI.h">
+      <Filter>02. GameObjects\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -990,22 +990,22 @@
       <Filter>02. GameObjects\Clint\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Alien_prawn.cpp">
-      <Filter>02. GameObjects\Alien_prawn</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Alien_prawnIdle.cpp">
-      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Alien_prawnRun.cpp">
-      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Alien_prawnAttack.cpp">
-      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ClintBasicBullet.cpp">
       <Filter>02. GameObjects\Bullet\ClintBasicBullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Alien_prawnDead.cpp">
-      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ClintUltimate01.cpp">
       <Filter>02. GameObjects\Clint\State</Filter>
@@ -1180,178 +1180,175 @@
       <Filter>02. GameObjects\Bullet\ClintSkill01Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Alien_prawnHit.cpp">
-      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BatPotato_RIG.cpp">
-      <Filter>02. GameObjects\BatPotato_RIG</Filter>
+      <Filter>02. GameObjects\Monster\BatPotato_RIG</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BatPotato_RIGAttack.cpp">
-      <Filter>02. GameObjects\BatPotato_RIG\State</Filter>
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BatPotato_RIGDeath.cpp">
-      <Filter>02. GameObjects\BatPotato_RIG\State</Filter>
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BatPotato_RIGHit.cpp">
-      <Filter>02. GameObjects\BatPotato_RIG\State</Filter>
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BatPotato_RIGIdle.cpp">
-      <Filter>02. GameObjects\BatPotato_RIG\State</Filter>
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BatPotato_RIGRun.cpp">
-      <Filter>02. GameObjects\BatPotato_RIG\State</Filter>
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BatPotato_RIGBullet.cpp">
       <Filter>02. GameObjects\Bullet\BatPotato_Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CannonSpider.cpp">
-      <Filter>02. GameObjects\CannonSpider</Filter>
+      <Filter>02. GameObjects\Monster\CannonSpider</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CannonSpiderBullet.cpp">
-      <Filter>02. GameObjects\CannonSpider\CannonSpiderBullet</Filter>
+      <Filter>02. GameObjects\Monster\CannonSpider\CannonSpiderBullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CannonSpiderDead.cpp">
-      <Filter>02. GameObjects\CannonSpider\State</Filter>
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CannonSpiderHit.cpp">
-      <Filter>02. GameObjects\CannonSpider\State</Filter>
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CannonSpiderIdle.cpp">
-      <Filter>02. GameObjects\CannonSpider\State</Filter>
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CannonSpiderRun.cpp">
-      <Filter>02. GameObjects\CannonSpider\State</Filter>
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CannonSpiderSearch.cpp">
-      <Filter>02. GameObjects\CannonSpider\State</Filter>
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CannonSpiderAttack.cpp">
-      <Filter>02. GameObjects\CannonSpider\State</Filter>
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CrystalGolem.cpp">
-      <Filter>02. GameObjects\CrystalGolem</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CrystalGolemIdle.cpp">
-      <Filter>02. GameObjects\CrystalGolem\State</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CrystalGolemDead.cpp">
-      <Filter>02. GameObjects\CrystalGolem\State</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CrystalGolemRun.cpp">
-      <Filter>02. GameObjects\CrystalGolem\State</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CrystalGolemAppear.cpp">
-      <Filter>02. GameObjects\CrystalGolem\State</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CrystalGolemAttack.cpp">
-      <Filter>02. GameObjects\CrystalGolem\State</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CrystalGolemTurn180.cpp">
-      <Filter>02. GameObjects\CrystalGolem\State</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CrystalGolemAttackArea02Bullet.cpp">
-      <Filter>02. GameObjects\CrystalGolem\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CrystalGolemAttackAreaBullet.cpp">
-      <Filter>02. GameObjects\CrystalGolem\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CrystalGolemAttackRangeBullet.cpp">
-      <Filter>02. GameObjects\CrystalGolem\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\CrystalGolem\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ClientInstance.cpp">
       <Filter>95. Design\Singleton</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Spider.cpp">
-      <Filter>02. GameObjects\Spider</Filter>
+      <Filter>02. GameObjects\Monster\Spider</Filter>
     </ClCompile>
     <ClCompile Include="..\private\SpiderAttack.cpp">
-      <Filter>02. GameObjects\Spider\State</Filter>
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\SpiderIdle.cpp">
-      <Filter>02. GameObjects\Spider\State</Filter>
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\SpiderRun.cpp">
-      <Filter>02. GameObjects\Spider\State</Filter>
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\SpiderDead.cpp">
-      <Filter>02. GameObjects\Spider\State</Filter>
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\SpiderHit.cpp">
-      <Filter>02. GameObjects\Spider\State</Filter>
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\SpiderAppear.cpp">
-      <Filter>02. GameObjects\Spider\State</Filter>
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\SpiderBullet.cpp">
-      <Filter>02. GameObjects\Spider\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\Spider\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Queen_Moggoth.cpp">
-      <Filter>02. GameObjects\Queen_Moggoth</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Queen_MoggothIdle.cpp">
-      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Queen_MoggothAppear.cpp">
-      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Queen_MoggothAttack.cpp">
-      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Queen_MoggothDead.cpp">
-      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Queen_MoggothWalk.cpp">
-      <Filter>02. GameObjects\Queen_Moggoth\State</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Queen_MoggothAttackP2.cpp">
-      <Filter>02. GameObjects\Queen_Moggoth\State\Phase2</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State\Phase2</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Queen_MoggothIdleP2.cpp">
-      <Filter>02. GameObjects\Queen_Moggoth\State\Phase2</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State\Phase2</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Queen_MoggothWalkP2.cpp">
-      <Filter>02. GameObjects\Queen_Moggoth\State\Phase2</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State\Phase2</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Queen_Moggoth_P1_TO_P2.cpp">
-      <Filter>02. GameObjects\Queen_Moggoth\State\Phase2</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State\Phase2</Filter>
     </ClCompile>
     <ClCompile Include="..\private\P1Attack01.cpp">
-      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\P1Attack02.cpp">
-      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\P1Attack03.cpp">
-      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\P1Attack04.cpp">
-      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\P2Attack01.cpp">
-      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\P2Attack02.cpp">
-      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\P2Attack03.cpp">
-      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\P2Attack04.cpp">
-      <Filter>02. GameObjects\Queen_Moggoth\Bullet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\PlayerHP.cpp">
-      <Filter>02. GameObjects\Image\PlayerHP</Filter>
-    </ClCompile>
-    <ClCompile Include="UIStrategy.cpp">
-      <Filter>02. GameObjects\Image</Filter>
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Image.cpp">
-      <Filter>02. GameObjects\Image</Filter>
+      <Filter>02. GameObjects\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\DynamicImage.cpp">
-      <Filter>02. GameObjects\Image</Filter>
+      <Filter>02. GameObjects\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\private\PlayerLevel.cpp">
-      <Filter>95. Design\Component</Filter>
+      <Filter>02. GameObjects\PlayerLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\FontUI.cpp">
+      <Filter>02. GameObjects\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -19,6 +19,7 @@ protected:
 public:
 	HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
+	void SetVTXPOS(VTXPOSTEX* pVertices);
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_Component_CVIBuffer_DynamicRect"; }

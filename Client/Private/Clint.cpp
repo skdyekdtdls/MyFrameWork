@@ -8,8 +8,7 @@
 #include "ClintShoot.h"
 #include "Animation.h"
 #include "ClintUltimate01Bullet.h"
-#include "PlayerHP.h"
-
+#include "PlayerLevel.h"
 _uint Clint::Clint_Id = 0;
 
 Clint::Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -84,12 +83,25 @@ HRESULT Clint::Initialize(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
 
 	m_pUltBulletCom->Disable();
+
+
+
 	return S_OK; 
 }
 
 void Clint::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
+
+
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	if (pGameInstance->Get_DIKeyState(DIK_I))
+	{
+		m_pPlayerLevelCom->AddExp(1.f);
+	}
+	Safe_Release(pGameInstance);
 
 	if(nullptr != m_pStateContextCom)
 		m_pStateContextCom->Tick(TimeDelta);
@@ -126,7 +138,7 @@ void Clint::Late_Tick(_double TimeDelta)
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 	m_pColliderCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BODY);
 	m_pUltBulletCom->Late_Tick(TimeDelta);
-
+	m_pPlayerLevelCom->Late_Tick(TimeDelta);
 #ifdef _DEBUG
 	//m_pNavigationCom->Render();
 	if (nullptr != m_pColliderCom)
@@ -246,8 +258,12 @@ HRESULT Clint::Add_Components()
 	tHealthDesc.iMaxHp = 100;
 	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, Health::ProtoTag(), L"Com_Health", (CComponent**)&m_pHealthCom, &tHealthDesc), E_FAIL);
 
-
-
+	PlayerLevel::tagPlayerLevelDesc tLevelDesc;
+	tLevelDesc.pOwner = this;
+	tLevelDesc.vPosition = _float4(438.f, 635.f, 0.f, 1.f);
+	tLevelDesc.fScale = 0.6f;
+	FAILED_CHECK_RETURN(__super::Add_Composite(PlayerLevel::ProtoTag(), L"Com_PlayerLevel", (CComponent**)&m_pPlayerLevelCom, &tLevelDesc), E_FAIL);
+	
 	Safe_Release(pGameInstance);
 	return S_OK;
 }
@@ -316,6 +332,7 @@ void Clint::Free(void)
 	Safe_Release(m_pRaycastCom);
 	Safe_Release(m_pUltBulletCom);
 	Safe_Release(m_pStateContextCom);
+	Safe_Release(m_pPlayerLevelCom);
 	Safe_Release(m_pHealthCom);
 }
 

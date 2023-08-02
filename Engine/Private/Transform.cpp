@@ -304,17 +304,6 @@ void CTransform::Jump(_float TimeElapse, _float fPower)
 	m_WorldMatrix._42 = max(m_WorldMatrix._42, 0.f);
 }
 
-void CTransform::SetUIPosition(_float2 Position)
-{
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
-	_uint2 WinSize = pGameInstance->GetViewPortSize(m_pContext);
-	Safe_Release(pGameInstance);
-
-	Set_State(CTransform::STATE_POSITION, XMVectorSet(Position.x - 0.5f * WinSize.x
-		, Position.y - 0.5f * WinSize.y, 0.f, 1.f));
-}
-
 void CTransform::Chase_Lerp(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance)
 {
 	//현재 내 위치

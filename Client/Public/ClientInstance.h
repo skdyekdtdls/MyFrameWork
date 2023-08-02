@@ -23,7 +23,7 @@ public:
 	_matrix GetClintWorldMatrix();
 	class CNavigation* GetClintNavigation();
 	class CTerrain* GetTerrain();
-
+	void AddExp(_float fAmount);
 
 	_vector PickPosOnTerrain();
 

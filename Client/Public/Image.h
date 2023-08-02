@@ -37,7 +37,7 @@ public:
 	virtual HRESULT Render() override;
 
 	void SetPass(_uint iPass) { m_iPass = iPass; }
-
+	void ImageDepth(_float Depth);
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };

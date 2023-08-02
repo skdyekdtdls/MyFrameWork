@@ -124,6 +124,4 @@ CComponent* Health::Clone(void* pArg)
 void Health::Free()
 {
 	__super::Free();
-	m_SubscribersFunc.clear();
-	m_ToBeRemoved.clear();
 }

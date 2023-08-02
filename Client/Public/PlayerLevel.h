@@ -1,44 +1,69 @@
 
 #pragma once
-#include "Component.h"
+
 #include "Client_Defines.h"
-#include "IObserver.h"
+#include "GameObject.h"
+#include "ISerializable.h"
 
 BEGIN(Engine)
 
-class ENGINE_DLL PlayerLevel final : public CComponent, public IObserver
+class CShader;
+class CTexture;
+class CRenderer;
+class CTransform;
+class CCollider;
+class CNavigation;
+class CModel;
+// Can declare VIBuffer or Model Com
+END
+
+BEGIN(Client)
+class DynamicImage;
+class FontUI;
+class PlayerLevel final : public CGameObject
 {
 public:
-	typedef struct tagPlayerLevelDesc : public tagComponentDesc
+	typedef struct tagPlayerLevelDesc : public tagCGameObjectDesc
 	{
-		tagPlayerLevelDesc() : tagComponentDesc() {};
+		tagPlayerLevelDesc() : tagCGameObjectDesc() {}
+		_float fScale;
 	};
 private:
-	explicit PlayerLevel(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);
-	explicit PlayerLevel(const PlayerLevel& rhs);
+	PlayerLevel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	PlayerLevel(const PlayerLevel& rhs);
 	virtual ~PlayerLevel() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype();
+	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
+	virtual void Tick(_double TimeDelta) override;
+	virtual void Late_Tick(_double TimeDelta) override;
 
-	void LevelUp();
+	void AddExp(_float fExp);
 
-public:
-	virtual void Subscribe(const _tchar* pTag, function<void()> CallBack);
-	virtual void UnSubscribe(const _tchar* pTag);
-	virtual void UnSubscribeDelay(const _tchar* pTag);
+private: /* For. Component */
+	DynamicImage* m_pDynamicImage = { nullptr };
+	CRenderer* m_pRendererCom = { nullptr };
+	FontUI* m_pFontUI = { nullptr };
 
 private:
+	_bool m_bNoLevelUp = { false };
 	_uint m_iLevel = { 1 };
 	_float m_fExp = { 0.f };
+	_float m_fMaxExp = { 100.f };
+	
+private:
+	void LevelUp();
+	HRESULT Add_Components(_float4 vPosition, _float fScale);
+
+private:
+	static _uint PlayerLevel_Id;
 
 public:
-	// If this component is the VIBuffer Com or the Shader Com, Delete ProtoTag().
-	static const _tchar* ProtoTag() { return L"Prototype_Component_PlayerLevel"; }
-	static PlayerLevel* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);
-	virtual CComponent* Clone(void* pArg) override;
-	virtual void Free() override;
+	static const _tchar* ProtoTag() { return L"Prototype_GameObject_PlayerLevel"; }
+	static PlayerLevel* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual CGameObject* Clone(void* pArg) override;
+	virtual void Free(void) override;
 };
-
 END
+

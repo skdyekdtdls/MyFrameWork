@@ -32,7 +32,7 @@ HRESULT Image::Initialize(void* pArg)
 
 	m_pTransformCom->Scaled(_float3(fSize.x, fSize.y, 1.f));
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(fPos.x - 0.5f * g_iWinSizeX
-		, fPos.y - 0.5f * g_iWinSizeY, 0.f, 1.f));
+		, fPos.y - 0.5f * g_iWinSizeY, 0.01f, 1.f));
 
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(g_iWinSizeX, g_iWinSizeY, 0.f, 1.f));
@@ -60,6 +60,15 @@ HRESULT Image::Render()
 	FAILED_CHECK_RETURN(m_pVIBufferCom->Render(), E_FAIL);
 
 	return S_OK;
+}
+
+void Image::ImageDepth(_float Depth)
+{
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	Saturate(Depth, 0.f, 1.f);
+	vPos.m128_f32[2] = Depth;
+	
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPos);
 }
 
 HRESULT Image::SetUp_ShaderResources()

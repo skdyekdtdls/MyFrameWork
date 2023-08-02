@@ -28,7 +28,10 @@ void CannonSpiderDead::OnStateTick(_double TimeDelta)
 	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
 
 	if (pModel->IsAnimationFinished())
+	{
+		Single->AddExp(12.f);
 		m_pOwner->SetDead();
+	}
 
 	Safe_Release(pGameInstance);
 }

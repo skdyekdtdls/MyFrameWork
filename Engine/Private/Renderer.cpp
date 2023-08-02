@@ -155,6 +155,11 @@ HRESULT CRenderer::Draw_RenderGroup()
 		return E_FAIL;
 	}
 
+	if (FAILED(Render_Font()))
+	{
+		CONSOLE_MSG("CRenderer::Draw_RenderGroup : \t มู น๘ศฃ : " << __LINE__);
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -307,6 +312,20 @@ HRESULT CRenderer::Render_UI()
 		Safe_Release(pGameObject);
 	}
 	m_RenderObjects[RENDER_UI].clear();
+
+	return hr;
+}
+
+HRESULT CRenderer::Render_Font()
+{
+	HRESULT hr = S_OK;
+	for (auto& pGameObject : m_RenderObjects[RENDER_FONT])
+	{
+		hr = pGameObject->Render();
+
+		Safe_Release(pGameObject);
+	}
+	m_RenderObjects[RENDER_FONT].clear();
 
 	return hr;
 }

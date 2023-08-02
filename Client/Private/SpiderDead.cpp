@@ -29,7 +29,10 @@ void SpiderDead::OnStateTick(_double TimeDelta)
 	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
 
 	if (pModel->IsAnimationFinished())
+	{
+		Single->AddExp(11.f);
 		m_pOwner->SetDead();
+	}
 
 	Safe_Release(pGameInstance);
 }

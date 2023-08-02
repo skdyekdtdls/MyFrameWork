@@ -30,6 +30,7 @@ void Alien_prawnDead::OnStateTick(_double TimeDelta)
 
 	if (pModel->IsAnimationFinished())
 	{
+		Single->AddExp(10.f);
 		m_pOwner->SetDead();
 	}
 

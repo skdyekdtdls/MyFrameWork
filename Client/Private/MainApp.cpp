@@ -155,8 +155,11 @@ HRESULT CMainApp::Ready_Prototype_Component_For_Static()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, CVIBuffer_DynamicRect::ProtoTag(),
 		CVIBuffer_DynamicRect::Create(m_pDevice, m_pContext)), E_FAIL);
 
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, CTransform::ProtoTag(),
 		CTransform::Create(m_pDevice, m_pContext)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, CTransform2D::ProtoTag(),
+		CTransform2D::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, CColliderAABB::ProtoTag(),
 		CColliderAABB::Create(m_pDevice, m_pContext)), E_FAIL);

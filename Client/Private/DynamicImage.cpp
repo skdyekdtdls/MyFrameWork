@@ -21,6 +21,15 @@ HRESULT DynamicImage::Initialize_Prototype()
 	return S_OK;
 }
 
+void DynamicImage::ImageDepth(_float Depth)
+{
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	Saturate(Depth, 0.f, 1.f);
+	vPos.m128_f32[2] = Depth;
+
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPos);
+}
+
 HRESULT DynamicImage::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
@@ -39,6 +48,23 @@ HRESULT DynamicImage::Initialize(void* pArg)
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(g_iWinSizeX, g_iWinSizeY, 0.f, 1.f));
 
+	m_pVertices = new VTXPOSTEX[4];
+	// ÁÂ»ó
+	m_pVertices[0].vPosition = { _float3(-0.5f, 0.5f, 0.f) };
+	m_pVertices[0].vTexCoord = { _float2(0.f, 0.f) };
+
+	// ¿ì»ó
+	m_pVertices[1].vPosition = { _float3(0.5f, 0.5f, 0.f) };
+	m_pVertices[1].vTexCoord = { _float2(1.f, 0.f) };
+
+	// ¿ìÇÏ
+	m_pVertices[2].vPosition = { _float3(0.5f, -0.5f, 0.f) };
+	m_pVertices[2].vTexCoord = { _float2(1.f, 1.f) };
+
+	// ÁÂÇÏ
+	m_pVertices[3].vPosition = { _float3(-0.5f, -0.5f, 0.f) };
+	m_pVertices[3].vTexCoord = { _float2(0.f, 1.f) };
+
 	return S_OK;
 }
 
@@ -50,8 +76,19 @@ void DynamicImage::Tick(_double TimeDelta)
 void DynamicImage::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
-	if (nullptr != m_pRendererCom)
-		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
+
+	if (m_bLerp)
+	{
+		m_TimeAcc += TimeDelta;
+		
+		SetRatio(Lerp(m_fRatio, m_fTargetRatio, m_TimeAcc));
+		if (m_TimeAcc >= 1.f)
+		{
+			m_bLerp = false;
+		}
+	}
+
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this);
 }
 
 HRESULT DynamicImage::Render()
@@ -62,6 +99,37 @@ HRESULT DynamicImage::Render()
 	FAILED_CHECK_RETURN(m_pVIBufferCom->Render(), E_FAIL);
 
 	return S_OK;
+}
+
+void DynamicImage::SetRatio(_float fRatio)
+{
+	m_fRatio = fRatio;
+	Saturate(m_fRatio, 0.f, 1.f);
+	
+	// ÁÂ»ó
+	m_pVertices[0].vPosition = { _float3(-0.5f, 0.5f, 0.f) };
+	m_pVertices[0].vTexCoord = { _float2(0.f, 0.f) };
+
+	// ¿ì»ó
+	m_pVertices[1].vPosition = { _float3(0.5f - (1.f - m_fRatio), 0.5f, 0.f) };
+	m_pVertices[1].vTexCoord = { _float2(1.f - (1.f - m_fRatio), 0.f) };
+
+	// ¿ìÇÏ
+	m_pVertices[2].vPosition = { _float3(0.5f - (1.f - m_fRatio), -0.5f, 0.f) };
+	m_pVertices[2].vTexCoord = { _float2(1.f - (1.f - m_fRatio), 1.f) };
+
+	// ÁÂÇÏ
+	m_pVertices[3].vPosition = { _float3(-0.5f, -0.5f, 0.f) };
+	m_pVertices[3].vTexCoord = { _float2(0.f, 1.f) };
+
+	m_pVIBufferCom->SetVTXPOS(m_pVertices);
+}
+
+void DynamicImage::SetRatioLerp(_float fRatio)
+{
+	m_fTargetRatio = fRatio;
+	m_bLerp = true;
+	m_TimeAcc = 0.f;
 }
 
 HRESULT DynamicImage::SetUp_ShaderResources()
@@ -143,6 +211,7 @@ void DynamicImage::Free()
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pRendererCom);
+	Safe_Delete_Array(m_pVertices);
 }
 
 

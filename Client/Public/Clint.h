@@ -19,6 +19,7 @@ class TimeCounter;
 END
 
 BEGIN(Client)
+class PlayerLevel;
 class Pistola;
 class ClintUltimate01Bullet;
 class PlayerHP;
@@ -70,7 +71,7 @@ private: /* For. Component */
 	ClintUltimate01Bullet* m_pUltBulletCom = { nullptr };
 	ClintState* m_pStateContextCom = { nullptr };
 	Health* m_pHealthCom = { nullptr };
-	list<PlayerHP*> m_PlayerHPs = { nullptr };
+	PlayerLevel* m_pPlayerLevelCom{ nullptr };
 
 private:
 	static _uint Clint_Id;

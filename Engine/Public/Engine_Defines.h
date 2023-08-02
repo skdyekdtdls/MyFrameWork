@@ -44,6 +44,7 @@ namespace fs = std::filesystem;
 #include "Engine_Struct.h"
 
 BEGIN(Engine)
+
 typedef unordered_map<const _tchar*, class CLayer*> LAYERS;
 typedef struct tagTimeLineEvent
 {

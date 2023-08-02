@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "Clint.h"
 #include "Terrain.h"
+#include "PlayerLevel.h"
 IMPLEMENT_SINGLETON(ClientInstance)
 
 _vector ClientInstance::GetClintPosition()
@@ -52,6 +53,12 @@ CTerrain* ClientInstance::GetTerrain()
 	CTerrain* pTerrain = static_cast<CTerrain*>(pGameInstance->Get_GameObject(pGameInstance->Get_CurLevelIndex(), L"Layer_BackGround", "CTerrain1"));
 	Safe_Release(pGameInstance);
 	return pTerrain;
+}
+
+void ClientInstance::AddExp(_float fAmount)
+{
+	PlayerLevel* pPlayerLevel = static_cast<PlayerLevel*>(GetClint()->Get_Component(L"Com_PlayerLevel"));
+	pPlayerLevel->AddExp(fAmount);
 }
 
 _vector ClientInstance::PickPosOnTerrain()

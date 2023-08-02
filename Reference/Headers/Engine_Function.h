@@ -104,6 +104,12 @@ static bool Float3Equal(_float3 f1, _float3 f2, float epsilon = std::numeric_lim
 }
 
 template <typename T>
+_float Lerp(T a, T b, T t) {
+	return a + t * (b - a);
+}
+
+
+template <typename T>
 static bool	isInsideRange(T _value, T _min, T _max)
 {
 	if (_min <= _value && _value <= _max)

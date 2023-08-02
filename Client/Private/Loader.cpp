@@ -1,6 +1,7 @@
 #include "../Public/Loader.h"
 #include "GameInstance.h"
 #include <process.h>
+#include "PlayerLevel.h"
 #include "SM_Cliff01.h"
 #include "SM_MountainRock_Closed.h"
 #include "SM_LargePlainsBoulder002.h"
@@ -21,6 +22,7 @@
 // UI
 #include "Image.h"
 #include "DynamicImage.h"
+#include "FontUI.h"
 
 // Static Mesh
 #include "Bush01.h"
@@ -1035,6 +1037,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Cube::ProtoTag(),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext)), E_FAIL);
 
+
 	CVIBuffer_Rect_Instance::INSTANCEDESC tVIBufferRectInstanceDesc;
 	ZeroStruct(tVIBufferRectInstanceDesc);
 	tVIBufferRectInstanceDesc.vRange = _float3(10.f, 4.f, 10.f); tVIBufferRectInstanceDesc.vSpeed = _uint2(2, 10);
@@ -1728,6 +1731,9 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(P2Attack04::ProtoTag(), P2Attack04::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Image::ProtoTag(), Image::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(DynamicImage::ProtoTag(), DynamicImage::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(FontUI::ProtoTag(), FontUI::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(PlayerLevel::ProtoTag(), PlayerLevel::Create(m_pDevice, m_pContext)), E_FAIL);
+
 	Set_LoadingText(L"로딩 완료");
 
 	m_isFinished = true;

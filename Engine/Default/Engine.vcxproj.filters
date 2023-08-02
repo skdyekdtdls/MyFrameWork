@@ -163,6 +163,12 @@
     <ClCompile Include="..\private\VIBuffer_DynamicRect.cpp">
       <Filter>01. Utility\03. Components\VIBuffer\Rect</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Transform2D.cpp">
+      <Filter>01. Utility\03. Components\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Observer.cpp">
+      <Filter>98. Interface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Graphic_Device.h">
@@ -348,7 +354,10 @@
     <ClInclude Include="..\public\VIBuffer_DynamicRect.h">
       <Filter>01. Utility\03. Components\VIBuffer\Rect</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\IObserver.h">
+    <ClInclude Include="..\public\Transform2D.h">
+      <Filter>01. Utility\03. Components\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Observer.h">
       <Filter>98. Interface</Filter>
     </ClInclude>
   </ItemGroup>

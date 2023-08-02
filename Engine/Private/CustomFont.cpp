@@ -13,7 +13,7 @@ HRESULT CCustomFont::Initialize(const _tchar* pFontFilePath)
 	m_pBatch = new SpriteBatch(m_pContext);
 
 	m_pFont = new SpriteFont(m_pDevice, pFontFilePath);
-
+	
 	return S_OK;
 }
 
@@ -22,7 +22,7 @@ HRESULT CCustomFont::Render(const _tchar* pText, const _float2& Position, _fvect
 	if (nullptr == m_pFont ||
 		nullptr == m_pBatch)
 		return E_FAIL;
-
+	
 	m_pContext->GSSetShader(nullptr, nullptr, 0);
 
 	m_pBatch->Begin();

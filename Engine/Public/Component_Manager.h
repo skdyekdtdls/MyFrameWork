@@ -18,6 +18,7 @@
 #include "Health.h"
 #include "TimeCounter.h"
 #include "VIBuffer_DynamicRect.h"
+#include "Transform2D.h"
 
 BEGIN(Engine)
 class ENGINE_DLL CComponent_Manager final : public CBase

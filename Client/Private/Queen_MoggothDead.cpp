@@ -28,6 +28,11 @@ void Queen_MoggothDead::OnStateTick(_double TimeDelta)
 	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
 	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
 
+	if (pModel->IsAnimationFinished())
+	{
+		Single->AddExp(100.f);
+	}
+
 	Safe_Release(pGameInstance);
 }
 

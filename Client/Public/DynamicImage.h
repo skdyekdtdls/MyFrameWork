@@ -37,9 +37,11 @@ public:
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
 
-	void SetRatio(_float fRatio) { m_fRatio = fRatio; }
+	void SetRatio(_float fRatio);
+	void SetRatioLerp(_float fRatio);
 	void SetPass(_uint iPass) { m_iPass = iPass; }
-	
+	void ImageDepth(_float Depth);
+
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
@@ -48,12 +50,18 @@ private:
 	CVIBuffer_DynamicRect* m_pVIBufferCom = { nullptr };
 
 private:
+	_float m_TimeAcc = 0.f;
+	_float m_fRatio;
+	_float m_fTargetRatio;
+	_bool m_bLerp = false;
+
+	VTXPOSTEX* m_pVertices;
 	IObserver* m_pObserver = { nullptr };
 
 private:
 	_float4x4				m_ViewMatrix, m_ProjMatrix;
-	_float					m_fRatio = { 1.f };
 	_uint					m_iPass = { 1 };
+
 public:
 	//TEXT("Prototype_Component_Texture_xx")를 전달하면된다.
 	HRESULT Add_Components(const _tchar* pTextureProtoTag);

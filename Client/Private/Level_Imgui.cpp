@@ -121,7 +121,7 @@ void CLevel_Imgui::Ready_Layer_Monster(const _tchar* pLayerTag)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 	
-	/*Alien_prawn::ALIEN_PRAWN_DESC tAlienPrawnDesc;
+	Alien_prawn::ALIEN_PRAWN_DESC tAlienPrawnDesc;
 	tAlienPrawnDesc.vPosition = _float4(11.f, 0.f, 10.f, 1.f);
 	pGameInstance->Add_GameObject(LEVEL_IMGUI, Alien_prawn::ProtoTag(), pLayerTag, &tAlienPrawnDesc);
 
@@ -137,11 +137,11 @@ void CLevel_Imgui::Ready_Layer_Monster(const _tchar* pLayerTag)
 	
 	CannonSpider::tagCannonSpiderDesc tCannonSpiderDesc;
 	tCannonSpiderDesc.vPosition = _float4(13.f, 0.f, 10.f, 1.f);
-	pGameInstance->Add_GameObject(LEVEL_IMGUI, CannonSpider::ProtoTag(), pLayerTag, &tCannonSpiderDesc);*/
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, CannonSpider::ProtoTag(), pLayerTag, &tCannonSpiderDesc);
 	
-	//CrystalGolem::tagCrystalGolemDesc tCrystalGolemDesc;
-	//tCrystalGolemDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
-	//pGameInstance->Add_GameObject(LEVEL_IMGUI, CrystalGolem::ProtoTag(), pLayerTag, &tCrystalGolemDesc);
+	CrystalGolem::tagCrystalGolemDesc tCrystalGolemDesc;
+	tCrystalGolemDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, CrystalGolem::ProtoTag(), pLayerTag, &tCrystalGolemDesc);
 	
 	/*Spider::tagSpiderDesc tSpiderDesc;
 	tSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
@@ -264,11 +264,6 @@ void CLevel_Imgui::Ready_Layer_UI(const _tchar* pLayerTag)
 	tDynamicImageDesc.Pos = _float2(532 + 240, 96);
 	tDynamicImageDesc.Size = _float2(70, 70);
 	tDynamicImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_RSkill");
-	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, DynamicImage::ProtoTag(), pLayerTag, &tDynamicImageDesc));
-
-	tDynamicImageDesc.Pos = _float2(652, 37);
-	tDynamicImageDesc.Size = _float2(280, 14);
-	tDynamicImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_ExpBar");
 	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, DynamicImage::ProtoTag(), pLayerTag, &tDynamicImageDesc));
 
 	Safe_Release(pGameInstance);
