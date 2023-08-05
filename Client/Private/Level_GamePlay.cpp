@@ -6,7 +6,6 @@
 #include "ImWindow_Manager.h"
 #include "Clint.h"
 #include "Sky.h"
-#include "Blue_Snow.h"
 #include "LargeVolcanicRock_002_Red_Desert.h"
 #include "Alien_prawn.h"
 #include "BatPotato_RIG.h"

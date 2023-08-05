@@ -12,9 +12,9 @@ CVIBuffer_Rect_Instance::CVIBuffer_Rect_Instance(const CVIBuffer_Rect_Instance& 
 
 }
 
-HRESULT CVIBuffer_Rect_Instance::Initialize_Prototype(const CVIBuffer_Instancing::INSTANCEDESC* pInstanceDesc)
+HRESULT CVIBuffer_Rect_Instance::Initialize_Prototype(const CVIBuffer_Instancing::CVIBUFFER_INSTANCE_DESC* pInstanceDesc)
 {
-	if (FAILED(__super::Initialize_Prototype(pInstanceDesc)))
+	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
 
 	m_iIndexCountPerInstance = 6;
@@ -108,24 +108,24 @@ HRESULT CVIBuffer_Rect_Instance::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CVIBuffer_Rect_Instance::Tick(_double TimeDelta)
+void CVIBuffer_Rect_Instance::Tick(list<_float4x4>& InstMatrices, _double TimeDelta)
 {
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
 
 	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
 
-	for (size_t i = 0; i < m_InstanceDesc.iNumInstance; i++)
-	{
-		((VTXINSTANCE*)SubResource.pData)[i].vTranslation.y -= m_pInstanceSpeed[i] * TimeDelta;
+	//for (_uint i = 0; i < m_InstanceDesc.iNumInstance; ++i)
+	//{
+	//	((VTXINSTANCE*)SubResource.pData)[i].vTranslation.y -= m_pInstanceSpeed[i] * TimeDelta;
 
-		if (0 >= ((VTXINSTANCE*)SubResource.pData)[i].vTranslation.y)
-			((VTXINSTANCE*)SubResource.pData)[i].vTranslation.y = m_pInstancePos[i].y;
-	}
+	//	if (0 >= ((VTXINSTANCE*)SubResource.pData)[i].vTranslation.y)
+	//		((VTXINSTANCE*)SubResource.pData)[i].vTranslation.y = m_pInstancePos[i].y;
+	//}
 
 	m_pContext->Unmap(m_pVBInstance, 0);
 }
 
-CVIBuffer_Rect_Instance* CVIBuffer_Rect_Instance::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CVIBuffer_Instancing::INSTANCEDESC* pInstanceDesc)
+CVIBuffer_Rect_Instance* CVIBuffer_Rect_Instance::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CVIBuffer_Instancing::CVIBUFFER_INSTANCE_DESC* pInstanceDesc)
 {
 	CVIBuffer_Rect_Instance* pInstance = new CVIBuffer_Rect_Instance(pDevice, pContext);
 

@@ -30,6 +30,9 @@
 #include "SkillUI.h"
 #include "MiniMap.h"
 
+// Effect
+#include "CStone_Effect.h"
+
 // Static Mesh
 #include "Bush01.h"
 #include "BushA.h"
@@ -71,7 +74,6 @@
 #include "ClintBasicBullet.h"
 #include "ClintUltimate01Bullet.h"
 #include "VIBuffer_Cube.h"
-#include "Blue_Snow.h"
 #include "LargeVolcanicRock_002_Red_Desert.h"
 
 #include "Kemmekh_Formacion_rocosa.h"
@@ -274,20 +276,6 @@ HRESULT CLoader::Loading_For_GamePlay()
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Cube::ProtoTag(),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext)), E_FAIL);
-
-
-	CVIBuffer_Rect_Instance::INSTANCEDESC tVIBufferRectInstanceDesc;
-	ZeroStruct(tVIBufferRectInstanceDesc);
-	tVIBufferRectInstanceDesc.vRange = _float3(10.f, 4.f, 10.f); tVIBufferRectInstanceDesc.vSpeed = _uint2(2, 10);
-	tVIBufferRectInstanceDesc.fLifeTime = 10.f; tVIBufferRectInstanceDesc.iNumInstance = 30; tVIBufferRectInstanceDesc.fHeight = 10.f;
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Rect_Instance::ProtoTag(),
-		CVIBuffer_Rect_Instance::Create(m_pDevice, m_pContext, &tVIBufferRectInstanceDesc)), E_FAIL);
-
-	CVIBuffer_Point_Instance::INSTANCEDESC tVIBufferPointInstanceDesc;
-	tVIBufferPointInstanceDesc.vRange = _float3(10.f, 4.f, 10.f); tVIBufferPointInstanceDesc.vSpeed = _uint2(2, 10);
-	tVIBufferPointInstanceDesc.fLifeTime = 10.f; tVIBufferPointInstanceDesc.iNumInstance = 30; tVIBufferPointInstanceDesc.fHeight = 10.f;
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Point_Instance::ProtoTag(),
-		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, &tVIBufferPointInstanceDesc)), E_FAIL);
 
 	// Skeletal_Meshes
 	Set_LoadingText(L"모델 로딩 중");
@@ -912,7 +900,6 @@ HRESULT CLoader::Loading_For_GamePlay()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_LargePlainsBoulder002_Red_Desert::ProtoTag(), SM_LargePlainsBoulder002_Red_Desert::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_LargePlainsBoulder002::ProtoTag(), SM_LargePlainsBoulder002::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_Cliff01::ProtoTag(), SM_Cliff01::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CBlue_Snow::ProtoTag(), CBlue_Snow::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CCube::ProtoTag(), CCube::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Bush01::ProtoTag(), Bush01::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BushA::ProtoTag(), BushA::Create(m_pDevice, m_pContext)), E_FAIL);
@@ -1043,6 +1030,9 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_MonsterHpBar"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/MonsterHpBar.png"), 1)), E_FAIL);
 
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Bullet01"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Art/Characters/Players/Clint/FX/Textures/Bullet01.dds"), 1)), E_FAIL);
+
 	Set_LoadingText(L"버퍼 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Terrain::ProtoTag(),
 		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Art/Misc/John/Materials/TexturesCom_SmoothRock_1024_heightmap.bmp"))), E_FAIL);
@@ -1050,16 +1040,12 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Cube::ProtoTag(),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext)), E_FAIL);
 
-	CVIBuffer_Rect_Instance::INSTANCEDESC tVIBufferRectInstanceDesc;
+	/*CVIBuffer_Rect_Instance::CVIBUFFER_RECT_INSTANCE_DESC tVIBufferRectInstanceDesc;
 	ZeroStruct(tVIBufferRectInstanceDesc);
-	tVIBufferRectInstanceDesc.vRange = _float3(10.f, 4.f, 10.f); tVIBufferRectInstanceDesc.vSpeed = _uint2(2, 10);
-	tVIBufferRectInstanceDesc.fLifeTime = 10.f; tVIBufferRectInstanceDesc.iNumInstance = 30; tVIBufferRectInstanceDesc.fHeight = 10.f;
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Rect_Instance::ProtoTag(),
-		CVIBuffer_Rect_Instance::Create(m_pDevice, m_pContext, &tVIBufferRectInstanceDesc)), E_FAIL);
+		CVIBuffer_Rect_Instance::Create(m_pDevice, m_pContext, &tVIBufferRectInstanceDesc)), E_FAIL);*/
 	
-	CVIBuffer_Point_Instance::INSTANCEDESC tVIBufferPointInstanceDesc;
-	tVIBufferPointInstanceDesc.vRange = _float3(10.f, 4.f, 10.f); tVIBufferPointInstanceDesc.vSpeed = _uint2(2, 10);
-	tVIBufferPointInstanceDesc.fLifeTime = 10.f; tVIBufferPointInstanceDesc.iNumInstance = 30; tVIBufferPointInstanceDesc.fHeight = 10.f;
+	CVIBuffer_Point_Instance::CVIBUFFER_POINT_INSTANCE_DESC tVIBufferPointInstanceDesc;
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Point_Instance::ProtoTag(),
 		CVIBuffer_Point_Instance::Create(m_pDevice, m_pContext, &tVIBufferPointInstanceDesc)), E_FAIL);
 	
@@ -1696,7 +1682,6 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_LargePlainsBoulder002_Red_Desert::ProtoTag(), SM_LargePlainsBoulder002_Red_Desert::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_LargePlainsBoulder002::ProtoTag(), SM_LargePlainsBoulder002::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SM_Cliff01::ProtoTag(), SM_Cliff01::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CBlue_Snow::ProtoTag(), CBlue_Snow::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CCube::ProtoTag(), CCube::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Bush01::ProtoTag(), Bush01::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BushA::ProtoTag(), BushA::Create(m_pDevice, m_pContext)), E_FAIL);
@@ -1750,6 +1735,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(MonsterHP::ProtoTag(), MonsterHP::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SkillUI::ProtoTag(), SkillUI::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(MiniMap::ProtoTag(), MiniMap::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CStone_Effect::ProtoTag(), CStone_Effect::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	Set_LoadingText(L"로딩 완료");
 

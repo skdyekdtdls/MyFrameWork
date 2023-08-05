@@ -17,12 +17,12 @@ private:
 	virtual ~CVIBuffer_Point_Instance() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype(const CVIBuffer_Instancing::INSTANCEDESC* InstanceDesc);
+	virtual HRESULT Initialize_Prototype(const CVIBuffer_Instancing::CVIBUFFER_INSTANCE_DESC* InstanceDesc);
 	virtual HRESULT Initialize(void* pArg) override;
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_Component_CVIBuffer_Point_Instance"; }
-	static CVIBuffer_Point_Instance* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const CVIBuffer_Instancing::INSTANCEDESC* pInstanceDesc);
+	static CVIBuffer_Point_Instance* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const CVIBuffer_Instancing::CVIBUFFER_INSTANCE_DESC* pInstanceDesc);
 	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free() override;
 };

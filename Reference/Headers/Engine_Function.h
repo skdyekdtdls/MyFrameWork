@@ -108,6 +108,20 @@ _float Lerp(T a, T b, T t) {
 	return a + t * (b - a);
 }
 
+static float RandomFloat(float lowBound, float highBound)
+{
+	if (lowBound >= highBound)
+		return lowBound;
+
+	float f = (rand() % 10000) * 0.0001f;
+
+	return (f * (highBound - lowBound)) + lowBound;
+}
+
+static float RandomUNormal()
+{
+	return RandomFloat(0.f, 1.f);
+}
 
 template <typename T>
 static bool	isInsideRange(T _value, T _min, T _max)

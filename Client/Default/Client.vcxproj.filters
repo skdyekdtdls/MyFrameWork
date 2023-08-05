@@ -133,9 +133,6 @@
     <Filter Include="02. GameObjects\Effect\Instancing\Blue">
       <UniqueIdentifier>{e2ca6a31-f73c-4b24-bad6-deed2b718b40}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\Effect\Instancing\Red">
-      <UniqueIdentifier>{7cc0a865-f3bf-4afc-bb15-a8684ca1e67e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObjects\BackGround\LargeVolcanicRock_002_Red_Desert">
       <UniqueIdentifier>{f0b46961-e53f-49ac-a6bb-96f9e1a1e16a}</UniqueIdentifier>
     </Filter>
@@ -355,9 +352,6 @@
     <Filter Include="02. GameObjects\Monster\Spider\Bullet">
       <UniqueIdentifier>{42ac1293-ed3b-44dd-b96f-4b2bbe49f525}</UniqueIdentifier>
     </Filter>
-    <Filter Include="95. Design\Observer">
-      <UniqueIdentifier>{901fe516-51d5-44c7-ad5f-88978ac82eac}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObjects\Pistola">
       <UniqueIdentifier>{69474a77-3ef1-4de8-ac82-53697982adad}</UniqueIdentifier>
     </Filter>
@@ -378,6 +372,15 @@
     </Filter>
     <Filter Include="02. GameObjects\Skill">
       <UniqueIdentifier>{63ac0d20-5fb5-425d-89ae-eea81842c48b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Instancing\CStone_Effect">
+      <UniqueIdentifier>{7cc0a865-f3bf-4afc-bb15-a8684ca1e67e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. Design\Strategy">
+      <UniqueIdentifier>{b4c57c50-5fc7-4411-a6a1-626ba8f5e7da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. Design\Strategy\ParticleStrategy">
+      <UniqueIdentifier>{ece9572f-bb2f-4c5c-aafe-6ad4cc7ea325}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -536,9 +539,6 @@
     </ClInclude>
     <ClInclude Include="..\public\Sky.h">
       <Filter>02. GameObjects\Sky</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Blue_Snow.h">
-      <Filter>02. GameObjects\Effect\Instancing\Blue</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Red_Snow.h" />
     <ClInclude Include="..\public\LargeVolcanicRock_002_Red_Desert.h">
@@ -901,6 +901,15 @@
     <ClInclude Include="..\public\MiniMap.h">
       <Filter>02. GameObjects\UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CStone_Effect.h">
+      <Filter>02. GameObjects\Effect\Instancing\CStone_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\IStrategy.h">
+      <Filter>95. Design\Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleStrategy.h">
+      <Filter>95. Design\Strategy\ParticleStrategy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -1054,9 +1063,6 @@
     </ClCompile>
     <ClCompile Include="..\private\Sky.cpp">
       <Filter>02. GameObjects\Sky</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Blue_Snow.cpp">
-      <Filter>02. GameObjects\Effect\Instancing\Blue</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Red_Snow.cpp" />
     <ClCompile Include="..\private\LargeVolcanicRock_002_Red_Desert.cpp">
@@ -1406,6 +1412,12 @@
     </ClCompile>
     <ClCompile Include="..\private\MiniMap.cpp">
       <Filter>02. GameObjects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStone_Effect.cpp">
+      <Filter>02. GameObjects\Effect\Instancing\CStone_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleStrategy.cpp">
+      <Filter>95. Design\Strategy\ParticleStrategy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

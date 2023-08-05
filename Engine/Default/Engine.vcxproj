@@ -45,7 +45,10 @@
     <ClInclude Include="..\public\VIBuffer_DynamicRect.h" />
     <ClInclude Include="..\public\VIBuffer_Instancing.h" />
     <ClInclude Include="..\public\VIBuffer_Point_Instance.h" />
-    <ClInclude Include="..\public\VIBuffer_Rect_Instance.h" />
+    <ClInclude Include="..\public\VIBuffer_Rect_Instance.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\public\RenderTarget.h" />
     <ClInclude Include="..\Public\DebugDraw.h" />
     <ClInclude Include="..\Public\Engine_Defines.h" />
@@ -113,7 +116,10 @@
     <ClCompile Include="..\private\VIBuffer_DynamicRect.cpp" />
     <ClCompile Include="..\private\VIBuffer_Instancing.cpp" />
     <ClCompile Include="..\private\VIBuffer_Point_Instance.cpp" />
-    <ClCompile Include="..\private\VIBuffer_Rect_Instance.cpp" />
+    <ClCompile Include="..\private\VIBuffer_Rect_Instance.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\private\RenderTarget.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />
     <ClCompile Include="..\private\Frustum.cpp" />

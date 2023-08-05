@@ -8,7 +8,6 @@
 #include "ImWindow_Manager.h"
 #include "Clint.h"
 #include "Sky.h"
-#include "Blue_Snow.h"
 #include "LargeVolcanicRock_002_Red_Desert.h"
 #include "Alien_prawn.h"
 #include "BatPotato_RIG.h"
@@ -179,8 +178,6 @@ void CLevel_Imgui::Ready_Layer_Effect(const _tchar* pLayerTag)
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
-
-	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, CBlue_Snow::ProtoTag(), pLayerTag));
 
 	Safe_Release(pGameInstance);
 }

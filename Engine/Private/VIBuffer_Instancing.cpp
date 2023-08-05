@@ -10,35 +10,12 @@ CVIBuffer_Instancing::CVIBuffer_Instancing(const CVIBuffer_Instancing& rhs)
 	, m_InstanceDesc(rhs.m_InstanceDesc)
 	, m_iInstanceStride(rhs.m_iInstanceStride)
 	, m_iIndexCountPerInstance(rhs.m_iIndexCountPerInstance)
-	, m_pInstanceSpeed(rhs.m_pInstanceSpeed)
-	, m_pInstancePos(rhs.m_pInstancePos)
-	, m_pLifeTime(rhs.m_pLifeTime)
 {
 
 }
 
-HRESULT CVIBuffer_Instancing::Initialize_Prototype(const INSTANCEDESC* pInstanceDesc)
+HRESULT CVIBuffer_Instancing::Initialize_Prototype()
 {
-	m_InstanceDesc = *(INSTANCEDESC*)pInstanceDesc;
-
-	m_pInstanceSpeed = new _float[m_InstanceDesc.iNumInstance];
-	m_pInstancePos = new _float4[m_InstanceDesc.iNumInstance];
-	m_pLifeTime = new _double[m_InstanceDesc.iNumInstance];
-	ZeroMemory(m_pLifeTime, sizeof(_double) * m_InstanceDesc.iNumInstance);
-
-	for (size_t i = 0; i < m_InstanceDesc.iNumInstance; i++)
-	{
-		// 랜덤범위를 MIN~MAX로 잡음 EX) uint2(2, 10)으로 넣은 경우 범위가 2~10으로 계산됨.
-		m_pInstanceSpeed[i] = rand() % (m_InstanceDesc.vSpeed.y + 1 - m_InstanceDesc.vSpeed.x) + m_InstanceDesc.vSpeed.x;
-		
-		// x,z의 경우 Range = 10으로 들어오면 [-5,5]로 범위를 잡아준다.
-		// y의 경우 Range = 4, Height = 10으로 들어오면  [-2 + 10 = 8, 2 + 10 = 12]로 범위를 잡아준다.
-		m_pInstancePos[i] = _float4(rand() % (_uint(m_InstanceDesc.vRange.x) + 1) - m_InstanceDesc.vRange.x * 0.5f,
-			rand() % (_uint(m_InstanceDesc.vRange.y) + 1) - m_InstanceDesc.vRange.y * 0.5f + m_InstanceDesc.fHeight,
-			rand() % (_uint(m_InstanceDesc.vRange.z) + 1) - m_InstanceDesc.vRange.z * 0.5f,
-			1.f);
-	}
-
 	return S_OK;
 }
 
@@ -67,7 +44,7 @@ HRESULT CVIBuffer_Instancing::Initialize(void* pArg)
 		pVertices[i].vRight = _float4(1.f, 0.f, 0.f, 0.f);
 		pVertices[i].vUp = _float4(0.f, 1.f, 0.f, 0.f);
 		pVertices[i].vLook = _float4(0.f, 0.f, 1.f, 0.f);
-		pVertices[i].vTranslation = m_pInstancePos[i];
+		pVertices[i].vTranslation = _float4(0.f ,0.f, 0.f, 1.f);
 	}
 
 	D3D11_SUBRESOURCE_DATA		SubResourceData;
@@ -83,9 +60,24 @@ HRESULT CVIBuffer_Instancing::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CVIBuffer_Instancing::Tick(_double TimeDelta)
+void CVIBuffer_Instancing::Tick(list<_float4x4>& InstMatrices, _double TimeDelta)
 {
+	D3D11_MAPPED_SUBRESOURCE		SubResource;
 
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+	VTXINSTANCE* pVertices = static_cast<VTXINSTANCE*>(SubResource.pData);
+
+	_uint i = 0;
+	for (auto iter = InstMatrices.begin(); iter != InstMatrices.end(); ++iter)
+	{
+		memcpy(&pVertices[i].vRight, &(*iter)._11, sizeof(_float4));
+		memcpy(&pVertices[i].vUp, &(*iter)._21, sizeof(_float4));
+		memcpy(&pVertices[i].vLook, &(*iter)._31, sizeof(_float4));
+		memcpy(&pVertices[i].vTranslation, &(*iter)._41, sizeof(_float4));
+		++i;
+	}
+
+	m_pContext->Unmap(m_pVBInstance, 0);
 }
 
 HRESULT CVIBuffer_Instancing::Render()
@@ -119,13 +111,6 @@ HRESULT CVIBuffer_Instancing::Render()
 void CVIBuffer_Instancing::Free()
 {
 	__super::Free();
-
-	if (false == m_isCloned)
-	{
-		Safe_Delete_Array(m_pInstanceSpeed);
-		Safe_Delete_Array(m_pInstancePos);
-		Safe_Delete_Array(m_pLifeTime);
-	}
 
 	Safe_Release(m_pVBInstance);
 

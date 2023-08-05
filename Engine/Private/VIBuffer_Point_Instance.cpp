@@ -1,5 +1,5 @@
 #include "..\Public\VIBuffer_Point_Instance.h"
-
+#include <stack>
 CVIBuffer_Point_Instance::CVIBuffer_Point_Instance(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CVIBuffer_Instancing(pDevice, pContext)
 {
@@ -12,9 +12,19 @@ CVIBuffer_Point_Instance::CVIBuffer_Point_Instance(const CVIBuffer_Point_Instanc
 
 }
 
-HRESULT CVIBuffer_Point_Instance::Initialize_Prototype(const CVIBuffer_Instancing::INSTANCEDESC* pInstanceDesc)
+HRESULT CVIBuffer_Point_Instance::Initialize_Prototype(const CVIBuffer_Instancing::CVIBUFFER_INSTANCE_DESC* pInstanceDesc)
 {
-	if (FAILED(__super::Initialize_Prototype(pInstanceDesc)))
+	if (FAILED(__super::Initialize_Prototype()))
+		return E_FAIL;
+	
+	
+
+	return S_OK;
+}
+
+HRESULT CVIBuffer_Point_Instance::Initialize(void* pArg)
+{
+	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
 	m_iIndexCountPerInstance = 1;
@@ -70,24 +80,14 @@ HRESULT CVIBuffer_Point_Instance::Initialize_Prototype(const CVIBuffer_Instancin
 
 	if (FAILED(__super::Create_Buffer(&m_pIB)))
 		return E_FAIL;
+
 	Safe_Delete_Array(pIndices);
 #pragma endregion
 
-
 	return S_OK;
 }
 
-HRESULT CVIBuffer_Point_Instance::Initialize(void* pArg)
-{
-
-
-	if (FAILED(__super::Initialize(pArg)))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-CVIBuffer_Point_Instance* CVIBuffer_Point_Instance::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CVIBuffer_Instancing::INSTANCEDESC* pInstanceDesc)
+CVIBuffer_Point_Instance* CVIBuffer_Point_Instance::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CVIBuffer_Instancing::CVIBUFFER_INSTANCE_DESC* pInstanceDesc)
 {
 	CVIBuffer_Point_Instance* pInstance = new CVIBuffer_Point_Instance(pDevice, pContext);
 

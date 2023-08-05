@@ -115,7 +115,7 @@ public:
 		}
 	}
 	virtual ~StateContext() override = default;
-
+	
 public:
 	void Tick(_double TimeDelta) {
 		if (nullptr != m_pCurState)

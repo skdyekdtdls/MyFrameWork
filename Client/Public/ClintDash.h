@@ -17,6 +17,7 @@ public:
 	virtual void OnStateExit() override;
 
 	virtual const _tchar* GetTag() override { return Tag(); }
+	
 private:
 	void SetDashDir(class CModel* pModel, class CTransform* pTransform);
 

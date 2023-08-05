@@ -18,15 +18,15 @@ private:
 	virtual ~CVIBuffer_Rect_Instance() = default;
 
 public:
-	virtual HRESULT Initialize_Prototype(const CVIBuffer_Instancing::INSTANCEDESC* InstanceDesc);
+	virtual HRESULT Initialize_Prototype(const CVIBuffer_Instancing::CVIBUFFER_INSTANCE_DESC* InstanceDesc);
 	virtual HRESULT Initialize(void* pArg) override;
-	virtual void Tick(_double TimeDelta) override;
+	virtual void Tick(list<_float4x4>& InstMatrices, _double TimeDelta) override;
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_Component_CVIBuffer_Rect_Instance"; }
 
 public:
-	static CVIBuffer_Rect_Instance* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const CVIBuffer_Instancing::INSTANCEDESC* pInstanceDesc);
+	static CVIBuffer_Rect_Instance* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const CVIBuffer_Instancing::CVIBUFFER_INSTANCE_DESC* pInstanceDesc);
 	virtual CComponent* Clone(void* pArg) override;
 	virtual void Free() override;
 };

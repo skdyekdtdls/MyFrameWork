@@ -198,7 +198,6 @@
     <ClInclude Include="..\public\BatPotato_RIGHit.h" />
     <ClInclude Include="..\public\BatPotato_RIGIdle.h" />
     <ClInclude Include="..\public\BatPotato_RIGRun.h" />
-    <ClInclude Include="..\public\Blue_Snow.h" />
     <ClInclude Include="..\public\BossHP.h" />
     <ClInclude Include="..\public\Bullet.h" />
     <ClInclude Include="..\Public\Bush01.h" />
@@ -247,7 +246,9 @@
     <ClInclude Include="..\public\CrystalGolemIdle.h" />
     <ClInclude Include="..\public\CrystalGolemRun.h" />
     <ClInclude Include="..\Public\CrystalGolemTurn180.h" />
+    <ClInclude Include="..\Public\CStone_Effect.h" />
     <ClInclude Include="..\Public\DynamicImage.h" />
+    <ClInclude Include="..\public\ParticleStrategy.h" />
     <ClInclude Include="..\Public\FontUI.h" />
     <ClInclude Include="..\public\HP.h" />
     <ClInclude Include="..\public\Image.h" />
@@ -301,6 +302,7 @@
     <ClInclude Include="..\Public\ImWindow_UITool.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\public\IStrategy.h" />
     <ClInclude Include="..\public\Kemmekh_Formacion_rocosa.h" />
     <ClInclude Include="..\public\Kemmekh_wall.h" />
     <ClInclude Include="..\public\Kemmek_Hole.h" />
@@ -447,7 +449,6 @@
     <ClCompile Include="..\private\BatPotato_RIGHit.cpp" />
     <ClCompile Include="..\private\BatPotato_RIGIdle.cpp" />
     <ClCompile Include="..\private\BatPotato_RIGRun.cpp" />
-    <ClCompile Include="..\private\Blue_Snow.cpp" />
     <ClCompile Include="..\private\BossHP.cpp" />
     <ClCompile Include="..\private\Bullet.cpp" />
     <ClCompile Include="..\Private\Bush01.cpp" />
@@ -498,7 +499,9 @@
     <ClCompile Include="..\private\CrystalGolemIdle.cpp" />
     <ClCompile Include="..\private\CrystalGolemRun.cpp" />
     <ClCompile Include="..\Private\CrystalGolemTurn180.cpp" />
+    <ClCompile Include="..\Private\CStone_Effect.cpp" />
     <ClCompile Include="..\Private\DynamicImage.cpp" />
+    <ClCompile Include="..\private\ParticleStrategy.cpp" />
     <ClCompile Include="..\Private\FontUI.cpp" />
     <ClCompile Include="..\private\HP.cpp" />
     <ClCompile Include="..\private\Image.cpp" />

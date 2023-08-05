@@ -23,6 +23,7 @@ class SkillUI;
 class PlayerLevel;
 class PlayerHP;
 class Pistola;
+class CStone_Effect;
 class ClintUltimate01Bullet;
 template <typename OWNER, typename ANIM_ENUM>
 class StateContext;
@@ -75,6 +76,7 @@ private: /* For. Component */
 	PlayerHP* m_pPlayerHP = { nullptr };
 	vector<SkillUI*> m_pSKillUIs = { nullptr };
 
+	CStone_Effect* m_pStoneEffect = { nullptr };
 private:
 	static _uint Clint_Id;
 

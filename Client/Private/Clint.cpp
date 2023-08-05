@@ -11,6 +11,8 @@
 #include "PlayerLevel.h"
 #include "PlayerHP.h"
 #include "SkillUI.h"
+#include "CStone_Effect.h"
+
 _uint Clint::Clint_Id = 0;
 
 Clint::Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -86,8 +88,6 @@ HRESULT Clint::Initialize(void* pArg)
 
 	m_pUltBulletCom->Disable();
 
-
-
 	return S_OK; 
 }
 
@@ -120,17 +120,6 @@ void Clint::Tick(_double TimeDelta)
 			m_pTransformCom->Get_State(CTransform::STATE_LOOK));
 	}
 
-
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
-	if (pGameInstance->Key_Down(DIK_U))
-	{
-		m_pSKillUIs[0]->UseSkill();
-	}
-
-	Safe_Release(pGameInstance);
-
-
 	for (auto SkillUIs : m_pSKillUIs)
 		SkillUIs->Tick(TimeDelta);
 
@@ -140,7 +129,6 @@ void Clint::Tick(_double TimeDelta)
 void Clint::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
-
 	// 렌더러 그룹에 추가
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 	m_pColliderCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BODY);
@@ -304,6 +292,10 @@ HRESULT Clint::Add_Components()
 	tSkillUIDesc.fMaxCoolTime = 30.f;
 	FAILED_CHECK_RETURN(__super::Add_Composite(SkillUI::ProtoTag(), L"Com_SkillR_UI", (CComponent**)&m_pSKillUIs[3], &tSkillUIDesc), E_FAIL);
 	
+
+
+	FAILED_CHECK_RETURN(__super::Add_Composite(CStone_Effect::ProtoTag(), L"Com_Test", (CComponent**)&m_pStoneEffect, nullptr), E_FAIL);
+
 	Safe_Release(pGameInstance);
 	return S_OK;
 }
@@ -374,6 +366,7 @@ void Clint::Free(void)
 	Safe_Release(m_pStateContextCom);
 	Safe_Release(m_pPlayerLevelCom);
 	Safe_Release(m_pPlayerHP);
+	Safe_Release(m_pStoneEffect);
 	for (auto SkillUI : m_pSKillUIs)
 		Safe_Release(SkillUI);
 }
