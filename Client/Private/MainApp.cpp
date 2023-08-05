@@ -19,6 +19,7 @@
 #include "P2Attack02.h"
 #include "P2Attack03.h"
 #include "P2Attack04.h"
+#include "Image.h"
 
 #ifdef _DEBUG
 #include "ImWindow_Manager.h"

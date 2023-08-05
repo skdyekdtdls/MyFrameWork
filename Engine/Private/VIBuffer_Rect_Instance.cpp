@@ -26,7 +26,6 @@ HRESULT CVIBuffer_Rect_Instance::Initialize_Prototype(const CVIBuffer_Instancing
 	m_eFormat = DXGI_FORMAT_R16_UINT;
 	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
-
 #pragma region VERTEX_BUFFER
 	ZeroMemory(&m_BufferDesc, sizeof m_BufferDesc);
 
@@ -107,6 +106,23 @@ HRESULT CVIBuffer_Rect_Instance::Initialize(void* pArg)
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CVIBuffer_Rect_Instance::Tick(_double TimeDelta)
+{
+	D3D11_MAPPED_SUBRESOURCE		SubResource;
+
+	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+
+	for (size_t i = 0; i < m_InstanceDesc.iNumInstance; i++)
+	{
+		((VTXINSTANCE*)SubResource.pData)[i].vTranslation.y -= m_pInstanceSpeed[i] * TimeDelta;
+
+		if (0 >= ((VTXINSTANCE*)SubResource.pData)[i].vTranslation.y)
+			((VTXINSTANCE*)SubResource.pData)[i].vTranslation.y = m_pInstancePos[i].y;
+	}
+
+	m_pContext->Unmap(m_pVBInstance, 0);
 }
 
 CVIBuffer_Rect_Instance* CVIBuffer_Rect_Instance::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const CVIBuffer_Instancing::INSTANCEDESC* pInstanceDesc)

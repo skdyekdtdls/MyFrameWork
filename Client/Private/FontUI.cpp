@@ -42,8 +42,7 @@ HRESULT FontUI::Initialize(void* pArg)
 		tCloneDesc = *(tagFontUIDesc*)pArg;
 	tCloneDesc.vPosition.z = 0.f;
 	tCloneDesc.vPosition.w = 1.f;
-
-	m_pTransformCom->SetPosition(XMLoadFloat4(&tCloneDesc.vPosition));
+	SetPosition(_float2(tCloneDesc.vPosition.x, tCloneDesc.vPosition.y));
 	m_fScale = tCloneDesc.fScale;
 
 	return S_OK;
@@ -85,7 +84,7 @@ HRESULT FontUI::Render()
 
 void FontUI::SetPosition(_float2 vPos)
 {
-	m_pTransformCom->SetPosition(XMVectorSet(vPos.x, vPos.y, 0.f, 1.f));
+	m_pTransformCom->SetPosition(XMVectorSet(vPos.x, g_iWinSizeY - vPos.y, 0.f, 1.f));
 }
 
 void FontUI::Go_Right(const _double& TimeDelta)

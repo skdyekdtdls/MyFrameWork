@@ -898,6 +898,9 @@
     <ClInclude Include="..\public\SkillUI.h">
       <Filter>02. GameObjects\Skill</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\MiniMap.h">
+      <Filter>02. GameObjects\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -1400,6 +1403,9 @@
     </ClCompile>
     <ClCompile Include="..\private\SkillUI.cpp">
       <Filter>02. GameObjects\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MiniMap.cpp">
+      <Filter>02. GameObjects\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

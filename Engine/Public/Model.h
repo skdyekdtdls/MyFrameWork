@@ -101,7 +101,7 @@ public:
 public:
 	HRESULT Bind_Material(class CShader* pShader, const char* pConstantName, _uint iMeshIndex, TextureType MaterialType);
 	HRESULT Bind_BoneMatrices(class CShader* pShader, const char* pConstantName, _uint iMeshIndex);
-
+	void SetGolem();
 public:
 	virtual HRESULT Add_TimeLineEvent(string strAnimName, const _tchar* pTag, TIMELINE_EVENT tTimeLineEvent, BODY eBody = LOWER);
 	void Delete_TimeLineEvent(string strAnimName, const _tchar* pTag, BODY eBody = LOWER);

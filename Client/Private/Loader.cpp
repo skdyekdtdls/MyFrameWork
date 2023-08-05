@@ -28,6 +28,7 @@
 #include "DynamicImage.h"
 #include "FontUI.h"
 #include "SkillUI.h"
+#include "MiniMap.h"
 
 // Static Mesh
 #include "Bush01.h"
@@ -408,8 +409,6 @@ HRESULT CLoader::Loading_For_GamePlay()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
 		, TEXT("Prototype_Component_Model_Spider1"), pModel), E_FAIL);
 
-
-	
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix, 2); pModel->LoadAssimp("Spider2.dat");
 	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/Spider1/Animation.myanim"));
@@ -417,8 +416,6 @@ HRESULT CLoader::Loading_For_GamePlay()
 	pModel->GroupingBones(upper, lower);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
 		, TEXT("Prototype_Component_Model_Spider2"), pModel), E_FAIL);
-
-
 	
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix, 2); pModel->LoadAssimp("Spider3.dat");
@@ -427,8 +424,6 @@ HRESULT CLoader::Loading_For_GamePlay()
 	pModel->GroupingBones(upper, lower);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
 		, TEXT("Prototype_Component_Model_Spider3"), pModel), E_FAIL);
-
-
 	
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix, 2); pModel->LoadAssimp("SummonSpider1.dat");
@@ -438,7 +433,6 @@ HRESULT CLoader::Loading_For_GamePlay()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
 		, TEXT("Prototype_Component_Model_SummonSpider1"), pModel), E_FAIL);
 
-	
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix, 2); pModel->LoadAssimp("SummonSpider2.dat");
 	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/Spider1/Animation.myanim"));
@@ -447,7 +441,6 @@ HRESULT CLoader::Loading_For_GamePlay()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel
 		, TEXT("Prototype_Component_Model_SummonSpider2"), pModel), E_FAIL);
 
-	
 	PivotMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixRotationY(XMConvertToRadians(180.0f));
 	pModel = CModel::Create(m_pDevice, m_pContext, PivotMatrix, 2); pModel->LoadAssimp("Queen_Moggoth.dat");
 	pModel->Late_Initialize(TEXT("../../Resources/Skeletal_Mesh/Queen_Moggoth/Animation.myanim"));
@@ -802,7 +795,6 @@ HRESULT CLoader::Loading_For_GamePlay()
 			, VTXPOS_DECL::Elements, VTXPOS_DECL::iNumElements)), E_FAIL);
 
 	Set_LoadingText(L"상태 로딩 중");
-
 	
 	StateContext<Clint, CLINT_ANIM>* pClintState;
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_ClintState"),
@@ -1003,6 +995,9 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_ui_radar_arrow_icon"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Killsquad/GUI/Minimap/Textures/ui_radar_arrow_icon.png"), 1)), E_FAIL);
 
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_UI_radar_mEnemy"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Killsquad/GUI/Minimap/OldTextures/icons/UI_radar_mEnemy.png"), 1)), E_FAIL);
+
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_ui_radar_player_icon"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Killsquad/GUI/Minimap/Textures/ui_radar_player_icon.png"), 1)), E_FAIL);
 
@@ -1054,9 +1049,6 @@ HRESULT CLoader::Loading_For_IMGUI()
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Cube::ProtoTag(),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext)), E_FAIL);
-
-
-
 
 	CVIBuffer_Rect_Instance::INSTANCEDESC tVIBufferRectInstanceDesc;
 	ZeroStruct(tVIBufferRectInstanceDesc);
@@ -1757,6 +1749,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BossHP::ProtoTag(), BossHP::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(MonsterHP::ProtoTag(), MonsterHP::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SkillUI::ProtoTag(), SkillUI::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(MiniMap::ProtoTag(), MiniMap::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	Set_LoadingText(L"로딩 완료");
 

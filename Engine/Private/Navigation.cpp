@@ -136,6 +136,7 @@ _uint CNavigation::FindIndex(_fvector vPosition)
 			return Cell->GetIndex();
 	}
 
+	assert(false);
 	return -1;
 }
 

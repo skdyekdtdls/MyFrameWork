@@ -9,11 +9,11 @@ class ENGINE_DLL CVIBuffer_Instancing abstract : public CVIBuffer
 public:
 	typedef struct tagInstanceDesc
 	{
-		_float		fHeight;
-		_float3		vRange;
-		_uint2		vSpeed;
-		_float		fLifeTime;
-		_uint		iNumInstance;
+		_float		fHeight; // y축 레인지
+		_float3		vRange; // x, z축 레인지
+		_uint2		vSpeed; // m_pInstanceSpeed
+		_float		fLifeTime; // m)LiftTime
+		_uint		iNumInstance; // 인스턴싱 수
 	}INSTANCEDESC;
 
 	typedef struct tagCVIBuffer_InstancingDesc : public tagCVIBufferDesc
@@ -29,13 +29,13 @@ protected:
 public:
 	virtual HRESULT Initialize_Prototype(const INSTANCEDESC* pInstanceDesc);
 	virtual HRESULT Initialize(void* pArg) override;
-
+	
 public:
 	virtual void Tick(_double TimeDelta);
 	virtual HRESULT Render();
 
 protected:
-	ID3D11Buffer*				m_pVBInstance = { nullptr };
+	ID3D11Buffer*				m_pVBInstance = { nullptr }; // RULT
 	_uint						m_iInstanceStride = { 0 };
 	_uint						m_iIndexCountPerInstance = { 0 };
 
@@ -47,7 +47,6 @@ protected:
 public:
 	virtual CComponent* Clone(void* pArg) = 0;
 	virtual void Free() override;
-
 };
 
 END

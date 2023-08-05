@@ -22,7 +22,7 @@ Clint::Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 Clint::Clint(const Clint& rhs)
 	: CGameObject(rhs)
 {
-	m_pSKillUIs.reserve(1);
+	m_pSKillUIs.resize(4);
 }
 
 HRESULT Clint::Initialize_Prototype()
@@ -119,6 +119,17 @@ void Clint::Tick(_double TimeDelta)
 		m_pRaycastCom->Tick(m_pTransformCom->Get_State(CTransform::STATE_POSITION),
 			m_pTransformCom->Get_State(CTransform::STATE_LOOK));
 	}
+
+
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	if (pGameInstance->Key_Down(DIK_U))
+	{
+		m_pSKillUIs[0]->UseSkill();
+	}
+
+	Safe_Release(pGameInstance);
+
 
 	for (auto SkillUIs : m_pSKillUIs)
 		SkillUIs->Tick(TimeDelta);
@@ -260,16 +271,39 @@ HRESULT Clint::Add_Components()
 
 	PlayerLevel::tagPlayerLevelDesc tLevelDesc;
 	tLevelDesc.pOwner = this;
-	tLevelDesc.vPosition = _float4(438.f, 635.f, 0.f, 1.f);
+	tLevelDesc.vPosition = _float4(438.f, g_iWinSizeY - 635.f, 0.f, 1.f);
 	tLevelDesc.fScale = 0.6f;
 	FAILED_CHECK_RETURN(__super::Add_Composite(PlayerLevel::ProtoTag(), L"Com_PlayerLevel", (CComponent**)&m_pPlayerLevelCom, &tLevelDesc), E_FAIL);
 	
 	SkillUI::tagSkillUIDesc tSkillUIDesc;
 	tSkillUIDesc.pOwner = this;
-	tSkillUIDesc.fSize = _float2(80.f, 80.f);
+	tSkillUIDesc.fSize = _float2(70, 70);
 	tSkillUIDesc.SkillTextureTag = L"Prototype_Component_Texture_QSkill";
 	tSkillUIDesc.vPosition = _float4(532, 96, 0.f, 1.f);
-	FAILED_CHECK_RETURN(__super::Add_Composite(SkillUI::ProtoTag(), L"Com_SkillUI1", (CComponent**)&m_pSKillUIs[0], &tSkillUIDesc), E_FAIL);
+	tSkillUIDesc.fMaxCoolTime = 10.f;
+	FAILED_CHECK_RETURN(__super::Add_Composite(SkillUI::ProtoTag(), L"Com_SkillQ_UI", (CComponent**)&m_pSKillUIs[0], &tSkillUIDesc), E_FAIL);
+
+	tSkillUIDesc.pOwner = this;
+	tSkillUIDesc.fSize = _float2(70, 70);
+	tSkillUIDesc.SkillTextureTag = L"Prototype_Component_Texture_WSkill";
+	tSkillUIDesc.vPosition = _float4(532 + 80, 96, 0.f, 1.f);
+	tSkillUIDesc.fMaxCoolTime = 20.f;
+	FAILED_CHECK_RETURN(__super::Add_Composite(SkillUI::ProtoTag(), L"Com_SkillW_UI", (CComponent**)&m_pSKillUIs[1], &tSkillUIDesc), E_FAIL);
+
+	tSkillUIDesc.pOwner = this;
+	tSkillUIDesc.fSize = _float2(70, 70);
+	tSkillUIDesc.SkillTextureTag = L"Prototype_Component_Texture_ESkill";
+	tSkillUIDesc.vPosition = _float4(532 + 160, 96, 0.f, 1.f);
+	tSkillUIDesc.fMaxCoolTime = 15.f;
+	FAILED_CHECK_RETURN(__super::Add_Composite(SkillUI::ProtoTag(), L"Com_SkillE_UI", (CComponent**)&m_pSKillUIs[2], &tSkillUIDesc), E_FAIL);
+
+	tSkillUIDesc.pOwner = this;
+	tSkillUIDesc.fSize = _float2(70, 70);
+	tSkillUIDesc.SkillTextureTag = L"Prototype_Component_Texture_RSkill";
+	tSkillUIDesc.vPosition = _float4(532 + 240, 96, 0.f, 1.f);
+	tSkillUIDesc.fMaxCoolTime = 30.f;
+	FAILED_CHECK_RETURN(__super::Add_Composite(SkillUI::ProtoTag(), L"Com_SkillR_UI", (CComponent**)&m_pSKillUIs[3], &tSkillUIDesc), E_FAIL);
+	
 	Safe_Release(pGameInstance);
 	return S_OK;
 }

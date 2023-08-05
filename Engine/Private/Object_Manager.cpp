@@ -151,6 +151,18 @@ unordered_map<const _tchar*, CLayer*>::iterator CObject_Manager::LayerEnd(_uint 
 	return m_pLayers[iLevelIndex].end();
 }
 
+list<CGameObject*>::iterator CObject_Manager::GetLayerBegin(_uint iLevelIndex, const _tchar* pTag)
+{
+	CLayer* pLayer = Find_LayerByName(iLevelIndex, pTag);
+	return pLayer->Begin();
+}
+
+list<CGameObject*>::iterator CObject_Manager::GetLayerEnd(_uint iLevelIndex, const _tchar* pTag)
+{
+	CLayer* pLayer = Find_LayerByName(iLevelIndex, pTag);
+	return pLayer->End();
+}
+
 // 내부적으로 addref를 한다
 void CObject_Manager::AddToLayer(_uint iLevelIndex, const _tchar* pLayerTag, CGameObject* pGameObject)
 {

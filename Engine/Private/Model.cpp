@@ -568,6 +568,12 @@ HRESULT CModel::Bind_BoneMatrices(CShader* pShader, const char* pConstantName, _
 	return S_OK;
 }
 
+void CModel::SetGolem()
+{
+	for (auto Animation : m_Animations[LOWER])
+		Animation->SetGolem();
+}
+
 HRESULT CModel::Add_TimeLineEvent(string strAnimName, const _tchar* pTag, TIMELINE_EVENT tTimeLineEvent, BODY eBody)
 {
 	CAnimation* pAnimation = GetAnimationByName(strAnimName, eBody);

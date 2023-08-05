@@ -168,6 +168,16 @@ unordered_map<const _tchar*, CLayer*>::iterator CGameInstance::LayerEnd(_uint iL
 	return m_pObject_Manager->LayerEnd(iLevelIndex);
 }
 
+list<CGameObject*>::iterator CGameInstance::GetLayerBegin(_uint iLevelIndex, const _tchar* pTag)
+{
+	return m_pObject_Manager->GetLayerBegin(iLevelIndex, pTag);
+}
+
+list<CGameObject*>::iterator CGameInstance::GetLayerEnd(_uint iLevelIndex, const _tchar* pTag)
+{
+	return m_pObject_Manager->GetLayerEnd(iLevelIndex, pTag);
+}
+
 void CGameInstance::Serialization(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 {
 	if (nullptr == m_pObject_Manager)

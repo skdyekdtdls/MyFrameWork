@@ -30,7 +30,7 @@ void CrystalGolemTurn180::OnStateTick(_double TimeDelta)
 
 	if (pModel->IsAnimationFinished())
 	{
-		TransitionTo(L"CrystalGolemRun");
+		TransitionTo(L"CrystalGolemIdle");
 	}
 
 	Safe_Release(pGameInstance);

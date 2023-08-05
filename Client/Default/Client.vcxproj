@@ -320,6 +320,7 @@
     <ClInclude Include="..\public\MineCrystalsD.h" />
     <ClInclude Include="..\public\MineCrystalsE.h" />
     <ClInclude Include="..\public\MineCrystalsF.h" />
+    <ClInclude Include="..\public\MiniMap.h" />
     <ClInclude Include="..\public\MonsterHP.h" />
     <ClInclude Include="..\public\ObjectPool.h" />
     <ClInclude Include="..\public\P1Attack01.h" />
@@ -584,6 +585,7 @@
     <ClCompile Include="..\private\MineCrystalsD.cpp" />
     <ClCompile Include="..\private\MineCrystalsE.cpp" />
     <ClCompile Include="..\private\MineCrystalsF.cpp" />
+    <ClCompile Include="..\private\MiniMap.cpp" />
     <ClCompile Include="..\private\MonsterHP.cpp" />
     <ClCompile Include="..\private\P1Attack01.cpp" />
     <ClCompile Include="..\private\P1Attack02.cpp" />

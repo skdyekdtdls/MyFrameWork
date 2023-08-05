@@ -176,11 +176,6 @@ HRESULT CTerrain::SetUp_ShaderResources()
 
 	Safe_Release(pGameInstance);
 
-	FAILED_CHECK_RETURN(m_pTextureCom[TYPE_DIFFUSE]->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture"), E_FAIL);
-
-	_bool bRed = true;
-	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_bRed", &bRed, sizeof(_bool)), E_FAIL);
-
 #ifdef _DEBUG
 	if(m_bShowBrush)
 		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vBrushPos", &m_vPickPos, sizeof(_float3)), E_FAIL);

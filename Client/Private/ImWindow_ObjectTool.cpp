@@ -222,6 +222,10 @@ void CImWindow_ObjectTool::ObjectPlace()
 	tCloneDesc.vPosition = _float4(pTerrainDesc.vPickPos);
 	tCloneDesc.vPosition.w = 1.f;
 	CGameObject* pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, tag.c_str(), szTmp, &tCloneDesc);
+	CNavigation* pNavigation = pGameObject->GetComponent<CNavigation>();
+	CTransform* pTransform = pGameObject->GetComponent<CTransform>();
+	pNavigation->FindIndex(pTransform->Get_State(CTransform::STATE_POSITION));
+
 	system("cls");
 	CONSOLE_MSG("The Object Tool call \'Add_GameObject\'");
 	if (nullptr == pGameObject)

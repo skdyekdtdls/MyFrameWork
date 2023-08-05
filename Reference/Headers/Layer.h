@@ -29,11 +29,11 @@ public:
 		return m_pGameObjects;
 	}
 
-	auto Begin() {
+	list<CGameObject*>::iterator Begin() {
 		return m_pGameObjects.begin();
 	}
 
-	auto End() {
+	list<CGameObject*>::iterator End() {
 		return m_pGameObjects.end();
 	}
 

@@ -61,6 +61,8 @@ HRESULT CrystalGolem::Initialize(void* pArg)
 		});
 	m_pMonsterHP->Disable();
 
+	// 골렘 도는거때문에 하드코딩한거 건들지마셈.
+	m_pModelCom->GetAnimationByIndex(CRYSTAL_GOLEM_TURN180)->SetGolem();
 	return S_OK;
 }
 

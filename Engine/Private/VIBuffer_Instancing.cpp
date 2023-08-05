@@ -54,8 +54,8 @@ HRESULT CVIBuffer_Instancing::Initialize(void* pArg)
 	m_iInstanceStride = sizeof(VTXINSTANCE);
 
 	BufferDesc.ByteWidth = { m_iInstanceStride * m_InstanceDesc.iNumInstance };
-	BufferDesc.Usage = { D3D11_USAGE_DYNAMIC };
-	BufferDesc.BindFlags = { D3D11_BIND_VERTEX_BUFFER };
+	BufferDesc.Usage = { D3D11_USAGE_DYNAMIC }; // 
+	BufferDesc.BindFlags = { D3D11_BIND_VERTEX_BUFFER }; //
 	BufferDesc.StructureByteStride = { m_iInstanceStride };
 	BufferDesc.CPUAccessFlags = { D3D11_CPU_ACCESS_WRITE };
 	BufferDesc.MiscFlags = { 0 };
@@ -85,19 +85,7 @@ HRESULT CVIBuffer_Instancing::Initialize(void* pArg)
 
 void CVIBuffer_Instancing::Tick(_double TimeDelta)
 {
-	D3D11_MAPPED_SUBRESOURCE		SubResource;
 
-	m_pContext->Map(m_pVBInstance, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
-
-	for (size_t i = 0; i < m_InstanceDesc.iNumInstance; i++)
-	{
-		((VTXINSTANCE*)SubResource.pData)[i].vTranslation.y -= m_pInstanceSpeed[i] * TimeDelta;
-
-		if (0 >= ((VTXINSTANCE*)SubResource.pData)[i].vTranslation.y)
-			((VTXINSTANCE*)SubResource.pData)[i].vTranslation.y = m_pInstancePos[i].y;
-	}
-
-	m_pContext->Unmap(m_pVBInstance, 0);
 }
 
 HRESULT CVIBuffer_Instancing::Render()

@@ -11,6 +11,7 @@ public:
 	{
 		tagCVIBuffer_Rect_InstanceDesc() : tagCVIBuffer_InstancingDesc() {};
 	}CVIBUFFER_RECT_INSTANCE_DESC;
+
 private:
 	CVIBuffer_Rect_Instance(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);
 	CVIBuffer_Rect_Instance(const CVIBuffer_Rect_Instance& rhs);
@@ -19,7 +20,7 @@ private:
 public:
 	virtual HRESULT Initialize_Prototype(const CVIBuffer_Instancing::INSTANCEDESC* InstanceDesc);
 	virtual HRESULT Initialize(void* pArg) override;
-
+	virtual void Tick(_double TimeDelta) override;
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_Component_CVIBuffer_Rect_Instance"; }

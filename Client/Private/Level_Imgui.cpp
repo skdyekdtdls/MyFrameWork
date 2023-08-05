@@ -19,6 +19,8 @@
 #include "PlayerHP.h"
 #include "Image.h"
 #include "DynamicImage.h"
+#include "MiniMap.h"
+
 CLevel_Imgui::CLevel_Imgui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -121,9 +123,9 @@ void CLevel_Imgui::Ready_Layer_Monster(const _tchar* pLayerTag)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 	
-	//Alien_prawn::ALIEN_PRAWN_DESC tAlienPrawnDesc;
-	//tAlienPrawnDesc.vPosition = _float4(11.f, 0.f, 10.f, 1.f);
-	//pGameInstance->Add_GameObject(LEVEL_IMGUI, Alien_prawn::ProtoTag(), pLayerTag, &tAlienPrawnDesc);
+	Alien_prawn::ALIEN_PRAWN_DESC tAlienPrawnDesc;
+	tAlienPrawnDesc.vPosition = _float4(11.f, 0.f, 10.f, 1.f);
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, Alien_prawn::ProtoTag(), pLayerTag, &tAlienPrawnDesc);
 
 	//tAlienPrawnDesc.vPosition = _float4(12.f, 0.f, 10.f, 1.f);
 	//pGameInstance->Add_GameObject(LEVEL_IMGUI, Alien_prawn::ProtoTag(), pLayerTag, &tAlienPrawnDesc);
@@ -209,10 +211,10 @@ void CLevel_Imgui::Ready_Layer_UI(const _tchar* pLayerTag)
 	pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc);
 	*/
 
-	tImageDesc.Pos = _float2(g_iWinSizeX - 150, g_iWinSizeY - 607);
-	tImageDesc.Size = _float2(210, 210);
-	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_UI_KS_Radar");
-	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
+	//tImageDesc.Pos = _float2(g_iWinSizeX - 150, g_iWinSizeY - 607);
+	//tImageDesc.Size = _float2(210, 210);
+	//tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_UI_KS_Radar");
+	//NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
 
 	tImageDesc.Pos = _float2(g_iWinSizeX >> 1, g_iWinSizeY >> 1);
 	tImageDesc.Size = _float2(g_iWinSizeX, g_iWinSizeY);
@@ -220,10 +222,10 @@ void CLevel_Imgui::Ready_Layer_UI(const _tchar* pLayerTag)
 	pImage = static_cast<Image*>(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
 	pImage->ImageDepth(0.001f);
 
-	tImageDesc.Pos = _float2(g_iWinSizeX - 150, (g_iWinSizeY - 607));
-	tImageDesc.Size = _float2(20, 20);
-	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_ui_radar_player_icon");
-	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
+	//tImageDesc.Pos = _float2(g_iWinSizeX - 150, (g_iWinSizeY - 607));
+	//tImageDesc.Size = _float2(20, 20);
+	//tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_ui_radar_player_icon");
+	//NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
 
 	tImageDesc.Size = _float2(14, 4);
 	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_UI_dash");
@@ -234,12 +236,14 @@ void CLevel_Imgui::Ready_Layer_UI(const _tchar* pLayerTag)
 		pImage->SetPass(2);
 	}
 	
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, MiniMap::ProtoTag(), pLayerTag);
+
 	//tDynamicImageDesc.Pos = _float2(532, 96);
 	//tDynamicImageDesc.Size = _float2(70, 70);
 	//tDynamicImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_QSkill");
 	//NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, DynamicImage::ProtoTag(), pLayerTag, &tDynamicImageDesc));
 
-	tDynamicImageDesc.Pos = _float2(532 + 80, 96);
+	/*tDynamicImageDesc.Pos = _float2(532 + 80, 96);
 	tDynamicImageDesc.Size = _float2(60, 60);
 	tDynamicImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_WSkill");
 	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, DynamicImage::ProtoTag(), pLayerTag, &tDynamicImageDesc));
@@ -252,7 +256,7 @@ void CLevel_Imgui::Ready_Layer_UI(const _tchar* pLayerTag)
 	tDynamicImageDesc.Pos = _float2(532 + 240, 96);
 	tDynamicImageDesc.Size = _float2(70, 70);
 	tDynamicImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_RSkill");
-	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, DynamicImage::ProtoTag(), pLayerTag, &tDynamicImageDesc));
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, DynamicImage::ProtoTag(), pLayerTag, &tDynamicImageDesc));*/
 
 	Safe_Release(pGameInstance);
 }

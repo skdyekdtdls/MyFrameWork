@@ -6,11 +6,15 @@ _uint SkillUI::SkillUI_Id = 0;
 
 SkillUI::SkillUI(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
+	, m_fMaxCoolTime(0.f)
+	, m_bIsRunning(false)
 {
 }
 
 SkillUI::SkillUI(const SkillUI& rhs)
 	: CGameObject(rhs)
+	, m_fMaxCoolTime(rhs.m_fMaxCoolTime)
+	, m_bIsRunning(rhs.m_bIsRunning)
 {
 }
 
@@ -34,8 +38,14 @@ HRESULT SkillUI::Initialize(void* pArg)
 	m_tInfo.wstrName = TO_WSTR("SkillUI" + to_string(SkillUI_Id));
 	m_tInfo.wstrKey = ProtoTag();
 	m_tInfo.ID = SkillUI_Id;
-	m_pImage->ImageDepth(0.1f); // 뭔가 알파블랜드 왜곡문제가 발생한다.
+
+	m_pImage->SetRenderGroup(CRenderer::RENDER_UI_B);
+	SetMaxCoolTime(((tagSkillUIDesc*)pArg)->fMaxCoolTime);
+	m_pTimeCounter->Disable();
+	m_pTimeCounter->Reset();
+	m_pFontUI->SetColor(XMVectorSet(1.0f, 1.0f, 1.0f, 0.9f));
 	// UI블랜드 논블랜드를 나눠줄지가 관건.
+
 	return S_OK;
 }
 
@@ -43,20 +53,22 @@ void SkillUI::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
 	m_pImage->Tick(TimeDelta);
-
-	if (0.01f <= m_fCoolTime)
+	CoolTime();
+	if (m_pTimeCounter->isGreaterThan(0.15f))
 	{
 		m_pFontUI->Tick(TimeDelta);
-	}
-	
-	//m_pFontUI->Font(to_wstring(m_iLevel).c_str());
+	}	
 }
 
 void SkillUI::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
 	m_pImage->Late_Tick(TimeDelta);
-	m_pFontUI->Late_Tick(TimeDelta);
+	if (m_pTimeCounter->isGreaterThan(0.15f))
+	{
+		m_pFontUI->Late_Tick(TimeDelta);
+	}
+	m_pTimeCounter->Tick(TimeDelta);
 }
 
 void SkillUI::ImageDepth(_float Depth)
@@ -65,9 +77,14 @@ void SkillUI::ImageDepth(_float Depth)
 	m_pImage->ImageDepth(Depth);
 }
 
-void SkillUI::CoolTime()
+void SkillUI::UseSkill()
 {
-	m_fCoolTime = m_fMaxCoolTime;
+	if (true == m_bIsRunning)
+		return;
+	m_bIsRunning = true;
+	m_pTimeCounter->Reset();
+	m_pTimeCounter->Enable();
+	m_pImage->SetPass(4);
 }
 
 HRESULT SkillUI::Add_Components(const tagSkillUIDesc& SkillDesc)
@@ -80,16 +97,39 @@ HRESULT SkillUI::Add_Components(const tagSkillUIDesc& SkillDesc)
 	tImageDesc.pTextureProtoTag = SkillDesc.SkillTextureTag;
 	tImageDesc.Pos = _float2(SkillDesc.vPosition.x, SkillDesc.vPosition.y);
 	tImageDesc.Size = SkillDesc.fSize;
-	__super::Add_Composite(Image::ProtoTag(), L"Com_Image", (CComponent**)&m_pImage, &tImageDesc);
+	FAILED_CHECK_RETURN(__super::Add_Composite(Image::ProtoTag(), L"Com_Image", (CComponent**)&m_pImage, &tImageDesc), E_FAIL);
 	
 	FontUI::tagFontUIDesc tFontDesc;
 	tFontDesc.pOwner = this;
 	tFontDesc.vPosition = SkillDesc.vPosition;
-	tFontDesc.fScale = 1.f;
-	__super::Add_Composite(FontUI::ProtoTag(), L"Com_FontUI", (CComponent**)&m_pFontUI, &tFontDesc);
+	tFontDesc.vPosition.x -= 35;
+	tFontDesc.vPosition.y += 50;
+	tFontDesc.fScale = 0.8f;
+	FAILED_CHECK_RETURN(__super::Add_Composite(FontUI::ProtoTag(), L"Com_FontUI", (CComponent**)&m_pFontUI, &tFontDesc), E_FAIL);
+
+	TimeCounter::tagTimeCounterDesc tTimeCounterDesc;
+	tTimeCounterDesc.pOwner = this;
+	FAILED_CHECK_RETURN(Add_Component(LEVEL_STATIC, TimeCounter::ProtoTag(), L"Com_TimeCounter", (CComponent**)&m_pTimeCounter, &tTimeCounterDesc), E_FAIL);
 
 	Safe_Release(pGameInstance);
+
 	return S_OK;
+}
+
+void SkillUI::CoolTime()
+{
+	if (false == m_bIsRunning)
+		return;
+
+	_double RoundValue = DRound(m_fMaxCoolTime - m_pTimeCounter->TimeElapse(), 1);
+	m_pFontUI->Font((DbToWstr(RoundValue).c_str()));
+	if (m_pTimeCounter->isEuqalWith(m_fMaxCoolTime))
+	{
+		m_pImage->SetPass(2);
+		m_pTimeCounter->Disable();
+		m_pTimeCounter->Reset();
+		m_bIsRunning = false;
+	}
 }
 
 SkillUI* SkillUI::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -122,5 +162,7 @@ void SkillUI::Free(void)
 	--SkillUI_Id;
 	Safe_Release(m_pImage);
 	Safe_Release(m_pFontUI);
+	Safe_Release(m_pTimeCounter);
 }
+
 

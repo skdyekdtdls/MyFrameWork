@@ -181,6 +181,23 @@ static void DegreeClipping(_float& fDegree)
 	}	
 }
 
+// 첫번째 인자를 두번째 인자값 자리까지 반올림해준다.
+// ex) Value = 5.123456, iDight = 1
+// Result) Value = 5.1
+static _double DRound(_double Value, _uint iDigit)
+{
+	_uint iDecimal = 10;
+	iDecimal = std::pow(iDecimal, iDigit);
+	return round(Value * iDecimal) / iDecimal;
+}
+
+// double값을 소수점 iDigit 자리까지 잘라서 wstring형으로 반환하는 함수.
+static wstring DbToWstr(_double value, _uint iDight = 1)
+{
+	wstring wstr = std::to_wstring(value);
+	return wstr.substr(0, iDight + 2);
+}
+
 //bool IsPointOnLineSegment(FXMVECTOR A, FXMVECTOR B, FXMVECTOR P)
 //{
 //	DirectX::FXMVECTOR AB = DirectX::XMVectorSubtract(B, A);

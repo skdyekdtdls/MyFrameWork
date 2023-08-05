@@ -39,6 +39,10 @@ public:
 	void SetPass(_uint iPass) { m_iPass = iPass; }
 	void ImageDepth(_float Depth);
 	void SetPosition(_float xPos, _float yPos);
+	void SetRenderGroup(CRenderer::RENDERGROUP eRenderGroup) {
+		m_eRenderGroup = eRenderGroup;
+	}
+
 private:
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
@@ -49,6 +53,8 @@ private:
 private:
 	_float4x4				m_ViewMatrix, m_ProjMatrix;
 	_uint					m_iPass = { 1 };
+	CRenderer::RENDERGROUP	m_eRenderGroup = { CRenderer::RENDER_UI_B };
+
 public:
 	//TEXT("Prototype_Component_Texture_xx")를 전달하면된다.
 	HRESULT Add_Components(const _tchar* pTextureProtoTag);

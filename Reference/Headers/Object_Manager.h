@@ -47,6 +47,9 @@ public:
 	unordered_map<const _tchar*, CLayer*>::iterator LayerBegin(_uint iLevelIndex);
 	unordered_map<const _tchar*, CLayer*>::iterator LayerEnd(_uint iLevelIndex);
 
+	list<CGameObject*>::iterator GetLayerBegin(_uint iLevelIndex, const _tchar* pTag);
+	list<CGameObject*>::iterator GetLayerEnd(_uint iLevelIndex, const _tchar* pTag);
+
 private:
 	unordered_map<const _tchar*, CGameObject*> m_Prototypes;
 

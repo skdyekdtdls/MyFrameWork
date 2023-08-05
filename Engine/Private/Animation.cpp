@@ -133,6 +133,8 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 		if (false == m_isLoop)
 		{
 			m_isFinished = true;
+			if (m_bGolem)
+				m_TimeAcc = 0.0;
 		}
 		else
 		{
@@ -146,7 +148,7 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 		}
 	}
 
-	/* 현재 재생된 시간에 맞도록 모든 뼈의 상태를 키프레임정보를 기반으로하여 갱신한다. */
+	// 현재 재생된 시간에 맞도록 모든 뼈의 상태를 키프레임정보를 기반으로하여 갱신한다.
 	_uint		iChannelIndex = 0;
 	for (auto& pChannel : m_Channels)
 	{
@@ -157,9 +159,9 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 	}
 
 	// 위에다 넣으면 보간이 고장나고 안넣자니 타임라인이 고장나서 여기다 둘 수 밖에없었음.
-	if (m_TimeAcc >= m_Duration && false == m_isLoop)
-		m_TimeAcc = 0.0;
-
+	if (m_TimeAcc >= m_Duration && false == m_isLoop )
+		 m_TimeAcc = 0.0;
+	
 	for (auto& Pair : m_TimeLineEvents)
 	{
 		// 시간값이 일치하면 실행한다.

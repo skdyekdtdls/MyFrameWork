@@ -27,6 +27,7 @@ HRESULT CBlue_Snow::Initialize(void* pArg)
 	if (FAILED(Add_Components()))
 		return E_FAIL;
 
+
 	return S_OK;
 }
 
@@ -148,5 +149,4 @@ void CBlue_Snow::Free()
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pRendererCom);
-
 }

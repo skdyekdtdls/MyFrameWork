@@ -67,6 +67,7 @@ public: // Getter
 	}
 
 public: // Setter
+	void SetGolem() { m_bGolem = true; }
 	void SetPlaySpeed(_double _PlaySpeed) {
 		m_PlaySpeed = _PlaySpeed;
 	}
@@ -109,7 +110,7 @@ private:
 	_bool						m_isLoop;
 	_uint						m_iCurKeyFrame = { 0 };
 	_int						m_iNextIndex = { -1 };
-
+	_bool						m_bGolem = { false };
 	unordered_map<const _tchar*, TIMELINE_EVENT>	m_TimeLineEvents;
 
 public:

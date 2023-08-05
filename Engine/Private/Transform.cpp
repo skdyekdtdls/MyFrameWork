@@ -42,18 +42,17 @@ _float2 CTransform::GetScreenPos(_uint iWinSizeX, _uint iWinSizeY)
 	Safe_AddRef(pGameInstance);
 	_float3 vNDCPos;
 	_float2 vScreenPos;
-	_vector vPos = this->Get_State(STATE_POSITION);
+	_vector vPos = this->Get_State(STATE_POSITION); 
 	_matrix WorldMatrix = XMMatrixIdentity();
-	_matrix ViewMatrix = pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW);
-	_matrix ProjMatrix = pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ);
+	_matrix ViewMatrix = pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW); 
+	_matrix ProjMatrix = pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ); 
 	_matrix matWVP = WorldMatrix * ViewMatrix * ProjMatrix;
 	
 	XMStoreFloat3(&vNDCPos, XMVector3TransformCoord(vPos, matWVP));
-	vScreenPos.x = (vNDCPos.x + 1.f) * 0.5f * iWinSizeX;
-	vScreenPos.y = (1.f -vNDCPos.y) * 0.5f * iWinSizeY;
 
-	//FontPos.x = (_float)WinSize.x * 0.5f * (Center.x + 1.0f);
-	//FontPos.y = (_float)WinSize.y * 0.5f * (1.0f - Center.y);
+	vScreenPos.x = (vNDCPos.x + 1.f) * 0.5f * iWinSizeX;
+	vScreenPos.y = (1.f - vNDCPos.y) * 0.5f * iWinSizeY;
+
 	Safe_Release(pGameInstance);
 
 	return vScreenPos;
