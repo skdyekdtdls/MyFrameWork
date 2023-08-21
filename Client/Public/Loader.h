@@ -18,6 +18,7 @@ public:
 	HRESULT Loading();
 
 	_bool Get_Finished() { return m_isFinished; }
+	void Set_Finished() { m_isFinished = true; }
 	const _tchar* Get_LoadingText() const {
 		return m_szLoading;
 	}

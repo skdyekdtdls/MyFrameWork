@@ -30,7 +30,6 @@ HRESULT PlayerHP::Initialize(void* pArg)
 	if (FAILED(Add_Components()))
 		return E_FAIL;
 
-
 	m_pDynamicImage->SetRatio(1.f);
 	m_pObserver->Subscribe(L"TakeDamage", [this]() {
 		m_pHealthCom->TakeDamage(m_iAmount);

@@ -26,6 +26,7 @@ public:
     void Ready_Layer_Player(const _tchar* pLayerTag);
     void Ready_Layer_Effect(const _tchar* pLayerTag);
     void Ready_Layer_UI(const _tchar* pLayerTag);
+    void Ready_Layer_ETC();
 
 public:
     static CLevel_Imgui* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

@@ -22,7 +22,9 @@ void CCell::Set_Point(POINT ePoint, const _float3* vPos)
 {
 	m_vPoints[ePoint] = *vPos;
 	CalcNormal();
-
+	// 오브젝트 풀로 보관하고 있다가?.
+	// 파일을 읽어서 소환?
+	
 #ifdef _DEBUG
 	ID3D11Buffer* pVB = m_pVIBuffer->GetVB();
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -53,6 +55,30 @@ void CCell::CalcNormal()
 
 	vLine = XMLoadFloat3(&m_vPoints[POINT_A]) - XMLoadFloat3(&m_vPoints[POINT_C]);
 	m_vNormals[NEIGHBOR_CA] = _float3(XMVectorGetZ(vLine) * -1.f, 0.f, XMVectorGetX(vLine));
+}
+
+_float4 CCell::RandomPosition()
+{
+	_float4 vResult;
+	_vector vRandomPoint = XMVectorZero();
+	_vector vPointA = XMLoadFloat3(&m_vPoints[POINT_A]);
+	_vector vPointB = XMLoadFloat3(&m_vPoints[POINT_B]);
+	_vector vPointC = XMLoadFloat3(&m_vPoints[POINT_C]);
+	_float weightU, weightV, weightW;
+	weightU = RandomUNormal();
+	weightV = RandomUNormal();
+
+	if (weightU + weightV > 1)
+	{
+		weightU = 1 - weightU;
+		weightV = 1 - weightV;
+	}
+
+	weightW = 1 - weightU - weightV;
+	vRandomPoint = (weightU * vPointA) + (weightV * vPointB) + (weightW * vPointC);
+	XMStoreFloat4(&vResult, vRandomPoint);
+	vResult.w = 1.f;
+	return vResult;
 }
 
 HRESULT CCell::Initialize(const _float3* pPoints, _int iIndex)

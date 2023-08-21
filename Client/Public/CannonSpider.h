@@ -32,6 +32,7 @@ public:
 	typedef struct tagCannonSpiderDesc : public tagCGameObjectDesc
 	{
 		tagCannonSpiderDesc() : tagCGameObjectDesc() {}
+		_uint iStartIndex;
 	};
 private:
 	CannonSpider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -46,7 +47,7 @@ public:
 	virtual HRESULT Render() override;
 
 	void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
-
+	void ResetPool(void* pArg);
 private: /* For. Component */
 	CShader* m_pShaderCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };

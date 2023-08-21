@@ -24,13 +24,14 @@ class StateContext;
 END
 
 BEGIN(Client)
-class Alien_prawn final : public CGameObject, public ISerializable
+class Alien_prawn final : public CGameObject
 {
 	typedef StateContext<Alien_prawn, ALIEN_PRAWN_ANIM> AlienPrawnState;
 public:
 	typedef struct tagAlien_prawnDesc : public tagCGameObjectDesc
 	{
 		tagAlien_prawnDesc() : tagCGameObjectDesc() {}
+		_uint iStartIndex;
 	}ALIEN_PRAWN_DESC;
 
 private:
@@ -46,11 +47,7 @@ public:
 	virtual HRESULT Render() override;
 
 	virtual void OnCollision(CCollider::COLLISION_INFO pCollisionInfo, _double TimeDelta) override;
-
-public:
-	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
-	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
-
+	void ResetPool(void* pArg);
 private: /* For. Component */
 	CShader* m_pShaderCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };

@@ -92,6 +92,21 @@ void MonsterHP::Heal(_uint iAmount)
 	m_pObserver->Notify();
 }
 
+void MonsterHP::Reset()
+{
+	_float2 vPos = m_pOwnerTransform->GetScreenPos(g_iWinSizeX, g_iWinSizeY);
+	m_pDynamicImage->SetPosition(vPos.x + m_vOffset.x, g_iWinSizeY - vPos.y + m_vOffset.y);
+	m_pImage->SetPosition(vPos.x + m_vOffset.x, g_iWinSizeY - vPos.y + m_vOffset.y);
+	Disable();
+	FullHp();
+}
+
+// 어차피 Saturate에 의해 현재 체력은 최대값으로 고정된다.
+void MonsterHP::FullHp()
+{
+	Heal(99999);
+}
+
 void MonsterHP::Enable()
 {
 	SetEnable(true);

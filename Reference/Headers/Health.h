@@ -28,7 +28,7 @@ public:
 	}
 
 	void SetMaxHP(_uint iMaxHp) { m_iMaxHp = iMaxHp; }
-	void SetCurrentHP(_uint iCurrentHP) { m_iCurrentHp = iCurrentHP; }
+	void SetCurrentHP(_uint iCurrentHP) { Saturate(m_iCurrentHp = iCurrentHP, 0, m_iMaxHp); }
 
 public:
 	virtual HRESULT Initialize_Prototype();

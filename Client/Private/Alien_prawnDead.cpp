@@ -32,6 +32,7 @@ void Alien_prawnDead::OnStateTick(_double TimeDelta)
 	{
 		Single->AddExp(10.f);
 		m_pOwner->SetDead();
+		ObjectPool<Alien_prawn>::GetInstance()->PushPool(m_pOwner);
 	}
 
 	Safe_Release(pGameInstance);

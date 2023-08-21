@@ -1,6 +1,7 @@
 #include "ClintBasicBullet.h"
 #include "GameInstance.h"
-
+#include "Effect4x4.h"
+#include "CStone_Effect.h"
 _uint ClintBasicBullet::ClintBasicBullet_Id = 0;
 
 /* Don't Forget Release for the VIBuffer or Model Component*/
@@ -43,7 +44,8 @@ HRESULT ClintBasicBullet::Initialize(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tClintBasicBulletDesc.vPosition));
 	
 	m_pTimeCounterCom->Enable();
-
+	//m_test->Reset_Effects();
+	m_pEffect4x4Com->Reset();
 	return S_OK;
 }
 
@@ -66,7 +68,8 @@ void ClintBasicBullet::Tick(_double TimeDelta)
 		m_pColliderCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BULLET);
 	}
 
-	// 	m_pModelCom->Play_Animation(TimeDelta);
+	m_pEffect4x4Com->Tick(TimeDelta, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	//m_test->Tick(TimeDelta);
 }
 
 void ClintBasicBullet::Late_Tick(_double TimeDelta)
@@ -74,8 +77,9 @@ void ClintBasicBullet::Late_Tick(_double TimeDelta)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
+	m_pEffect4x4Com->Late_Tick(TimeDelta);
 	__super::Late_Tick(TimeDelta);
-	
+	//m_test->Late_Tick(TimeDelta);
 #ifdef _DEBUG
 	m_pRendererCom->Add_DebugGroup(m_pColliderCom);
 #endif
@@ -87,30 +91,6 @@ HRESULT ClintBasicBullet::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
-
-	if (FAILED(SetUp_ShaderResources()))
-		return E_FAIL;
-
-	//_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
-
-	//for (size_t i = 0; i < iNumMeshes; i++)
-	//{
-	//	m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
-
-	//	m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
-	//	
-
-	//	m_pShaderCom->Begin(0);
-
-	//	m_pModelCom->Render(i);
-	//}
-
-	// 만약에 모델 컴포넌트 안쓰면 이걸로 쓰면된다.
-	// m_pShaderCom->Begin(0);
-
-#ifdef _DEBUG
-
-#endif
 }
 
 void ClintBasicBullet::ResetPool(void* pArg)
@@ -118,6 +98,9 @@ void ClintBasicBullet::ResetPool(void* pArg)
 	m_bDead = false;
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, ((CLINT_BASIC_BULLET_DESC*)pArg)->vLook);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&((CLINT_BASIC_BULLET_DESC*)pArg)->vPosition));
+	m_pTimeCounterCom->Enable();
+	m_pEffect4x4Com->Reset();
+	//m_test->Reset_Effects();
 }
 
 void ClintBasicBullet::SetDead()
@@ -126,6 +109,7 @@ void ClintBasicBullet::SetDead()
 	ObjectPool<ClintBasicBullet>::GetInstance()->PushPool(this);
 	m_pTimeCounterCom->Reset();
 	m_pTimeCounterCom->Disable();
+	m_pEffect4x4Com->Disable();
 }
 
 HRESULT ClintBasicBullet::Add_Components()
@@ -141,12 +125,6 @@ HRESULT ClintBasicBullet::Add_Components()
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
 
-	CShader::CSHADER_DESC tShaderDesc; tShaderDesc.pOwner = this;
-	//FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxMesh*/", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
-
-	CModel::CMODEL_DESC tModelDesc; tModelDesc.pOwner = this;
-	//FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, /*L"Prototype_Component_Model_", L"Com_Model"*/, (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
-
 	CColliderSphere::CCOLLIDER_SPHERE_DESC tColliderSphereDesc;
 	tColliderSphereDesc.pOwner = this;
 	tColliderSphereDesc.fRadius = { 0.2f };
@@ -157,26 +135,16 @@ HRESULT ClintBasicBullet::Add_Components()
 	tTimeCounterDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, TimeCounter::ProtoTag(), L"Com_TimeCounter", (CComponent**)&m_pTimeCounterCom, &tTimeCounterDesc), E_FAIL);
 
+	Effect4x4::EFFECT4X4_DESC tEffectDesc;
+	tEffectDesc.pOwner = this;
+	tEffectDesc.pTextureTag = TEXT("Prototype_Component_Texture_T_ky_flare09_4x4");
+	FAILED_CHECK_RETURN(__super::Add_Composite(Effect4x4::ProtoTag(), L"Com_Effect4x4", (CComponent**)&m_pEffect4x4Com, &tEffectDesc), E_FAIL)
+
+	CStone_Effect::STONE_EFFECT_DESC tStoneDesc;
+	tStoneDesc.pOwner = this;
+	tStoneDesc.iNumParticles = 30;
+	FAILED_CHECK_RETURN(__super::Add_Composite(CStone_Effect::ProtoTag(), L"Com_Test", (CComponent**)&m_test, &tStoneDesc), E_FAIL);
 	Safe_Release(pGameInstance);
-	return S_OK;
-}
-
-HRESULT ClintBasicBullet::SetUp_ShaderResources()
-{
-	_float4x4 MyMatrix = m_pTransformCom->Get_WorldFloat4x4();
-	//FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &MyMatrix), E_FAIL);
-
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
-
-	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
-	//FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &MyMatrix), E_FAIL);
-
-	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
-	//FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &MyMatrix), E_FAIL);
-
-	Safe_Release(pGameInstance);
-
 	return S_OK;
 }
 
@@ -218,10 +186,10 @@ void ClintBasicBullet::Free(void)
 	__super::Free();
 
 	--ClintBasicBullet_Id;
-	//Safe_Release(m_pShaderCom);
-	//Safe_Release(m_pModelCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTimeCounterCom);
+	Safe_Release(m_pEffect4x4Com);
+	Safe_Release(m_test);
 }

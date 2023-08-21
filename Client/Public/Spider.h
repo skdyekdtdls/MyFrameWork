@@ -38,7 +38,9 @@ public:
 	typedef struct tagSpiderDesc : public tagCGameObjectDesc
 	{
 		tagSpiderDesc() : tagCGameObjectDesc() {}
+		_uint iStartIndex;
 	};
+
 private:
 	Spider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	Spider(const Spider& rhs);
@@ -52,6 +54,7 @@ public:
 	virtual HRESULT Render() override;
 
 	void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
+	void ResetPool(void* pArg);
 
 private: /* For. Component */
 	CShader* m_pShaderCom = { nullptr };

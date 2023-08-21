@@ -270,8 +270,6 @@ void CTransform::Go_Direction(_double TimeDelta, DIRECTION eDir, _float fLength)
 	}
 }
 
-
-
 void CTransform::Go_Direction(_double TimeDelta, DIRECTION eDir)
 {
 	Go_Direction(TimeDelta, eDir, m_TransformDesc.SpeedPerSec);
@@ -302,7 +300,7 @@ void CTransform::Go_Direction(_double TimeDelta, _fvector _vDir, _float fLength)
 				vDir *= 0.6f;
 				_float3 vContactNormal = pNavigation->ContactNormal(); // 충돌 법선을 가져옵니다.
 				_vector vSlidingVector = pNavigation->GetSlidingVector(vDir, XMLoadFloat3(&vContactNormal));
-				vNextPosition += vDir * fLength * TimeDelta;
+				vNextPosition += vSlidingVector * fLength * TimeDelta;
 
 				isMove = pNavigation->is_Move(vNextPosition);
 			}
@@ -330,6 +328,7 @@ void CTransform::Chase_Lerp(_fvector vTargetPosition, _double TimeDelta, _float 
 {
 	//현재 내 위치
 	_vector        vPosition = Get_State(STATE_POSITION);
+
 	//거리
 	_vector        vDir = vTargetPosition - vPosition;
 	if (fMinDistance < XMVectorGetX(XMVector3Length(vDir)))
@@ -345,9 +344,7 @@ void CTransform::Chase(_fvector vTargetPosition, _double TimeDelta, _float fMinD
 	_vector		vDir = vTargetPosition - vPosition;
 
 	if (fMinDistance < XMVectorGetX(XMVector3Length(vDir)))
-		vPosition += XMVector3Normalize(vDir) * m_TransformDesc.SpeedPerSec * TimeDelta;
-
-	Set_State(STATE_POSITION, vPosition);
+		Go_Direction(TimeDelta, vDir, m_TransformDesc.SpeedPerSec);
 }
 
 void CTransform::LookAt(_fvector vTargetPosition)

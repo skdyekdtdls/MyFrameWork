@@ -34,6 +34,7 @@ public:
 	typedef struct tagBatPotato_RIGDesc : public tagCGameObjectDesc
 	{
 		tagBatPotato_RIGDesc() : tagCGameObjectDesc() {}
+		_uint iStartIndex;
 	}BATPOTATO_RIG_DESC;
 private:
 	BatPotato_RIG(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -48,7 +49,7 @@ public:
 	virtual HRESULT Render() override;
 
 	virtual void OnCollision(CCollider::COLLISION_INFO pCollisionInfo, _double TimeDelta) override;	
-
+	void ResetPool(void* pArg);
 private: /* For. Component */
 	CShader* m_pShaderCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };

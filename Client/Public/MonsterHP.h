@@ -46,11 +46,13 @@ public:
 public:
 	virtual void TakeDamage(_uint iAmount) override;
 	virtual void Heal(_uint iAmount) override;
-
+	
 	_bool isZeroHP() { return m_pHealthCom->isZeroHP(); };
 	_float HPPercent() { return m_pHealthCom->HPPercent(); }
 	Observer* GetObserver() { return m_pObserver; }
 
+	void Reset();
+	void FullHp(); 
 	void Enable();
 	void Disable();
 

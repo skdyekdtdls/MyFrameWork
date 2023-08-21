@@ -46,6 +46,9 @@ HRESULT Alien_prawn::Initialize(void* pArg)
 		tCloneDesc = *(ALIEN_PRAWN_DESC*)pArg;
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
 	
+	// 네비셀 인덱스 초기화
+	m_pNavigationCom->SetCellCurIndex(tCloneDesc.iStartIndex);
+
 	// 상태 초기화
 	m_pStateContextCom->TransitionTo(L"Alien_prawnIdle");
 
@@ -144,15 +147,14 @@ void Alien_prawn::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double 
 	m_pStateContextCom->OnCollision(tCollisionInfo, TimeDelta);
 }
 
-void Alien_prawn::Save(HANDLE hFile, DWORD& dwByte)
+void Alien_prawn::ResetPool(void* pArg)
 {
-	m_tInfo.Save(hFile, dwByte);
-	m_pTransformCom->Save(hFile, dwByte);
-}
-
-void Alien_prawn::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
-{
-	m_pTransformCom->Load(hFile, dwByte, iLevelIndex);
+	ALIEN_PRAWN_DESC tAlienPrawnDesc = *(ALIEN_PRAWN_DESC*)pArg;
+	m_pNavigationCom->SetCellCurIndex(tAlienPrawnDesc.iStartIndex);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tAlienPrawnDesc.vPosition));
+	m_pMonsterHP->Reset();
+	m_pStateContextCom->TransitionTo(L"Alien_prawnIdle");
+	m_bDead = false;
 }
 
 HRESULT Alien_prawn::Add_Components()

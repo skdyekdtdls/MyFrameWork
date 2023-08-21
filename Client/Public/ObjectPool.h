@@ -65,6 +65,21 @@ public:
     {
         return m_ObjectList.size();
     }
+
+    void Resize(_uint iSize)
+    {
+        CGameInstance* pGameInstance = CGameInstance::GetInstance();
+        Safe_AddRef(pGameInstance);
+
+        for (_uint i = 0; i < iSize; ++i)
+        {
+            CLASSNAME* pGameObject = dynamic_cast<CLASSNAME*>(pGameInstance->Clone_GameObject(CLASSNAME::ProtoTag(), nullptr));
+            m_ObjectList.push_back(pGameObject);
+            m_pInstances.push_back(pGameObject);
+        }
+       
+        Safe_Release(pGameInstance);
+    }
 private:
     ID3D11Device* m_pDevice = { nullptr };
     ID3D11DeviceContext* m_pContext = { nullptr };

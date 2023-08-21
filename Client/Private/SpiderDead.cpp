@@ -32,6 +32,7 @@ void SpiderDead::OnStateTick(_double TimeDelta)
 	{
 		Single->AddExp(11.f);
 		m_pOwner->SetDead();
+		ObjectPool<Spider>::GetInstance()->PushPool(m_pOwner);
 	}
 
 	Safe_Release(pGameInstance);

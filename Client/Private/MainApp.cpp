@@ -1,11 +1,18 @@
 #include "MainApp.h"
 #include "GameInstance.h"
+#include "SoundMgr.h"
 #include "Level.h"
 #include "Level_Loading.h"
 #include "ClientInstance.h"
 #include "CannonSpiderBullet.h"
 #include "BatPotato_RIGBullet.h"
 #include "ClintBasicBullet.h"
+
+// 몬스터풀
+#include "Alien_prawn.h"
+#include "BatPotato_RIG.h"
+#include "CannonSpider.h"
+#include "Spider.h"
 
 #include "CrystalGolemAttackAreaBullet.h"
 #include "CrystalGolemAttackArea02Bullet.h"
@@ -48,7 +55,7 @@ HRESULT CMainApp::Initialize()
 #ifdef _DEBUG
 	CImWindow_Manager::GetInstance()->Initialize(&m_pIO, m_pDevice, m_pContext);
 #endif
-
+	CSoundMgr::Get_Instance()->Initialize();
 	if (FAILED(Ready_Prototype_Component_For_Static()))
 		return E_FAIL;
 
@@ -64,9 +71,11 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(Ready_Font()))
 		return E_FAIL;
+	CSoundMgr::Get_Instance()->PlayBGM(L"big_spider_death1.ogg");
+
 
 	Ready_Pool();
-
+	
 	return S_OK;
 }
 
@@ -74,6 +83,8 @@ void CMainApp::Tick(_double TimeDelta)
 {
 	if (nullptr == m_pGameInstance)
 		return;
+
+	//Calc_FPS(TimeDelta);
 
 	m_pGameInstance->Tick_Engine(TimeDelta);
 }
@@ -98,6 +109,8 @@ HRESULT CMainApp::Render()
 	m_pRenderer->Draw_RenderGroup();
 	wstring tmp = to_wstring(ptMouse.x) + L" " + to_wstring(WinSize.y - ptMouse.y);
 	m_pGameInstance->Render_Font(L"Font_135", tmp.c_str(), _float2(ptMouse.x, ptMouse.y), XMVectorSet(1.0, 0.4118, 0.7059, 1.f));
+
+	//Render_FPS();
 #ifdef _DEBUG
 	CImWindow_Manager::GetInstance()->Render();
 #endif
@@ -253,8 +266,30 @@ HRESULT CMainApp::Ready_Pool()
 	ObjectPool<class P2Attack02>::GetInstance()->Initialize(m_pDevice, m_pContext);
 	ObjectPool<class P2Attack03>::GetInstance()->Initialize(m_pDevice, m_pContext);
 	ObjectPool<class P2Attack04>::GetInstance()->Initialize(m_pDevice, m_pContext);
+	ObjectPool<class Alien_prawn>::GetInstance()->Initialize(m_pDevice, m_pContext);
+	ObjectPool<class BatPotato_RIG>::GetInstance()->Initialize(m_pDevice, m_pContext);
+	ObjectPool<class CannonSpider>::GetInstance()->Initialize(m_pDevice, m_pContext);
+	ObjectPool<class Spider>::GetInstance()->Initialize(m_pDevice, m_pContext);
 
 	return S_OK; // 풀 이니셜 후 해제.
+}
+
+void CMainApp::Calc_FPS(_double TimeDelta)
+{
+	m_TimeAcc += TimeDelta;
+	++m_iCount;
+	if (m_TimeAcc >= 1.f)
+	{
+		m_FPS = m_iCount;
+		m_iCount = 0;
+		m_TimeAcc = 0.0;
+	}
+}
+
+void CMainApp::Render_FPS()
+{
+	wstring tmp = L"FPS : " + to_wstring(m_FPS);
+	m_pGameInstance->Render_Font(L"Font_135", tmp.c_str(), _float2(0, 0));
 }
 
 HRESULT CMainApp::Open_Level(LEVELID eLevelIndex)
@@ -297,9 +332,15 @@ void CMainApp::Free()
 	ObjectPool<class P2Attack02>::DestroyInstance();
 	ObjectPool<class P2Attack03>::DestroyInstance();
 	ObjectPool<class P2Attack04>::DestroyInstance();
+	ObjectPool<class Alien_prawn>::DestroyInstance();
+	ObjectPool<class BatPotato_RIG>::DestroyInstance();
+	ObjectPool<class CannonSpider>::DestroyInstance();
+	ObjectPool<class Spider>::DestroyInstance();
+
 #ifdef _DEBUG
 	CImWindow_Manager::DestroyInstance();
 #endif // DEBUG
 	ClientInstance::DestroyInstance();
+	CSoundMgr::Destroy_Instance();
 	CGameInstance::Release_Engine();
 }

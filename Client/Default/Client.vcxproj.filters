@@ -130,9 +130,6 @@
     <Filter Include="02. GameObjects\Effect\Instancing">
       <UniqueIdentifier>{9cabb107-9d81-4a0b-816d-a4fd3d335056}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\Effect\Instancing\Blue">
-      <UniqueIdentifier>{e2ca6a31-f73c-4b24-bad6-deed2b718b40}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObjects\BackGround\LargeVolcanicRock_002_Red_Desert">
       <UniqueIdentifier>{f0b46961-e53f-49ac-a6bb-96f9e1a1e16a}</UniqueIdentifier>
     </Filter>
@@ -381,6 +378,18 @@
     </Filter>
     <Filter Include="95. Design\Strategy\ParticleStrategy">
       <UniqueIdentifier>{ece9572f-bb2f-4c5c-aafe-6ad4cc7ea325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Spawner">
+      <UniqueIdentifier>{65a7f9bb-01e2-42c7-bc0d-8991bd6f0e3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Normal">
+      <UniqueIdentifier>{d4df9c2d-812d-4c9f-b398-a9d870f632d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Normal\EnergyBall">
+      <UniqueIdentifier>{edea104e-4266-4d87-95d5-04f79f42ab4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Effect4x4">
+      <UniqueIdentifier>{c267f81c-f3ab-46f6-b99b-8d4db50170fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -910,6 +919,18 @@
     <ClInclude Include="..\public\ParticleStrategy.h">
       <Filter>95. Design\Strategy\ParticleStrategy</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Spawner.h">
+      <Filter>02. GameObjects\Spawner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EnergyBall.h">
+      <Filter>02. GameObjects\Effect\Normal\EnergyBall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect4x4.h">
+      <Filter>02. GameObjects\Effect\Effect4x4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SoundMgr.h">
+      <Filter>95. Design\Singleton</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -1418,6 +1439,18 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleStrategy.cpp">
       <Filter>95. Design\Strategy\ParticleStrategy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Spawner.cpp">
+      <Filter>02. GameObjects\Spawner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EnergyBall.cpp">
+      <Filter>02. GameObjects\Effect\Normal\EnergyBall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect4x4.cpp">
+      <Filter>02. GameObjects\Effect\Effect4x4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SoundMgr.cpp">
+      <Filter>95. Design\Singleton</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

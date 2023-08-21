@@ -31,6 +31,7 @@ void CannonSpiderDead::OnStateTick(_double TimeDelta)
 	{
 		Single->AddExp(12.f);
 		m_pOwner->SetDead();
+		ObjectPool<CannonSpider>::GetInstance()->PushPool(m_pOwner);
 	}
 
 	Safe_Release(pGameInstance);

@@ -17,6 +17,11 @@ class TimeCounter;
 END
 
 BEGIN(Client)
+class Effect4x4;
+class CStone_Effect;
+END
+
+BEGIN(Client)
 class ClintBasicBullet final : public Bullet
 {
 public:
@@ -46,16 +51,15 @@ public:
 	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
 
 private: /* For. Component */
-	//CShader* m_pShaderCom = { nullptr };
-	//CModel* m_pModelCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CCollider* m_pColliderCom = { nullptr };
 	TimeCounter* m_pTimeCounterCom = { nullptr };
+	Effect4x4* m_pEffect4x4Com = { nullptr };
+	CStone_Effect* m_test = { nullptr };
 
 private:
 	HRESULT Add_Components();
-	HRESULT SetUp_ShaderResources();
 
 private:
 	static _uint ClintBasicBullet_Id;

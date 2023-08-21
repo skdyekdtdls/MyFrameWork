@@ -140,7 +140,14 @@ _uint CNavigation::FindIndex(_fvector vPosition)
 	return -1;
 }
 
+_float4 CNavigation::RandomPosInCell(_uint iIndex)
+{
+	return m_Cells[iIndex]->RandomPosition();
+}
+
 #ifdef _DEBUG
+
+
 
 void CNavigation::DeleteCellByIndex(_uint iIndex)
 {

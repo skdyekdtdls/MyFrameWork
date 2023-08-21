@@ -75,7 +75,6 @@ private: /* For. Component */
 	PlayerLevel* m_pPlayerLevelCom = { nullptr };
 	PlayerHP* m_pPlayerHP = { nullptr };
 	vector<SkillUI*> m_pSKillUIs = { nullptr };
-
 	CStone_Effect* m_pStoneEffect = { nullptr };
 private:
 	static _uint Clint_Id;

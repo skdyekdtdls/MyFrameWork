@@ -1,4 +1,5 @@
 #pragma once
+//#include "../Public/inc\fmod.hpp"
 #include <windows.h>
 #include "Client_Enum.h"
 #include "ClientInstance.h"
@@ -23,7 +24,7 @@ extern HINSTANCE g_hInst;
 extern HWND g_hWnd;
 
 using namespace Client;
-
+enum CHANNELID { BGM, PLAYER, EFFECT, UI, SYSTEM_EFFECT, SYSTEM_EFFECT2, SYSTEM_EFFECT3, MAXCHANNEL };
 #ifdef _DEBUG
 enum IMWIN_MODE {
 	OBJ_TOOL_MODE,

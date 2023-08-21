@@ -32,6 +32,7 @@ void BatPotato_RIGDeath::OnStateTick(_double TimeDelta)
 	{
 		Single->AddExp(13.f);
 		m_pOwner->SetDead();
+		ObjectPool<BatPotato_RIG>::GetInstance()->PushPool(m_pOwner);
 	}
 
 	Safe_Release(pGameInstance);

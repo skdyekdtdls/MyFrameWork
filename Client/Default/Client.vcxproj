@@ -124,14 +124,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions);_USE_IMGUI</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../Public\;../Private\;../../Reference/Headers\;../IMGUI\;../IMGUI\backends</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Public\;../Private\;../../Reference/Headers\;../IMGUI\;../IMGUI\backends;core\inc\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../Reference/Librarys\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine.lib;fmodL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>
@@ -150,7 +150,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../Public\;../Private\;../../Reference/Headers\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Public\;../Private\;../../Reference/Headers\;../Public\inc\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -158,8 +158,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../Reference/Librarys\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../Reference/Librarys\;../fmod\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Engine.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <PreBuildEvent>
@@ -248,6 +248,8 @@
     <ClInclude Include="..\Public\CrystalGolemTurn180.h" />
     <ClInclude Include="..\Public\CStone_Effect.h" />
     <ClInclude Include="..\Public\DynamicImage.h" />
+    <ClInclude Include="..\public\Effect4x4.h" />
+    <ClInclude Include="..\public\EnergyBall.h" />
     <ClInclude Include="..\public\ParticleStrategy.h" />
     <ClInclude Include="..\Public\FontUI.h" />
     <ClInclude Include="..\public\HP.h" />
@@ -376,6 +378,8 @@
     <ClInclude Include="..\public\SM_TrozoPared.h" />
     <ClInclude Include="..\public\SM_Wall01.h" />
     <ClInclude Include="..\public\SM_Wall02.h" />
+    <ClInclude Include="..\Public\SoundMgr.h" />
+    <ClInclude Include="..\public\Spawner.h" />
     <ClInclude Include="..\public\Spider.h" />
     <ClInclude Include="..\public\SpiderAppear.h" />
     <ClInclude Include="..\public\SpiderAttack.h" />
@@ -501,6 +505,8 @@
     <ClCompile Include="..\Private\CrystalGolemTurn180.cpp" />
     <ClCompile Include="..\Private\CStone_Effect.cpp" />
     <ClCompile Include="..\Private\DynamicImage.cpp" />
+    <ClCompile Include="..\private\Effect4x4.cpp" />
+    <ClCompile Include="..\private\EnergyBall.cpp" />
     <ClCompile Include="..\private\ParticleStrategy.cpp" />
     <ClCompile Include="..\Private\FontUI.cpp" />
     <ClCompile Include="..\private\HP.cpp" />
@@ -641,6 +647,8 @@
     <ClCompile Include="..\private\SM_TrozoPared.cpp" />
     <ClCompile Include="..\private\SM_Wall01.cpp" />
     <ClCompile Include="..\private\SM_Wall02.cpp" />
+    <ClCompile Include="..\Private\SoundMgr.cpp" />
+    <ClCompile Include="..\private\Spawner.cpp" />
     <ClCompile Include="..\private\Spider.cpp" />
     <ClCompile Include="..\private\SpiderAppear.cpp" />
     <ClCompile Include="..\private\SpiderAttack.cpp" />

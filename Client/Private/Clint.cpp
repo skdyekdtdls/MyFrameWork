@@ -12,7 +12,7 @@
 #include "PlayerHP.h"
 #include "SkillUI.h"
 #include "CStone_Effect.h"
-
+#include "Alien_prawn.h"
 _uint Clint::Clint_Id = 0;
 
 Clint::Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -124,11 +124,20 @@ void Clint::Tick(_double TimeDelta)
 		SkillUIs->Tick(TimeDelta);
 
 	m_pPlayerHP->Tick(TimeDelta);
+
+	// ½ºÅæÀÌÆåÆ® ½ÇÇè
+	//m_pStoneEffect->Tick(TimeDelta);
+	//CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	//Safe_AddRef(pGameInstance);
+	//if (pGameInstance->Key_Down(DIK_U))
+	//	m_pStoneEffect->Reset_Effects();
+	//Safe_Release(pGameInstance);
 }
 
 void Clint::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
+	m_pStoneEffect->Late_Tick(TimeDelta);
 	// ·»´õ·¯ ±×·ì¿¡ Ãß°¡
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 	m_pColliderCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BODY);
@@ -197,7 +206,7 @@ void Clint::Save(HANDLE hFile, DWORD& dwByte)
 void Clint::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 {
 	m_pTransformCom->Load(hFile, dwByte, iLevelIndex);
-	m_pNavigationCom->SetCurIndex(m_pNavigationCom->FindIndex(m_pTransformCom->Get_State(CTransform::STATE_POSITION)));
+	m_pNavigationCom->SetCellCurIndex(m_pNavigationCom->FindIndex(m_pTransformCom->Get_State(CTransform::STATE_POSITION)));
 }
 
 HRESULT Clint::Add_Components()
@@ -291,10 +300,11 @@ HRESULT Clint::Add_Components()
 	tSkillUIDesc.vPosition = _float4(532 + 240, 96, 0.f, 1.f);
 	tSkillUIDesc.fMaxCoolTime = 30.f;
 	FAILED_CHECK_RETURN(__super::Add_Composite(SkillUI::ProtoTag(), L"Com_SkillR_UI", (CComponent**)&m_pSKillUIs[3], &tSkillUIDesc), E_FAIL);
-	
 
-
-	FAILED_CHECK_RETURN(__super::Add_Composite(CStone_Effect::ProtoTag(), L"Com_Test", (CComponent**)&m_pStoneEffect, nullptr), E_FAIL);
+	CStone_Effect::STONE_EFFECT_DESC tStoneDesc;
+	tStoneDesc.pOwner = this;
+	tStoneDesc.iNumParticles = 30;
+	FAILED_CHECK_RETURN(__super::Add_Composite(CStone_Effect::ProtoTag(), L"Com_Test", (CComponent**)&m_pStoneEffect, &tStoneDesc), E_FAIL);
 
 	Safe_Release(pGameInstance);
 	return S_OK;
@@ -366,8 +376,8 @@ void Clint::Free(void)
 	Safe_Release(m_pStateContextCom);
 	Safe_Release(m_pPlayerLevelCom);
 	Safe_Release(m_pPlayerHP);
-	Safe_Release(m_pStoneEffect);
 	for (auto SkillUI : m_pSKillUIs)
 		Safe_Release(SkillUI);
+	Safe_Release(m_pStoneEffect);
 }
 

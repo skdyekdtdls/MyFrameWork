@@ -1,8 +1,10 @@
 #include "Level_GamePlay.h"
+#include "Spawner.h"
 #include "GameInstance.h"
 #include "Camera_Free.h"
 #include "EditCamera.h"
 #include "Terrain.h"
+#include "Cube.h"
 #include "ImWindow_Manager.h"
 #include "Clint.h"
 #include "Sky.h"
@@ -13,6 +15,10 @@
 #include "CrystalGolem.h"
 #include "Spider.h"
 #include "Queen_Moggoth.h"
+#include "PlayerHP.h"
+#include "Image.h"
+#include "DynamicImage.h"
+#include "MiniMap.h"
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -30,10 +36,52 @@ HRESULT CLevel_GamePlay::Initialize()
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
 	Ready_Layer_Effect(TEXT("Layer_Effect"));
 
-	// 로드
+	// 로드, 이 순서를 유지하는게 신상에 좋음.
 	LoadLevel();
 
+	Ready_Layer_UI(TEXT("Layer_UI"));
+	Ready_Layer_ETC();
+
 	return S_OK;
+}
+
+void CLevel_GamePlay::Ready_Layer_UI(const _tchar* pLayerTag)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	Image* pImage;
+	DynamicImage* pDynamicImage;
+	DynamicImage::tagDynamicImageDesc tDynamicImageDesc;
+	Image::tagImageDesc tImageDesc;
+
+	tImageDesc.Pos = _float2(g_iWinSizeX >> 1, g_iWinSizeY >> 1);
+	tImageDesc.Size = _float2(g_iWinSizeX, g_iWinSizeY);
+	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_CustomUI");
+	pImage = static_cast<Image*>(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
+	pImage->ImageDepth(0.001f);
+
+	tImageDesc.Size = _float2(14, 4);
+	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_UI_dash");
+	for (_uint i = 0; i < 3; ++i)
+	{
+		tImageDesc.Pos = _float2((g_iWinSizeX >> 1) - 40 + i * (tImageDesc.Size.x + 5), (g_iWinSizeY >> 1) + 87);
+		pImage = static_cast<Image*>(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
+		pImage->SetPass(2);
+	}
+
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, MiniMap::ProtoTag(), pLayerTag);
+	Safe_Release(pGameInstance);
+}
+
+void CLevel_GamePlay::Ready_Layer_ETC()
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	LEVELID eCurLevelID = static_cast<LEVELID>(pGameInstance->Get_NextLevelIndex());
+
+	NULL_CHECK(pGameInstance->Add_GameObject(eCurLevelID, Spawner::ProtoTag(), L"Layer_Spawner", nullptr));
+
+	Safe_Release(pGameInstance);
 }
 
 void CLevel_GamePlay::Tick(_double TimeDelta)

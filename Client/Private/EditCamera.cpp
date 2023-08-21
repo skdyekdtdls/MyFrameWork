@@ -98,6 +98,9 @@ HRESULT CEditCamera::Initialize(void* pArg)
 	tTransformDesc.RotationPerSec = XMConvertToRadians(90.f);
 	m_pTransform->Set_Desc(tTransformDesc);
 
+	m_bStart = false;
+	ObjectPool<class Alien_prawn>::GetInstance()->Resize(30);
+
 	return S_OK;
 }
 

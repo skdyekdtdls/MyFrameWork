@@ -111,8 +111,8 @@ public:
 protected: /* For.Bones*/
 	_uint						m_iNumBones = { 0 };
 	vector<class CBone*>		m_Bones;
-
 	_int						m_RootIndex = { -1 };
+
 	// Play_Animation의 순서가 애매하기 때문에 변수 선언했음.
 	_float						m_RootMoveDistance = { 0.f };
 	_float						m_PrevMoveDistance = { 0.f };

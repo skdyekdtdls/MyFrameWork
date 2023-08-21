@@ -40,6 +40,7 @@ public:
 	// 삼각형의 각각의 변에 대하여 법선벡터를 만든다.
 	void CalcNormal();
 
+	_float4 RandomPosition();
 public:
 	// 셀의 위치와 인덱스를 초기화한다.(DEBUG에선 버퍼와 콜라이더도 초기화)
 	HRESULT Initialize(const _float3* pPoints, _int iIndex);

@@ -148,6 +148,16 @@ void BatPotato_RIG::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _doubl
 	m_pStateContextCom->OnCollision(tCollisionInfo, TimeDelta);
 }
 
+void BatPotato_RIG::ResetPool(void* pArg)
+{
+	BATPOTATO_RIG_DESC tMonsterDesc = *(BATPOTATO_RIG_DESC*)pArg;
+	m_pNavigationCom->SetCellCurIndex(tMonsterDesc.iStartIndex);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tMonsterDesc.vPosition));
+	m_pMonsterHP->Reset();
+	m_pStateContextCom->TransitionTo(L"BatPotato_RIGIdle");
+	m_bDead = false;
+}
+
 HRESULT BatPotato_RIG::Add_Components()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();

@@ -43,7 +43,6 @@ public:
 		return m_vContactNormal;
 	}
 
-
 	// 이동 방향과 접촉한 선분의 노말벡터를 받아서 슬라이딩 벡터를 반환한다.
 	_vector GetSlidingVector(_fvector vLook, _fvector vContactNormal);
 
@@ -54,12 +53,19 @@ public:
 	_uint FindIndex(_fvector vPosition);
 
 	// 객체가 들어있는 인덱스를 설정해준다.
-	void SetCurIndex(_uint iIndex) { m_tNaviDesc.iCurrentIndex = iIndex; }
+	void SetCellCurIndex(_uint iIndex) { m_tNaviDesc.iCurrentIndex = iIndex; }
+
+	_uint GetCellCurIndex() { return m_tNaviDesc.iCurrentIndex; }
+
+	// 셀의 랜덤 포지션을 반환한다.
+	_float4 RandomPosInCell(_uint iIndex);
 
 #ifdef _DEBUG
+
 	_bool* isRenderPtr() {
 		return &m_bRender;
 	}
+
 
 	// 셀을 지우고 셀의 이웃을 처음부터 다시 연결한다.
 	void DeleteCellByIndex(_uint iIndex);

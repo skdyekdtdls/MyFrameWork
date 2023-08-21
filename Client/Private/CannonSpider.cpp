@@ -170,6 +170,16 @@ void CannonSpider::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double
 	m_pStateContextCom->OnCollision(tCollisionInfo, TimeDelta);
 }
 
+void CannonSpider::ResetPool(void* pArg)
+{
+	tagCannonSpiderDesc tMonsterDesc = *(tagCannonSpiderDesc*)pArg;
+	m_pNavigationCom->SetCellCurIndex(tMonsterDesc.iStartIndex);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tMonsterDesc.vPosition));
+	m_pMonsterHP->Reset();
+	m_pStateContextCom->TransitionTo(L"CannonSpiderIdle");
+	m_bDead = false;
+}
+
 HRESULT CannonSpider::Add_Components()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();

@@ -60,6 +60,7 @@ private:
 	CRenderer* m_pRenderer = { nullptr };
 	list<PICK_DESC> m_tPickDescs;
 	RAY		m_tMouseRay;
+	_bool   m_bStart = { true };
 	_bool	m_isPicking = { false };
 	_uint   m_iAttachingBoneIndex = { 0 };
 	_float4 m_OffsetPos = { _float4(0.f, 10.f, -10.f, 0.f) };

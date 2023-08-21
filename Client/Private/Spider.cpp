@@ -3,6 +3,7 @@
 #include "StateContext.h"
 #include "SpiderBullet.h"
 #include "MonsterHP.h"
+
 _uint Spider::Spider_Id = 0;
 
 Spider::Spider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -146,9 +147,18 @@ void Spider::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeD
 	m_pStateContextCom->OnCollision(tCollisionInfo, TimeDelta);
 }
 
+void Spider::ResetPool(void* pArg)
+{
+	tagSpiderDesc tMonsterDesc = *(tagSpiderDesc*)pArg;
+	m_pNavigationCom->SetCellCurIndex(tMonsterDesc.iStartIndex);
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tMonsterDesc.vPosition));
+	m_pMonsterHP->Reset();
+	m_pStateContextCom->TransitionTo(L"SpiderIdle");
+	m_bDead = false;
+}
+
 HRESULT Spider::SetUp_Notify()
 {
-
 	m_pModelCom->Add_TimeLineEvent("spider_attack", L"SpiderAttack", TIMELINE_EVENT(25.0, [this]() {
 		CGameInstance* pGameInstance = CGameInstance::GetInstance();
 		Safe_AddRef(pGameInstance);
@@ -216,8 +226,6 @@ HRESULT Spider::SetUp_Notify()
 	// spider_attack_b    75.0
 	// spider_attack_mid  75.0
 
-
-
 	return S_OK;
 }
 
@@ -238,7 +246,7 @@ HRESULT Spider::Add_Components()
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxAnimMesh", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
 
 	//_uint iLogic = RandomIntFrom_A_To_B(0, 6);
-	
+
 	CModel::CMODEL_DESC tModelDesc; tModelDesc.pOwner = this;
 	switch (6)
 	{

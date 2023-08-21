@@ -4,11 +4,13 @@
 CStone_Effect::CStone_Effect(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
+
 }
 
 CStone_Effect::CStone_Effect(const CStone_Effect& rhs)
 	: CGameObject(rhs)
 {
+
 }
 
 HRESULT CStone_Effect::Initialize(void* pArg)
@@ -17,7 +19,7 @@ HRESULT CStone_Effect::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_iNumParticles = ((STONE_EFFECT_DESC*)pArg)->iNumParticles;
-
+	m_Particles.resize(m_iNumParticles);
 	if (FAILED(Add_Components()))
 		return E_FAIL;
 	

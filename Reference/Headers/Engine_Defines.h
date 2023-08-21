@@ -5,7 +5,9 @@
 #include "assimp\Importer.hpp"
 #include "assimp\scene.h"
 #include "assimp\postprocess.h"
+//#include "fmod.h" //c언어전용
 #include <iostream>
+#include <conio.h>
 #include <tchar.h>
 #include <DirectXMath.h>
 #include <d3dcompiler.h>
@@ -18,8 +20,8 @@
 #include "DirectXTK/Effects.h"
 #include "DirectXTK/SpriteBatch.h"
 #include "DirectXTK/SpriteFont.h"
-
-
+#include <stdio.h>
+#include <io.h>
 
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
@@ -65,6 +67,7 @@ END
 #include "Assimp_Struct.h"
 
 enum BODY { LOWER, UPPER, BODY_END };
+
 
 #ifdef _DEBUG
 
