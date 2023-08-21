@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "Alien_prawn.h"
 #include "StateContext.h"
+#include "SoundMgr.h"
 Alien_prawnRun::Alien_prawnRun(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: StateMachine<Alien_prawn, ALIEN_PRAWN_ANIM>(pDevice, pContext)
 {
@@ -17,6 +18,7 @@ void Alien_prawnRun::OnStateEnter()
 	__super::OnStateEnter();
 
 	SetAnimIndex(ALIEN_PRAWN_RUN, LOWER);
+	SoundMgr->PlaySound(L"AlienPrawnWalk.wav", CHANNELID::ALIEN_PRAWN, 0.5f);
 }
 // ¹ä¸Ô°í¿Í¼­ º¸½ºÇØ!
 void Alien_prawnRun::OnStateTick(_double TimeDelta)

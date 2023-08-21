@@ -74,6 +74,8 @@ HRESULT Queen_Moggoth::Initialize(void* pArg)
 	// 노티파이 초기화
 	SetUp_Notify();
 
+	// 네비셀 인덱스 초기화
+	m_pNavigationCom->SetCellCurIndex(tCloneDesc.iStartIndex);
 	return S_OK;
 }
 

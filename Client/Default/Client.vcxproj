@@ -200,6 +200,7 @@
     <ClInclude Include="..\public\BatPotato_RIGRun.h" />
     <ClInclude Include="..\public\BossHP.h" />
     <ClInclude Include="..\public\Bullet.h" />
+    <ClInclude Include="..\public\Bullet01Effect.h" />
     <ClInclude Include="..\Public\Bush01.h" />
     <ClInclude Include="..\public\BushA.h" />
     <ClInclude Include="..\public\BushB.h" />
@@ -248,7 +249,7 @@
     <ClInclude Include="..\Public\CrystalGolemTurn180.h" />
     <ClInclude Include="..\Public\CStone_Effect.h" />
     <ClInclude Include="..\Public\DynamicImage.h" />
-    <ClInclude Include="..\public\Effect4x4.h" />
+    <ClInclude Include="..\public\Effect_Atlas.h" />
     <ClInclude Include="..\public\EnergyBall.h" />
     <ClInclude Include="..\public\ParticleStrategy.h" />
     <ClInclude Include="..\Public\FontUI.h" />
@@ -455,6 +456,7 @@
     <ClCompile Include="..\private\BatPotato_RIGRun.cpp" />
     <ClCompile Include="..\private\BossHP.cpp" />
     <ClCompile Include="..\private\Bullet.cpp" />
+    <ClCompile Include="..\private\Bullet01Effect.cpp" />
     <ClCompile Include="..\Private\Bush01.cpp" />
     <ClCompile Include="..\private\BushA.cpp" />
     <ClCompile Include="..\Private\BushB.cpp" />
@@ -505,7 +507,7 @@
     <ClCompile Include="..\Private\CrystalGolemTurn180.cpp" />
     <ClCompile Include="..\Private\CStone_Effect.cpp" />
     <ClCompile Include="..\Private\DynamicImage.cpp" />
-    <ClCompile Include="..\private\Effect4x4.cpp" />
+    <ClCompile Include="..\private\Effect_Atlas.cpp" />
     <ClCompile Include="..\private\EnergyBall.cpp" />
     <ClCompile Include="..\private\ParticleStrategy.cpp" />
     <ClCompile Include="..\Private\FontUI.cpp" />
@@ -677,6 +679,10 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxBullet01.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCol.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>

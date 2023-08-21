@@ -13,6 +13,7 @@
 #include "SkillUI.h"
 #include "CStone_Effect.h"
 #include "Alien_prawn.h"
+#include "SoundMgr.h"
 _uint Clint::Clint_Id = 0;
 
 Clint::Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -47,22 +48,32 @@ HRESULT Clint::Initialize(void* pArg)
 
 	if (FAILED(Add_Components()))
 		return E_FAIL;
-
+	
 	// 노티파이.
 	_double AttackInterval = { 12.0 };
 	_double Start = { 1.0 };
 	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"RShoot1", TIMELINE_EVENT(Start, [this]() {
 		m_pPistolaComL->Attack(GetLook());
+		CSoundMgr::Get_Instance()->StopSound(CHANNELID::PLAYER_BULLET);
+		CSoundMgr::Get_Instance()->PlaySound(L"pistol_shot1.ogg", CHANNELID::PLAYER_BULLET, 1.f);
+
 		}), UPPER);
 	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"LShoot1", TIMELINE_EVENT(Start += AttackInterval, [this]() {
 		m_pPistolaComR->Attack(GetLook());
+		CSoundMgr::Get_Instance()->StopSound(CHANNELID::PLAYER_BULLET);
+		CSoundMgr::Get_Instance()->PlaySound(L"pistol_shot2.ogg", CHANNELID::PLAYER_BULLET, 1.f);
 		}), UPPER);
 	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"RShoot2", TIMELINE_EVENT(Start += AttackInterval, [this]() {
 		m_pPistolaComL->Attack(GetLook());
+		CSoundMgr::Get_Instance()->StopSound(CHANNELID::PLAYER_BULLET);
+		CSoundMgr::Get_Instance()->PlaySound(L"pistol_shot1.ogg", CHANNELID::PLAYER_BULLET, 1.f);
 		}), UPPER);
 	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"LShoot2", TIMELINE_EVENT(Start += AttackInterval, [this]() {
 		m_pPistolaComR->Attack(GetLook());
+		CSoundMgr::Get_Instance()->StopSound(CHANNELID::PLAYER_BULLET);
+		CSoundMgr::Get_Instance()->PlaySound(L"pistol_shot2.ogg", CHANNELID::PLAYER_BULLET, 1.f);
 		}), UPPER);
+
 	m_pModelCom->Add_TimeLineEvent("clint_skill01", L"Skill1", TIMELINE_EVENT(54.f, [this]() {
 		m_pPistolaComR->Attack(GetLook());
 		}), UPPER);
@@ -132,6 +143,8 @@ void Clint::Tick(_double TimeDelta)
 	//if (pGameInstance->Key_Down(DIK_U))
 	//	m_pStoneEffect->Reset_Effects();
 	//Safe_Release(pGameInstance);
+
+	m_pTransformCom->Set_Speed(40.f);
 }
 
 void Clint::Late_Tick(_double TimeDelta)

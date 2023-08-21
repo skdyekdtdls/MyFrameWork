@@ -47,6 +47,9 @@ private:
 	
 private:
 	static _uint Spawner_Id;
+
+	_int m_iLeftNum;
+	_int m_iRightNum;
 	_uint m_ClintCellIndex;
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_GameObject_Spawner"; }

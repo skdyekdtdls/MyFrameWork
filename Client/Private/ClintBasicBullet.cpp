@@ -1,6 +1,6 @@
 #include "ClintBasicBullet.h"
 #include "GameInstance.h"
-#include "Effect4x4.h"
+#include "Effect_Atlas.h"
 #include "CStone_Effect.h"
 _uint ClintBasicBullet::ClintBasicBullet_Id = 0;
 
@@ -45,7 +45,10 @@ HRESULT ClintBasicBullet::Initialize(void* pArg)
 	
 	m_pTimeCounterCom->Enable();
 	//m_test->Reset_Effects();
-	m_pEffect4x4Com->Reset();
+	//m_pEffectAtlasCom->Reset();
+
+	m_fRadian = DegreeBetweenVectors(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+	m_fRadian = XMConvertToRadians(m_fRadian);
 	return S_OK;
 }
 
@@ -67,8 +70,9 @@ void ClintBasicBullet::Tick(_double TimeDelta)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
 		m_pColliderCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BULLET);
 	}
-
-	m_pEffect4x4Com->Tick(TimeDelta, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	m_fRadian = DegreeBetweenVectors(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+	m_fRadian = XMConvertToRadians(m_fRadian);
+	//m_pEffectAtlasCom->Tick(TimeDelta, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 	//m_test->Tick(TimeDelta);
 }
 
@@ -77,9 +81,10 @@ void ClintBasicBullet::Late_Tick(_double TimeDelta)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	m_pEffect4x4Com->Late_Tick(TimeDelta);
+	//m_pEffectAtlasCom->Late_Tick(TimeDelta);
 	__super::Late_Tick(TimeDelta);
 	//m_test->Late_Tick(TimeDelta);
+	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this);
 #ifdef _DEBUG
 	m_pRendererCom->Add_DebugGroup(m_pColliderCom);
 #endif
@@ -91,6 +96,12 @@ HRESULT ClintBasicBullet::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
+
+	if (FAILED(SetUp_ShaderResources()))
+		return E_FAIL;
+
+	m_pShaderCom->Begin(0);
+	m_pBufferCom->Render();
 }
 
 void ClintBasicBullet::ResetPool(void* pArg)
@@ -99,7 +110,8 @@ void ClintBasicBullet::ResetPool(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, ((CLINT_BASIC_BULLET_DESC*)pArg)->vLook);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&((CLINT_BASIC_BULLET_DESC*)pArg)->vPosition));
 	m_pTimeCounterCom->Enable();
-	m_pEffect4x4Com->Reset();
+
+	//m_pEffectAtlasCom->Reset();
 	//m_test->Reset_Effects();
 }
 
@@ -109,7 +121,7 @@ void ClintBasicBullet::SetDead()
 	ObjectPool<ClintBasicBullet>::GetInstance()->PushPool(this);
 	m_pTimeCounterCom->Reset();
 	m_pTimeCounterCom->Disable();
-	m_pEffect4x4Com->Disable();
+	//m_pEffectAtlasCom->Disable();
 }
 
 HRESULT ClintBasicBullet::Add_Components()
@@ -135,16 +147,56 @@ HRESULT ClintBasicBullet::Add_Components()
 	tTimeCounterDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, TimeCounter::ProtoTag(), L"Com_TimeCounter", (CComponent**)&m_pTimeCounterCom, &tTimeCounterDesc), E_FAIL);
 
-	Effect4x4::EFFECT4X4_DESC tEffectDesc;
-	tEffectDesc.pOwner = this;
-	tEffectDesc.pTextureTag = TEXT("Prototype_Component_Texture_T_ky_flare09_4x4");
-	FAILED_CHECK_RETURN(__super::Add_Composite(Effect4x4::ProtoTag(), L"Com_Effect4x4", (CComponent**)&m_pEffect4x4Com, &tEffectDesc), E_FAIL)
+	CTexture::tagCTextureDesc tTextureDesc;
+	tTextureDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Texture_Bullet01", L"Com_Texture", (CComponent**)&m_pTextureCom, &tTextureDesc), E_FAIL);
 
-	CStone_Effect::STONE_EFFECT_DESC tStoneDesc;
-	tStoneDesc.pOwner = this;
-	tStoneDesc.iNumParticles = 30;
-	FAILED_CHECK_RETURN(__super::Add_Composite(CStone_Effect::ProtoTag(), L"Com_Test", (CComponent**)&m_test, &tStoneDesc), E_FAIL);
+	CShader::CSHADER_DESC tShaderDesc;
+	tShaderDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxBullet01", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
+	
+	CVIBuffer_Point_Instance::tagCVIBuffer_Point_InstanceDesc tBufferDesc;
+	tBufferDesc.pOwner = this;
+	tBufferDesc.iNumInstance = 1;
+	FAILED_CHECK_RETURN(Add_Component(eLevelID, CVIBuffer_Point_Instance::ProtoTag(), L"Com_Buffer"
+		, (CComponent**)&m_pBufferCom, &tBufferDesc), E_FAIL);
+	//Effect_Atlas::EFFECT_ATLAS_DESC tEffectDesc;
+	//tEffectDesc.pOwner = this;
+	//tEffectDesc.iRow = 4;
+	//tEffectDesc.iCol = 4;
+	//tEffectDesc.pTextureTag = TEXT("Prototype_Component_Texture_T_ky_flare09_4x4");
+	//FAILED_CHECK_RETURN(__super::Add_Composite(Effect_Atlas::ProtoTag(), L"Com_Effect4x4", (CComponent**)&m_pEffectAtlasCom, &tEffectDesc), E_FAIL)
+	//
+	//CStone_Effect::STONE_EFFECT_DESC tStoneDesc;
+	//tStoneDesc.pOwner = this;
+	//tStoneDesc.iNumParticles = 30;
+	//FAILED_CHECK_RETURN(__super::Add_Composite(CStone_Effect::ProtoTag(), L"Com_Test", (CComponent**)&m_test, &tStoneDesc), E_FAIL);
 	Safe_Release(pGameInstance);
+	return S_OK;
+}
+
+HRESULT ClintBasicBullet::SetUp_ShaderResources()
+{
+	_float4x4 MyMatrix = m_pTransformCom->Get_WorldFloat4x4();
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &MyMatrix), E_FAIL);
+
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &MyMatrix), E_FAIL);
+
+	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &MyMatrix), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture"), E_FAIL);
+
+	_float4 vCamPos = pGameInstance->Get_CamPositionFloat4();
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", &vCamPos, sizeof(_float4)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_fRadian", &m_fRadian, sizeof(float)), E_FAIL);
+	
+	Safe_Release(pGameInstance);
+
 	return S_OK;
 }
 
@@ -190,6 +242,9 @@ void ClintBasicBullet::Free(void)
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTimeCounterCom);
-	Safe_Release(m_pEffect4x4Com);
-	Safe_Release(m_test);
+	Safe_Release(m_pTextureCom);
+	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pBufferCom);
+	//Safe_Release(m_pEffectAtlasCom);
+	//Safe_Release(m_test);
 }

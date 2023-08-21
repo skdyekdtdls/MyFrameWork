@@ -1,6 +1,7 @@
 #include "..\Public\BatPotato_RIGIdle.h"
 #include "GameInstance.h"
 #include "BatPotato_RIG.h"
+#include "SoundMgr.h"
 
 BatPotato_RIGIdle::BatPotato_RIGIdle(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: StateMachine<BatPotato_RIG, BATPOTATO_RIG_ANIM>(pDevice, pContext)
@@ -17,7 +18,7 @@ void BatPotato_RIGIdle::OnStateEnter()
 	__super::OnStateEnter();
 
 	SetAnimIndex(BATPOTATO_RIG_IDLE, LOWER);
-
+	SoundMgr->PlaySound(L"BatIdle.ogg", CHANNELID::BAT, 0.4f);
 	m_TimeAcc = { 0.0 };
 }
 

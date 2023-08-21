@@ -32,7 +32,7 @@
 
 // Effect
 #include "CStone_Effect.h"
-#include "Effect4x4.h"
+#include "Effect_Atlas.h"
 
 // Static Mesh
 #include "Bush01.h"
@@ -331,7 +331,7 @@ HRESULT CLoader::Loading_For_GamePlay()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Bullet01"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Art/Characters/Players/Clint/FX/Textures/Bullet01.dds"), 1)), E_FAIL);
 
-	// Effect4x4
+	// Effect_Atlas
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_T_ky_flare07_4x4"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/AdvancedMagicFX08/Textures/T_ky_flare07_4x4.dds"), 1)), E_FAIL);
 
@@ -1127,7 +1127,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Bullet01"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Art/Characters/Players/Clint/FX/Textures/Bullet01.dds"), 1)), E_FAIL);
 
-	// Effect4x4
+	// Effect_Atlas
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_T_ky_flare07_4x4"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/AdvancedMagicFX08/Textures/T_ky_flare07_4x4.dds"), 1)), E_FAIL);
 
@@ -1841,7 +1841,7 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(MiniMap::ProtoTag(), MiniMap::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CStone_Effect::ProtoTag(), CStone_Effect::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Spawner::ProtoTag(), Spawner::Create(m_pDevice, m_pContext)), E_FAIL);
-	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Effect4x4::ProtoTag(), Effect4x4::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Effect_Atlas::ProtoTag(), Effect_Atlas::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	return S_OK;
 }

@@ -20,7 +20,7 @@
 #include "Image.h"
 #include "DynamicImage.h"
 #include "MiniMap.h"
-
+#include "SoundMgr.h"
 CLevel_Imgui::CLevel_Imgui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -39,6 +39,7 @@ HRESULT CLevel_Imgui::Initialize()
 	Ready_Layer_Effect(TEXT("Layer_Effect"));
 	Ready_Layer_UI(TEXT("Layer_UI"));
 	Ready_Layer_ETC();
+	SoundMgr->PlayBGM(L"Kemekh.ogg");
 }
 
 void CLevel_Imgui::Tick(_double TimeDelta)

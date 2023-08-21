@@ -71,8 +71,6 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(Ready_Font()))
 		return E_FAIL;
-	CSoundMgr::Get_Instance()->PlayBGM(L"big_spider_death1.ogg");
-
 
 	Ready_Pool();
 	
@@ -132,6 +130,10 @@ HRESULT CMainApp::Ready_Prototype_Component_For_Static()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxAnimMesh"),
 		CShader::Create(m_pDevice, m_pContext, L"../Bin/ShaderFiles/Shader_VtxAnimMesh.hlsl"
 			, VTXANIMMESH_DECL::Elements, VTXANIMMESH_DECL::iNumElements)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxBullet01"),
+		CShader::Create(m_pDevice, m_pContext, L"../Bin/ShaderFiles/Shader_VtxBullet01.hlsl"
+			, VTXPOINTINSTANCE_DECL::Elements, VTXPOINTINSTANCE_DECL::iNumElements)), E_FAIL);
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VtxCol"),
 		CShader::Create(m_pDevice, m_pContext, L"../Bin/ShaderFiles/Shader_VtxCol.hlsl"

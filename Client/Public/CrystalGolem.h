@@ -36,7 +36,9 @@ public:
 	typedef struct tagCrystalGolemDesc : public tagCGameObjectDesc
 	{
 		tagCrystalGolemDesc() : tagCGameObjectDesc() {}
+		_uint iStartIndex;
 	};
+
 private:
 	CrystalGolem(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CrystalGolem(const CrystalGolem& rhs);

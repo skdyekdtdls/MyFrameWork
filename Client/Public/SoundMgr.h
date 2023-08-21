@@ -46,10 +46,14 @@ public:
 	void PlayBGM(const TCHAR* pSoundKey);
 	void StopSound(CHANNELID eID);
 	void StopAll();
+	void SetSoundOffset(float fSoundOffset) {
+		m_fSoundOffset = fSoundOffset;
+	}
 
 private:
 	float m_volume = SOUND_DEFAULT;
-	float m_BGMvolume = SOUND_DEFAULT;
+	float m_BGMvolume = 0.2f;
+	float m_fSoundOffset = 1.f;
 	FMOD_BOOL m_bool;
 
 private:
@@ -57,12 +61,9 @@ private:
 
 private:
 	static CSoundMgr* m_pInstance;
-	// ���� ���ҽ� ������ ���� ��ü 
 	map<TCHAR*, FMOD_SOUND*> m_mapSound;
-	// FMOD_CHANNEL : ����ϰ� �ִ� ���带 ������ ��ü 
 	FMOD_CHANNEL* m_pChannelArr[MAXCHANNEL];
-	// ���� ,ä�� ��ü �� ��ġ�� �����ϴ� ��ü 
 	FMOD_SYSTEM* m_pSystem;
 	_bool		m_bPause = false;
 };
-
+#define SoundMgr CSoundMgr::Get_Instance()

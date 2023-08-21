@@ -17,7 +17,7 @@ class TimeCounter;
 END
 
 BEGIN(Client)
-class Effect4x4;
+class Effect_Atlas;
 class CStone_Effect;
 END
 
@@ -55,12 +55,16 @@ private: /* For. Component */
 	CTransform* m_pTransformCom = { nullptr };
 	CCollider* m_pColliderCom = { nullptr };
 	TimeCounter* m_pTimeCounterCom = { nullptr };
-	Effect4x4* m_pEffect4x4Com = { nullptr };
-	CStone_Effect* m_test = { nullptr };
+	CTexture* m_pTextureCom = { nullptr };
+	CShader* m_pShaderCom = { nullptr };
+	CVIBuffer_Point_Instance* m_pBufferCom = { nullptr };
+	//Effect_Atlas* m_pEffectAtlasCom = { nullptr };
+	//CStone_Effect* m_test = { nullptr };
 
+	_float m_fRadian;
 private:
 	HRESULT Add_Components();
-
+	HRESULT SetUp_ShaderResources();
 private:
 	static _uint ClintBasicBullet_Id;
 

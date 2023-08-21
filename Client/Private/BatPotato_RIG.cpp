@@ -59,6 +59,8 @@ HRESULT BatPotato_RIG::Initialize(void* pArg)
 		});
 	m_pMonsterHP->Disable();
 
+	// ³×ºñ¼¿ ÀÎµ¦½º ÃÊ±âÈ­
+	m_pNavigationCom->SetCellCurIndex(tCloneDesc.iStartIndex);
 	return S_OK;
 }
 

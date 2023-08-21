@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "Clint.h"
 #include "ClintUltimate01Bullet.h"
+#include "SoundMgr.h"
 ClintUltimate01::ClintUltimate01(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: StateMachine<Clint, CLINT_ANIM>(pDevice, pContext)
 {
@@ -50,19 +51,76 @@ void ClintUltimate01::OnStateTick(_double TimeDelta)
 
 	if (W)
 	{
-		pTransform->Go_Direction(TimeDelta, CTransform::DIR_N);
+		if (D)
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_NE);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_NE), TimeDelta);
+		}
+		else if (A)
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_NW);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_NW), TimeDelta);
+		}
+		else
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_N);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_N), TimeDelta);
+		}
 	}
 	else if (A)
 	{
-		pTransform->Go_Direction(TimeDelta, CTransform::DIR_W);
+		if (W)
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_NW);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_NW), TimeDelta);
+		}
+		else if (S)
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_SW);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_SW), TimeDelta);
+		}
+		else
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_W);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_W), TimeDelta);
+		}
+
 	}
 	else if (S)
 	{
-		pTransform->Go_Direction(TimeDelta, CTransform::DIR_S);
+		if (D)
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_SE);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_SE), TimeDelta);
+		}
+		else if (A)
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_SW);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_SW), TimeDelta);
+		}
+		else
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_S);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_S), TimeDelta);
+		}
 	}
 	else if (D)
 	{
-		pTransform->Go_Direction(TimeDelta, CTransform::DIR_E);
+		if (W)
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_NE);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_NE), TimeDelta);
+		}
+		else if (S)
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_SE);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_SE), TimeDelta);
+		}
+		else
+		{
+			pTransform->Go_Direction(TimeDelta, CTransform::DIR_E);
+			pTransform->Turn(WorldAxisY(), pTransform->DirectionVector(CTransform::DIR_E), TimeDelta);
+		}
 	}
 
 	m_UltTimeAcc += TimeDelta;
@@ -72,6 +130,8 @@ void ClintUltimate01::OnStateTick(_double TimeDelta)
 		m_UltTimeAcc = 0.0;
 		ClintUltimate01Bullet* pUltBullet = static_cast<ClintUltimate01Bullet*>(m_pOwner->Get_Component(L"Com_UltBullet"));
 		pUltBullet->Enable();
+		SoundMgr->StopSound(CHANNELID::PLAYER_BULLET);
+		SoundMgr->PlaySound(L"pistol_shot2.ogg", CHANNELID::PLAYER_BULLET, 1.f);
 	}
 }
 

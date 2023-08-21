@@ -1,22 +1,21 @@
-
-#include "Effect4x4.h"
+#include "Effect_Atlas.h"
 #include "GameInstance.h"
 
-_uint Effect4x4::Effect4x4_Id = 0;
+_uint Effect_Atlas::Effect4x4_Id = 0;
 
-Effect4x4::Effect4x4(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+Effect_Atlas::Effect_Atlas(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
 }
 
-Effect4x4::Effect4x4(const Effect4x4& rhs)
+Effect_Atlas::Effect_Atlas(const Effect_Atlas& rhs)
 	: CGameObject(rhs)
 	, m_bEnable(false)
-	, m_iTextureIndex(-1)
+	, m_iCurrentIndex(-1)
 {
 }
 
-HRESULT Effect4x4::Initialize_Prototype()
+HRESULT Effect_Atlas::Initialize_Prototype()
 {
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
@@ -24,18 +23,20 @@ HRESULT Effect4x4::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT Effect4x4::Initialize(void* pArg)
+HRESULT Effect_Atlas::Initialize(void* pArg)
 {
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	m_tEffectDesc = *(tagEffect4x4Desc*)pArg;
+	m_tEffectDesc = *(tagEffect_AtlasDesc*)pArg;
+	m_iMaxIndex = m_tEffectDesc.iRow * m_tEffectDesc.iCol;
+	m_iLastIndex = m_iMaxIndex;
 
 	if (FAILED(Add_Components()))
 		return E_FAIL;
 
 	++Effect4x4_Id;
-	m_tInfo.wstrName = TO_WSTR("Effect4x4" + to_string(Effect4x4_Id));
+	m_tInfo.wstrName = TO_WSTR("Effect_Atlas" + to_string(Effect4x4_Id));
 	m_tInfo.wstrKey = ProtoTag();
 	m_tInfo.ID = Effect4x4_Id;
 
@@ -43,9 +44,12 @@ HRESULT Effect4x4::Initialize(void* pArg)
 	return S_OK;
 }
 
-void Effect4x4::Tick(_double TimeDelta, _fvector vPos)
+void Effect_Atlas::Tick(_double TimeDelta, _fvector vPos)
 {
 	if (false == m_bEnable)
+		return;
+
+	if (PLAY_MODE_END == m_ePlayMode)
 		return;
 
 	__super::Tick(TimeDelta);
@@ -55,20 +59,20 @@ void Effect4x4::Tick(_double TimeDelta, _fvector vPos)
 	ParticleMatrices.push_back(WorldMatrix);
 	m_pBufferCom->Tick(ParticleMatrices, TimeDelta);
 
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, /*vPos*/XMVectorSet(0.f, 0.f, 0.f, 1.f));
 
-	m_TimeAcc += TimeDelta;
-	if (m_TimeAcc >= 0.1)
+	switch (m_ePlayMode)
 	{
-		m_TimeAcc = 0.0;
-		++m_iTextureIndex;
+	case Client::Effect_Atlas::ONCE:
+		OnceMode(TimeDelta);
+		break;
+	case Client::Effect_Atlas::LOOP:
+		LoopMode(TimeDelta);
+		break;
 	}
-
-	if (m_iTextureIndex >= 16)
-		m_iTextureIndex = 0;
 }
 
-void Effect4x4::Late_Tick(_double TimeDelta)
+void Effect_Atlas::Late_Tick(_double TimeDelta)
 {
 	if (false == m_bEnable)
 		return;
@@ -77,7 +81,7 @@ void Effect4x4::Late_Tick(_double TimeDelta)
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this);
 }
 
-HRESULT Effect4x4::Render()
+HRESULT Effect_Atlas::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
@@ -86,24 +90,70 @@ HRESULT Effect4x4::Render()
 		return E_FAIL;
 
 	// 만약에 모델 컴포넌트 안쓰면 이걸로 쓰면된다.
-	m_pShaderCom->Begin(1);
+	m_pShaderCom->Begin(m_iPass);
 	m_pBufferCom->Render();
 
 	return S_OK;
 }
 
-void Effect4x4::Reset()
+void Effect_Atlas::Reset()
 {
 	m_bEnable = true;
-	m_iTextureIndex = -1;
+	m_iCurrentIndex = -1;
 }
 
-void Effect4x4::Disable()
+void Effect_Atlas::Disable()
 {
 	m_bEnable = false;
 }
 
-HRESULT Effect4x4::Add_Components()
+void Effect_Atlas::Play_Once(_uint iStartIndex, _uint iLastIndex)
+{
+	m_ePlayMode = ONCE;
+	m_iStartIndex = iStartIndex;
+	m_iCurrentIndex = iStartIndex;
+	m_iLastIndex = iLastIndex;
+	Saturate(m_iStartIndex, (_uint)0, m_iMaxIndex);
+	Saturate(m_iLastIndex, (_uint)0, m_iMaxIndex);
+}
+
+void Effect_Atlas::Play_Loop(_uint iStartIndex, _uint iLastIndex)
+{
+	m_ePlayMode = LOOP;
+	m_iStartIndex = iStartIndex;
+	m_iCurrentIndex = iStartIndex;
+	m_iLastIndex = iLastIndex;
+	Saturate(m_iStartIndex, (_uint)0, m_iMaxIndex);
+	Saturate(m_iLastIndex, (_uint)0, m_iMaxIndex);
+}
+
+void Effect_Atlas::OnceMode(const _double& TimeDelta)
+{
+	m_TimeAcc += TimeDelta;
+	if (m_TimeAcc >= m_AnimSpeed)
+	{
+		m_TimeAcc = 0.0;
+		++m_iCurrentIndex;
+	}
+
+	if (m_iCurrentIndex >= m_iLastIndex)
+		m_ePlayMode = PLAY_MODE_END;
+}
+
+void Effect_Atlas::LoopMode(const _double& TimeDelta)
+{
+	m_TimeAcc += TimeDelta;
+	if (m_TimeAcc >= m_AnimSpeed)
+	{
+		m_TimeAcc = 0.0;
+		++m_iCurrentIndex;
+	}
+
+	if (m_iCurrentIndex >= m_iLastIndex)
+		m_iCurrentIndex = m_iStartIndex;
+}
+
+HRESULT Effect_Atlas::Add_Components()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
@@ -133,7 +183,7 @@ HRESULT Effect4x4::Add_Components()
 	return S_OK;
 }
 
-HRESULT Effect4x4::SetUp_ShaderResources()
+HRESULT Effect_Atlas::SetUp_ShaderResources()
 {
 	_float4x4 MyMatrix = m_pTransformCom->Get_WorldFloat4x4();
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &MyMatrix), E_FAIL);
@@ -150,7 +200,11 @@ HRESULT Effect4x4::SetUp_ShaderResources()
 	_float4 vCamPos = pGameInstance->Get_CamPositionFloat4();
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPosition", &vCamPos, sizeof(_float4)), E_FAIL);
 
-	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_iIndex", &m_iTextureIndex, sizeof(_uint)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_iIndex", &m_iCurrentIndex, sizeof(_uint)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_iRow", &m_tEffectDesc.iRow, sizeof(_uint)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_iCol", &m_tEffectDesc.iCol, sizeof(_uint)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_fSizeX", &m_fSizeX, sizeof(_float)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_fSizeY", &m_fSizeY, sizeof(_float)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture"), E_FAIL);
 
 	Safe_Release(pGameInstance);
@@ -158,31 +212,31 @@ HRESULT Effect4x4::SetUp_ShaderResources()
 	return S_OK;
 }
 
-Effect4x4* Effect4x4::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+Effect_Atlas* Effect_Atlas::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	Effect4x4* pInstance = new Effect4x4(pDevice, pContext);
+	Effect_Atlas* pInstance = new Effect_Atlas(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created Effect4x4");
+		MSG_BOX("Failed to Created Effect_Atlas");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-CGameObject* Effect4x4::Clone(void* pArg)
+CGameObject* Effect_Atlas::Clone(void* pArg)
 {
-	Effect4x4* pInstance = new Effect4x4(*this);
+	Effect_Atlas* pInstance = new Effect_Atlas(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned Effect4x4");
+		MSG_BOX("Failed to Cloned Effect_Atlas");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-void Effect4x4::Free(void)
+void Effect_Atlas::Free(void)
 {
 	__super::Free();
 

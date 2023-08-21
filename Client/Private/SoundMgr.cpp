@@ -91,6 +91,7 @@ int CSoundMgr::Pause(CHANNELID eID)
 
 void CSoundMgr::PlaySound(const TCHAR* pSoundKey, CHANNELID eID, _float _vol)
 {
+	_vol *= m_fSoundOffset;
 	map<TCHAR*, FMOD_SOUND*>::iterator iter;
 
 	iter = find_if(m_mapSound.begin(), m_mapSound.end(), [&](auto& iter)
@@ -127,9 +128,9 @@ void CSoundMgr::PlayBGM(const TCHAR* pSoundKey)
 	if (iter == m_mapSound.end())
 		return;
 
-	//FMOD_System_PlaySound(m_pSystem, iter->second,nullptr, FALSE, &m_pChannelArr[BGM]);
 	FMOD_System_PlaySound(m_pSystem, iter->second, NULL, FALSE, &m_pChannelArr[BGM]);
 	FMOD_Channel_SetMode(m_pChannelArr[BGM], FMOD_LOOP_NORMAL);
+	FMOD_Channel_SetVolume(m_pChannelArr[BGM], m_BGMvolume);
 	FMOD_System_Update(m_pSystem);
 }
 

@@ -1,7 +1,7 @@
 #include "..\Public\BatPotato_RIGDeath.h"
 #include "GameInstance.h"
 #include "BatPotato_RIG.h"
-
+#include "SoundMgr.h"
 BatPotato_RIGDeath::BatPotato_RIGDeath(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: StateMachine<BatPotato_RIG, BATPOTATO_RIG_ANIM>(pDevice, pContext)
 {
@@ -15,7 +15,8 @@ BatPotato_RIGDeath::BatPotato_RIGDeath(const BatPotato_RIGDeath& rhs)
 void BatPotato_RIGDeath::OnStateEnter()
 {
 	__super::OnStateEnter();
-
+	SoundMgr->StopSound(BAT);
+	SoundMgr->PlaySound(L"BatDeath.ogg", CHANNELID::BAT, 0.4f);
 	SetAnimIndex(BATPOTATO_RIG_HIT_LAUNCH_LAND, LOWER);
 }
 

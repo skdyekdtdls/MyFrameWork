@@ -1,7 +1,7 @@
 #include "..\Public\BatPotato_RIGAttack.h"
 #include "GameInstance.h"
 #include "BatPotato_RIG.h"
-
+#include "SoundMgr.h"
 BatPotato_RIGAttack::BatPotato_RIGAttack(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: StateMachine<BatPotato_RIG, BATPOTATO_RIG_ANIM>(pDevice, pContext)
 {
@@ -15,6 +15,9 @@ BatPotato_RIGAttack::BatPotato_RIGAttack(const BatPotato_RIGAttack& rhs)
 void BatPotato_RIGAttack::OnStateEnter()
 {
 	__super::OnStateEnter();
+
+	SoundMgr->StopSound(BAT);
+	SoundMgr->PlaySound(L"BatAttack.ogg", CHANNELID::BAT, 0.4f);
 
 	SetAnimIndex(BATPOTATO_RIG_ATTACK01, LOWER);
 }

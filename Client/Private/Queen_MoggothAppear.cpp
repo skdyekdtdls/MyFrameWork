@@ -1,7 +1,7 @@
 #include "..\Public\Queen_MoggothAppear.h"
 #include "GameInstance.h"
 #include "Queen_Moggoth.h"
-
+#include "SoundMgr.h"
 Queen_MoggothAppear::Queen_MoggothAppear(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: StateMachine<Queen_Moggoth, QUEEN_MOGGOTH_ANIM>(pDevice, pContext)
 {
@@ -15,7 +15,7 @@ Queen_MoggothAppear::Queen_MoggothAppear(const Queen_MoggothAppear& rhs)
 void Queen_MoggothAppear::OnStateEnter()
 {
 	__super::OnStateEnter();
-
+	SoundMgr->StopSound(CHANNELID::BGM);
 	SetAnimIndex(QUEEN_MOGGOTH_APPEAR, LOWER);
 }
 
@@ -37,6 +37,7 @@ void Queen_MoggothAppear::OnStateTick(_double TimeDelta)
 void Queen_MoggothAppear::OnStateExit()
 {
 	__super::OnStateExit();
+	SoundMgr->PlayBGM(L"Boss.ogg");
 }
 
 void Queen_MoggothAppear::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)

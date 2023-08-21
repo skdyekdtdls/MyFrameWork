@@ -388,8 +388,11 @@
     <Filter Include="02. GameObjects\Effect\Normal\EnergyBall">
       <UniqueIdentifier>{edea104e-4266-4d87-95d5-04f79f42ab4d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\Effect\Effect4x4">
+    <Filter Include="02. GameObjects\Effect\Effect_Atlas">
       <UniqueIdentifier>{c267f81c-f3ab-46f6-b99b-8d4db50170fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Bullet01Effect">
+      <UniqueIdentifier>{8bda3088-09a1-42b3-a101-10116065473a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -925,11 +928,14 @@
     <ClInclude Include="..\public\EnergyBall.h">
       <Filter>02. GameObjects\Effect\Normal\EnergyBall</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Effect4x4.h">
-      <Filter>02. GameObjects\Effect\Effect4x4</Filter>
+    <ClInclude Include="..\public\Effect_Atlas.h">
+      <Filter>02. GameObjects\Effect\Effect_Atlas</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\SoundMgr.h">
       <Filter>95. Design\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Bullet01Effect.h">
+      <Filter>02. GameObjects\Effect\Bullet01Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1446,11 +1452,14 @@
     <ClCompile Include="..\private\EnergyBall.cpp">
       <Filter>02. GameObjects\Effect\Normal\EnergyBall</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Effect4x4.cpp">
-      <Filter>02. GameObjects\Effect\Effect4x4</Filter>
+    <ClCompile Include="..\private\Effect_Atlas.cpp">
+      <Filter>02. GameObjects\Effect\Effect_Atlas</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SoundMgr.cpp">
       <Filter>95. Design\Singleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Bullet01Effect.cpp">
+      <Filter>02. GameObjects\Effect\Bullet01Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1481,6 +1490,9 @@
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTexInstance.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxBullet01.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

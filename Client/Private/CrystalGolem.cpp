@@ -6,6 +6,7 @@
 #include "CrystalGolemAttackArea02Bullet.h"
 #include "CrystalGolemAttackRangeBullet.h"
 #include "MonsterHP.h"
+#include "Animation.h"
 _uint CrystalGolem::CrystalGolem_Id = 0;
 
 CrystalGolem::CrystalGolem(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -62,7 +63,12 @@ HRESULT CrystalGolem::Initialize(void* pArg)
 	m_pMonsterHP->Disable();
 
 	// 골렘 도는거때문에 하드코딩한거 건들지마셈.
+	// 이거때문에 애니메이션 헤더파일도 추가햇음. 쓰이지는 않음.
 	m_pModelCom->GetAnimationByIndex(CRYSTAL_GOLEM_TURN180)->SetGolem();
+
+	// 네비셀 인덱스 초기화
+	m_pNavigationCom->SetCellCurIndex(tCloneDesc.iStartIndex);
+
 	return S_OK;
 }
 

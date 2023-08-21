@@ -38,6 +38,7 @@ public:
 	typedef struct tagQueen_MoggothDesc : public tagCGameObjectDesc
 	{
 		tagQueen_MoggothDesc() : tagCGameObjectDesc() {}
+		_uint iStartIndex;
 	};
 private:
 	Queen_Moggoth(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
