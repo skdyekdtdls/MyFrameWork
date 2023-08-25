@@ -1,7 +1,7 @@
 #include "..\Public\Alien_prawnDead.h"
 #include "GameInstance.h"
 #include "Alien_prawn.h"
-
+#include "SoundMgr.h"
 Alien_prawnDead::Alien_prawnDead(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: StateMachine<Alien_prawn, ALIEN_PRAWN_ANIM>(pDevice, pContext)
 {
@@ -17,6 +17,9 @@ void Alien_prawnDead::OnStateEnter()
 	__super::OnStateEnter();
 
 	SetAnimIndex(ALIEN_PRAWN_HIT_LAUNCH_FALLING, LOWER);
+	SoundMgr->StopSound(ALIEN_PRAWN);
+	SoundMgr->PlaySound(L"AlienPrawnDeath.ogg", CHANNELID::ALIEN_PRAWN, 0.4f);
+	m_pOwner->SetPass(1);
 }
 
 void Alien_prawnDead::OnStateTick(_double TimeDelta)
@@ -30,7 +33,9 @@ void Alien_prawnDead::OnStateTick(_double TimeDelta)
 
 	if (pModel->IsAnimationFinished())
 	{
-		//SetAnimIndex(ALIEN_PRAWN_HIT_LAUNCH_)
+		Single->AddExp(10.f);
+		m_pOwner->SetDead();
+		ObjectPool<Alien_prawn>::GetInstance()->PushPool(m_pOwner);
 	}
 
 	Safe_Release(pGameInstance);

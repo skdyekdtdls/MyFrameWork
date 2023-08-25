@@ -29,11 +29,11 @@ public:
 		return m_pGameObjects;
 	}
 
-	auto Begin() {
+	list<CGameObject*>::iterator Begin() {
 		return m_pGameObjects.begin();
 	}
 
-	auto End() {
+	list<CGameObject*>::iterator End() {
 		return m_pGameObjects.end();
 	}
 
@@ -42,11 +42,15 @@ public:
 	HRESULT Delete_GameObject(string strName);
 	void Tick(_double TimeDelta);
 	void Late_Tick(_double TimeDelta);
-	
+
 	CGameObject* FindByName(string strName);
+private:
+	void ReleaseGameObject();
+
 private:
 	INFO			m_tInfo;
 	list<CGameObject*>	m_pGameObjects;
+
 public:
 	static CLayer* Create(wstring wstrLayerName);
 	void Free() override;

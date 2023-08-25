@@ -5,7 +5,9 @@
 #include "assimp\Importer.hpp"
 #include "assimp\scene.h"
 #include "assimp\postprocess.h"
+//#include "fmod.h" //c언어전용
 #include <iostream>
+#include <conio.h>
 #include <tchar.h>
 #include <DirectXMath.h>
 #include <d3dcompiler.h>
@@ -18,15 +20,15 @@
 #include "DirectXTK/Effects.h"
 #include "DirectXTK/SpriteBatch.h"
 #include "DirectXTK/SpriteFont.h"
-
-
+#include <stdio.h>
+#include <io.h>
 
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 
 using namespace std;
 using namespace DirectX;
-
+#include <string>
 #include <vector>
 #include <list>
 #include <unordered_map>
@@ -44,8 +46,20 @@ namespace fs = std::filesystem;
 #include "Engine_Struct.h"
 
 BEGIN(Engine)
+
 typedef unordered_map<const _tchar*, class CLayer*> LAYERS;
-typedef pair <_double, function<void()> > TIMELINE_EVENT;
+typedef struct tagTimeLineEvent
+{
+	tagTimeLineEvent() = default;
+	tagTimeLineEvent(_double _Time, function<void()> _Lamda, _bool _CanPlay = true)
+		: Time(_Time)
+		, CanPlay(_CanPlay)
+		, Lamda(_Lamda)
+	{}
+	_double Time = { 0.0 };
+	function<void()> Lamda;
+	_bool CanPlay;
+}TIMELINE_EVENT;
 END
 
 #include "DirectXTK/DDSTextureLoader.h"
@@ -53,6 +67,7 @@ END
 #include "Assimp_Struct.h"
 
 enum BODY { LOWER, UPPER, BODY_END };
+
 
 #ifdef _DEBUG
 

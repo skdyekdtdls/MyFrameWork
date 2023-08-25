@@ -22,7 +22,19 @@ public:
 	HRESULT Open_Level(LEVELID eLevelIndex);
 
 	HRESULT Ready_Prototype_Component_For_Static();
+	HRESULT Ready_Font();
 	HRESULT Ready_Gara();
+
+	// 풀 이니셜 후 해제.
+	HRESULT Ready_Pool();
+
+	void Calc_FPS(_double TimeDelta);
+	void Render_FPS();
+
+private:
+	_double m_TimeAcc = { 0.0 };
+	_uint m_FPS = { 0 };
+	_uint m_iCount = { 0 };
 private: /* For Prototype */
 	CRenderer* m_pRenderer = { nullptr };
 

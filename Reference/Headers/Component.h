@@ -20,15 +20,24 @@ protected:
 	CComponent(const CComponent & rhs);
 	virtual ~CComponent(void) = default;
 
+public: //Getter
+	CGameObject* GetOwner();
+
+	wstring GetComponentName() { return m_ComponentName; }
+
+public: // Setter
+	void SetComponentName(wstring Name) { m_ComponentName = Name; }
+
 public:
 	virtual HRESULT Initialize_Prototype(void);
 	virtual HRESULT Initialize(void* pArg);
-
+	virtual HRESULT Render() { return S_OK; }
 protected:
 	CGameObject* m_pOwner = { nullptr };
 	ID3D11Device* m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
 	_bool	m_isCloned = { false };
+	wstring m_ComponentName = L"";
 
 public:
 	virtual CComponent* Clone(void* pArg) = 0;

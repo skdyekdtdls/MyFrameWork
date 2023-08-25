@@ -55,9 +55,6 @@
     <Filter Include="96. IMGUI\01. ImWindow\01. ImWindow_ObjectTool">
       <UniqueIdentifier>{296bff4e-de67-4fee-8759-0a4a723de7ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="96. IMGUI\01. ImWindow\NewFilter1">
-      <UniqueIdentifier>{3423ab4a-f1bd-453a-a65e-e987f69cdd65}</UniqueIdentifier>
-    </Filter>
     <Filter Include="96. IMGUI\01. ImWindow\02. ImWindow_MapTool">
       <UniqueIdentifier>{7857ea36-7826-4123-8501-f5c613895ef6}</UniqueIdentifier>
     </Filter>
@@ -91,60 +88,6 @@
     <Filter Include="02. GameObjects\BackGround">
       <UniqueIdentifier>{39d68aa7-c375-4c3b-9af5-70e0105c19f7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\BackGround\BarrelBoxStool">
-      <UniqueIdentifier>{975a9f9b-8836-4688-b78a-925a88330c2e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\Bush01">
-      <UniqueIdentifier>{709d5c7f-9436-4be2-971d-b58e7e5e2b54}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\BushA">
-      <UniqueIdentifier>{90ae0ea8-abc6-4d62-8e36-846aea1fa827}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\BushB">
-      <UniqueIdentifier>{37461de6-c090-4b23-843b-5c760fe9f435}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\BushC">
-      <UniqueIdentifier>{53b8949d-12e0-429d-a266-887803461abd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\Cage">
-      <UniqueIdentifier>{8b8c160c-0a81-4563-8665-ce5dc6e3a84c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\KemmekhBridgeA">
-      <UniqueIdentifier>{3b934821-617e-4ccb-8e4c-a9f82a80ac6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\KemmekhBridgeD">
-      <UniqueIdentifier>{158a2609-7a4b-4346-86e7-ec1cc8b2c6e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\KemmekhBridgeF">
-      <UniqueIdentifier>{9eec2fac-daf6-4b4c-ae12-8d3ab37a2fb1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\RailSupportA">
-      <UniqueIdentifier>{f7b5552c-e680-4b27-b32c-b4fcfd1959f9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\RailSupportB">
-      <UniqueIdentifier>{79d0c0b8-ee77-4b2e-825a-34ea39287b7f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\Rock">
-      <UniqueIdentifier>{b107f6cd-92a3-49a3-8fbb-b535ced4cb8b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\SmallRockC">
-      <UniqueIdentifier>{1a7bf9eb-90fd-428c-baa5-61ae275093ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\Tong">
-      <UniqueIdentifier>{1db48a53-a916-4621-b1ae-fde20949e58b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\TunnelEntryWood">
-      <UniqueIdentifier>{a676f80a-4b09-4a35-b4af-fb31eeabdd0b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\Wagon2">
-      <UniqueIdentifier>{b3a2ad9d-c64c-4b20-8b1d-b3e7ac39ecf4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\WatchTowerLadder">
-      <UniqueIdentifier>{6f72d91d-06fd-454a-90de-3f8f9378a467}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\BackGround\WheelBarrow">
-      <UniqueIdentifier>{c4af4775-2249-4581-80e7-829907cd8442}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObjects\Camera">
       <UniqueIdentifier>{64cee68d-feb5-4a45-8151-ee2d424ba2a8}</UniqueIdentifier>
     </Filter>
@@ -160,26 +103,332 @@
     <Filter Include="99. Headers">
       <UniqueIdentifier>{7f29dc09-5d22-4a8c-bee2-2ba4da6fc61d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\Pistola">
-      <UniqueIdentifier>{69474a77-3ef1-4de8-ac82-53697982adad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObjects\Terrain">
       <UniqueIdentifier>{f002b723-511b-4b3c-aa44-e8f6b37d7d74}</UniqueIdentifier>
     </Filter>
     <Filter Include="95. Design">
       <UniqueIdentifier>{9fee6d61-7134-49a7-80ea-1709fc05a4f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\Alien_prawn">
-      <UniqueIdentifier>{10d9fee3-e69b-46b4-8358-6c472ed3a48e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObjects\Alien_prawn\State">
-      <UniqueIdentifier>{4b5d004c-3499-435d-b084-65a739a18a47}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObjects\Clint\State">
       <UniqueIdentifier>{eed5c57d-67f0-4b6c-9e18-2c1fcf6604d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObjects\ClintBasicBullet">
+    <Filter Include="02. GameObjects\Bullet">
+      <UniqueIdentifier>{0d09d8bf-43b7-4a6f-abd4-7307771fb239}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Bullet\ClintUltimateBullet">
+      <UniqueIdentifier>{ac5fbafe-82b0-496a-ab1c-aced67ea38bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Bullet\ClintBasicBullet">
       <UniqueIdentifier>{77cc2e19-3df5-40d9-9efe-db592266e60f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Sky">
+      <UniqueIdentifier>{32d73e75-1820-48d1-99f0-cb806fbcb3d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect">
+      <UniqueIdentifier>{f1e50009-cb73-4796-acf3-f309937f9487}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Instancing">
+      <UniqueIdentifier>{9cabb107-9d81-4a0b-816d-a4fd3d335056}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\LargeVolcanicRock_002_Red_Desert">
+      <UniqueIdentifier>{f0b46961-e53f-49ac-a6bb-96f9e1a1e16a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\LargeVolcanicRock_004_Red_Desert">
+      <UniqueIdentifier>{04e4adbd-1d6c-40d7-a010-736209f4b5f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Cliff01">
+      <UniqueIdentifier>{79f62859-618b-4b0f-a142-0760b7d73cee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_LargePlainsBoulder002">
+      <UniqueIdentifier>{b5933d90-e45b-48e1-bbeb-a8bdf1ec67ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_LargePlainsBoulder002_Red_Desert">
+      <UniqueIdentifier>{94efd024-1743-4ec7-a18c-110fbdaaac95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_LargePlainsBoulder003">
+      <UniqueIdentifier>{d2b650fe-9b17-4673-84b7-abee59ed96b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_MountainRock">
+      <UniqueIdentifier>{a916b08f-3f3f-4520-a772-c6f9a370b44a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_MountainRock_Closed">
+      <UniqueIdentifier>{a29ab5ca-a64f-43bc-a884-41623c68cf90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\Kemmekh_Formacion_rocosa">
+      <UniqueIdentifier>{fb41b2c9-e4af-4e23-87a8-bfb935803182}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Barriletes">
+      <UniqueIdentifier>{5e7fd838-224e-48a8-a271-43e92fa25b76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\Kemmekh_wall">
+      <UniqueIdentifier>{8cd63838-c79b-4a34-b81f-eef00eb457d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Crystal">
+      <UniqueIdentifier>{c0eef261-c2dc-4d86-b003-7ca565463f32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_CrystalYRocas">
+      <UniqueIdentifier>{9ce15135-6054-4f18-b7d0-fa346c7b5d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_GenericWall01">
+      <UniqueIdentifier>{baa177dd-2c39-4e58-9039-8076a5202535}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_LagoSmall">
+      <UniqueIdentifier>{ca06d4a7-0059-48b6-b6a5-753b75aee3dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_LaMina">
+      <UniqueIdentifier>{9f15185b-7692-4d75-b0c2-1583ae7f6290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_MERGED_MultiRock371">
+      <UniqueIdentifier>{c14c6988-e113-43fd-81a2-496cd252b6a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_MERGED_RailSupportB2_452">
+      <UniqueIdentifier>{8fdff341-4afb-4565-9f2b-7f831eff8fe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Mina2">
+      <UniqueIdentifier>{f255064a-3e3e-4b86-9ae7-7d1d2ebeafe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_MiniBujer">
+      <UniqueIdentifier>{f440a480-9c9d-48ce-a828-8ba6e99d6449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_MultiLake02">
+      <UniqueIdentifier>{4d438f74-55d0-4763-9629-20189486bef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Piedras">
+      <UniqueIdentifier>{c3716d71-9e77-4c8e-a116-28b30bf50e84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Poblado">
+      <UniqueIdentifier>{fbfbee0b-7b7c-43a2-b4c5-65b18f1b7e2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Poblado01">
+      <UniqueIdentifier>{cd81af27-69b6-4a29-8f48-c30e1c2ee21f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Pueblo02">
+      <UniqueIdentifier>{ea868769-7505-4c2e-99b3-f89612e493ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Relic">
+      <UniqueIdentifier>{696510c7-79b1-4d7b-b5f9-25126a74af65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_TrozoPared">
+      <UniqueIdentifier>{e14b5958-52ed-4aeb-a4a1-c1a06d2e4298}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Wall01">
+      <UniqueIdentifier>{c0e252b8-6f6d-4685-8304-39f425484a32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\SM_Wall02">
+      <UniqueIdentifier>{503ebf58-145c-4c2f-95c7-6927b961a9a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용">
+      <UniqueIdentifier>{2611fe2c-d7ac-4979-be2f-f779658e2ac6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\Bush01">
+      <UniqueIdentifier>{709d5c7f-9436-4be2-971d-b58e7e5e2b54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\BushA">
+      <UniqueIdentifier>{90ae0ea8-abc6-4d62-8e36-846aea1fa827}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\BushB">
+      <UniqueIdentifier>{37461de6-c090-4b23-843b-5c760fe9f435}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\BushC">
+      <UniqueIdentifier>{53b8949d-12e0-429d-a266-887803461abd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\Cage">
+      <UniqueIdentifier>{8b8c160c-0a81-4563-8665-ce5dc6e3a84c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\Cave">
+      <UniqueIdentifier>{d99c16da-749e-4e7a-9cb1-1383fbe52943}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\CraterA">
+      <UniqueIdentifier>{e3dc9996-f233-40df-9420-9bfdf0f9a82d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\CraterB">
+      <UniqueIdentifier>{3be5166f-251f-47f3-8a40-97a592cf91fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\CraterC">
+      <UniqueIdentifier>{d7bb4227-98cc-47c0-8faa-4090d2d76771}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\Kemmek_Hole">
+      <UniqueIdentifier>{81ad33c3-a002-471b-866d-e368a47b32cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\MineCrystalsA">
+      <UniqueIdentifier>{7d984dc6-5694-4b91-8146-d06835e4abd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\MineCrystalsB">
+      <UniqueIdentifier>{c57ba14f-ac63-4961-938a-eabc9a3d1e93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\MineCrystalsC">
+      <UniqueIdentifier>{c7d90239-d30e-4292-9f64-1eefa211e592}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\MineCrystalsD">
+      <UniqueIdentifier>{45eb6dcb-53ed-4f77-960f-ff6390762d4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\MineCrystalsE">
+      <UniqueIdentifier>{9aad4287-d7fe-4f40-bd90-834bdc56587c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\MineCrystalsF">
+      <UniqueIdentifier>{34b4dd09-0fc5-4ca1-9950-4f3e5a8aedd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\TreeB1">
+      <UniqueIdentifier>{9cf7a5fa-357b-441d-bd0a-9decd9252bba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\TreeA">
+      <UniqueIdentifier>{32b49ef6-0963-4c86-b599-6ab013183b0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\BackGround\1 모으기용\TreeB2">
+      <UniqueIdentifier>{985b44cd-b065-4f96-93f4-16a56953a010}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Bullet\ClintSkill01Bullet">
+      <UniqueIdentifier>{aa05413b-27bd-4bda-abfd-699019bd1332}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Bullet\BatPotato_Bullet">
+      <UniqueIdentifier>{28656146-1947-483a-8009-064c7586b20c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. Design\ObjectPool">
+      <UniqueIdentifier>{595cb5ed-d0a5-4561-a8a9-860764dd91cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. Design\State">
+      <UniqueIdentifier>{7e99ae27-de02-4990-843a-128f82b81472}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. Design\Singleton">
+      <UniqueIdentifier>{a8f915ac-652e-4ad6-9db2-953d7bcc5e73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\UI">
+      <UniqueIdentifier>{e0804eef-199b-40f2-9f8d-a5f4a8b2c72d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster">
+      <UniqueIdentifier>{cd81bdd3-6163-4656-92c4-daa00e68fbf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\Alien_prawn">
+      <UniqueIdentifier>{10d9fee3-e69b-46b4-8358-6c472ed3a48e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\Alien_prawn\State">
+      <UniqueIdentifier>{4b5d004c-3499-435d-b084-65a739a18a47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\BatPotato_RIG">
+      <UniqueIdentifier>{e3ab52b9-279c-4b10-8bb3-7f2f5c314374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\BatPotato_RIG\State">
+      <UniqueIdentifier>{283b0177-4004-4ace-b478-6b8fae4ed161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\CannonSpider">
+      <UniqueIdentifier>{461f05e3-dba6-4502-9782-54a7299cfc62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\CannonSpider\State">
+      <UniqueIdentifier>{b9fb6df7-c922-4b64-ba5d-00df7c6ead30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\CannonSpider\CannonSpiderBullet">
+      <UniqueIdentifier>{a7b45dff-fecb-489c-87d3-49e87d520503}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\CrystalGolem">
+      <UniqueIdentifier>{c84edd22-6f75-471a-a8d0-3edf4f66e41e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\CrystalGolem\State">
+      <UniqueIdentifier>{53a3acfc-a277-49ce-8d9b-dc91cea019f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\CrystalGolem\Bullet">
+      <UniqueIdentifier>{e9ad03a8-43fd-4966-a10c-78cc4d5398f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\Queen_Moggoth">
+      <UniqueIdentifier>{3276df48-e1d3-4c23-8a53-7357fe2fe99e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\Queen_Moggoth\Bullet">
+      <UniqueIdentifier>{bb0b22ba-e154-4880-b47e-1ec87b309f77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\Queen_Moggoth\State">
+      <UniqueIdentifier>{e97d622e-9443-42ac-b162-6b30a5c34b6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\Queen_Moggoth\State\Phase2">
+      <UniqueIdentifier>{7451d677-f01a-4343-b2f3-8e2779121a32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\Spider">
+      <UniqueIdentifier>{9247a020-d7e1-44ee-90c4-d0e8d05f17fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\Spider\State">
+      <UniqueIdentifier>{5ea9892b-224b-43b7-8d90-06977bebf7e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Monster\Spider\Bullet">
+      <UniqueIdentifier>{42ac1293-ed3b-44dd-b96f-4b2bbe49f525}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Pistola">
+      <UniqueIdentifier>{69474a77-3ef1-4de8-ac82-53697982adad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\PlayerLevel">
+      <UniqueIdentifier>{fb4d6704-c072-4204-8c34-d1c6740d0a05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\HP">
+      <UniqueIdentifier>{8431b795-6625-4b12-8be8-ae4a242198a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\HP\PlayerHP">
+      <UniqueIdentifier>{131a08a8-b0db-44aa-a478-cba8c1629dc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\HP\MonsterHP">
+      <UniqueIdentifier>{8313f1f6-20e7-45f9-80d3-3a72e5531a85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\HP\BossHP">
+      <UniqueIdentifier>{0de3641e-9be2-40cb-9ded-adcce4ed0d9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Skill">
+      <UniqueIdentifier>{63ac0d20-5fb5-425d-89ae-eea81842c48b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Instancing\CStone_Effect">
+      <UniqueIdentifier>{7cc0a865-f3bf-4afc-bb15-a8684ca1e67e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. Design\Strategy">
+      <UniqueIdentifier>{b4c57c50-5fc7-4411-a6a1-626ba8f5e7da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. Design\Strategy\ParticleStrategy">
+      <UniqueIdentifier>{ece9572f-bb2f-4c5c-aafe-6ad4cc7ea325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Spawner">
+      <UniqueIdentifier>{65a7f9bb-01e2-42c7-bc0d-8991bd6f0e3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Normal">
+      <UniqueIdentifier>{d4df9c2d-812d-4c9f-b398-a9d870f632d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Normal\EnergyBall">
+      <UniqueIdentifier>{edea104e-4266-4d87-95d5-04f79f42ab4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Effect_Atlas">
+      <UniqueIdentifier>{c267f81c-f3ab-46f6-b99b-8d4db50170fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Bullet01Effect">
+      <UniqueIdentifier>{8bda3088-09a1-42b3-a101-10116065473a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Instancing\BoomEffect">
+      <UniqueIdentifier>{d6b16c0b-1ee4-4593-aa1d-d27ac0c88c40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Dissolve">
+      <UniqueIdentifier>{0059e50b-8fcf-4a65-a8b4-6da09d841fe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\RimLight">
+      <UniqueIdentifier>{5d76afc6-73df-4461-9477-9b8177dc8667}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Skill\ForceField">
+      <UniqueIdentifier>{0c5f1e22-dbdd-4e5f-beac-6a9fbbf5f56f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Instancing\PropelEffect">
+      <UniqueIdentifier>{1d4f10ed-b3d3-4d10-9010-2eaa4aa1cb15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\HitEffect">
+      <UniqueIdentifier>{dd132e92-1f16-4f7c-8b75-a685821ce3ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\HitParticle">
+      <UniqueIdentifier>{b656f19f-b807-492b-a5f1-a0040ce64695}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\EnergyBallEffect">
+      <UniqueIdentifier>{d06c5546-47e5-434c-9c1b-d5ffe79681da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\CustumMouse">
+      <UniqueIdentifier>{509796f8-64a6-4b9e-b739-355b6992910b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\EnergyBallEffect2">
+      <UniqueIdentifier>{4b3aa684-a4d6-4d1b-a921-0b806c553c7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\SmokeParticle">
+      <UniqueIdentifier>{8370dcf1-0687-42e7-84b2-16b8699619e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\ThunderEffect">
+      <UniqueIdentifier>{7ea890f4-62eb-42d0-a8be-e28eb74c0984}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -252,9 +501,6 @@
     <ClInclude Include="..\public\Cube.h">
       <Filter>02. GameObjects\Cube</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\EditCamera.h">
-      <Filter>96. IMGUI\02. EditCamera</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\ImMode.h">
       <Filter>96. IMGUI\01. ImWindow\98. ImMode</Filter>
     </ClInclude>
@@ -270,21 +516,6 @@
     <ClInclude Include="..\public\ImWindow_MapTool.h">
       <Filter>96. IMGUI\01. ImWindow\02. ImWindow_MapTool</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\ImWindow_CameraTool.h">
-      <Filter>96. IMGUI\01. ImWindow\03. ImWindow_CameraTool</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\ImWindow_AnimationTool.h">
-      <Filter>96. IMGUI\01. ImWindow\04. ImWindow_AnimationTool</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\ImWindow_UITool.h">
-      <Filter>96. IMGUI\01. ImWindow\06. ImWindow_UITool</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\ImWindow_LightTool.h">
-      <Filter>96. IMGUI\01. ImWindow\07. ImWindow_LightTool</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\ImWindow_EffectTool.h">
-      <Filter>96. IMGUI\01. ImWindow\05. ImWindow_EffectTool</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\ImGuiFileDialogConfig.h">
       <Filter>96. IMGUI\03. ImVertex\filedialog</Filter>
     </ClInclude>
@@ -294,59 +525,17 @@
     <ClInclude Include="..\public\Clint.h">
       <Filter>02. GameObjects\Clint</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\BarrelBoxStool.h">
-      <Filter>02. GameObjects\BackGround\BarrelBoxStool</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Bush01.h">
-      <Filter>02. GameObjects\BackGround\Bush01</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\BushA.h">
-      <Filter>02. GameObjects\BackGround\BushA</Filter>
+      <Filter>02. GameObjects\BackGround\1 모으기용\BushA</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BushB.h">
-      <Filter>02. GameObjects\BackGround\BushB</Filter>
+      <Filter>02. GameObjects\BackGround\1 모으기용\BushB</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BushC.h">
-      <Filter>02. GameObjects\BackGround\BushC</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\KemmekhBridgeA.h">
-      <Filter>02. GameObjects\BackGround\KemmekhBridgeA</Filter>
+      <Filter>02. GameObjects\BackGround\1 모으기용\BushC</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Cage.h">
-      <Filter>02. GameObjects\BackGround\Cage</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\KemmekhBridgeD.h">
-      <Filter>02. GameObjects\BackGround\KemmekhBridgeD</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\KemmekhBridgeF.h">
-      <Filter>02. GameObjects\BackGround\KemmekhBridgeF</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\RailSupportA.h">
-      <Filter>02. GameObjects\BackGround\RailSupportA</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\RailSupportB.h">
-      <Filter>02. GameObjects\BackGround\RailSupportB</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Rock.h">
-      <Filter>02. GameObjects\BackGround\Rock</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\SmallRockC.h">
-      <Filter>02. GameObjects\BackGround\SmallRockC</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Tong.h">
-      <Filter>02. GameObjects\BackGround\Tong</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\TunnelEntryWood.h">
-      <Filter>02. GameObjects\BackGround\TunnelEntryWood</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Wagon2.h">
-      <Filter>02. GameObjects\BackGround\Wagon2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\WatchTowerLadder.h">
-      <Filter>02. GameObjects\BackGround\WatchTowerLadder</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\WheelBarrow.h">
-      <Filter>02. GameObjects\BackGround\WheelBarrow</Filter>
+      <Filter>02. GameObjects\BackGround\1 모으기용\Cage</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ClintIdle.h">
       <Filter>02. GameObjects\Clint\State</Filter>
@@ -363,38 +552,468 @@
     <ClInclude Include="..\public\ClintShoot.h">
       <Filter>02. GameObjects\Clint\State</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\ClintModel.h">
-      <Filter>02. GameObjects\Clint</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Alien_prawn.h">
-      <Filter>02. GameObjects\Alien_prawn</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Alien_prawnIdle.h">
-      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Client_Enum.h">
       <Filter>99. Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\StateContext.h">
-      <Filter>95. Design</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\StateMachine.h">
-      <Filter>95. Design</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Alien_prawnRun.h">
-      <Filter>02. GameObjects\Alien_prawn\State</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\ClientInstance.h">
-      <Filter>95. Design</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Alien_prawnAttack.h">
-      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ClintBasicBullet.h">
-      <Filter>02. GameObjects\ClintBasicBullet</Filter>
+      <Filter>02. GameObjects\Bullet\ClintBasicBullet</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Alien_prawnDead.h">
-      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ClintUltimate01.h">
+      <Filter>02. GameObjects\Clint\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ClintUltimate01Bullet.h">
+      <Filter>02. GameObjects\Bullet\ClintUltimateBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Bullet.h">
+      <Filter>02. GameObjects\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Bin\ShaderFiles\Shader_Client_Defines.hpp">
+      <Filter>97. ShaderFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sky.h">
+      <Filter>02. GameObjects\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Red_Snow.h" />
+    <ClInclude Include="..\public\LargeVolcanicRock_002_Red_Desert.h">
+      <Filter>02. GameObjects\BackGround\LargeVolcanicRock_002_Red_Desert</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\LargeVolcanicRock_004_Red_Desert.h">
+      <Filter>02. GameObjects\BackGround\LargeVolcanicRock_004_Red_Desert</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Cliff01.h">
+      <Filter>02. GameObjects\BackGround\SM_Cliff01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_LargePlainsBoulder002.h">
+      <Filter>02. GameObjects\BackGround\SM_LargePlainsBoulder002</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_LargePlainsBoulder002_Red_Desert.h">
+      <Filter>02. GameObjects\BackGround\SM_LargePlainsBoulder002_Red_Desert</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_LargePlainsBoulder003.h">
+      <Filter>02. GameObjects\BackGround\SM_LargePlainsBoulder003</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_MountainRock.h">
+      <Filter>02. GameObjects\BackGround\SM_MountainRock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_MountainRock_Closed.h">
+      <Filter>02. GameObjects\BackGround\SM_MountainRock_Closed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Kemmekh_Formacion_rocosa.h">
+      <Filter>02. GameObjects\BackGround\Kemmekh_Formacion_rocosa</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Kemmekh_wall.h">
+      <Filter>02. GameObjects\BackGround\Kemmekh_wall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Barriletes.h">
+      <Filter>02. GameObjects\BackGround\SM_Barriletes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Wall02.h">
+      <Filter>02. GameObjects\BackGround\SM_Wall02</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Wall01.h">
+      <Filter>02. GameObjects\BackGround\SM_Wall01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_TrozoPared.h">
+      <Filter>02. GameObjects\BackGround\SM_TrozoPared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Relic.h">
+      <Filter>02. GameObjects\BackGround\SM_Relic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Pueblo02.h">
+      <Filter>02. GameObjects\BackGround\SM_Pueblo02</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Poblado01.h">
+      <Filter>02. GameObjects\BackGround\SM_Poblado01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Poblado.h">
+      <Filter>02. GameObjects\BackGround\SM_Poblado</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Piedras.h">
+      <Filter>02. GameObjects\BackGround\SM_Piedras</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_MultiLake02.h">
+      <Filter>02. GameObjects\BackGround\SM_MultiLake02</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_MiniBujer.h">
+      <Filter>02. GameObjects\BackGround\SM_MiniBujer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Mina2.h">
+      <Filter>02. GameObjects\BackGround\SM_Mina2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_MERGED_RailSupportB2_452.h">
+      <Filter>02. GameObjects\BackGround\SM_MERGED_RailSupportB2_452</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_MERGED_MultiRock371.h">
+      <Filter>02. GameObjects\BackGround\SM_MERGED_MultiRock371</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_LaMina.h">
+      <Filter>02. GameObjects\BackGround\SM_LaMina</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_LagoSmall.h">
+      <Filter>02. GameObjects\BackGround\SM_LagoSmall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_GenericWall01.h">
+      <Filter>02. GameObjects\BackGround\SM_GenericWall01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_CrystalYRocas.h">
+      <Filter>02. GameObjects\BackGround\SM_CrystalYRocas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SM_Crystal.h">
+      <Filter>02. GameObjects\BackGround\SM_Crystal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Cave.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\Cave</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CraterA.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\CraterA</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CraterB.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\CraterB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CraterC.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\CraterC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Kemmek_Hole.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\Kemmek_Hole</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MineCrystalsA.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsA</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MineCrystalsB.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MineCrystalsC.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MineCrystalsD.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsD</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MineCrystalsE.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MineCrystalsF.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TreeA.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\TreeA</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TreeB1.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\TreeB1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TreeB2.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\TreeB2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bush01.h">
+      <Filter>02. GameObjects\BackGround\1 모으기용\Bush01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_CameraTool.h">
+      <Filter>96. IMGUI\01. ImWindow\03. ImWindow_CameraTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_AnimationTool.h">
+      <Filter>96. IMGUI\01. ImWindow\04. ImWindow_AnimationTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_EffectTool.h">
+      <Filter>96. IMGUI\01. ImWindow\05. ImWindow_EffectTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_UITool.h">
+      <Filter>96. IMGUI\01. ImWindow\06. ImWindow_UITool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImWindow_LightTool.h">
+      <Filter>96. IMGUI\01. ImWindow\07. ImWindow_LightTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EditCamera.h">
+      <Filter>02. GameObjects\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ClintSkill01.h">
+      <Filter>02. GameObjects\Clint\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ClintSkill02.h">
+      <Filter>02. GameObjects\Clint\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ClintSkill01Bullet.h">
+      <Filter>02. GameObjects\Bullet\ClintSkill01Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Alien_prawnHit.h">
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BatPotato_RIG.h">
+      <Filter>02. GameObjects\Monster\BatPotato_RIG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BatPotato_RIGRun.h">
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BatPotato_RIGAttack.h">
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BatPotato_RIGDeath.h">
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BatPotato_RIGHit.h">
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BatPotato_RIGIdle.h">
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BatPotato_RIGBullet.h">
+      <Filter>02. GameObjects\Bullet\BatPotato_Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CannonSpider.h">
+      <Filter>02. GameObjects\Monster\CannonSpider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CannonSpiderBullet.h">
+      <Filter>02. GameObjects\Monster\CannonSpider\CannonSpiderBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CannonSpiderSearch.h">
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CannonSpiderDead.h">
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CannonSpiderHit.h">
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CannonSpiderIdle.h">
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CannonSpiderRun.h">
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CannonSpiderAttack.h">
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ObjectPool.h">
+      <Filter>95. Design\ObjectPool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CrystalGolem.h">
+      <Filter>02. GameObjects\Monster\CrystalGolem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CrystalGolemIdle.h">
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CrystalGolemDead.h">
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CrystalGolemRun.h">
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CrystalGolemAppear.h">
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CrystalGolemAttack.h">
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CrystalGolemTurn180.h">
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CrystalGolemAttackArea02Bullet.h">
+      <Filter>02. GameObjects\Monster\CrystalGolem\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CrystalGolemAttackAreaBullet.h">
+      <Filter>02. GameObjects\Monster\CrystalGolem\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CrystalGolemAttackRangeBullet.h">
+      <Filter>02. GameObjects\Monster\CrystalGolem\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ClientInstance.h">
+      <Filter>95. Design\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StateMachine.h">
+      <Filter>95. Design\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\StateContext.h">
+      <Filter>95. Design\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Spider.h">
+      <Filter>02. GameObjects\Monster\Spider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SpiderAttack.h">
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SpiderIdle.h">
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SpiderRun.h">
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SpiderDead.h">
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SpiderHit.h">
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SpiderAppear.h">
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SpiderBullet.h">
+      <Filter>02. GameObjects\Monster\Spider\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Queen_Moggoth.h">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Queen_MoggothIdle.h">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Queen_MoggothAppear.h">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Queen_MoggothAttack.h">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Queen_MoggothDead.h">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Queen_MoggothWalk.h">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Queen_MoggothIdleP2.h">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State\Phase2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Queen_MoggothWalkP2.h">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State\Phase2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Queen_MoggothAttackP2.h">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State\Phase2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Queen_Moggoth_P1_TO_P2.h">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State\Phase2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\P1Attack04.h">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\P1Attack01.h">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\P1Attack02.h">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\P1Attack03.h">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\P2Attack01.h">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\P2Attack02.h">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\P2Attack03.h">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\P2Attack04.h">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Image.h">
+      <Filter>02. GameObjects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DynamicImage.h">
+      <Filter>02. GameObjects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PlayerLevel.h">
+      <Filter>02. GameObjects\PlayerLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FontUI.h">
+      <Filter>02. GameObjects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\HP.h">
+      <Filter>02. GameObjects\HP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MonsterHP.h">
+      <Filter>02. GameObjects\HP\MonsterHP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BossHP.h">
+      <Filter>02. GameObjects\HP\BossHP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PlayerHP.h">
+      <Filter>02. GameObjects\HP\PlayerHP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SkillQ.h">
+      <Filter>02. GameObjects\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SkillUI.h">
+      <Filter>02. GameObjects\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MiniMap.h">
+      <Filter>02. GameObjects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStone_Effect.h">
+      <Filter>02. GameObjects\Effect\Instancing\CStone_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\IStrategy.h">
+      <Filter>95. Design\Strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleStrategy.h">
+      <Filter>95. Design\Strategy\ParticleStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Spawner.h">
+      <Filter>02. GameObjects\Spawner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EnergyBall.h">
+      <Filter>02. GameObjects\Effect\Normal\EnergyBall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Effect_Atlas.h">
+      <Filter>02. GameObjects\Effect\Effect_Atlas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SoundMgr.h">
+      <Filter>95. Design\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Bullet01Effect.h">
+      <Filter>02. GameObjects\Effect\Bullet01Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BoomEffect.h">
+      <Filter>02. GameObjects\Effect\Instancing\BoomEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Struct.h">
+      <Filter>99. Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Dissolve.h">
+      <Filter>02. GameObjects\Effect\Dissolve</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RimLight.h">
+      <Filter>02. GameObjects\Effect\RimLight</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ForceField.h">
+      <Filter>02. GameObjects\Skill\ForceField</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Bin\ShaderFiles\Shader_Function.hpp">
+      <Filter>97. ShaderFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PropelEffect.h">
+      <Filter>02. GameObjects\Effect\Instancing\PropelEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\HitEffect.h">
+      <Filter>02. GameObjects\Effect\HitEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\HitParticle.h">
+      <Filter>02. GameObjects\Effect\HitParticle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EnergyBallEffect.h">
+      <Filter>02. GameObjects\Effect\EnergyBallEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CustomMouse.h">
+      <Filter>02. GameObjects\CustumMouse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EnergyBallEffect2.h">
+      <Filter>02. GameObjects\Effect\EnergyBallEffect2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SmokeParticle.h">
+      <Filter>02. GameObjects\Effect\SmokeParticle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ThunderEffect.h">
+      <Filter>02. GameObjects\Effect\ThunderEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -469,9 +1088,6 @@
     <ClCompile Include="..\private\Cube.cpp">
       <Filter>02. GameObjects\Cube</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\EditCamera.cpp">
-      <Filter>96. IMGUI\02. EditCamera</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\ImMode.cpp">
       <Filter>96. IMGUI\01. ImWindow\98. ImMode</Filter>
     </ClCompile>
@@ -487,80 +1103,26 @@
     <ClCompile Include="..\Private\ImWindow_MapTool.cpp">
       <Filter>96. IMGUI\01. ImWindow\02. ImWindow_MapTool</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\ImWindow_AnimationTool.cpp">
-      <Filter>96. IMGUI\01. ImWindow\04. ImWindow_AnimationTool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\ImWindow_LightTool.cpp">
-      <Filter>96. IMGUI\01. ImWindow\07. ImWindow_LightTool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\ImWindow_UITool.cpp">
-      <Filter>96. IMGUI\01. ImWindow\06. ImWindow_UITool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\IMGUI\ImWindow_EffectTool.cpp">
-      <Filter>96. IMGUI\01. ImWindow\05. ImWindow_EffectTool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\IMGUI\ImWindow_CameraTool.cpp">
-      <Filter>96. IMGUI\01. ImWindow\03. ImWindow_CameraTool</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\ImGuiFileDialog.cpp">
       <Filter>96. IMGUI\03. ImVertex\filedialog</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Clint.cpp">
       <Filter>02. GameObjects\Clint</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\BarrelBoxStool.cpp">
-      <Filter>02. GameObjects\BackGround\BarrelBoxStool</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\BushA.cpp">
-      <Filter>02. GameObjects\BackGround\BushA</Filter>
+      <Filter>02. GameObjects\BackGround\1 모으기용\BushA</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Bush01.cpp">
-      <Filter>02. GameObjects\BackGround\Bush01</Filter>
+      <Filter>02. GameObjects\BackGround\1 모으기용\Bush01</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BushB.cpp">
-      <Filter>02. GameObjects\BackGround\BushB</Filter>
+      <Filter>02. GameObjects\BackGround\1 모으기용\BushB</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BushC.cpp">
-      <Filter>02. GameObjects\BackGround\BushC</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\KemmekhBridgeA.cpp">
-      <Filter>02. GameObjects\BackGround\KemmekhBridgeA</Filter>
+      <Filter>02. GameObjects\BackGround\1 모으기용\BushC</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Cage.cpp">
-      <Filter>02. GameObjects\BackGround\Cage</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\KemmekhBridgeD.cpp">
-      <Filter>02. GameObjects\BackGround\KemmekhBridgeD</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\KemmekhBridgeF.cpp">
-      <Filter>02. GameObjects\BackGround\KemmekhBridgeF</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\RailSupportA.cpp">
-      <Filter>02. GameObjects\BackGround\RailSupportA</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\RailSupportB.cpp">
-      <Filter>02. GameObjects\BackGround\RailSupportB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Rock.cpp">
-      <Filter>02. GameObjects\BackGround\Rock</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\SmallRockC.cpp">
-      <Filter>02. GameObjects\BackGround\SmallRockC</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Tong.cpp">
-      <Filter>02. GameObjects\BackGround\Tong</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\TunnelEntryWood.cpp">
-      <Filter>02. GameObjects\BackGround\TunnelEntryWood</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Wagon2.cpp">
-      <Filter>02. GameObjects\BackGround\Wagon2</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\WatchTowerLadder.cpp">
-      <Filter>02. GameObjects\BackGround\WatchTowerLadder</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\WheelBarrow.cpp">
-      <Filter>02. GameObjects\BackGround\WheelBarrow</Filter>
+      <Filter>02. GameObjects\BackGround\1 모으기용\Cage</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ClintIdle.cpp">
       <Filter>02. GameObjects\Clint\State</Filter>
@@ -577,29 +1139,441 @@
     <ClCompile Include="..\private\ClintShoot.cpp">
       <Filter>02. GameObjects\Clint\State</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\ClintModel.cpp">
-      <Filter>02. GameObjects\Clint</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Alien_prawn.cpp">
-      <Filter>02. GameObjects\Alien_prawn</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Alien_prawnIdle.cpp">
-      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Alien_prawnRun.cpp">
-      <Filter>02. GameObjects\Alien_prawn\State</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\ClientInstance.cpp">
-      <Filter>95. Design</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Alien_prawnAttack.cpp">
-      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ClintBasicBullet.cpp">
-      <Filter>02. GameObjects\ClintBasicBullet</Filter>
+      <Filter>02. GameObjects\Bullet\ClintBasicBullet</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Alien_prawnDead.cpp">
-      <Filter>02. GameObjects\Alien_prawn\State</Filter>
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ClintUltimate01.cpp">
+      <Filter>02. GameObjects\Clint\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ClintUltimate01Bullet.cpp">
+      <Filter>02. GameObjects\Bullet\ClintUltimateBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Bullet.cpp">
+      <Filter>02. GameObjects\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sky.cpp">
+      <Filter>02. GameObjects\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Red_Snow.cpp" />
+    <ClCompile Include="..\private\LargeVolcanicRock_002_Red_Desert.cpp">
+      <Filter>02. GameObjects\BackGround\LargeVolcanicRock_002_Red_Desert</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\LargeVolcanicRock_004_Red_Desert.cpp">
+      <Filter>02. GameObjects\BackGround\LargeVolcanicRock_004_Red_Desert</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Cliff01.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Cliff01</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_LargePlainsBoulder002.cpp">
+      <Filter>02. GameObjects\BackGround\SM_LargePlainsBoulder002</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_LargePlainsBoulder002_Red_Desert.cpp">
+      <Filter>02. GameObjects\BackGround\SM_LargePlainsBoulder002_Red_Desert</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_LargePlainsBoulder003.cpp">
+      <Filter>02. GameObjects\BackGround\SM_LargePlainsBoulder003</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_MountainRock.cpp">
+      <Filter>02. GameObjects\BackGround\SM_MountainRock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_MountainRock_Closed.cpp">
+      <Filter>02. GameObjects\BackGround\SM_MountainRock_Closed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Kemmekh_Formacion_rocosa.cpp">
+      <Filter>02. GameObjects\BackGround\Kemmekh_Formacion_rocosa</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Kemmekh_wall.cpp">
+      <Filter>02. GameObjects\BackGround\Kemmekh_wall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Barriletes.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Barriletes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Wall02.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Wall02</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Wall01.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Wall01</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_TrozoPared.cpp">
+      <Filter>02. GameObjects\BackGround\SM_TrozoPared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Relic.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Relic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Pueblo02.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Pueblo02</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Poblado01.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Poblado01</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Poblado.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Poblado</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Piedras.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Piedras</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_MultiLake02.cpp">
+      <Filter>02. GameObjects\BackGround\SM_MultiLake02</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_MiniBujer.cpp">
+      <Filter>02. GameObjects\BackGround\SM_MiniBujer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Mina2.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Mina2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_MERGED_RailSupportB2_452.cpp">
+      <Filter>02. GameObjects\BackGround\SM_MERGED_RailSupportB2_452</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_MERGED_MultiRock371.cpp">
+      <Filter>02. GameObjects\BackGround\SM_MERGED_MultiRock371</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_LaMina.cpp">
+      <Filter>02. GameObjects\BackGround\SM_LaMina</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_LagoSmall.cpp">
+      <Filter>02. GameObjects\BackGround\SM_LagoSmall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_GenericWall01.cpp">
+      <Filter>02. GameObjects\BackGround\SM_GenericWall01</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_CrystalYRocas.cpp">
+      <Filter>02. GameObjects\BackGround\SM_CrystalYRocas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SM_Crystal.cpp">
+      <Filter>02. GameObjects\BackGround\SM_Crystal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Cave.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\Cave</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CraterA.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\CraterA</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CraterB.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\CraterB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CraterC.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\CraterC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Kemmek_Hole.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\Kemmek_Hole</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MineCrystalsA.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsA</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MineCrystalsB.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MineCrystalsC.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MineCrystalsD.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsD</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MineCrystalsE.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MineCrystalsF.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\MineCrystalsF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TreeA.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\TreeA</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TreeB1.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\TreeB1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TreeB2.cpp">
+      <Filter>02. GameObjects\BackGround\1 모으기용\TreeB2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_CameraTool.cpp">
+      <Filter>96. IMGUI\01. ImWindow\03. ImWindow_CameraTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_AnimationTool.cpp">
+      <Filter>96. IMGUI\01. ImWindow\04. ImWindow_AnimationTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_UITool.cpp">
+      <Filter>96. IMGUI\01. ImWindow\06. ImWindow_UITool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_LightTool.cpp">
+      <Filter>96. IMGUI\01. ImWindow\07. ImWindow_LightTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImWindow_EffectTool.cpp">
+      <Filter>96. IMGUI\01. ImWindow\05. ImWindow_EffectTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EditCamera.cpp">
+      <Filter>02. GameObjects\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ClintSkill01.cpp">
+      <Filter>02. GameObjects\Clint\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ClintSkill02.cpp">
+      <Filter>02. GameObjects\Clint\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ClintSkill01Bullet.cpp">
+      <Filter>02. GameObjects\Bullet\ClintSkill01Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Alien_prawnHit.cpp">
+      <Filter>02. GameObjects\Monster\Alien_prawn\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BatPotato_RIG.cpp">
+      <Filter>02. GameObjects\Monster\BatPotato_RIG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BatPotato_RIGAttack.cpp">
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BatPotato_RIGDeath.cpp">
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BatPotato_RIGHit.cpp">
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BatPotato_RIGIdle.cpp">
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BatPotato_RIGRun.cpp">
+      <Filter>02. GameObjects\Monster\BatPotato_RIG\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BatPotato_RIGBullet.cpp">
+      <Filter>02. GameObjects\Bullet\BatPotato_Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CannonSpider.cpp">
+      <Filter>02. GameObjects\Monster\CannonSpider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CannonSpiderBullet.cpp">
+      <Filter>02. GameObjects\Monster\CannonSpider\CannonSpiderBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CannonSpiderDead.cpp">
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CannonSpiderHit.cpp">
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CannonSpiderIdle.cpp">
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CannonSpiderRun.cpp">
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CannonSpiderSearch.cpp">
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CannonSpiderAttack.cpp">
+      <Filter>02. GameObjects\Monster\CannonSpider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CrystalGolem.cpp">
+      <Filter>02. GameObjects\Monster\CrystalGolem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CrystalGolemIdle.cpp">
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CrystalGolemDead.cpp">
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CrystalGolemRun.cpp">
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CrystalGolemAppear.cpp">
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CrystalGolemAttack.cpp">
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CrystalGolemTurn180.cpp">
+      <Filter>02. GameObjects\Monster\CrystalGolem\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CrystalGolemAttackArea02Bullet.cpp">
+      <Filter>02. GameObjects\Monster\CrystalGolem\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CrystalGolemAttackAreaBullet.cpp">
+      <Filter>02. GameObjects\Monster\CrystalGolem\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CrystalGolemAttackRangeBullet.cpp">
+      <Filter>02. GameObjects\Monster\CrystalGolem\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ClientInstance.cpp">
+      <Filter>95. Design\Singleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Spider.cpp">
+      <Filter>02. GameObjects\Monster\Spider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SpiderAttack.cpp">
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SpiderIdle.cpp">
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SpiderRun.cpp">
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SpiderDead.cpp">
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SpiderHit.cpp">
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SpiderAppear.cpp">
+      <Filter>02. GameObjects\Monster\Spider\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SpiderBullet.cpp">
+      <Filter>02. GameObjects\Monster\Spider\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_Moggoth.cpp">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_MoggothIdle.cpp">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_MoggothAppear.cpp">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_MoggothAttack.cpp">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_MoggothDead.cpp">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_MoggothWalk.cpp">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_MoggothAttackP2.cpp">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State\Phase2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_MoggothIdleP2.cpp">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State\Phase2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_MoggothWalkP2.cpp">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State\Phase2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Queen_Moggoth_P1_TO_P2.cpp">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\State\Phase2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\P1Attack01.cpp">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\P1Attack02.cpp">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\P1Attack03.cpp">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\P1Attack04.cpp">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\P2Attack01.cpp">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\P2Attack02.cpp">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\P2Attack03.cpp">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\P2Attack04.cpp">
+      <Filter>02. GameObjects\Monster\Queen_Moggoth\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Image.cpp">
+      <Filter>02. GameObjects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DynamicImage.cpp">
+      <Filter>02. GameObjects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PlayerLevel.cpp">
+      <Filter>02. GameObjects\PlayerLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\FontUI.cpp">
+      <Filter>02. GameObjects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HP.cpp">
+      <Filter>02. GameObjects\HP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MonsterHP.cpp">
+      <Filter>02. GameObjects\HP\MonsterHP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BossHP.cpp">
+      <Filter>02. GameObjects\HP\BossHP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PlayerHP.cpp">
+      <Filter>02. GameObjects\HP\PlayerHP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SkillQ.cpp">
+      <Filter>02. GameObjects\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SkillUI.cpp">
+      <Filter>02. GameObjects\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MiniMap.cpp">
+      <Filter>02. GameObjects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStone_Effect.cpp">
+      <Filter>02. GameObjects\Effect\Instancing\CStone_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleStrategy.cpp">
+      <Filter>95. Design\Strategy\ParticleStrategy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Spawner.cpp">
+      <Filter>02. GameObjects\Spawner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EnergyBall.cpp">
+      <Filter>02. GameObjects\Effect\Normal\EnergyBall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Effect_Atlas.cpp">
+      <Filter>02. GameObjects\Effect\Effect_Atlas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SoundMgr.cpp">
+      <Filter>95. Design\Singleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Bullet01Effect.cpp">
+      <Filter>02. GameObjects\Effect\Bullet01Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BoomEffect.cpp">
+      <Filter>02. GameObjects\Effect\Instancing\BoomEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Dissolve.cpp">
+      <Filter>02. GameObjects\Effect\Dissolve</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RimLight.cpp">
+      <Filter>02. GameObjects\Effect\RimLight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ForceField.cpp">
+      <Filter>02. GameObjects\Skill\ForceField</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PropelEffect.cpp">
+      <Filter>02. GameObjects\Effect\Instancing\PropelEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HitEffect.cpp">
+      <Filter>02. GameObjects\Effect\HitEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HitParticle.cpp">
+      <Filter>02. GameObjects\Effect\HitParticle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EnergyBallEffect.cpp">
+      <Filter>02. GameObjects\Effect\EnergyBallEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CustomMouse.cpp">
+      <Filter>02. GameObjects\CustumMouse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EnergyBallEffect2.cpp">
+      <Filter>02. GameObjects\Effect\EnergyBallEffect2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SmokeParticle.cpp">
+      <Filter>02. GameObjects\Effect\SmokeParticle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ThunderEffect.cpp">
+      <Filter>02. GameObjects\Effect\ThunderEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -621,6 +1595,18 @@
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPointInstance.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTexInstance.hlsl">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxBullet01.hlsl">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

@@ -38,10 +38,23 @@ public:
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
 	
-#ifdef _DEBUG
+
+public:
+	_vector PickPos()
+	{
+		m_vPickPos.w = { 1.f };
+		return XMLoadFloat4(&m_vPickPos);
+	}
 public:
 	virtual _bool Picked(_Inout_ PICK_DESC& tPickDesc, const RAY& tRay) override;
-#endif DEBUG
+	
+private:
+	_bool	m_bShowBrush = { true };
+	_float4 m_vPickPos = _float4();
+
+#ifdef _DEBUG
+	friend class CImWindow_MapTool;
+#endif // _DEBUG
 
 private:
 	CShader* m_pShaderCom = { nullptr };

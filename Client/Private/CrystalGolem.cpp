@@ -1,0 +1,363 @@
+#include "CrystalGolem.h"
+#include "GameInstance.h"
+#include "StateContext.h"
+#include "Bullet.h"
+#include "CrystalGolemAttackAreaBullet.h"
+#include "CrystalGolemAttackArea02Bullet.h"
+#include "CrystalGolemAttackRangeBullet.h"
+#include "MonsterHP.h"
+#include "Animation.h"
+#include "Dissolve.h"
+#include "SoundMgr.h"
+#include "SmokeParticle.h"
+_uint CrystalGolem::CrystalGolem_Id = 0;
+
+CrystalGolem::CrystalGolem(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	: CGameObject(pDevice, pContext)
+{
+}
+
+CrystalGolem::CrystalGolem(const CrystalGolem& rhs)
+	: CGameObject(rhs)
+{
+}
+
+HRESULT CrystalGolem::Initialize_Prototype()
+{
+	if (FAILED(__super::Initialize_Prototype()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CrystalGolem::Initialize(void* pArg)
+{
+	if (FAILED(__super::Initialize(pArg)))
+		return E_FAIL;
+
+	if (FAILED(Add_Components()))
+		return E_FAIL;
+
+	// 태그초기화
+	++CrystalGolem_Id;
+	m_tInfo.wstrName = TO_WSTR("CrystalGolem" + to_string(CrystalGolem_Id));
+	m_tInfo.wstrKey = ProtoTag();
+	m_tInfo.ID = CrystalGolem_Id;
+
+	// 상태 초기화
+	m_pStateContextCom->TransitionTo(L"CrystalGolemAppear");
+
+	// Desc초기화
+	tagCrystalGolemDesc tCloneDesc;
+	if (nullptr != pArg)
+		tCloneDesc = *(tagCrystalGolemDesc*)pArg;
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
+
+	// 노티파이 초기화
+	Add_Notify();
+
+	// 옵저버 이벤트 추가
+	m_pMonsterHP->GetObserver()->Subscribe(L"isZeroHP", [this]() {
+		if (m_pMonsterHP->isZeroHP())
+		{
+			m_pStateContextCom->TransitionTo(L"CrystalGolemDead");
+		}
+		});
+	m_pMonsterHP->Disable();
+
+	// 골렘 도는거때문에 하드코딩한거 건들지마셈.
+	// 이거때문에 애니메이션 헤더파일도 추가햇음. 쓰이지는 않음.
+	m_pModelCom->GetAnimationByIndex(CRYSTAL_GOLEM_TURN180)->SetGolem();
+
+	// 네비셀 인덱스 초기화
+	m_pNavigationCom->SetCellCurIndex(tCloneDesc.iStartIndex);
+
+	return S_OK;
+}
+
+void CrystalGolem::Tick(_double TimeDelta)
+{
+	__super::Tick(TimeDelta);
+	m_TimeDelta = TimeDelta;
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	if (pGameInstance->Key_Down(DIK_P))
+		m_pTransformCom->RotationBack();
+	Safe_Release(pGameInstance);
+
+
+	m_pModelCom->Play_Animation(TimeDelta);
+
+	if (nullptr != m_pStateContextCom)
+		m_pStateContextCom->Tick(TimeDelta);
+
+	m_pMonsterHP->Tick(TimeDelta);
+
+	if (nullptr != m_pColliderCom)
+		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
+
+
+	if (nullptr != m_pColliderDectect)
+	{
+		m_pColliderDectect->Tick(m_pTransformCom->Get_WorldMatrix());
+	}
+}
+
+void CrystalGolem::Late_Tick(_double TimeDelta)
+{
+	__super::Late_Tick(TimeDelta);
+	m_pMonsterHP->Late_Tick(TimeDelta);
+	if (Single->isRender(m_pRendererCom, m_pTransformCom))
+	{
+		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
+
+		//Dead상태가 아니면 콜라이더 넣음, Appear상태가 아니면 콜라이더를 넣음.
+		if (0 != lstrcmp(L"CrystalGolemDead", m_pStateContextCom->GetCurState())
+			|| 0 != lstrcmp(L"CrystalGolemAppear", m_pStateContextCom->GetCurState()))
+		{
+			m_pColliderCom->Add_ColliderGroup(COLL_GROUP::MONSTER_BODY);
+		}
+	}
+
+#ifdef _DEBUG
+	if (nullptr != m_pColliderCom)
+		m_pRendererCom->Add_DebugGroup(m_pColliderCom);
+	m_pRendererCom->Add_DebugGroup(m_pColliderDectect);
+#endif
+}
+
+HRESULT CrystalGolem::Render()
+{
+	if (FAILED(__super::Render()))
+		return E_FAIL;
+
+	if (FAILED(SetUp_ShaderResources()))
+		return E_FAIL;
+
+	_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
+
+	for (size_t i = 0; i < iNumMeshes; i++)
+	{
+		m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
+
+		m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
+
+		m_pShaderCom->Begin(m_iPass);
+
+		m_pModelCom->Render(i);
+	}
+}
+
+void CrystalGolem::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
+{
+	// 총알은 레이어가 없다..
+	Bullet* pBullet = dynamic_cast<Bullet*>(tCollisionInfo.pOtherGameObject);
+	if (pBullet && false == m_pMonsterHP->isZeroHP())
+	{
+		if (m_pTransformCom->isFront(Single->GetClintPosition()))
+		{
+			m_pMonsterHP->Heal(pBullet->GetDamage());
+		}	
+	}
+
+	// 바디콜라이더 끼리 부딪친 경우.
+	//if (tCollisionInfo.MyCollName == TEXT("Com_BodyColl")
+	//	&& tCollisionInfo.OtherCollName == TEXT("Com_BodyColl")
+	//	&& tCollisionInfo.OtherGameObjectLayerName == TEXT("Layer_Monster"))
+	//{
+	//	tCollisionInfo.vOverLapVector.y = 0.f;
+	//	m_pTransformCom->Go_Direction(TimeDelta, -XMLoadFloat3(&tCollisionInfo.vOverLapVector)
+	//		, XMVectorGetX(XMVector3Length(XMLoadFloat3(&tCollisionInfo.vOverLapVector))));
+	//}
+
+	m_pStateContextCom->OnCollision(tCollisionInfo, TimeDelta);
+}
+
+HRESULT CrystalGolem::Add_Components()
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	LEVELID eLevelID = static_cast<LEVELID>(pGameInstance->Get_NextLevelIndex());
+
+	CRenderer::CRENDERER_DESC tRendererDesc; tRendererDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom, &tRendererDesc), E_FAIL);
+
+	CTransform::CTRANSFORM_DESC TransformDesc{ 3.0, XMConvertToRadians(60.f) }; TransformDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
+		, &TransformDesc), E_FAIL);
+
+	CShader::CSHADER_DESC tShaderDesc; tShaderDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxAnimMesh", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
+
+	CModel::CMODEL_DESC tModelDesc; tModelDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_CrystalGolem", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
+
+	CColliderAABB::CCOLLIDER_AABB_DESC tColliderAABBDesc;
+	tColliderAABBDesc.pOwner = this;
+	tColliderAABBDesc.Extents = _float3(1.5f, 1.f, 1.5f);
+	tColliderAABBDesc.vCenter = _float3(0.f, tColliderAABBDesc.Extents.y, 1.5f);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CColliderAABB::ProtoTag(), L"Com_BodyColl", (CComponent**)&m_pColliderCom, &tColliderAABBDesc), E_FAIL);
+
+	CColliderSphere::CCOLLIDER_SPHERE_DESC tDectDesc;
+	tDectDesc.pOwner = this;
+	tDectDesc.fRadius = 3.f;
+	tDectDesc.vCenter = _float3(0.f, 1.f, 0.f);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CColliderSphere::ProtoTag(), L"Com_CollDetect", (CComponent**)&m_pColliderDectect, &tDectDesc), E_FAIL);
+
+	CNavigation::CNAVIGATION_DESC tNavigationdesc; tNavigationdesc.pOwner = this;
+	tNavigationdesc.iCurrentIndex = { 0 };
+	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, CNavigation::ProtoTag(), L"Com_Navigation", (CComponent**)&m_pNavigationCom, &tNavigationdesc), E_FAIL);
+
+	CrystalGolemState::STATE_CONTEXT_DESC tStateContextDesc;
+	tStateContextDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, TEXT("Prototype_Component_CrystalGolemState"), L"Com_StateContext", (CComponent**)&m_pStateContextCom, &tStateContextDesc), E_FAIL);
+
+	MonsterHP::tagMonsterHPDesc tMonsterHPDesc;
+	tMonsterHPDesc.pOwner = this;
+	tMonsterHPDesc.fSize = _float2(240, 30);
+	tMonsterHPDesc.fMaxHP = 3000.f;
+	FAILED_CHECK_RETURN(__super::Add_Composite(MonsterHP::ProtoTag(), L"Com_HP", (CComponent**)&m_pMonsterHP, &tMonsterHPDesc), E_FAIL);
+
+	Dissolve::DISSOLVE_DESC tDissolveDesc;
+	tDissolveDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Composite(Dissolve::ProtoTag(), L"Com_Dissolve", (CComponent**)&m_pDissolveCom, &tDissolveDesc), E_FAIL);
+
+	Safe_Release(pGameInstance);
+	return S_OK;
+}
+
+HRESULT CrystalGolem::Add_Notify()
+{
+	// 두손 내려찍기
+	m_pModelCom->Add_TimeLineEvent("CrystalGolem_attack_area", L"AttackArea", TIMELINE_EVENT(43.7, [this]() {
+		CGameInstance* pGameInstance = CGameInstance::GetInstance();
+		Safe_AddRef(pGameInstance);
+
+		CrystalGolemAttackAreaBullet::tagCrystalGolemAttackAreaBulletDesc tBulletDesc;
+		tBulletDesc.pOwner = this;
+		tBulletDesc.fDamage = 10.f;
+		_vector vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+		_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+		vPosition += vLook * 3.f;
+		XMStoreFloat4(&tBulletDesc.vPosition, vPosition);
+
+		Bullet* pBullet = ObjectPool<CrystalGolemAttackAreaBullet>::GetInstance()->PopPool(CrystalGolemAttackAreaBullet::ProtoTag(), &tBulletDesc);
+		SoundMgr->StopSound(CHANNELID::GOLEM);
+		SoundMgr->PlaySound(L"GolemAttack.mp3", CHANNELID::GOLEM, 0.5f);
+		pGameInstance->AddToLayer(pGameInstance->Get_CurLevelIndex(), L"Layer_Bullet", pBullet);
+
+		SmokeParticle::tagSmokeParticleDesc tSmokeParticleDesc;
+		tSmokeParticleDesc.pOwner = this;
+		XMStoreFloat4(&tSmokeParticleDesc.vPosition, vPosition);
+		tSmokeParticleDesc.iNumParticles = 30;
+		tSmokeParticleDesc.fScale = 5.f;
+		CGameObject* pObj = pGameInstance->Add_GameObject(pGameInstance->Get_CurLevelIndex(), SmokeParticle::ProtoTag(),
+			L"Layer_Effect", &tSmokeParticleDesc);
+		NULL_CHECK(pObj);
+
+		Safe_Release(pGameInstance);
+
+		}));
+
+	// 한손 내려찍기
+	m_pModelCom->Add_TimeLineEvent("CrystalGolem_attack_area_02", L"AttackArea02", TIMELINE_EVENT(43.7, [this]() {
+		CGameInstance* pGameInstance = CGameInstance::GetInstance();
+		Safe_AddRef(pGameInstance);
+		SoundMgr->StopSound(CHANNELID::GOLEM);
+		SoundMgr->PlaySound(L"GolemAttack2.mp3", CHANNELID::GOLEM, 1.f);
+
+		CrystalGolemAttackArea02Bullet::tagCrystalGolemAttackArea02BulletDesc tBulletDesc;
+		tBulletDesc.pOwner = this;
+		tBulletDesc.fDamage = 10.f;
+		_vector vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+		_vector vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+		vPosition += vLook * 1.f;
+		XMStoreFloat4(&tBulletDesc.vPosition, vPosition);
+
+		Bullet* pBullet = ObjectPool<CrystalGolemAttackArea02Bullet>::GetInstance()->PopPool(CrystalGolemAttackArea02Bullet::ProtoTag(), &tBulletDesc);
+
+		pGameInstance->AddToLayer(pGameInstance->Get_CurLevelIndex(), L"Layer_Bullet", pBullet);
+
+		SmokeParticle::tagSmokeParticleDesc tSmokeParticleDesc;
+		tSmokeParticleDesc.pOwner = this;
+		vPosition += vLook * 2.f;
+		XMStoreFloat4(&tSmokeParticleDesc.vPosition, vPosition);
+		tSmokeParticleDesc.iNumParticles = 30;
+		tSmokeParticleDesc.fScale = 5.f;
+		CGameObject* pObj = pGameInstance->Add_GameObject(pGameInstance->Get_CurLevelIndex(), SmokeParticle::ProtoTag(),
+			L"Layer_Effect", &tSmokeParticleDesc);
+		NULL_CHECK(pObj);
+
+		Safe_Release(pGameInstance);
+
+		}));
+
+	return S_OK;
+}
+
+HRESULT CrystalGolem::SetUp_ShaderResources()
+{
+	_float4x4 MyMatrix = m_pTransformCom->Get_WorldFloat4x4();
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &MyMatrix), E_FAIL);
+
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &MyMatrix), E_FAIL);
+
+	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
+	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &MyMatrix), E_FAIL);
+
+	if (1 == m_iPass)
+	{
+		FAILED_CHECK_RETURN(m_pDissolveCom->Bind_Values(m_pShaderCom, -0.25f * m_TimeDelta), E_FAIL);
+	}
+
+	Safe_Release(pGameInstance);
+
+	return S_OK;
+}
+
+CrystalGolem* CrystalGolem::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	CrystalGolem* pInstance = new CrystalGolem(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Created CrystalGolem");
+		Safe_Release(pInstance);
+	}
+	return pInstance;
+}
+
+CGameObject* CrystalGolem::Clone(void* pArg)
+{
+	CrystalGolem* pInstance = new CrystalGolem(*this);
+
+	if (FAILED(pInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed to Cloned CrystalGolem");
+		Safe_Release(pInstance);
+	}
+	return pInstance;
+}
+
+void CrystalGolem::Free(void)
+{
+	__super::Free();
+
+	--CrystalGolem_Id;
+	
+	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pRendererCom);
+	Safe_Release(m_pTransformCom);
+	Safe_Release(m_pModelCom);
+	Safe_Release(m_pColliderCom);
+	Safe_Release(m_pStateContextCom);
+	Safe_Release(m_pNavigationCom);
+	Safe_Release(m_pColliderDectect);
+	Safe_Release(m_pMonsterHP);
+	Safe_Release(m_pDissolveCom);
+	/* Don't Forget Release for the VIBuffer or Model Component*/
+}

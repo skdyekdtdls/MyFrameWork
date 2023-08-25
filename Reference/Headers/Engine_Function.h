@@ -66,7 +66,6 @@ private:
 	const wchar_t* m_pTargetTag = { nullptr };
 };
 
-
 static std::string WideToMultiByte(const std::wstring& wide_str)
 {
 	int requiredSize = WideCharToMultiByte(CP_UTF8, 0, wide_str.c_str(), -1, NULL, 0, NULL, NULL);
@@ -86,6 +85,11 @@ static std::wstring MultiByteToWide(const std::string& multiByte_str)
 }
 #define TO_WSTR(STR) MultiByteToWide(STR)
 
+static bool DoubleEqual(double d1, double d2, double epsilon = std::numeric_limits<double>::epsilon())
+{
+	return abs(d1 - d2) <= epsilon;
+}
+
 static bool FloatEqual(float f1, float f2, float epsilon = std::numeric_limits<float>::epsilon())
 {
 	return abs(f1 - f2) <= epsilon;
@@ -99,18 +103,162 @@ static bool Float3Equal(_float3 f1, _float3 f2, float epsilon = std::numeric_lim
 	return true;
 }
 
-bool IsPointOnLineSegment(FXMVECTOR A, FXMVECTOR B, FXMVECTOR P)
-{
-	DirectX::FXMVECTOR AB = DirectX::XMVectorSubtract(B, A);
-	DirectX::FXMVECTOR AP = DirectX::XMVectorSubtract(P, A);
-	DirectX::FXMVECTOR BP = DirectX::XMVectorSubtract(P, B);
-
-	float dotABAP = DirectX::XMVectorGetX(DirectX::XMVector3Dot(AB, AP));
-	float dotABAB = DirectX::XMVectorGetX(DirectX::XMVector3Dot(AB, AB));
-	float dotBAPB = DirectX::XMVectorGetX(DirectX::XMVector3Dot(DirectX::XMVectorNegate(AB), BP));
-
-	return (dotABAP >= 0.f && dotABAP <= dotABAB && dotBAPB >= 0.f);
+template <typename T>
+_float Lerp(T a, T b, T t) {
+	return a + t * (b - a);
 }
+
+static float RandomFloat(float lowBound, float highBound)
+{
+	if (lowBound >= highBound)
+		return lowBound;
+
+	float f = (rand() % 10000) * 0.0001f;
+
+	return (f * (highBound - lowBound)) + lowBound;
+}
+
+static _float2 RandomFloat2(_float2 lowBound, _float2 highBound)
+{
+	return _float2(RandomFloat(lowBound.x, highBound.x), RandomFloat(lowBound.y, highBound.y));
+}
+
+static _float3 RandomFloat3(_float3 lowBound, _float3 highBound)
+{
+	return _float3(RandomFloat(lowBound.x, highBound.x)
+		, RandomFloat(lowBound.y, highBound.y)
+		, RandomFloat(lowBound.z, highBound.z));
+}
+
+static _float4 RandomFloat4(_float4 lowBound, _float4 highBound)
+{
+	return _float4(RandomFloat(lowBound.x, highBound.x)
+		, RandomFloat(lowBound.y, highBound.y)
+		, RandomFloat(lowBound.z, highBound.z)
+		, RandomFloat(lowBound.w, highBound.w));
+}
+
+static _vector RandomDirection()
+{
+	_vector vResult;
+	vResult.m128_f32[0] = RandomFloat(-1.f, 1.f);
+	vResult.m128_f32[1] = RandomFloat(-1.f, 1.f);
+	vResult.m128_f32[2] = RandomFloat(-1.f, 1.f);
+	vResult.m128_f32[3] = 0.f;
+
+	return XMVector3Normalize(vResult);
+}
+
+static float RandomUNormal()
+{
+	return RandomFloat(0.f, 1.f);
+}
+
+template <typename T>
+static bool	isInsideRange(T _value, T _min, T _max)
+{
+	if (_min <= _value && _value <= _max)
+		return true;
+
+	return false;
+}
+
+// 값을 최소 최대 사이로 자르고 반환함.
+template <typename T>
+static void Saturate(T& _value, T _min, T _max)
+{
+	_value = max(_value, _min);
+	_value = min(_value, _max);
+}
+
+// 두 벡터 사이의 Radian을 구하는 함수
+static float RadianBetweenVectors(FXMVECTOR _v1, FXMVECTOR _v2)
+{
+	XMVECTOR v1 = XMVector3Normalize(_v1);
+	XMVECTOR v2 = XMVector3Normalize(_v2);
+
+	float fDot = XMVectorGetX(XMVector3Dot(v1, v2));
+	Saturate(fDot, -1.f, 1.f); // fDot에 수정된 값을 할당
+	XMVECTOR cross = XMVector3Cross(v1, v2); // 여기서는 노말라이즈된 벡터를 사용하는 것이 더 올바릅니다.
+	float crossY = XMVectorGetY(cross); // Y 값을 얻습니다. Z 축은 두 벡터의 수평면에 수직입니다.
+	float radian = acos(fDot);
+
+	if (0 < crossY)
+	{
+		radian = (2 * XM_PI) - radian; // 360도 - 계산된 각도
+	}
+
+	return radian;
+}
+
+
+static int RandomIntFrom_A_To_B(int A, int B)
+{
+	if (A == B)
+		return A;
+
+	if (A > B)
+		std::swap(A, B);
+	// -3 ~ 3
+	// 
+	return (rand() % (B - A + 1)) + A;
+}
+
+// 두 벡터 사이의 Degree를 구하는 함수.
+static float DegreeBetweenVectors(FXMVECTOR _v1, FXMVECTOR _v2)
+{
+	return XMConvertToDegrees(RadianBetweenVectors(_v1, _v2));
+}
+
+// 각도를 0~360도로 조정해주는 함수.
+static void DegreeClipping(_float& fDegree)
+{
+	if (fDegree > 0)
+	{
+		// 나머지연산(fmod는 float에 대한 나머지를 구하는 함수)
+		fDegree = fmod(fDegree, 360.f);
+	}
+	else
+	{
+		// 각도가 0~360안에 들어갈 때 까지 루프를 돔.
+		while (0 > fDegree)
+			fDegree += 360.f;
+	}	
+}
+
+// 첫번째 인자를 두번째 인자값 자리까지 반올림해준다.
+// ex) Value = 5.123456, iDight = 1
+// Result) Value = 5.1
+static _double DRound(_double Value, _uint iDigit)
+{
+	_uint iDecimal = 10;
+	iDecimal = std::pow(iDecimal, iDigit);
+	return round(Value * iDecimal) / iDecimal;
+}
+
+// double값을 소수점 iDigit 자리까지 잘라서 wstring형으로 반환하는 함수.
+static wstring DbToWstr(_double value, _uint iDight = 1)
+{
+	wstring wstr = std::to_wstring(value);
+	return wstr.substr(0, iDight + 2);
+}
+
+//bool IsPointOnLineSegment(FXMVECTOR A, FXMVECTOR B, FXMVECTOR P)
+//{
+//	DirectX::FXMVECTOR AB = DirectX::XMVectorSubtract(B, A);
+//	DirectX::FXMVECTOR AP = DirectX::XMVectorSubtract(P, A);
+//	DirectX::FXMVECTOR BP = DirectX::XMVectorSubtract(P, B);
+//
+//	float dotABAP = DirectX::XMVectorGetX(DirectX::XMVector3Dot(AB, AP));
+//	float dotABAB = DirectX::XMVectorGetX(DirectX::XMVector3Dot(AB, AB));
+//	float dotBAPB = DirectX::XMVectorGetX(DirectX::XMVector3Dot(DirectX::XMVectorNegate(AB), BP));
+//
+//	return (dotABAP >= 0.f && dotABAP <= dotABAB && dotBAPB >= 0.f);
+//}
+
+static XMVECTOR WorldAxisX() { return XMVectorSet(1.f, 0.f, 0.f, 0.f); }
+static XMVECTOR WorldAxisY() { return XMVectorSet(0.f, 1.f, 0.f, 0.f); }
+static XMVECTOR WorldAxisZ() { return XMVectorSet(0.f, 0.f, 1.f, 0.f); }
 
 #ifdef _DEBUG
 static void CoutVector(_fvector vector)
@@ -121,5 +269,13 @@ static void CoutVector(_fvector vector)
 static void CoutFloat3(_float3 vector)
 {
 	cout << vector.x << "\t" << vector.y << "\t" << vector.z << endl;
+}
+
+static void CoutMatrix(_fmatrix matrix)
+{
+	CoutVector(matrix.r[0]);
+	CoutVector(matrix.r[1]);
+	CoutVector(matrix.r[2]);
+	CoutVector(matrix.r[3]);
 }
 #endif

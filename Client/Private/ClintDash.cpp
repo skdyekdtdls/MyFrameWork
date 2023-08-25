@@ -16,8 +16,17 @@ void ClintDash::OnStateEnter()
 {
 	__super::OnStateEnter();
 
-	m_pOwner->GetComponent<CModel>()->Set_AnimByIndex(CLINT_ANIM_DASH, UPPER);
-	m_pOwner->GetComponent<CModel>()->Set_AnimByIndex(CLINT_ANIM_DASH, LOWER);
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);	
+
+	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
+	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
+
+	SetDashDir(pModel, pTransform);
+
+	pModel->Set_AnimByIndex(CLINT_DASH, UPPER);
+	pModel->Set_AnimByIndex(CLINT_DASH, LOWER);
+	Safe_Release(pGameInstance);
 }
 
 void ClintDash::OnStateTick(_double TimeDelta)
@@ -31,7 +40,7 @@ void ClintDash::OnStateTick(_double TimeDelta)
 
 	if (pModel->IsAnimationFinished(LOWER))
 	{
-		m_pStateContext->TransitionTo(L"ClintIdle");
+		TransitionTo(L"ClintIdle");
 	}
 
 	pModel->RootMotion(TimeDelta, pTransform->GetCurDirection());
@@ -42,6 +51,90 @@ void ClintDash::OnStateTick(_double TimeDelta)
 void ClintDash::OnStateExit()
 {
 	__super::OnStateExit();
+}
+
+void ClintDash::SetDashDir(CModel* pModel, CTransform* pTransform)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	
+	_byte W = pGameInstance->Get_DIKeyState(DIK_S);
+	_byte A = pGameInstance->Get_DIKeyState(DIK_Z);
+	_byte S = pGameInstance->Get_DIKeyState(DIK_X);
+	_byte D = pGameInstance->Get_DIKeyState(DIK_C);
+	if (W)
+	{
+		if (D)
+		{
+			pTransform->Rotation(WorldAxisY(), XMConvertToRadians(45.f));
+			pModel->RootMotion(0.016, CTransform::DIR_NE);
+		}
+		else if (A)
+		{
+			pTransform->Rotation(WorldAxisY(), XMConvertToRadians(315.f));
+			pModel->RootMotion(0.016, CTransform::DIR_NW);
+		}
+		else
+		{
+			pTransform->Rotation(WorldAxisY(), XMConvertToRadians(0.f));
+			pModel->RootMotion(0.016, CTransform::DIR_N);
+		}
+	}
+	else if (A)
+	{
+		if (W)
+		{
+			pTransform->Rotation(WorldAxisY(), XMConvertToRadians(315.f));
+			pModel->RootMotion(0.016, CTransform::DIR_NW);
+		}
+		else if (S)
+		{
+			pTransform->Rotation(WorldAxisY(), XMConvertToRadians(225.f));
+			pModel->RootMotion(0.016, CTransform::DIR_SW);
+		}
+		else
+		{
+			pTransform->Rotation(WorldAxisY(), XMConvertToRadians(270.f));
+			pModel->RootMotion(0.016, CTransform::DIR_W);
+		}
+	}
+	else if (S)
+	{
+		if (D)
+		{
+			pTransform->Rotation(WorldAxisY(), XMConvertToRadians(135.f));
+			pModel->RootMotion(0.016, CTransform::DIR_SE);
+		}
+		else if (A)
+		{
+			pTransform->Rotation(WorldAxisY(), XMConvertToRadians(225.f));
+			pModel->RootMotion(0.016, CTransform::DIR_SW);
+		}
+		else
+		{
+			pTransform->Rotation(WorldAxisY(), XMConvertToRadians(180.f));
+			pModel->RootMotion(0.016, CTransform::DIR_S);
+		}
+	}
+	else if (D)
+	{
+		if (W)
+		{
+			pTransform->Rotation(WorldAxisY(), XMConvertToRadians(45.f));
+			pModel->RootMotion(0.016, CTransform::DIR_NE);
+		}
+		else if (S)
+		{
+			pTransform->Rotation(WorldAxisY(), XMConvertToRadians(135.f));
+			pModel->RootMotion(0.016, CTransform::DIR_SE);
+		}
+		else
+		{
+			pTransform->Rotation(WorldAxisY(), XMConvertToRadians(90.f));
+			pModel->RootMotion(0.016, CTransform::DIR_E);
+		}
+	}
+	Safe_Release(pGameInstance);
 }
 
 StateMachine<Clint, CLINT_ANIM>* ClintDash::Clone(void* pArg)

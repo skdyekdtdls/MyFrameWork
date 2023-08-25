@@ -7,7 +7,7 @@ BEGIN(Engine)
 class ENGINE_DLL CLight final : public CBase
 {
 public:
-	enum TYPE { TYPE_DIRECTION, TYPE_POINT, TYPE_END};
+	enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_END};
 	typedef struct tagLightDesc
 	{
 		TYPE	eType;
@@ -31,6 +31,7 @@ public:
 
 public:
 	HRESULT Initialize(const LIGHTDESC& LightDesc);
+	HRESULT Render(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
 
 private:
 	ID3D11Device*			m_pDevice = { nullptr };

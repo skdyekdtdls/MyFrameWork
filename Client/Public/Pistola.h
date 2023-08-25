@@ -13,6 +13,8 @@ class CModel;
 END
 
 BEGIN(Client)
+class Bullet;
+
 class Pistola final : public CGameObject, public ISerializable
 {
 public:
@@ -47,22 +49,18 @@ private: /* For. Component */
 	CTransform* m_pTransformCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
 
-private: /* 부모꺼 */
-	_float4x4	m_OffsetMatrix;
-	_float4x4	m_PivotMatrix;
-	const _float4x4* m_pCombindTransformationMatrix;
-	const _float4x4* m_pParentWorldMatrix;
-	_float4x4	m_WorldMatrix;
-	
-	list<class ClintBasicBullet*> m_Bullets;
+private: 
+	const _float4x4* m_pParentWorldMatrix;  // 부모의 월드매트릭스
+	_float4x4	m_WorldMatrix; // 모든 연산의 결과, 셰이더에 던짐
+
+private:
+	_uint m_AttachedBoneIndex;
 
 private:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();
 	
 	void AttachingWeapon();
-	void PushBackBullet(ClintBasicBullet* pClintBasicBullet);
-	void ReleaseIf(function<bool(class ClintBasicBullet* pClintBasicBullet)> func);
 private:
 	static _uint Pistola_Id;
 

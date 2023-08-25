@@ -18,13 +18,16 @@ public:
 	HRESULT Loading();
 
 	_bool Get_Finished() { return m_isFinished; }
+	void Set_Finished() { m_isFinished = true; }
 	const _tchar* Get_LoadingText() const {
 		return m_szLoading;
 	}
+
 	void Set_LoadingText(const _tchar* text) 
 	{
 		lstrcpy(m_szLoading, text);
 	}
+
 private:
 	HANDLE	m_hThread = { nullptr };
 	CRITICAL_SECTION m_Critical_Section;

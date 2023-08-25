@@ -1,4 +1,5 @@
 #include "..\Public\Transform.h"
+#include "GameInstance.h"
 #include "Navigation.h"
 #include "GameObject.h"
 #include "Model.h"
@@ -33,6 +34,28 @@ void CTransform::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 	ReadVoid(&m_WorldMatrix, sizeof(_float4x4));
 	ReadVoid(&m_TransformDesc.RotationPerSec, sizeof(_double));
 	ReadVoid(&m_TransformDesc.SpeedPerSec, sizeof(_double));
+}
+
+_float2 CTransform::GetScreenPos(_uint iWinSizeX, _uint iWinSizeY)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	_float3 vNDCPos;
+	_float2 vScreenPos;
+	_vector vPos = this->Get_State(STATE_POSITION); 
+	_matrix WorldMatrix = XMMatrixIdentity();
+	_matrix ViewMatrix = pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_VIEW); 
+	_matrix ProjMatrix = pGameInstance->Get_TransformMatrix(CPipeLine::D3DTS_PROJ); 
+	_matrix matWVP = WorldMatrix * ViewMatrix * ProjMatrix;
+	
+	XMStoreFloat3(&vNDCPos, XMVector3TransformCoord(vPos, matWVP));
+
+	vScreenPos.x = (vNDCPos.x + 1.f) * 0.5f * iWinSizeX;
+	vScreenPos.y = (1.f - vNDCPos.y) * 0.5f * iWinSizeY;
+
+	Safe_Release(pGameInstance);
+
+	return vScreenPos;
 }
 
 _float3 CTransform::Get_Scaled()
@@ -202,6 +225,11 @@ void CTransform::Go_Right(_double TimeDelta, CNavigation* pNavigation)
 void CTransform::Go_Direction(_double TimeDelta, DIRECTION eDir, _float fLength)
 {
 	m_eCurDirection = eDir;
+	/*if (m_eCurDirection != DIR_N && m_eCurDirection != DIR_S && m_eCurDirection != DIR_W && m_eCurDirection != DIR_E)
+	{
+		fLength *= 0.707;
+	}*/
+
 	CNavigation* pNavigation = dynamic_cast<CNavigation*>(m_pOwner->Get_Component(L"Com_Navigation"));
 	_vector		vPosition = Get_State(STATE_POSITION);
 	_vector		vNextPosition = vPosition;
@@ -247,6 +275,68 @@ void CTransform::Go_Direction(_double TimeDelta, DIRECTION eDir)
 	Go_Direction(TimeDelta, eDir, m_TransformDesc.SpeedPerSec);
 }
 
+// 내부적으로 노말라이즈 안함.
+void CTransform::Go_Direction(_double TimeDelta, _fvector _vDir, _float fLength)
+{
+	CNavigation* pNavigation = dynamic_cast<CNavigation*>(m_pOwner->Get_Component(L"Com_Navigation"));
+	_vector		vPosition = Get_State(STATE_POSITION);
+	_vector		vNextPosition = vPosition;
+	_vector		vDir = XMVector3Normalize(_vDir); 
+	_bool		isMove = true; // 기본적으로 플레이어는 이동 상태로 가정합니다.
+
+	vNextPosition += vDir * fLength * TimeDelta;
+	if (pNavigation != nullptr)
+	{
+		if (true == (isMove = pNavigation->is_Move(vNextPosition))) // NonSliding
+		{
+			vPosition = vNextPosition; // 위치를 업데이트합니다.
+			//vPosition -= XMVector3Normalize(XMLoadFloat3(&vContactNormal)) * 0.13f; // 벽에 갇히지 않게 밀어냄
+		}
+		else
+		{
+			while (false == isMove)
+			{
+				vNextPosition = vPosition;
+				vDir *= 0.6f;
+				_float3 vContactNormal = pNavigation->ContactNormal(); // 충돌 법선을 가져옵니다.
+				_vector vSlidingVector = pNavigation->GetSlidingVector(vDir, XMLoadFloat3(&vContactNormal));
+				vNextPosition += vSlidingVector * fLength * TimeDelta;
+
+				isMove = pNavigation->is_Move(vNextPosition);
+			}
+
+			vPosition = vNextPosition; // 위치를 업데이트합니다.
+		}
+	}
+	else
+		vPosition = vNextPosition;
+
+	// 이동 가능한 상태라면, 새로 계산한 위치를 설정합니다.
+	if (true == isMove)
+	{
+		Set_State(STATE_POSITION, vPosition);
+	}
+}
+
+void CTransform::Jump(_float TimeElapse, _float fPower)
+{
+	m_WorldMatrix._42 = fPower * TimeElapse - (9.8f * TimeElapse * TimeElapse) * 0.5f;
+	m_WorldMatrix._42 = max(m_WorldMatrix._42, 0.f);
+}
+
+void CTransform::Chase_Lerp(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance)
+{
+	//현재 내 위치
+	_vector        vPosition = Get_State(STATE_POSITION);
+
+	//거리
+	_vector        vDir = vTargetPosition - vPosition;
+	if (fMinDistance < XMVectorGetX(XMVector3Length(vDir)))
+		vPosition = XMVectorLerp(vPosition, vTargetPosition, m_TransformDesc.SpeedPerSec * TimeDelta);
+
+	Set_State(STATE_POSITION, vPosition);
+}
+
 void CTransform::Chase(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance)
 {
 	_vector		vPosition = Get_State(STATE_POSITION);
@@ -254,9 +344,7 @@ void CTransform::Chase(_fvector vTargetPosition, _double TimeDelta, _float fMinD
 	_vector		vDir = vTargetPosition - vPosition;
 
 	if (fMinDistance < XMVectorGetX(XMVector3Length(vDir)))
-		vPosition += XMVector3Normalize(vDir) * m_TransformDesc.SpeedPerSec * TimeDelta;
-
-	Set_State(STATE_POSITION, vPosition);
+		Go_Direction(TimeDelta, vDir, m_TransformDesc.SpeedPerSec);
 }
 
 void CTransform::LookAt(_fvector vTargetPosition)
@@ -292,6 +380,17 @@ void CTransform::Rotation(_fvector vAxis, _float fRadian)
 	Set_State(STATE_LOOK, XMVector3TransformNormal(vLook, RotationMatrix));
 }
 
+void CTransform::RotationBack()
+{
+	m_WorldMatrix._11 *= -1.f;
+	m_WorldMatrix._12 *= -1.f;
+	m_WorldMatrix._13 *= -1.f;
+
+	m_WorldMatrix._31 *= -1.f;
+	m_WorldMatrix._32 *= -1.f;
+	m_WorldMatrix._33 *= -1.f;
+}
+
 void CTransform::Rotation(_fmatrix RotationMatrixX, _fmatrix RotationMatrixY, _fmatrix RotationMatrixZ)
 {
 	_float3 vScale = Get_Scaled();
@@ -313,23 +412,35 @@ void CTransform::Turn(_fvector vAxis, _double TimeDelta)
 
 	_matrix		RotationMatrix = XMMatrixRotationAxis(vAxis, m_TransformDesc.RotationPerSec * TimeDelta);
 
-	/*XMVector3TransformCoord();*/
-	/*XMVector4Transform();*/
 	Set_State(STATE_RIGHT, XMVector3TransformNormal(vRight, RotationMatrix));
 	Set_State(STATE_UP, XMVector3TransformNormal(vUp, RotationMatrix));
 	Set_State(STATE_LOOK, XMVector3TransformNormal(vLook, RotationMatrix));
 }
 
-void CTransform::Turn(_fvector vAxis, _fvector vTargetVector, _double TimeDelta)
+void CTransform::Turn(_fvector vAxis, _fvector _vTargetVector, _double TimeDelta)
 {
 	_vector		vLook = Get_State(STATE_LOOK);
+	_vector		vTargetVector = _vTargetVector;
+	_float fCross = XMVectorGetY(XMVector3Cross(vLook, vTargetVector));
+	_float fDegree = fabs(DegreeBetweenVectors(vTargetVector, vLook));
 
-	// 둘 사이의 각도를 구면보간
-	//_vector newDirection = XMQuaternionSlerp(, vTargetVector, TimeDelta);
+	if (DegreeBetweenVectors(_vTargetVector, Get_State(STATE_LOOK)) < 3.f)
+		return;
 
-	// 생성된 방향벡터로 LookAt함수 이용해서 그 방향을 바라보게함.
-	//LookAt(newDirection);
-}
+	// 0도 = 360도이기 때문에 360도에서도 더 이상 회전 안시키려고 넣은 코드.
+	if (fDegree > 359.9f)
+		fDegree = 0.f;
+
+	if (fDegree < m_TransformDesc.RotationPerSec + 1.f)
+	{
+		Rotation(vAxis, RadianBetweenVectors(vTargetVector, WorldAxisZ()));
+		return;
+	}
+
+	if (fCross < 0.f)
+		TimeDelta *= -1.0;
+	Turn(vAxis, TimeDelta);
+}	
 
 void CTransform::Scaled(const _float3& vScale)
 {
@@ -348,6 +459,27 @@ _float3 CTransform::DeltaPosition()
 	, m_WorldMatrix.m[STATE_POSITION][1] - m_PrevWorldMatrix.m[STATE_POSITION][1]
 	, m_WorldMatrix.m[STATE_POSITION][2] - m_PrevWorldMatrix.m[STATE_POSITION][2]);
 }
+
+_bool CTransform::isFront(_fvector vPosition, _float fDistance, _float fDegree)
+{
+	_vector vMyPosition = Get_State(CTransform::STATE_POSITION);
+	_vector vDir = vPosition - vMyPosition;
+	_vector vLook = Get_State(CTransform::STATE_LOOK);
+
+	if (XMVectorGetX(XMVector3Length(vDir)) > fDistance)
+		return false;
+
+	vDir = XMVector3Normalize(vDir);
+	vLook = XMVector3Normalize(vLook);
+
+	float fDot = XMVectorGetX(XMVector3Dot(vDir, vLook));
+	float fRadian = acos(fDot);
+	fRadian *= 2.f;
+
+	return fRadian < XMConvertToRadians(fDegree);;
+}
+
+
 
 _vector CTransform::DirectionVector(DIRECTION eDir)
 {

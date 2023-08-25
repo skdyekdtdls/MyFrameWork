@@ -32,12 +32,15 @@ void CImWindow_MapTool::Tick()
 		// 터레인의 셀들을 가져와서 푸쉬백을 해준다.
 		for (size_t i = 0; i < m_pImMgr->GetCellNum(); ++i)
 			Cell_Index_items.push_back(to_string(i));
+		m_pCurTerrain = Single->GetTerrain();
 		m_bStart = false;
 	}
 
 	CImWindow_Manager* pImManagerInstance = CImWindow_Manager::GetInstance();
 	Safe_AddRef(pImManagerInstance);
 
+	CNavigation* pNavigation = m_pCurTerrain->GetComponent<CNavigation>();
+	 
 	ImGui::Begin("Navigation Mesh");
 
 	if (ImGui::RadioButton("CREATE_MODE", (int*)&m_eNaviMode, CREATE_MODE))
@@ -47,10 +50,16 @@ void CImWindow_MapTool::Tick()
 	}
 	ImGui::SameLine();
 	ImGui::RadioButton("VERTEX_EDIT_MODE", (int*)&m_eNaviMode, VERTEX_EDIT_MODE); ImGui::SameLine();
-	ImGui::RadioButton("SELECT_CELL_MODE", (int*)&m_eNaviMode, SELECT_CELL_MODE);
-	// 선택된 아이템을 기억할 변수
-	
-	//ImGui::ListBox("Navigation Index", &Cell_Index_item_current, VectorGetter, static_cast<void*>(&Cell_Index_items),Cell_Index_items.size(), 4);
+
+	// 셀을 지우는 기능
+	if (ImGui::Button("DeleteCell"))
+	{
+		if(Cell_Index_item_current >= 0)
+			pNavigation->DeleteCellByIndex(Cell_Index_item_current);
+		Cell_Index_items.clear();
+		for (size_t i = 0; i < m_pImMgr->GetCellNum(); ++i)
+			Cell_Index_items.push_back(to_string(i));
+	}
 	
 	ImGui::ListBox("Cell_Index\n(single select)",
 		&Cell_Index_item_current,
@@ -58,9 +67,9 @@ void CImWindow_MapTool::Tick()
 		static_cast<void*>(&Cell_Index_items),
 		Cell_Index_items.size(),
 		20);
-
+	
 	VecInfo("Position", &vPos, 120);
-
+	
 	// display
 	if (ImGui::Button("Open File Dialog"))
 	{
@@ -87,6 +96,67 @@ void CImWindow_MapTool::Tick()
 		ImGuiFileDialog::Instance()->Close();
 	}
 
+	// 네비메쉬 렌더할지 말지 체크박스
+	ImGui::Checkbox("NaviRender", pNavigation->isRenderPtr());
+
+	// 맵 그리기
+	ImGui::Checkbox("DrawMap", &m_pCurTerrain->m_bShowBrush);
+	if (m_pCurTerrain->m_bShowBrush)
+	{
+		ImGui::RadioButton("Default", &DrawOption, 0);
+		ImGui::RadioButton("Sand", &DrawOption, 1);
+		ImGui::RadioButton("Rock", &DrawOption, 2);
+	}
+	
+	// 세이브 파일 다이얼로그
+	if (ImGui::Button("Save MapTexture"))
+	{
+		ImGuiFileDialog::Instance()->OpenDialog("SaveMapTextureFileDlgKey", "Save", " .mtex", "../../Resources/Skeletal_Mesh/");
+	}
+
+	if (ImGuiFileDialog::Instance()->Display("SaveMapTextureFileDlgKey"))
+	{
+		// action if OK
+		if (ImGuiFileDialog::Instance()->IsOk())
+		{
+			// 만약 위의 인자5번에서 여러가지 선택후 OK가 눌린경우 get selection
+			// 반환값은 map<string, string> (file path, file name) 형태로 반환
+			ImGuiFileDialog::Instance()->GetSelection();
+
+			filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+			filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+			SaveMapTextureData();
+		}
+
+		// close
+		ImGuiFileDialog::Instance()->Close();
+	}
+
+	// 로드 파일 다이얼로그
+	if (ImGui::Button("Load MapTexture"))
+	{
+		ImGuiFileDialog::Instance()->OpenDialog("LoadMapTextureFileDlgKey", "Load", " .mtex", "../../Resources/Skeletal_Mesh/");
+	}
+
+	if (ImGuiFileDialog::Instance()->Display("LoadMapTextureFileDlgKey"))
+	{
+		// action if OK
+		if (ImGuiFileDialog::Instance()->IsOk())
+		{
+			// 만약 위의 인자5번에서 여러가지 선택후 OK가 눌린경우 get selection
+			// 반환값은 map<string, string> (file path, file name) 형태로 반환
+			ImGuiFileDialog::Instance()->GetSelection();
+
+			filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+			filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+			LoadMapTextureData();
+		}
+
+		// close
+		ImGuiFileDialog::Instance()->Close();
+	}
+
+	
 	ImGui::End();
 
 	switch (m_eNaviMode)
@@ -96,8 +166,6 @@ void CImWindow_MapTool::Tick()
 		break;
 	case VERTEX_EDIT_MODE:
 		Vertex_Edit();
-		break;
-	case SELECT_CELL_MODE:
 		break;
 	}
 
@@ -227,6 +295,44 @@ void CImWindow_MapTool::CreateTriangleStrip()
 	}
 
 	Safe_Release(pImMgr);
+}
+
+void CImWindow_MapTool::SaveMapTextureData()
+{
+	HANDLE hFile = CreateFile(TO_WSTR(filePathName).c_str(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	if (0 == hFile)
+	{
+		CONSOLE_MSG("File save failed");
+		return;
+	}
+
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	DWORD dwByte = { 0 };
+
+	Safe_Release(pGameInstance);
+	CONSOLE_MSG("File save completed successfully.");
+	CloseHandle(hFile);
+}
+
+void CImWindow_MapTool::LoadMapTextureData()
+{
+	HANDLE hFile = CreateFile(TO_WSTR(filePathName).c_str(), GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	if (0 == hFile)
+	{
+		CONSOLE_MSG("File load failed");
+		return;
+	}
+
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	DWORD dwByte = { 0 };
+	
+	Safe_Release(pGameInstance);
+	CONSOLE_MSG("File load completed successfully.");
+	CloseHandle(hFile);
 }
 
 CImWindow_MapTool* CImWindow_MapTool::Create(ImGuiIO* pIO)

@@ -21,12 +21,12 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap) // Áö±
 
 	BITMAPFILEHEADER	fh;
 	BITMAPINFOHEADER	ih;
-
+	
 	ReadFile(hFile, &fh, sizeof fh, &dwByte, nullptr);
 	ReadFile(hFile, &ih, sizeof ih, &dwByte, nullptr);
 
-	m_iNumVerticesX = { (_uint)ih.biWidth };
-	m_iNumVerticesZ = { (_uint)ih.biHeight };
+	m_iNumVerticesX = { 257/*(_uint)ih.biWidth*/ };
+	m_iNumVerticesZ = { 257/*(_uint)ih.biHeight*/ };
 	
 	_ulong* pPixel = new _ulong[m_iNumVerticesX * m_iNumVerticesZ];
 	ZeroMemory(pPixel, sizeof(_ulong) * m_iNumVerticesX * m_iNumVerticesZ);
@@ -63,7 +63,7 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightMap) // Áö±
 		{
 			_uint		iIndex = i * m_iNumVerticesX + j;
 
-			m_pVertices[iIndex].vPosition = _float3(j, 0.f /*(pPixel[iIndex] & 0x000000ff) / 10.0f */, i);
+			m_pVertices[iIndex].vPosition = _float3(j, 0.f /*(pPixel[iIndex] & 0x000000ff)*/ / 100.0f , i);
 			m_pVertices[iIndex].vNormal = _float3(0.f, 0.f, 0.f);
 			m_pVertices[iIndex].vTexCoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
 		}
@@ -184,54 +184,105 @@ HRESULT CVIBuffer_Terrain::Initialize(void* pArg)
 
 _bool CVIBuffer_Terrain::IsPicked(FXMVECTOR vRayOrigin, FXMVECTOR vRayDir, _float& fMinDist)
 {
-	_bool bResult = { false };
-	for (_ulong i = 0; i < m_iNumVerticesZ -1; ++i)
-	{
-		for (_ulong j = 0; j < m_iNumVerticesX - 1; ++j)
-		{
-			_uint iIndex = i * m_iNumVerticesX + j;
-
-			//if (iIndex >= (m_iNumVerticesX - 1)* (m_iNumVerticesZ - 1))
-			//	return false;
-
-			_float fDist;
-			_uint		iIndices[4] = {
-				iIndex + m_iNumVerticesX,
-				iIndex + m_iNumVerticesX + 1,
-				iIndex + 1,
-				iIndex
-			};
-			if (TriangleTests::Intersects(
-				vRayOrigin
-				, vRayDir
-				, XMLoadFloat3(&m_pVertices[iIndices[0]].vPosition)
-				, XMLoadFloat3(&m_pVertices[iIndices[1]].vPosition)
-				, XMLoadFloat3(&m_pVertices[iIndices[2]].vPosition)
-				, fDist))
-			{
-				bResult = { true };
-				if (fDist < fMinDist)
-					fMinDist = fDist;				
-			}
-
-			if (TriangleTests::Intersects(
-				vRayOrigin
-				, vRayDir
-				, XMLoadFloat3(&m_pVertices[iIndices[0]].vPosition)
-				, XMLoadFloat3(&m_pVertices[iIndices[2]].vPosition)
-				, XMLoadFloat3(&m_pVertices[iIndices[3]].vPosition)
-				, fDist))
-			{
-
-				bResult = { true };
-				if (fDist < fMinDist)
-					fMinDist = fDist;
-			}
-		}
-	}
+	_float3 vPoint[POINT_END];
+	_vector vCenter;
+	vPoint[LT] = _float3(0.f, 0.f, m_iNumVerticesZ - 1);
+	vPoint[RT] = _float3(m_iNumVerticesX - 1, 0.f, m_iNumVerticesZ - 1);
+	vPoint[RB] = _float3(m_iNumVerticesX - 1, 0.f, 0.f);
+	vPoint[LB] = _float3(0.f, 0.f, 0.f);
 	
-	system("cls");
-	return bResult;
+	if (false == isInFourPoint(XMLoadFloat3(&vPoint[LT]), XMLoadFloat3(&vPoint[RT])
+		, XMLoadFloat3(&vPoint[RB]), XMLoadFloat3(&vPoint[LB]), vRayOrigin, vRayDir, fMinDist))
+	{
+		return false;
+	}
+
+	IntersectPoint(vPoint, vRayOrigin, vRayDir, fMinDist);
+
+	return true;
+}
+
+void CVIBuffer_Terrain::IntersectPoint(_float3 vPoints[POINT_END], _fvector RayOrigin, _fvector RayDir, _float& fDist)
+{
+	if (FloatEqual(vPoints[RT].x - vPoints[LT].x, 1.f))
+	{
+		return;
+	}
+
+	enum POINT_SUB { SUB_LT, SUB_TC, SUB_RT, SUB_LC, SUB_C, SUB_RC, SUB_LB, SUB_BC, SUB_RB, SUB_END};
+
+	_vector vPoint[SUB_END];
+	vPoint[SUB_LT] = XMLoadFloat3(&vPoints[LT]);
+	vPoint[SUB_TC] = (XMLoadFloat3(&vPoints[LT]) + XMLoadFloat3(&vPoints[RT])) / 2;
+	vPoint[SUB_RT] = XMLoadFloat3(&vPoints[RT]);
+	vPoint[SUB_LC] = (XMLoadFloat3(&vPoints[LT]) + XMLoadFloat3(&vPoints[LB])) / 2;
+	vPoint[SUB_C] = (XMLoadFloat3(&vPoints[LT]) + XMLoadFloat3(&vPoints[RB])) / 2;
+	vPoint[SUB_RC] = (XMLoadFloat3(&vPoints[RT]) + XMLoadFloat3(&vPoints[RB])) / 2;
+	vPoint[SUB_LB] = XMLoadFloat3(&vPoints[LB]);
+	vPoint[SUB_BC] = (XMLoadFloat3(&vPoints[LB]) + XMLoadFloat3(&vPoints[RB])) / 2;
+	vPoint[SUB_RB] = XMLoadFloat3(&vPoints[RB]);
+
+	if (isInFourPoint(vPoint[SUB_LT], vPoint[SUB_TC], vPoint[SUB_LC], vPoint[SUB_C], RayOrigin, RayDir, fDist))
+	{
+		_float3 vSubPoints[POINT_END];
+		XMStoreFloat3(&vSubPoints[LT], vPoint[SUB_LT]);
+		XMStoreFloat3(&vSubPoints[RT], vPoint[SUB_TC]);
+		XMStoreFloat3(&vSubPoints[LB], vPoint[SUB_LC]);
+		XMStoreFloat3(&vSubPoints[RB], vPoint[SUB_C]);
+		IntersectPoint(vSubPoints, RayOrigin, RayDir, fDist);
+		return;
+	}
+
+	if (isInFourPoint(vPoint[SUB_TC], vPoint[SUB_RT], vPoint[SUB_C], vPoint[SUB_RC], RayOrigin, RayDir, fDist))
+	{
+		_float3 vSubPoints[POINT_END];
+		XMStoreFloat3(&vSubPoints[LT], vPoint[SUB_TC]);
+		XMStoreFloat3(&vSubPoints[RT], vPoint[SUB_RT]);
+		XMStoreFloat3(&vSubPoints[LB], vPoint[SUB_C]);
+		XMStoreFloat3(&vSubPoints[RB], vPoint[SUB_RC]);
+		IntersectPoint(vSubPoints, RayOrigin, RayDir, fDist);
+		return;
+	}
+
+	if (isInFourPoint(vPoint[SUB_LC], vPoint[SUB_C], vPoint[SUB_LB], vPoint[SUB_BC], RayOrigin, RayDir, fDist))
+	{
+		_float3 vSubPoints[POINT_END];
+		XMStoreFloat3(&vSubPoints[LT], vPoint[SUB_LC]);
+		XMStoreFloat3(&vSubPoints[RT], vPoint[SUB_C]);
+		XMStoreFloat3(&vSubPoints[LB], vPoint[SUB_LB]);
+		XMStoreFloat3(&vSubPoints[RB], vPoint[SUB_BC]);
+		IntersectPoint(vSubPoints, RayOrigin, RayDir, fDist);
+		return;
+	}
+
+	if (isInFourPoint(vPoint[SUB_C], vPoint[SUB_RC], vPoint[SUB_BC], vPoint[SUB_RB], RayOrigin, RayDir, fDist))
+	{
+		_float3 vSubPoints[POINT_END];
+		XMStoreFloat3(&vSubPoints[LT], vPoint[SUB_C]);
+		XMStoreFloat3(&vSubPoints[RT], vPoint[SUB_RC]);
+		XMStoreFloat3(&vSubPoints[LB], vPoint[SUB_BC]);
+		XMStoreFloat3(&vSubPoints[RB], vPoint[SUB_RB]);
+		IntersectPoint(vSubPoints, RayOrigin, RayDir, fDist);
+		return;
+	}
+}
+
+_bool CVIBuffer_Terrain::isInFourPoint(_fvector LT, _fvector RT, _fvector RB, _gvector LB, _hvector RayOrigin, _hvector RayDir, _float& fDist)
+{
+	_float fTemp;
+	if (TriangleTests::Intersects(RayOrigin, RayDir, LT, RT, RB, fTemp))
+	{
+		fDist = fTemp;
+		return true;
+	}
+
+	if (TriangleTests::Intersects(RayOrigin, RayDir, LT, RB, LB, fTemp))
+	{
+		fDist = fTemp;
+		return true;
+	}
+
+	return false;
 }
 
 CVIBuffer_Terrain* CVIBuffer_Terrain::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const _tchar* pHeightMap)

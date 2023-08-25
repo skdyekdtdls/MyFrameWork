@@ -42,6 +42,17 @@ HRESULT CLight_Manager::Add_Lights(const CLight::LIGHTDESC& LightDesc)
     return S_OK;
 }
 
+HRESULT CLight_Manager::Render_Lights(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+    for (auto& pLight : m_Lights)
+    {
+        if (nullptr != pLight)
+            pLight->Render(pShader, pVIBuffer);
+    }
+
+    return S_OK;
+}
+
 void CLight_Manager::Free(void)
 {
     for (auto Light : m_Lights)

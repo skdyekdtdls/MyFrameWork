@@ -1,4 +1,5 @@
 #ifdef _DEBUG
+#include "Spawner.h"
 #include "Level_Imgui.h"
 #include "GameInstance.h"
 #include "Camera_Free.h"
@@ -7,6 +8,20 @@
 #include "Cube.h"
 #include "ImWindow_Manager.h"
 #include "Clint.h"
+#include "Sky.h"
+#include "LargeVolcanicRock_002_Red_Desert.h"
+#include "Alien_prawn.h"
+#include "BatPotato_RIG.h"
+#include "CannonSpider.h"
+#include "CrystalGolem.h"
+#include "Spider.h"
+#include "Queen_Moggoth.h"
+#include "PlayerHP.h"
+#include "Image.h"
+#include "DynamicImage.h"
+#include "MiniMap.h"
+#include "SoundMgr.h"
+#include "CustomMouse.h"
 CLevel_Imgui::CLevel_Imgui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -22,6 +37,10 @@ HRESULT CLevel_Imgui::Initialize()
 	Ready_Layer_BackGround(TEXT("Layer_BackGround"));
 	Ready_Layer_Camera(TEXT("Layer_Camera"));
 	Ready_Layer_Monster(TEXT("Layer_Monster"));
+	Ready_Layer_Effect(TEXT("Layer_Effect"));
+	Ready_Layer_UI(TEXT("Layer_UI"));
+	Ready_Layer_ETC();
+	SoundMgr->PlayBGM(L"Kemekh.ogg");
 }
 
 void CLevel_Imgui::Tick(_double TimeDelta)
@@ -29,7 +48,7 @@ void CLevel_Imgui::Tick(_double TimeDelta)
 #ifdef _DEBUG
 	CImWindow_Manager::GetInstance()->Tick();
 #endif
-
+	
 	__super::Tick(TimeDelta);
 }
 
@@ -57,7 +76,7 @@ void CLevel_Imgui::Ready_Lights()
 	CLight::LIGHTDESC LightDesc;
 	ZeroStruct(LightDesc);
 
-	LightDesc.eType = { CLight::TYPE_DIRECTION };
+	LightDesc.eType = { CLight::TYPE_DIRECTIONAL };
 	LightDesc.vDir = { 1.f, -1.f, 1.f, 0.f };
 	LightDesc.vAmbient = { 1.f, 1.f, 1.f, 1.f };
 	LightDesc.vDiffuse = { 1.f, 1.f, 1.f, 1.f };
@@ -67,7 +86,6 @@ void CLevel_Imgui::Ready_Lights()
 		return;
 
 	Safe_Release(pGameInstance);
-
 }
 
 void CLevel_Imgui::Ready_Layer_BackGround(const _tchar* pLayerTag)
@@ -75,9 +93,8 @@ void CLevel_Imgui::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-
 	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, CTerrain::ProtoTag(), pLayerTag));
-	//NULL_CHECK_RETURN(pGameInstance->Add_GameObject(LEVEL_IMGUI, ForkLift::ProtoTag(), pLayerTag), E_FAIL);
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Sky::ProtoTag(), pLayerTag));
 
 	Safe_Release(pGameInstance);
 }
@@ -108,11 +125,50 @@ void CLevel_Imgui::Ready_Layer_Monster(const _tchar* pLayerTag)
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
-
-	// 몬스터 레이어 생성을 위해서 생성했다가 바로지움.
-	CGameObject* pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, CCube::ProtoTag(), pLayerTag);
-	pGameInstance->Delete_GameObject(LEVEL_IMGUI, L"Layer_Monster", pGameObject->Get_Name());
 	
+	//Alien_prawn::tagAlien_prawnDesc tAlienPrawnDesc;
+	//tAlienPrawnDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	//tAlienPrawnDesc.iStartIndex = 5;
+	//pGameInstance->Add_GameObject(LEVEL_IMGUI, Alien_prawn::ProtoTag(), pLayerTag, &tAlienPrawnDesc);
+
+	//tAlienPrawnDesc.vPosition = _float4(11.f, 0.f, 10.f, 1.f);
+	//pGameInstance->Add_GameObject(LEVEL_IMGUI, Alien_prawn::ProtoTag(), pLayerTag, &tAlienPrawnDesc);
+
+	// 미니맵때문에 이렇게함.
+	BatPotato_RIG::BATPOTATO_RIG_DESC tBatPotatoRigDesc;
+	tBatPotatoRigDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	tBatPotatoRigDesc.iStartIndex = 5;
+	CGameObject* pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, BatPotato_RIG::ProtoTag(), pLayerTag, &tBatPotatoRigDesc);
+	pGameObject->SetDead();
+
+	//CannonSpider::tagCannonSpiderDesc tCannonSpiderDesc;
+	//tCannonSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	//tCannonSpiderDesc.iStartIndex = 5;
+	//pGameInstance->Add_GameObject(LEVEL_IMGUI, CannonSpider::ProtoTag(), pLayerTag, &tCannonSpiderDesc);
+	
+	//CrystalGolem::tagCrystalGolemDesc tCrystalGolemDesc;
+	//tCrystalGolemDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	//tCrystalGolemDesc.iStartIndex = 5;
+	//pGameInstance->Add_GameObject(LEVEL_IMGUI, CrystalGolem::ProtoTag(), pLayerTag, &tCrystalGolemDesc);
+	
+	/*Spider::tagSpiderDesc tSpiderDesc;
+	tSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, Spider::ProtoTag(), pLayerTag, &tSpiderDesc);*/
+
+	//tSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	//pGameInstance->Add_GameObject(LEVEL_IMGUI, Spider::ProtoTag(), pLayerTag, &tSpiderDesc);
+	
+	//tSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	//pGameInstance->Add_GameObject(LEVEL_IMGUI, Spider::ProtoTag(), pLayerTag, &tSpiderDesc);
+	
+	//tSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	//pGameInstance->Add_GameObject(LEVEL_IMGUI, Spider::ProtoTag(), pLayerTag, &tSpiderDesc);*/
+
+	Queen_Moggoth::tagQueen_MoggothDesc tQueenMoggothDesc;
+	tQueenMoggothDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	tQueenMoggothDesc.iStartIndex = 5;
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, Queen_Moggoth::ProtoTag(), pLayerTag, &tQueenMoggothDesc);
+
 	Safe_Release(pGameInstance);
 }
 
@@ -122,6 +178,104 @@ void CLevel_Imgui::Ready_Layer_Player(const _tchar* pLayerTag)
 	Safe_AddRef(pGameInstance);
 
 	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Clint::ProtoTag(), pLayerTag));
+
+	Safe_Release(pGameInstance);
+}
+
+void CLevel_Imgui::Ready_Layer_Effect(const _tchar* pLayerTag)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+
+	Safe_Release(pGameInstance);
+}
+
+void CLevel_Imgui::Ready_Layer_UI(const _tchar* pLayerTag)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	Image* pImage;
+	DynamicImage* pDynamicImage;
+	DynamicImage::tagDynamicImageDesc tDynamicImageDesc;
+	Image::tagImageDesc tImageDesc;
+	
+	/*
+	tImageDesc.Pos = _float2(842, g_iWinSizeY - 615);
+	tImageDesc.Size = _float2(80, 80);
+	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_T_WeaponSelected_Arrow");
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
+
+	tImageDesc.Pos = _float2(1181, g_iWinSizeY - 33);
+	tImageDesc.Size = _float2(20, 20);
+	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_DNA");
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
+
+	tImageDesc.Pos = _float2(1181, g_iWinSizeY - 33);
+	tImageDesc.Size = _float2(-20, 20);
+	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_DNA");
+	pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc);
+	*/
+
+	//tImageDesc.Pos = _float2(g_iWinSizeX - 150, g_iWinSizeY - 607);
+	//tImageDesc.Size = _float2(210, 210);
+	//tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_UI_KS_Radar");
+	//NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
+
+	tImageDesc.Pos = _float2(g_iWinSizeX >> 1, g_iWinSizeY >> 1);
+	tImageDesc.Size = _float2(g_iWinSizeX, g_iWinSizeY);
+	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_CustomUI");
+	pImage = static_cast<Image*>(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
+	pImage->ImageDepth(0.001f);
+
+	//tImageDesc.Pos = _float2(g_iWinSizeX - 150, (g_iWinSizeY - 607));
+	//tImageDesc.Size = _float2(20, 20);
+	//tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_ui_radar_player_icon");
+	//NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
+
+	tImageDesc.Size = _float2(14, 4);
+	tImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_UI_dash");
+	for (_uint i = 0; i < 3; ++i)
+	{
+		tImageDesc.Pos = _float2((g_iWinSizeX >> 1) - 40 + i * (tImageDesc.Size.x + 5), (g_iWinSizeY >> 1) + 87);
+		pImage = static_cast<Image*>(pGameInstance->Add_GameObject(LEVEL_IMGUI, Image::ProtoTag(), pLayerTag, &tImageDesc));
+		pImage->SetPass(2);
+	}
+	
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, MiniMap::ProtoTag(), pLayerTag);
+
+	//tDynamicImageDesc.Pos = _float2(532, 96);
+	//tDynamicImageDesc.Size = _float2(70, 70);
+	//tDynamicImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_QSkill");
+	//NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, DynamicImage::ProtoTag(), pLayerTag, &tDynamicImageDesc));
+
+	/*tDynamicImageDesc.Pos = _float2(532 + 80, 96);
+	tDynamicImageDesc.Size = _float2(60, 60);
+	tDynamicImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_WSkill");
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, DynamicImage::ProtoTag(), pLayerTag, &tDynamicImageDesc));
+
+	tDynamicImageDesc.Pos = _float2(532 + 160, 96);
+	tDynamicImageDesc.Size = _float2(70, 70);
+	tDynamicImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_ESkill");
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, DynamicImage::ProtoTag(), pLayerTag, &tDynamicImageDesc));
+
+	tDynamicImageDesc.Pos = _float2(532 + 240, 96);
+	tDynamicImageDesc.Size = _float2(70, 70);
+	tDynamicImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_RSkill");
+	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, DynamicImage::ProtoTag(), pLayerTag, &tDynamicImageDesc));*/
+
+
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, CustomMouse::ProtoTag(), pLayerTag);
+
+	Safe_Release(pGameInstance);
+}
+
+void CLevel_Imgui::Ready_Layer_ETC()
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	LEVELID eCurLevelID = static_cast<LEVELID>(pGameInstance->Get_NextLevelIndex());
+
+	NULL_CHECK(pGameInstance->Add_GameObject(eCurLevelID, Spawner::ProtoTag(), L"Layer_Spawner", nullptr));
 
 	Safe_Release(pGameInstance);
 }

@@ -13,6 +13,14 @@
 #include "ColliderSphere.h"
 #include "ColliderAABB.h"
 #include "Raycast.h"
+#include "VIBuffer_Rect_Instance.h"
+#include "VIBuffer_Point_Instance.h"
+#include "VIBuffer_Sphere.h"
+#include "Health.h"
+#include "TimeCounter.h"
+#include "VIBuffer_DynamicRect.h"
+#include "Transform2D.h"
+#include "Observer.h"
 
 BEGIN(Engine)
 class ENGINE_DLL CComponent_Manager final : public CBase

@@ -43,7 +43,6 @@ CGameObject* CObject_Manager::Add_GameObject(_uint iLevelIndex, const _tchar* pP
 
 	if (nullptr == pGameObject)
 	{
-		Safe_Release(pGameObject);
 		return nullptr;
 	}
 
@@ -138,6 +137,46 @@ CGameObject* CObject_Manager::Clone_GameObject(const _tchar* pPrototypeTag, void
 	return pGameObject;
 }
 
+unordered_map<const _tchar*, CLayer*>::iterator CObject_Manager::LayerBegin(_uint iLevelIndex)
+{
+	if (m_pLayers[iLevelIndex].begin() != m_pLayers[iLevelIndex].end())
+	{
+		return m_pLayers[iLevelIndex].begin();
+	}
+	return LayerEnd(iLevelIndex);
+}
+
+unordered_map<const _tchar*, CLayer*>::iterator CObject_Manager::LayerEnd(_uint iLevelIndex)
+{
+	return m_pLayers[iLevelIndex].end();
+}
+
+list<CGameObject*>::iterator CObject_Manager::GetLayerBegin(_uint iLevelIndex, const _tchar* pTag)
+{
+	CLayer* pLayer = Find_LayerByName(iLevelIndex, pTag);
+	return pLayer->Begin();
+}
+
+list<CGameObject*>::iterator CObject_Manager::GetLayerEnd(_uint iLevelIndex, const _tchar* pTag)
+{
+	CLayer* pLayer = Find_LayerByName(iLevelIndex, pTag);
+	return pLayer->End();
+}
+
+// 내부적으로 addref를 한다
+void CObject_Manager::AddToLayer(_uint iLevelIndex, const _tchar* pLayerTag, CGameObject* pGameObject)
+{
+	CLayer* pLayer = Find_LayerByName(iLevelIndex, pLayerTag);
+	if (nullptr == pLayer)
+	{
+		pLayer = CLayer::Create(pLayerTag);
+		m_pLayers[iLevelIndex].emplace(pLayerTag, pLayer);
+	}
+
+	Safe_AddRef(pGameObject);
+	pLayer->Add_GameObject(pGameObject);
+}
+
 void CObject_Manager::Free()
 {
 	for (_uint i = 0; i < m_iNumLevels; ++i)
@@ -170,10 +209,12 @@ void CObject_Manager::Serialization(HANDLE hFile, DWORD& dwByte, _uint iLevelInd
 
 void CObject_Manager::Deserialization(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 {
+
 	for (auto& Pair : m_pLayers[iLevelIndex])
 	{
 		Safe_Release(Pair.second);
 	}
+
 	m_pLayers[iLevelIndex].clear();
 
 	_uint iSize = 0;

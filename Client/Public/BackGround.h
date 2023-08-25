@@ -38,12 +38,9 @@ private:
 	_float4x4				m_ViewMatrix, m_ProjMatrix;
 	_float					m_fX, m_fY, m_fSizeX, m_fSizeY;
 
-
-
 public:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();
-
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_GameObject_BackGround"; }

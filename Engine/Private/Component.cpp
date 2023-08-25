@@ -18,6 +18,11 @@ CComponent::CComponent(const CComponent& rhs)
 	Safe_AddRef(m_pContext);
 }
 
+CGameObject* CComponent::GetOwner()
+{
+	return m_pOwner;
+}
+
 HRESULT CComponent::Initialize_Prototype(void)
 {
 	return S_OK;

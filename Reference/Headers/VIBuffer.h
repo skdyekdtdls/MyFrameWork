@@ -30,8 +30,8 @@ public:
 	}
 
 protected:
-	ID3D11Buffer* m_pVB;
-	ID3D11Buffer* m_pIB;
+	ID3D11Buffer* m_pVB = { nullptr };
+	ID3D11Buffer* m_pIB = { nullptr };
 
 protected:
 

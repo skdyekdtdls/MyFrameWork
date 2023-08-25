@@ -123,7 +123,12 @@ HRESULT CShader::Bind_ShaderResource(const _char* pConstantName, ID3D11ShaderRes
 	if (nullptr == pVarialbeShaderResource)
 		return E_FAIL;
 
-	return pVarialbeShaderResource->SetResource(pSRV);
+	HRESULT hr;
+
+	if(FAILED(hr = pVarialbeShaderResource->SetResource(pSRV)))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 HRESULT CShader::Bind_ShaderResources(const _char* pConstantName, ID3D11ShaderResourceView** ppSRVArray, _uint iNumTexture)

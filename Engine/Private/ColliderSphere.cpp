@@ -46,18 +46,16 @@ _bool CColliderSphere::IntersectRay(_float& fDist, const RAY& tMouseRay)
 	_vector vRayOrigin = XMLoadFloat4(&tMouseRay.vRayOrigin);
 	_vector vRayDir = XMLoadFloat4(&tMouseRay.vRayDir);
 	vRayDir = XMVector3Normalize(vRayDir);
-	
-	if (m_pBoudingSphere->Intersects(vRayOrigin, vRayDir, fDist)) {
 
+	if (m_pBoudingSphere->Intersects(vRayOrigin, vRayDir, fDist)) {
 		return true;
 	}
 
 	return false;
 }
 
-_bool CColliderSphere::Intersect(CCollider* pOtherCollider)
+_bool CColliderSphere::Intersect(CCollider* pOtherCollider, COLLISION_INFO& CollisionInfo)
 {
-	m_isColl = { false };
 	switch (pOtherCollider->GetType())
 	{
 	case TYPE_SPHERE:
@@ -82,6 +80,10 @@ HRESULT CColliderSphere::Render()
 	__super::End();
 
 	return S_OK;
+}
+void CColliderSphere::SetPickRadius(_float fRadius)
+{
+	m_pBoudingSphere_Origin->Radius = fRadius;
 }
 #endif
 

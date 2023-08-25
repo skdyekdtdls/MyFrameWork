@@ -14,12 +14,23 @@ class CModel;
 class CCollider;
 class CNavigation;
 class Raycast;
+class Health;
+class TimeCounter;
 END
 
 BEGIN(Client)
+class SkillUI;
+class PlayerLevel;
+class PlayerHP;
 class Pistola;
+class CStone_Effect;
+class BoomEffect;
+class ClintUltimate01Bullet;
 template <typename OWNER, typename ANIM_ENUM>
 class StateContext;
+class ForceField;
+class PropelEffect;
+class SmokeParticle;
 END
 
 BEGIN(Client)
@@ -63,7 +74,15 @@ private: /* For. Component */
 	Pistola* m_pPistolaComL = { nullptr };
 	Pistola* m_pPistolaComR = { nullptr };
 	Raycast* m_pRaycastCom = { nullptr };
+	ClintUltimate01Bullet* m_pUltBulletCom = { nullptr };
 	ClintState* m_pStateContextCom = { nullptr };
+	PlayerLevel* m_pPlayerLevelCom = { nullptr };
+	PlayerHP* m_pPlayerHP = { nullptr };
+	vector<SkillUI*> m_pSKillUIs = { nullptr };
+	CStone_Effect* m_pStoneEffect = { nullptr };
+	BoomEffect* m_pBoomEffect = { nullptr };
+	ForceField* m_pForceField = { nullptr };
+	PropelEffect* m_pPropelEffect = { nullptr };
 
 private:
 	static _uint Clint_Id;
@@ -71,6 +90,7 @@ private:
 private:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();
+	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta) override;
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_GameObject_Clint"; }

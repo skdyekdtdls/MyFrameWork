@@ -65,7 +65,7 @@ public:
 private:
     _bool m_bStart = { true };
     
-private:
+public:
     CEditCamera* Get_EditCamera();
 
 private:

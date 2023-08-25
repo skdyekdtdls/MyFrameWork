@@ -16,10 +16,18 @@ public:
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
 
+private:
+	void LoadLevel();
+
 public:
-	HRESULT Ready_Lights();
-	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
-	HRESULT Ready_Layer_Camera(const _tchar* pLayerTag);
+	void Ready_Lights();
+	void Ready_Layer_BackGround(const _tchar* pLayerTag);
+	void Ready_Layer_Camera(const _tchar* pLayerTag);
+	void Ready_Layer_Monster(const _tchar* pLayerTag);
+	void Ready_Layer_Player(const _tchar* pLayerTag);
+	void Ready_Layer_Effect(const _tchar* pLayerTag);
+	void Ready_Layer_UI(const _tchar* pLayerTag);
+	void Ready_Layer_ETC();
 	
 public:
 	static CLevel_GamePlay* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);

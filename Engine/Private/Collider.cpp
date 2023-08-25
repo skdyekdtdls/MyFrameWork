@@ -58,7 +58,12 @@ HRESULT CCollider::Initialize(void* pArg)
 
 void CCollider::Tick(_fmatrix TransformMatrix)
 {
-	
+	m_isColl = { false };
+}
+
+void CCollider::Add_ColliderGroup(COLL_GROUP eCollGroup)
+{
+	CollisionMgr::GetInstance()->Add_ColliderGroup(this, eCollGroup);
 }
 
 #ifdef _DEBUG
@@ -70,10 +75,10 @@ void CCollider::SetupResources()
 
 	CPipeLine* pPipeLine = CPipeLine::GetInstance();
 	Safe_AddRef(pPipeLine);
-
+	
 	_float4x4 ViewMatrix = pPipeLine->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
 	m_pEffect->SetView(XMLoadFloat4x4(&ViewMatrix));
-
+	
 	_float4x4 ProjMatrix = pPipeLine->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
 	m_pEffect->SetProjection(XMLoadFloat4x4(&ProjMatrix));
 
@@ -96,12 +101,12 @@ void CCollider::End()
 
 #endif
 
-void CCollider::OnCollision(const COLLISION_INFO* pCollisionInfo)
+void CCollider::OnCollision(COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
 	if (nullptr == m_pOwner)
 		return;
 
-	//m_pOwner->OnCollision(pCollisionInfo);
+	m_pOwner->OnCollision(tCollisionInfo, TimeDelta);
 }
 
 void CCollider::Free()

@@ -2,7 +2,7 @@
 #include "GameInstance.h"
 #include "Level_GamePlay.h"
 #include "Level_Logo.h"
-
+#include "SoundMgr.h"
 #include "Loader.h"
 
 #ifdef _DEBUG
@@ -26,7 +26,7 @@ HRESULT CLevel_Loading::Initialize(LEVELID eNextLevelID)
 
 	if (nullptr == m_pLoader)
 		return E_FAIL;
-
+	SoundMgr->PlayBGM(L"Loading.ogg");
 	return S_OK;
 }
 

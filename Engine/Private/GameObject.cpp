@@ -26,10 +26,10 @@ HRESULT CGameObject::Initialize_Prototype()
 HRESULT CGameObject::Initialize(void* pArg)
 {
 	FAILED_CHECK_RETURN(__super::Initialize(pArg), E_FAIL);
+	CGAMEOBJECT_DESC* pGameObjectDesc = (CGAMEOBJECT_DESC*)pArg;
 
 #ifdef _DEBUG
 	CColliderSphere::CCOLLIDER_SPHERE_DESC tColliderSphereDesc;
-	tColliderSphereDesc.fRadius = { 0.5f };
 	tColliderSphereDesc.vCenter = { _float3(0.f, tColliderSphereDesc.fRadius * 1.f, 0.f) };
 	FAILED_CHECK_RETURN(__super::Add_Component(0, CColliderSphere::ProtoTag()
 		, L"Com_PickCollider", (CComponent**)&m_pPickCollider, &tColliderSphereDesc), E_FAIL);
@@ -41,7 +41,8 @@ HRESULT CGameObject::Initialize(void* pArg)
 HRESULT CGameObject::Render()
 {
 #ifdef _DEBUG
-	m_pPickCollider->Render();
+	if(nullptr != m_pPickCollider)
+		m_pPickCollider->Render();
 #endif // _DEBUG
 
 	return S_OK;
@@ -54,25 +55,32 @@ void CGameObject::Tick(_double TimeDelta)
 		return;
 	CTransform* pTransform = static_cast<CTransform*>(Get_Component(L"Com_Transform"));
 
-	NULL_CHECK(m_pPickCollider)
+	if (nullptr != m_pPickCollider)
 		m_pPickCollider->Tick(pTransform->Get_WorldMatrix());
 #endif
 }
 
 void CGameObject::Late_Tick(_double TimeDelta)
 {
+
 }
 
-void CGameObject::OnCollision(CCollider::COLLISION_INFO* pCollisionInfo)
+void CGameObject::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
 
 }
 
-#ifdef _DEBUG
 _bool CGameObject::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 {
+// 지형 클릭 위치 구해야되서 게임오브젝트꺼만 막아놨음.
+#ifdef DEBUG
 	if (!HasTransformCom())
 		return false;
+
+	if (nullptr == m_pPickCollider)
+		return false;
+	
+
 	_float3 vPosFloat3 = GetPosition();
 
 	_float fDistance = { FLT_MAX };
@@ -83,10 +91,10 @@ _bool CGameObject::Picked(PICK_DESC& tPickDesc, const RAY& tMouseRay)
 		tPickDesc.pPickedObject = this;
 		return true;
 	}
+#endif // DEBUG
 	
 	return false;
 }
-#endif
 
 
 #ifdef _DEBUG
@@ -111,8 +119,13 @@ _float3 CGameObject::GetPosition()
 
 	return vPos;
 }
-
-
+#ifdef _DEBUG
+void CGameObject::SetPickRadius(_float fRadius)
+{
+	if (nullptr != m_pPickCollider)
+		m_pPickCollider->SetPickRadius(fRadius);
+}
+#endif
 void CGameObject::Free()
 {
 	__super::Free();

@@ -37,6 +37,11 @@ public: // Getter
 	class CChannel* Get_ChannelByIndex(_uint iIndex) {
 		return m_Channels[iIndex];
 	}
+
+	// NextAnimation이 없고 현재 애니메이션이 끝났다면 true반환
+	_bool IsFinishedCompletly();
+
+	// 현재 애니메이션 인덱스가 끝났다면 true반환
 	_bool IsFinished() {
 		return m_isFinished;
 	}
@@ -54,7 +59,19 @@ public: // Getter
 		return &m_iNextIndex;
 	}
 
+	_double* GetDurationPtr() {
+		return &m_Duration;
+	}
+	_double GetTimeAcc() {
+		return m_TimeAcc;
+	}
+
 public: // Setter
+	void SetGolem() { m_bGolem = true; }
+	void SetPlaySpeed(_double _PlaySpeed) {
+		m_PlaySpeed = _PlaySpeed;
+	}
+
 	void SetDuration(_double Duration) {
 		m_Duration = Duration;
 	}
@@ -76,7 +93,6 @@ public:
 	HRESULT Add_TimeLineEvent(const _tchar* pTag, TIMELINE_EVENT timeLineEvent);
 	void Delete_TimeLineEvent(const _tchar* pTag);
 	const TIMELINE_EVENT* Get_TimeLineEvent(const _tchar* pTag);
-
 private:
 	TIMELINE_EVENT* Find_TimeLine(const _tchar* pTag);
 
@@ -87,13 +103,14 @@ private:
 	vector<_uint>				m_ChannelCurrentKeyFrames;
 	_double						m_Duration = { 0.0 };
 	_double						m_TickPerSecond = { 0.0 };
+	_double						m_PlaySpeed = { 1.0 };
 	_double						m_TimeAcc = { 0.0 };
 
 	_bool						m_isFinished = { false };
 	_bool						m_isLoop;
 	_uint						m_iCurKeyFrame = { 0 };
 	_int						m_iNextIndex = { -1 };
-
+	_bool						m_bGolem = { false };
 	unordered_map<const _tchar*, TIMELINE_EVENT>	m_TimeLineEvents;
 
 public:

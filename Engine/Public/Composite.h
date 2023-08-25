@@ -50,7 +50,7 @@ inline T* CComposite::GetComponent()
 {
 	for (auto& Pair : m_Components)	{
 		if (dynamic_cast<T*>(Pair.second)) {
-			return (T*)Pair.second;
+			return dynamic_cast<T*>(Pair.second);
 		}
 	}
 

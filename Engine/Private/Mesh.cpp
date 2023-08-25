@@ -131,9 +131,9 @@ void CMesh::Get_Matrices(CModel::BONES Bones, _float4x4* pMatrices, _fmatrix Piv
 
 	for (auto iBoneIndex : m_BoneIndices)
 	{
-		_float4x4 OffsetMatrix = Bones[iBoneIndex]->Get_OffsetMatrix();
+		_float4x4 OffsetMatrix = Bones[iBoneIndex]->Get_OffsetFloat4x4();
 		_float4x4 CombinedTransformationMatrix = Bones[iBoneIndex]->Get_CombinedTransformationMatrix();
-		// pMatrices[iIndex++] = Bones[iBoneIndex]->Get_OffsetMatrix() * Bones[iBoneIndex]->Get_CombinedTransformationMatrix();
+		// pMatrices[iIndex++] = Bones[iBoneIndex]->Get_OffsetFloat4x4() * Bones[iBoneIndex]->Get_CombinedTransformationMatrix();
 		XMStoreFloat4x4(&pMatrices[iIndex++],
 			XMLoadFloat4x4(&OffsetMatrix) *
 			XMLoadFloat4x4(&CombinedTransformationMatrix) *

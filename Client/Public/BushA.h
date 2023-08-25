@@ -19,6 +19,10 @@ END
 BEGIN(Client)
 class BushA final : public CGameObject, public ISerializable
 {
+	typedef struct tagBushADesc : public tagCGameObjectDesc
+	{
+		tagBushADesc() : tagCGameObjectDesc() {}
+	};
 private:
 	BushA(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	BushA(const BushA& rhs);

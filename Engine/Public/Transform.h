@@ -39,6 +39,8 @@ public:
 	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
 
 public:
+	_float2 GetScreenPos(_uint iWinSizeX, _uint iWinSizeY);
+
 	DIRECTION GetCurDirection() {
 		return m_eCurDirection;
 	}
@@ -76,11 +78,20 @@ public:
 		XMStoreFloat4x4(&m_WorldMatrix, matWorldMatrix);
 	}
 
+	void Set_Speed(float fSpeed)
+	{
+		m_TransformDesc.SpeedPerSec = fSpeed;
+	}
+
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
+public:
+	_vector DirectionVector(DIRECTION eDir);
 
 public:
+	void Chase_Lerp(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance);
+
 	void Go_Straight(_double TimeDelta, class CNavigation* pNavigation = nullptr);
 	void Go_Backward(_double TimeDelta, class CNavigation* pNavigation = nullptr);
 	void Go_Left(_double TimeDelta, class CNavigation* pNavigation = nullptr);
@@ -88,13 +99,14 @@ public:
 
 	void Go_Direction(_double TimeDelta, DIRECTION eDir, _float fLength);
 	void Go_Direction(_double TimeDelta, DIRECTION eDir);
-
+	void Go_Direction(_double TimeDelta, _fvector vDir, _float fLength);
+	void Jump(_float TimeElapse, _float fPower);
 	void Chase(_fvector vTargetPosition, _double TimeDelta, _float fMinDistance = 0.1f);
 	void LookAt(_fvector vTargetPosition);
 
 	// 항등 상태를 기준으로 지정한 각만큼 회전시킨다.
 	void Rotation(_fvector vAxis, _float fRadian);
-
+	void RotationBack();
 	void Rotation(_fmatrix RotationMatrixX, _fmatrix RotationMatrixY, _fmatrix RotationMatrixZ);
 	void Turn(_fvector vAxis, _double TimeDelta);
 	void Turn(_fvector vAxis, _fvector vTargetVector, _double TimeDelta);
@@ -103,15 +115,14 @@ public:
 	// 이전 프레임과 현재 프레임 사이의 위치 변화율을 반환합니다.
 	_float3 DeltaPosition();
 
+	_bool isFront(_fvector vPosition, _float fDistance = FLT_MAX, _float fDegree = 180.f);
+
 private:
 	CTRANSFORM_DESC			m_TransformDesc;
 	DIRECTION				m_eCurDirection;
 private:
 	_float4x4				m_PrevWorldMatrix;
 	_float4x4				m_WorldMatrix;
-
-private:
-	_vector DirectionVector(DIRECTION eDir);
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_Component_Transform"; }

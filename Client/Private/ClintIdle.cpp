@@ -15,8 +15,8 @@ ClintIdle::ClintIdle(const ClintIdle& rhs)
 void ClintIdle::OnStateEnter()
 {
 	__super::OnStateEnter();
-	SetAnimIndex(CLINT_ANIM_IDLE, UPPER);
-	SetAnimIndex(CLINT_ANIM_IDLE, LOWER);
+	SetAnimIndex(CLINT_IDLE, UPPER);
+	SetAnimIndex(CLINT_IDLE, LOWER);
 }
 
 void ClintIdle::OnStateTick(_double TimeDelta)
@@ -26,18 +26,34 @@ void ClintIdle::OnStateTick(_double TimeDelta)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	if (pGameInstance->Get_DIKeyState(DIK_W) || pGameInstance->Get_DIKeyState(DIK_A) ||
-		pGameInstance->Get_DIKeyState(DIK_S) || pGameInstance->Get_DIKeyState(DIK_D))
+	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
+	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
+	_byte W = pGameInstance->Get_DIKeyState(DIK_S);
+	_byte A = pGameInstance->Get_DIKeyState(DIK_Z);
+	_byte S = pGameInstance->Get_DIKeyState(DIK_X);
+	_byte D = pGameInstance->Get_DIKeyState(DIK_C);
+	_byte Space = pGameInstance->Get_DIKeyState(DIK_SPACE);
+
+	if (pGameInstance->Get_DIKeyState(DIK_S) || pGameInstance->Get_DIKeyState(DIK_Z) ||
+		pGameInstance->Get_DIKeyState(DIK_X) || pGameInstance->Get_DIKeyState(DIK_C))
 	{
-		m_pStateContext->TransitionTo(L"ClintRun");
+		TransitionTo(L"ClintRun");
 	}
-	else if (pGameInstance->Get_DIKeyState(DIK_SPACE))
+	else if (pGameInstance->Get_DIKeyState(DIK_Q))
 	{
-		m_pStateContext->TransitionTo(L"ClintDash");
+		TransitionTo(L"ClintUltimate01");
+	}
+	else if (Space)
+	{
+		TransitionTo(L"ClintDash");
 	}
 	else if (pGameInstance->Get_DIMouseState(CInput_Device::DIMK_LBUTTON))
 	{
-		m_pStateContext->TransitionTo(L"ClintShoot");
+		TransitionTo(L"ClintShoot");
+	}
+	else if (pGameInstance->Get_DIMouseState(CInput_Device::DIMK_RBUTTON))
+	{
+		TransitionTo(L"ClintSkill01");
 	}
 	Safe_Release(pGameInstance);
 }

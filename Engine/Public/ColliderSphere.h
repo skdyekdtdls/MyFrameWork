@@ -27,13 +27,13 @@ public:
 	virtual void Tick(_fmatrix TransformMatrix) override;
 
 	_bool IntersectRay(_float& fDist, const RAY& tMouseRay);
-	virtual _bool Intersect(CCollider* pOtherCollider) override;
+	virtual _bool Intersect(CCollider* pOtherCollider, COLLISION_INFO& CollisionInfo) override;
 #ifdef _DEBUG
 	virtual HRESULT Render() override;
+	void SetPickRadius(_float fScale);
 #endif
 
 private:
-	_float m_fRadius;
 	BoundingSphere* m_pBoudingSphere_Origin = { nullptr };
 	BoundingSphere* m_pBoudingSphere = { nullptr };
 	

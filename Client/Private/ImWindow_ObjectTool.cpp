@@ -4,6 +4,7 @@
 #include "ImMode.h"
 #include "GameInstance.h"
 #include "GameObject.h"
+#include "EditCamera.h"
 #include "Terrain.h"
 #include <filesystem>
 
@@ -12,7 +13,7 @@ namespace fs = std::filesystem;
 CImWindow_ObjectTool::CImWindow_ObjectTool(ImGuiIO* pIO)
 	: CImWindow(pIO)
 {
-
+	
 }
 
 HRESULT CImWindow_ObjectTool::Initialize(void* pArg)
@@ -53,10 +54,28 @@ void CImWindow_ObjectTool::Tick()
 	}
 
 	// °´Ã¼ ¼³Ä¡ ±â´É
-	ImGui::Checkbox("Object_Place", &m_bCheck);
-	if (m_bCheck)
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	if (pGameInstance->Key_Down(DIK_GRAVE))
+	{
+		m_iPlaceOrDelete++;
+		if (m_iPlaceOrDelete >= 3)
+			m_iPlaceOrDelete = 0;
+	}
+
+	Safe_Release(pGameInstance);
+
+
+	ImGui::RadioButton("Object_Place", &m_iPlaceOrDelete, 0);
+	ImGui::RadioButton("Delete_Place", &m_iPlaceOrDelete, 1);
+	ImGui::RadioButton("NONE", &m_iPlaceOrDelete, 2);
+	if (0 == m_iPlaceOrDelete)
 	{
 		ObjectPlace(); 
+	}
+	else if (1 == m_iPlaceOrDelete)
+	{
+		DeletePlace();
 	}
 
 	// °´Ã¼ Æ®·£½ºÆû ÆíÁý
@@ -81,6 +100,15 @@ void CImWindow_ObjectTool::Tick()
 			pTransform->Set_WorldMatrix(matWorld);
 		}
 	}
+
+	CEditCamera* pEditCamera = pImMgr->Get_EditCamera();
+
+	if (nullptr != pEditCamera)
+	{
+		ImGui::RadioButton("EditMode", reinterpret_cast<_int*>(&pEditCamera->m_eEditMode), 0);
+		ImGui::RadioButton("PlayMode", reinterpret_cast<_int*>(&pEditCamera->m_eEditMode), 1);
+	}
+
 
 	ImGui::End();
 	Safe_Release(pImMgr);
@@ -137,7 +165,7 @@ void CImWindow_ObjectTool::ObjectPlace()
 	CImWindow_Manager* pImMgr = CImWindow_Manager::GetInstance();
 	Safe_AddRef(pGameInstance);
 	Safe_AddRef(pImMgr);
-
+	
 	wstring tag;
 	PICK_DESC tTerrainPickDesc = pImMgr->GetTerrainPickDesc();
 	if (Static_Mesh_item_current != -1)
@@ -146,22 +174,12 @@ void CImWindow_ObjectTool::ObjectPlace()
 		tag = L"Prototype_GameObject_" + TO_WSTR(Skeletal_Mesh_items[Skeletal_Mesh_item_current]);
 	
 	ImGui::Begin("Select Layer");
-	int iCount = 0;
 	
-	for (_uint i = 0; i < pGameInstance->GetNumLayers(LEVEL_IMGUI); ++i)
-	{
-		iCount = 0;
-		for (auto& LayerPair : pGameInstance->GetLayers()[i])
-		{
-			char szTmp[MAX_PATH];
-			TO_CHAR(LayerPair.first, szTmp);
-			if (ImGui::RadioButton(szTmp, &m_bRadioButton, iCount)) {
-				strcpy_s(m_szCurItemLabel, szTmp);
-			}
-
-			iCount++;
-		}
-	}
+	if (ImGui::RadioButton("Layer_BackGround", &m_bRadioButton, 0)) { strcpy_s(m_szCurItemLabel, "Layer_BackGround"); }
+	if (ImGui::RadioButton("Layer_Player", &m_bRadioButton, 1)) {strcpy_s(m_szCurItemLabel, "Layer_Player");}
+	if (ImGui::RadioButton("Layer_Monster", &m_bRadioButton, 2)) { strcpy_s(m_szCurItemLabel, "Layer_Monster"); }
+	if (ImGui::RadioButton("Layer_Bullet", &m_bRadioButton, 4)) {strcpy_s(m_szCurItemLabel, "Layer_Bullet");}
+	if (ImGui::RadioButton("Layer_Camera", &m_bRadioButton, 3)) {strcpy_s(m_szCurItemLabel, "Layer_Camera");}
 
 	ImGui::End();
 
@@ -204,6 +222,11 @@ void CImWindow_ObjectTool::ObjectPlace()
 	tCloneDesc.vPosition = _float4(pTerrainDesc.vPickPos);
 	tCloneDesc.vPosition.w = 1.f;
 	CGameObject* pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, tag.c_str(), szTmp, &tCloneDesc);
+	CNavigation* pNavigation = pGameObject->GetComponent<CNavigation>();
+	CTransform* pTransform = pGameObject->GetComponent<CTransform>();
+	pNavigation->FindIndex(pTransform->Get_State(CTransform::STATE_POSITION));
+
+	system("cls");
 	CONSOLE_MSG("The Object Tool call \'Add_GameObject\'");
 	if (nullptr == pGameObject)
 	{
@@ -220,6 +243,52 @@ void CImWindow_ObjectTool::ObjectPlace()
 	Safe_Release(pImMgr);
 	Safe_Release(pGameInstance);
 }
+
+void CImWindow_ObjectTool::DeletePlace()
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	CImWindow_Manager* pImMgr = CImWindow_Manager::GetInstance();
+	Safe_AddRef(pGameInstance);
+	Safe_AddRef(pImMgr);
+	system("cls");
+	PICK_DESC tPickDesc = pImMgr->GetMinDistPickDesc();
+	std::string strName;
+	
+	if(nullptr != tPickDesc.pPickedObject)
+		strName = tPickDesc.pPickedObject->Get_Name().c_str();
+
+	if (nullptr == tPickDesc.pPickedObject)
+	{
+		Safe_Release(pImMgr);
+		Safe_Release(pGameInstance);
+		return;
+	}
+
+	if (0 == strName.compare("Clint1"))
+	{
+		Safe_Release(pImMgr);
+		Safe_Release(pGameInstance);
+		return;
+	}
+
+	if (0 == strName.compare("CTerrain1"))
+	{
+		Safe_Release(pImMgr);
+		Safe_Release(pGameInstance);
+		return;
+	}
+
+	tPickDesc.pPickedObject->SetDead();
+
+	wstring tag;
+	PICK_DESC tTerrainPickDesc = pImMgr->GetTerrainPickDesc();
+
+	CONSOLE_MSG(tPickDesc.pPickedObject->Get_Name() << " Deleted");
+
+	Safe_Release(pImMgr);
+	Safe_Release(pGameInstance);
+}
+
 void CImWindow_ObjectTool::Free()
 {
 	__super::Free();

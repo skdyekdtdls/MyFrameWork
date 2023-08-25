@@ -19,8 +19,12 @@ public: /* Getter */
 		return m_szName;
 	}
 
-	_float4x4 Get_OffsetMatrix() const {
+	_float4x4 Get_OffsetFloat4x4() const {
 		return m_OffsetMatrix;
+	}
+	
+	_matrix Get_OffsetMatrix() {
+		return XMLoadFloat4x4(&m_OffsetMatrix);
 	}
 
 	_float4x4 Get_CombinedTransformationMatrix() const {
@@ -97,6 +101,10 @@ public:/* Setter */
 
 	void Set_ParentIndex(_uint iParentIndex) {
 		m_iParentIndex = iParentIndex;
+	}
+
+	_matrix Get_TransformationMatrix() {
+		return XMLoadFloat4x4(&m_TransformationMatrix);
 	}
 
 public:

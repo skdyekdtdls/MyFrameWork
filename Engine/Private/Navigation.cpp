@@ -104,6 +104,7 @@ _bool CNavigation::is_Move(_fvector vPosition)
 		// ÀÌ¿ôÀÌ ÀÖ´Ù¸é
 		if (-1 != iNeighborIndex)
 		{
+
 			while (true)
 			{
 				// ´õ ÀÌ»ó ÀÌ¿ô ÀÎµ¦½º°¡ Á¸ÀçÇÏÁö ¾ÊÀ¸¸é Å»Ãâ
@@ -113,6 +114,8 @@ _bool CNavigation::is_Move(_fvector vPosition)
 				// ÀÌ¿ôÀÎµ¦½º¸¦ Ã£À¸¸é Å»Ãâ
 				if (true == m_Cells[iNeighborIndex]->is_In(vPosition, &iNeighborIndex, eNeighbor))
 					break;
+
+
 			}	
 			m_tNaviDesc.iCurrentIndex = iNeighborIndex;
 			return true;
@@ -125,7 +128,43 @@ _bool CNavigation::is_Move(_fvector vPosition)
 	return false;
 }
 
+_uint CNavigation::FindIndex(_fvector vPosition)
+{
+	for (auto Cell : m_Cells)
+	{
+		if (Cell->is_In(vPosition))
+			return Cell->GetIndex();
+	}
+
+	assert(false);
+	return -1;
+}
+
+_float4 CNavigation::RandomPosInCell(_uint iIndex)
+{
+	return m_Cells[iIndex]->RandomPosition();
+}
+
 #ifdef _DEBUG
+
+
+
+void CNavigation::DeleteCellByIndex(_uint iIndex)
+{
+	if (iIndex >= m_Cells.size())
+		return;
+
+	Safe_Release(m_Cells[iIndex]);
+	m_Cells.erase(m_Cells.begin() + iIndex);
+
+	for (_uint i = iIndex; i < m_Cells.size(); ++i)
+	{
+		m_Cells[i]->DecrementIndex();
+	}
+
+	SetUp_Neighbors();
+}
+
 void CNavigation::Set_ShaderResources()
 {
 	NULL_CHECK(m_pShader);
@@ -166,8 +205,11 @@ void CNavigation::UpdateCellCollider(_uint iIndex)
 #endif
 
 #ifdef _DEBUG
-HRESULT CNavigation::Render_Navigation()
+HRESULT CNavigation::Render()
 {
+	if (!m_bRender)
+		return S_OK;
+
 	NULL_CHECK_RETURN(m_pShader, E_FAIL);
 
 	Set_ShaderResources();
@@ -178,10 +220,15 @@ HRESULT CNavigation::Render_Navigation()
 	{
 		pCell->Render_VIBuffer();
 	}
-
+	
 	for (auto& pCell : m_Cells)
 	{
 		pCell->Render_ColliderSphere();
+	}
+
+	for (auto& pCell : m_Cells)
+	{
+		pCell->Render_CellIndex();
 	}
 
 	return S_OK;

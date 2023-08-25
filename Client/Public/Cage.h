@@ -19,6 +19,10 @@ END
 BEGIN(Client)
 class Cage final : public CGameObject, public ISerializable
 {
+	typedef struct tagCageDesc : public tagCGameObjectDesc
+	{
+		tagCageDesc() : tagCGameObjectDesc() {}
+	};
 private:
 	Cage(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	Cage(const Cage& rhs);

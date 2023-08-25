@@ -3,30 +3,30 @@
 #include "Base.h"
 
 BEGIN(Engine)
-enum COLLGROUP { CG_OBJECT, CG_BULLET, CG_ITEM, COLLGROUP_END };
-enum TEAM { TEAM_1, TEAM_2, TEAM_END }; // °°Àº ÆÀ³¢¸®´Â Ãæµ¹¾ÈÇÔ.
+enum COLL_GROUP {PLAYER_BODY
+	, PLAYER_BULLET, MONSTER_BODY, MONSTER_BULLET
+	, MONSTER_DETECT, COLL_END};
 
 class CCollider;
 
 class CollisionMgr final : public CBase
 {
-	typedef list<CCollider*> Colliders;
-
 	DECLARE_SINGLETON(CollisionMgr);
 public:
 	CollisionMgr() = default;
 	~CollisionMgr() = default;
 
 public:
-	void Add_Colliders(list<CCollider*> pCollider, COLLGROUP eCollGroup, TEAM eTeam);
-	void Late_Tick();
-	void CheckByCollGroup(COLLGROUP eSourGroup, COLLGROUP eDestGroup);
+	void Add_ColliderGroup(CCollider* pCollider, COLL_GROUP eCollGroup);
+
+	void Late_Tick(_double TimeDelta);
+	void CheckByCollGroup(COLL_GROUP eSourGroup, COLL_GROUP eDestGroup, _double TimeDelta);
 
 private:
-	list<Colliders> m_Colliders[COLLGROUP_END][TEAM_END];
+	list<CCollider*> m_Colliders[COLL_END];
 
 private:
-	void ClearColliders();
+	void ClearAllColliders();
 
 public:
 	void Free() override;

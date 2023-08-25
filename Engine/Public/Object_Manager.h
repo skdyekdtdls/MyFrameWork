@@ -37,10 +37,19 @@ public:
 	HRESULT Delete_GameObject(_uint iLevelIndex, const _tchar* pLayerTag, string strName);
 	void Clear_LevelResources(_uint iLevelIndex);
 	
+	void AddToLayer(_uint IlevelIndex, const _tchar* pLayerTag, CGameObject* pGameObject);
+
 	void Tick(_double TimeDelta);
 	void Late_Tick(_double TimeDelta);
 	CLayer* Find_LayerByName(_uint iLevelIndex, const _tchar* pLayerTag);
 	class CGameObject* Clone_GameObject(const _tchar* pPrototypeTag, void* pArg);
+
+	unordered_map<const _tchar*, CLayer*>::iterator LayerBegin(_uint iLevelIndex);
+	unordered_map<const _tchar*, CLayer*>::iterator LayerEnd(_uint iLevelIndex);
+
+	list<CGameObject*>::iterator GetLayerBegin(_uint iLevelIndex, const _tchar* pTag);
+	list<CGameObject*>::iterator GetLayerEnd(_uint iLevelIndex, const _tchar* pTag);
+
 private:
 	unordered_map<const _tchar*, CGameObject*> m_Prototypes;
 

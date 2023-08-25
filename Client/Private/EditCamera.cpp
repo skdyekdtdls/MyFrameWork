@@ -1,4 +1,3 @@
-#ifdef _DEBUG
 #include "EditCamera.h"
 #include "Terrain.h"
 #include "GameInstance.h"
@@ -10,6 +9,8 @@
 #include "ImWindow_MapTool.h"
 #include "ImMode.h"
 #include "Layer.h"
+#include "Model.h"
+#include "Bone.h"
 
 CEditCamera::CEditCamera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CCamera(pDevice, pContext)
@@ -92,20 +93,27 @@ HRESULT CEditCamera::Initialize(void* pArg)
 	m_tInfo.ID = 0;
 	m_tInfo.wstrName = L"EditCamera";
 	m_tInfo.wstrKey = ProtoTag();
+	CTransform::CTRANSFORM_DESC tTransformDesc;
+	tTransformDesc.SpeedPerSec = 40.f;
+	tTransformDesc.RotationPerSec = XMConvertToRadians(90.f);
+	m_pTransform->Set_Desc(tTransformDesc);
+
+	m_bStart = false;
+	ObjectPool<class Alien_prawn>::GetInstance()->Resize(30);
 
 	return S_OK;
 }
 
 void CEditCamera::Tick(_double TimeDelta)
 {
-	ClearPickDesc();
-	m_isPicking = { false };
-	Make_MouseRay();
-
-	if (g_hWnd == ::GetFocus())
+	switch (m_eEditMode)
 	{
-		Key_Input(TimeDelta);
-		Mouse_Input(TimeDelta);
+	case Client::CEditCamera::EDIT_MODE:
+		EditMode_Tick(TimeDelta);
+		break;
+	case Client::CEditCamera::PLAY_MODE:
+		PlayMode_Tick(TimeDelta);
+		break;
 	}
 
 	__super::Tick(TimeDelta);
@@ -116,6 +124,16 @@ void CEditCamera::Late_Tick(_double TimeDelta)
 	if (g_hWnd != ::GetFocus())
 		return;
 
+	switch (m_eEditMode)
+	{
+	case Client::CEditCamera::EDIT_MODE:
+		EditMode_Late_Tick(TimeDelta);
+		break;
+	case Client::CEditCamera::PLAY_MODE:
+		PlayMode_Late_Tick(TimeDelta);
+		break;
+	}
+
 	__super::Late_Tick(TimeDelta);
 }
 
@@ -124,24 +142,60 @@ HRESULT CEditCamera::Render()
 	return S_OK;
 }
 
+void CEditCamera::EditMode_Tick(_double TimeDelta)
+{
+	ClearPickDesc();
+	m_isPicking = { false };
+	Make_MouseRay();
+
+	if (g_hWnd == ::GetFocus())
+	{
+		Key_Input(TimeDelta);
+		Mouse_Input(TimeDelta);
+	}
+}
+
+void CEditCamera::PlayMode_Tick(_double TimeDelta)
+{
+	// 카메라 위치 계산
+	_vector ClintPos = Single->GetClintPosition();
+	_vector Offset = XMLoadFloat4(&m_OffsetPos);
+	_vector OffsetPos;
+	OffsetPos = ClintPos + Offset;
+	m_pTransform->Set_State(CTransform::STATE_POSITION, OffsetPos);
+	m_pTransform->LookAt(ClintPos);
+
+}
+
+void CEditCamera::EditMode_Late_Tick(_double TimeDelta)
+{
+}
+
+void CEditCamera::PlayMode_Late_Tick(_double TimeDelta)
+{
+}
+
+// 어떤 객체를 클릭했는지에 대한 정보를 만들어준다.
 void CEditCamera::Picking()
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
+	// 레이어 순환 바꾸기
 	_bool bResult = { false };
 	m_isPicking = { true };
-	for (_uint i = 0; i < pGameInstance->GetNumLayers(LEVEL_IMGUI); ++i)
+#ifdef _DEBUG
+	for (auto iter = pGameInstance->LayerBegin(LEVEL_IMGUI); iter != pGameInstance->LayerEnd(LEVEL_IMGUI); ++iter)
+#else
+	for (auto iter = pGameInstance->LayerBegin(LEVEL_GAMEPLAY); iter != pGameInstance->LayerEnd(LEVEL_GAMEPLAY); ++iter)
+#endif
 	{
-		for (auto& LayerPair : pGameInstance->GetLayers()[i])
+		for (auto& GameObject : iter->second->GetGameObjects())
 		{
-			for (auto& GameObject : LayerPair.second->GetGameObjects())
+			PICK_DESC tPickDesc;
+			if (GameObject->Picked(tPickDesc, m_tMouseRay))
 			{
-				PICK_DESC tPickDesc;
-				if (GameObject->Picked(tPickDesc, m_tMouseRay))
-				{
-					AddPickDesc(tPickDesc);
-				}
+				AddPickDesc(tPickDesc);
 			}
 		}
 	}
@@ -263,4 +317,3 @@ void CEditCamera::Free(void)
 
 	ClearPickDesc();
 }
-#endif

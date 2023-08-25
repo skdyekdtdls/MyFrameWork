@@ -13,10 +13,10 @@ public:
 	}CRENDERER_DESC;
 
 public:
-	enum RENDERGROUP { RENDER_PRIORITY, RENDER_NONBLEND, RENDER_NONLIGHT, RENDER_BLEND, RENDER_UI, RENDER_END };
+	enum RENDERGROUP { RENDER_PRIORITY, RENDER_NONBLEND, RENDER_NONLIGHT, RENDER_BLEND, RENDER_UI_NB, RENDER_UI_B, RENDER_FONT, RENDER_END };
+
 private:
 	CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	CRenderer(const CRenderer& rhs);
 	virtual ~CRenderer() = default;
 
 public:
@@ -31,15 +31,42 @@ public:
 	void Add_RenderGroup(RENDERGROUP eRenderGroup, CGameObject* pGameObejct);
 	HRESULT Draw_RenderGroup();
 
-private:
-	list<CGameObject*> m_RenderObjects[RENDER_END];
+#ifdef _DEBUG
+	HRESULT Add_DebugGroup(CComponent* pDebugCom);
+	HRESULT Render_Debug();
+#endif // _DEBUG
 
 private:
 	HRESULT Render_Priority();
 	HRESULT Render_NonBlend();
+	HRESULT Render_Lights();
+	HRESULT Render_Deferred();
 	HRESULT Render_NonLight();
 	HRESULT Render_Blend();
-	HRESULT Render_UI();
+	HRESULT Render_PostProcessing();
+	HRESULT Render_UI_NB();
+	HRESULT Render_UI_B();
+	HRESULT Render_Font();
+
+
+private:
+	list<CGameObject*> m_RenderObjects[RENDER_END];
+
+private:
+	list<class CComponent*>	m_DebugObject;
+
+private:
+	class CTarget_Manager* m_pTarget_Manager = { nullptr };
+	class CLight_Manager* m_pLight_Manager = { nullptr };
+
+private:
+	class CVIBuffer_Rect* m_pVIBuffer = { nullptr };
+	class CShader* m_pShader = { nullptr };
+
+	CVIBuffer_Rect*		m_pPostVIBuffer = { nullptr };
+	CShader*			m_pPostShader = { nullptr };
+
+	_float4x4				m_WorldMatrix, m_ViewMatrix, m_ProjMatrix;
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_Component_Renderer"; }

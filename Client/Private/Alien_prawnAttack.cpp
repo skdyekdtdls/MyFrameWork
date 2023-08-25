@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "Alien_prawn.h"
 #include "StateContext.h"
+#include "SoundMgr.h"
 Alien_prawnAttack::Alien_prawnAttack(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: StateMachine<Alien_prawn, ALIEN_PRAWN_ANIM>(pDevice, pContext)
 {
@@ -16,6 +17,9 @@ Alien_prawnAttack::Alien_prawnAttack(const Alien_prawnAttack& rhs)
 void Alien_prawnAttack::OnStateEnter()
 {
 	__super::OnStateEnter();
+
+	SoundMgr->StopSound(ALIEN_PRAWN);
+	SoundMgr->PlaySound(L"AlienPrawnAttack.flac", CHANNELID::ALIEN_PRAWN, 0.4f);
 
 	RandomAttack();
 }

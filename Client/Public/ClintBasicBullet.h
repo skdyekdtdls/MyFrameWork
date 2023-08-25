@@ -2,8 +2,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
-#include "ISerializable.h"
+#include "Bullet.h"
 BEGIN(Engine)
 
 class CShader;
@@ -13,16 +12,23 @@ class CTransform;
 class CCollider;
 class CNavigation;
 class CModel;
+class TimeCounter;
 // Can declare VIBuffer or Model Com
 END
 
 BEGIN(Client)
-class ClintBasicBullet final : public CGameObject
+class Effect_Atlas;
+class CStone_Effect;
+class PropelEffect;
+END
+
+BEGIN(Client)
+class ClintBasicBullet final : public Bullet
 {
 public:
-	typedef struct tagClintBasicBulletDesc : public tagCGameObjectDesc
+	typedef struct tagClintBasicBulletDesc : public tagBulletDesc
 	{
-		tagClintBasicBulletDesc() : tagCGameObjectDesc() {}
+		tagClintBasicBulletDesc() : tagBulletDesc() {}
 
 		_vector vLook;
 	}CLINT_BASIC_BULLET_DESC;
@@ -39,30 +45,37 @@ public:
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
 
+	void ResetPool(void* pArg);
+	virtual void SetDead() override;
+
+public:
+	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
+
 private: /* For. Component */
-	//CShader* m_pShaderCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
-	CColliderSphere* m_pColliderCom = { nullptr };
-	//CModel* m_pModelCom = { nullptr };
+	CCollider* m_pColliderCom = { nullptr };
+	TimeCounter* m_pTimeCounterCom = { nullptr };
+	CTexture* m_pTextureCom = { nullptr };
+	CShader* m_pShaderCom = { nullptr };
+	CVIBuffer_Point_Instance* m_pBufferCom = { nullptr };
+	Effect_Atlas* m_pEffectAtlasCom = { nullptr };
+	PropelEffect* m_pPropelEffect = { nullptr };
+	//CStone_Effect* m_test = { nullptr };
 
+	_float m_fRadian;
 private:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();
-	void CheckCollision(_double TimeDelta);
 private:
-	_double m_TimeAcc = { 0.0 };
-	_double m_LifeSpan = { 1.0 };
 	static _uint ClintBasicBullet_Id;
-
-private:
-	void LifeSpan(_double TimeDelta);
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_GameObject_ClintBasicBullet"; }
 	static ClintBasicBullet* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-	virtual CGameObject* Clone(void* pArg) override;
+	virtual Bullet* Clone(void* pArg) override;
 	virtual void Free(void) override;
 };
+
 END
 

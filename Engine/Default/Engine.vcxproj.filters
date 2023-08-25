@@ -133,6 +133,45 @@
     <ClCompile Include="..\private\Frustum.cpp">
       <Filter>01. Utility\04. PipeLine\Frustrum</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\RenderTarget.cpp">
+      <Filter>01. Utility\08. RenderTargets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Target_Manager.cpp">
+      <Filter>01. Utility\08. RenderTargets\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Rect_Instance.cpp">
+      <Filter>01. Utility\03. Components\VIBuffer\Instancing\Rect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Point_Instance.cpp">
+      <Filter>01. Utility\03. Components\VIBuffer\Instancing\Point</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Instancing.cpp">
+      <Filter>01. Utility\03. Components\VIBuffer\Instancing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Font_Manager.cpp">
+      <Filter>01. Utility\06. Fonts\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CustomFont.cpp">
+      <Filter>01. Utility\06. Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Health.cpp">
+      <Filter>01. Utility\03. Components\Health</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TimeCounter.cpp">
+      <Filter>01. Utility\03. Components\TimeConuter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_DynamicRect.cpp">
+      <Filter>01. Utility\03. Components\VIBuffer\Rect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Transform2D.cpp">
+      <Filter>01. Utility\03. Components\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Observer.cpp">
+      <Filter>98. Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Sphere.cpp">
+      <Filter>01. Utility\03. Components\VIBuffer\Sphere</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\Graphic_Device.h">
@@ -288,6 +327,45 @@
     <ClInclude Include="..\public\Frustum.h">
       <Filter>01. Utility\04. PipeLine\Frustrum</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\RenderTarget.h">
+      <Filter>01. Utility\08. RenderTargets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Target_Manager.h">
+      <Filter>01. Utility\08. RenderTargets\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Rect_Instance.h">
+      <Filter>01. Utility\03. Components\VIBuffer\Instancing\Rect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Point_Instance.h">
+      <Filter>01. Utility\03. Components\VIBuffer\Instancing\Point</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Instancing.h">
+      <Filter>01. Utility\03. Components\VIBuffer\Instancing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Font_Manager.h">
+      <Filter>01. Utility\06. Fonts\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CustomFont.h">
+      <Filter>01. Utility\06. Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Health.h">
+      <Filter>01. Utility\03. Components\Health</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TimeCounter.h">
+      <Filter>01. Utility\03. Components\TimeConuter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_DynamicRect.h">
+      <Filter>01. Utility\03. Components\VIBuffer\Rect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Transform2D.h">
+      <Filter>01. Utility\03. Components\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Observer.h">
+      <Filter>98. Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Sphere.h">
+      <Filter>01. Utility\03. Components\VIBuffer\Sphere</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -308,15 +386,6 @@
     <Filter Include="01. Utility\01. Levels\Level">
       <UniqueIdentifier>{457a65f9-11bc-4a04-9fa2-6213a02e6c00}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Utility\02. GameObjects">
-      <UniqueIdentifier>{621fe94b-23ac-48dd-ba80-1fde0859a9a8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\02. GameObjects\Manager">
-      <UniqueIdentifier>{1c6a7277-c30b-42c7-bb4e-108958308727}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\02. GameObjects\Manager\Layer">
-      <UniqueIdentifier>{f7d508c0-8f82-4a6e-a12d-e04847dfc2fa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. System\01.Timer">
       <UniqueIdentifier>{dca17925-ae22-42d9-868a-33bf1a511e35}</UniqueIdentifier>
     </Filter>
@@ -332,41 +401,8 @@
     <Filter Include="01. Utility\00. GameInstance">
       <UniqueIdentifier>{a4a972fc-018f-4248-8f41-91db36e41883}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Utility\03. Components">
-      <UniqueIdentifier>{89f072ca-a8be-4c4e-b263-fa2155cd0d26}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\03. Components\Renderer">
-      <UniqueIdentifier>{d17a080d-a0cc-46e6-a132-b97bee000daa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\03. Components\Manager">
-      <UniqueIdentifier>{d69d0958-b2df-41ba-a992-c48d40d2ca07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\03. Components\VIBuffer">
-      <UniqueIdentifier>{e908f139-92df-480c-be3c-2c9ce6a0db6f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\03. Components\VIBuffer\Rect">
-      <UniqueIdentifier>{a274c2be-b5ae-43a8-9ef5-541055e2941e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\03. Components\Shader">
-      <UniqueIdentifier>{329ec160-39f1-4451-8a5a-5cb6c96ce870}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\03. Components\Texture">
-      <UniqueIdentifier>{ff7c84ee-c852-420b-81a1-fcded4d587e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\03. Components\Transform">
-      <UniqueIdentifier>{ca54fbff-4671-4017-898e-46e1db064c7c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\03. Components\VIBuffer\Terrain">
-      <UniqueIdentifier>{036601c4-486b-47f2-83c0-71da23343d87}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\02. GameObjects\Camera">
-      <UniqueIdentifier>{0e86cd84-aee2-45b0-8724-1def92fc2ee5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Utility\04. PipeLine">
       <UniqueIdentifier>{4f5046f1-eddc-4dd8-ac68-0505a7b8cc77}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\03. Components\00. Composite">
-      <UniqueIdentifier>{631de7ee-d6e8-46f1-9715-a58796393202}</UniqueIdentifier>
     </Filter>
     <Filter Include="00. System\00.Device\Input">
       <UniqueIdentifier>{588c78fa-b52f-4a90-a91b-dd6d0538dd65}</UniqueIdentifier>
@@ -380,8 +416,92 @@
     <Filter Include="01. Utility\05. Lights\Manager">
       <UniqueIdentifier>{91addc48-60f2-4d49-9648-1135ae624f7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="98. Interface">
+      <UniqueIdentifier>{5af96fcb-e6bb-4a2c-8674-6ac97608bae8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\04. PipeLine\Frustrum">
+      <UniqueIdentifier>{c3c4586b-ce54-4cdb-979a-ebbddd5974aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\06. Fonts">
+      <UniqueIdentifier>{5b3198eb-482d-424c-9867-55d614d78afe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\07. Frustum">
+      <UniqueIdentifier>{87761cec-6fb3-4690-9e86-9ace0604a46d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\08. RenderTargets">
+      <UniqueIdentifier>{cfd83c52-7cf0-4b96-b575-48ada37ad2d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\08. RenderTargets\Manager">
+      <UniqueIdentifier>{1d2355b2-3cb9-4ca5-ae1d-9fe657fa9d4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\06. Fonts\Manager">
+      <UniqueIdentifier>{125508d7-f0e7-4174-975a-3efb69f6ad78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. GameObjects">
+      <UniqueIdentifier>{621fe94b-23ac-48dd-ba80-1fde0859a9a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. GameObjects\Manager">
+      <UniqueIdentifier>{1c6a7277-c30b-42c7-bb4e-108958308727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. GameObjects\Manager\Layer">
+      <UniqueIdentifier>{f7d508c0-8f82-4a6e-a12d-e04847dfc2fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. GameObjects\Camera">
+      <UniqueIdentifier>{0e86cd84-aee2-45b0-8724-1def92fc2ee5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\09. Sound">
+      <UniqueIdentifier>{156998aa-ca2e-41d6-86e5-610875b794f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components">
+      <UniqueIdentifier>{89f072ca-a8be-4c4e-b263-fa2155cd0d26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\Renderer">
+      <UniqueIdentifier>{d17a080d-a0cc-46e6-a132-b97bee000daa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\Renderer\Deffered">
+      <UniqueIdentifier>{5188fa1e-b1a5-46dd-a108-6803e851b26e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\Manager">
+      <UniqueIdentifier>{d69d0958-b2df-41ba-a992-c48d40d2ca07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\VIBuffer">
+      <UniqueIdentifier>{e908f139-92df-480c-be3c-2c9ce6a0db6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\VIBuffer\Rect">
+      <UniqueIdentifier>{a274c2be-b5ae-43a8-9ef5-541055e2941e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\VIBuffer\Terrain">
+      <UniqueIdentifier>{036601c4-486b-47f2-83c0-71da23343d87}</UniqueIdentifier>
+    </Filter>
     <Filter Include="01. Utility\03. Components\VIBuffer\Cube">
       <UniqueIdentifier>{80befcf9-92f9-47a2-aefd-fbb7e3fbb1b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\VIBuffer\Navigation">
+      <UniqueIdentifier>{f0a49dc5-28b8-4b27-9aa4-2ea3d028fab1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\VIBuffer\Instancing">
+      <UniqueIdentifier>{ab288560-3327-4a9d-8e84-c23bafb77be5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\VIBuffer\Instancing\Point">
+      <UniqueIdentifier>{3e9d2419-dcdb-4b92-8261-92929c76d8c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\VIBuffer\Instancing\Rect">
+      <UniqueIdentifier>{9d45ecdd-2630-4a88-bc7a-280c6c564bc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\VIBuffer\Ray">
+      <UniqueIdentifier>{4050028a-8095-412e-b168-806caf5e41f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\Shader">
+      <UniqueIdentifier>{329ec160-39f1-4451-8a5a-5cb6c96ce870}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\Texture">
+      <UniqueIdentifier>{ff7c84ee-c852-420b-81a1-fcded4d587e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\Transform">
+      <UniqueIdentifier>{ca54fbff-4671-4017-898e-46e1db064c7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\00. Composite">
+      <UniqueIdentifier>{631de7ee-d6e8-46f1-9715-a58796393202}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Utility\03. Components\Model">
       <UniqueIdentifier>{53826820-81c3-46d0-9ed3-1cc19151bdb1}</UniqueIdentifier>
@@ -389,26 +509,20 @@
     <Filter Include="01. Utility\03. Components\Model\Animation">
       <UniqueIdentifier>{956aa2b1-155c-45ee-a62f-b3b2ab9324d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Utility\03. Components\Model\Animation\Channel">
+      <UniqueIdentifier>{8db63411-f692-46d3-bd98-50d7298447fc}</UniqueIdentifier>
+    </Filter>
     <Filter Include="01. Utility\03. Components\Model\Bone">
       <UniqueIdentifier>{d8a186bb-7962-4112-a3cf-13ca693ea819}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Utility\03. Components\Model\Mesh">
       <UniqueIdentifier>{44ce9f18-0397-4b6c-b74c-11864483ca08}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Utility\03. Components\Model\Animation\Channel">
-      <UniqueIdentifier>{8db63411-f692-46d3-bd98-50d7298447fc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Utility\03. Components\Navigation">
       <UniqueIdentifier>{fe35c284-8ab7-40e4-82d6-6b5a214db939}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Utility\03. Components\VIBuffer\Navigation">
-      <UniqueIdentifier>{f0a49dc5-28b8-4b27-9aa4-2ea3d028fab1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Utility\03. Components\Navigation\Cell">
       <UniqueIdentifier>{bb535f83-f346-44f2-815a-3aaf2cf68dc0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="98. Interface">
-      <UniqueIdentifier>{5af96fcb-e6bb-4a2c-8674-6ac97608bae8}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Utility\03. Components\Collider">
       <UniqueIdentifier>{e25c9683-5fdf-4c68-86de-4e623fd5cdbf}</UniqueIdentifier>
@@ -425,25 +539,34 @@
     <Filter Include="01. Utility\03. Components\Collider\ColliderOBB">
       <UniqueIdentifier>{7641eb8b-06d5-4ca7-9be5-e3905a9df8c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Utility\03. Components\VIBuffer\Ray">
-      <UniqueIdentifier>{4050028a-8095-412e-b168-806caf5e41f6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Utility\03. Components\Collider\Raycast">
       <UniqueIdentifier>{f819a212-5619-45fe-96d6-9a2924acae43}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\03. Components\StateContext">
-      <UniqueIdentifier>{786db06f-d245-4282-8d4d-a62416b67471}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Utility\03. Components\Collider\Manager">
       <UniqueIdentifier>{c722913d-dfd4-4a3b-ba0e-2a00b7275a71}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Utility\04. PipeLine\Frustrum">
-      <UniqueIdentifier>{c3c4586b-ce54-4cdb-979a-ebbddd5974aa}</UniqueIdentifier>
+    <Filter Include="01. Utility\03. Components\StateContext">
+      <UniqueIdentifier>{786db06f-d245-4282-8d4d-a62416b67471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\Health">
+      <UniqueIdentifier>{5c2503c1-7335-46e7-a462-50750f1a4855}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\TimeConuter">
+      <UniqueIdentifier>{a1d6f242-5511-4274-a19e-992cbe7ecba6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Components\VIBuffer\Sphere">
+      <UniqueIdentifier>{f06a1d62-fe03-44d2-a317-bf0c660cc9ff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Navigation.hlsl">
       <Filter>01. Utility\03. Components\Navigation</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl">
+      <Filter>01. Utility\03. Components\Renderer\Deffered</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_PostProcessing.hlsl">
+      <Filter>01. Utility\03. Components\Renderer\Deffered</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

@@ -9,7 +9,7 @@ class CImWindow_Manager;
 class CImWindow_MapTool final : public CImWindow
 {
 public:
-    enum NAVI_MODE { CREATE_MODE, VERTEX_EDIT_MODE, SELECT_CELL_MODE, MODE_END };
+    enum NAVI_MODE { CREATE_MODE, VERTEX_EDIT_MODE, MODE_END };
 
 protected:
     explicit CImWindow_MapTool(ImGuiIO* pIO);
@@ -46,10 +46,16 @@ private:  /* VERTEX_EDIT_MODE */
     vector<std::string> Cell_Index_items;
     vector<CELL_PICK_DESC> tCellPickDesces; // 버텍스 정보도 들어옴
 
+private: /* For DrawMap */
+    int DrawOption = { 0 };
+
 private:
     _bool m_bStart = { true };
-
     // 저장
+
+private:
+    void SaveMapTextureData();
+    void LoadMapTextureData();
 
 public:
     static  CImWindow_MapTool* Create(ImGuiIO* pIO);

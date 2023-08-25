@@ -1,4 +1,4 @@
-#ifdef _USE_IMGUI
+#ifdef _DEBUG
 #include "ImWindow_AnimationTool.h"
 #include "GameInstance.h"
 #include "ImWindow_Manager.h"
@@ -70,7 +70,8 @@ void CImWindow_AnimationTool::Tick()
 			if (nullptr != m_pDummyObject)
 			{
 				CModel* pModel = static_cast<CModel*>(m_pDummyObject->Get_Component(L"Com_Model"));
-				pModel->Set_AnimByName(Animation_items[Animation_item_current].c_str());
+				pModel->Set_AnimByName(Animation_items[Animation_item_current].c_str(), LOWER);
+				pModel->Set_AnimByName(Animation_items[Animation_item_current].c_str(), UPPER);
 				
 				// 클릭한 애니메이션 항목 대하여 채널 리스트박스 정보를 갱신한다.
 				m_pAnimation = pModel->GetAnimationByName(Animation_items[Animation_item_current]);
@@ -107,7 +108,7 @@ void CImWindow_AnimationTool::Tick()
 
 	}
 
-	// 현재 클릭된 애니메이션 인덱스를 표시
+	// 현재 클릭된 뼈 인덱스를 표시
 	string CurChannelIndex = "Current Bone Index : " + to_string(Bone_item_current);
 	ImGui::Text(CurChannelIndex.c_str());
 
@@ -115,9 +116,8 @@ void CImWindow_AnimationTool::Tick()
 	if (nullptr != m_pAnimation)
 	{
 		_float fTickPerSecond = *m_pAnimation->GetTickPerSecondPtr();
-		_float fDuration = m_pAnimation->Get_Duration(); 
-		ImGui::Text("Duration : "); ImGui::SameLine(); ImGui::Text(to_string(fDuration).c_str());
-		ImGui::DragFloat("TickPerSecond", &fTickPerSecond);
+		ImGui::InputDouble("Duration", m_pAnimation->GetDurationPtr());
+		ImGui::DragFloat("TickPerSecond", &fTickPerSecond); // DragDouble가 없어서 이렇게함.
 		*m_pAnimation->GetTickPerSecondPtr() = fTickPerSecond;
 		ImGui::Checkbox("IsLoop", m_pAnimation->GetIsLoopPtr());
 		ImGui::InputInt("NextIndex", m_pAnimation->GetNextIndexPtr());
@@ -176,10 +176,7 @@ void CImWindow_AnimationTool::Tick()
 
 	if (m_isDummy)
 	{
-		if (nullptr != m_pDummyObject)
-		{
-			m_pDummyObject->Tick(0.016);
-		}
+		DummyTick(0.016);
 	}
 
 	ImGui::End();
@@ -191,11 +188,7 @@ void CImWindow_AnimationTool::LateTick()
 {
 	if (m_isDummy)
 	{
-		if (nullptr != m_pDummyObject)
-		{
-			if (nullptr != m_pDummyObject)
-				m_pDummyObject->Late_Tick(0.016);
-		}
+		DummyLateTick(0.016);
 	}
 }
 
@@ -207,6 +200,23 @@ void CImWindow_AnimationTool::ChangeDummyObject(CGameObject* pGameObject)
 	m_pDummyObject = pGameObject;
 	CTransform* pTransform = static_cast<CTransform*>(m_pDummyObject->Get_Component(L"Com_Transform"));
 	pTransform->Scaled(_float3(20.f, 20.f, 20.f));
+}
+
+void CImWindow_AnimationTool::DummyTick(_double TimeDelta)
+{
+	if (nullptr == m_pDummyObject)
+		return;
+
+	m_pDummyObject->GetComponent<CModel>()->Play_Animation(TimeDelta, LOWER);
+	m_pDummyObject->GetComponent<CModel>()->Play_Animation(TimeDelta, UPPER);
+}
+
+void CImWindow_AnimationTool::DummyLateTick(_double TimeDelta)
+{
+	if (nullptr == m_pDummyObject)
+		return;
+
+	m_pDummyObject->GetComponent<CRenderer>()->Add_RenderGroup(CRenderer::RENDER_NONBLEND, m_pDummyObject);
 }
 
 void CImWindow_AnimationTool::SaveAnimationData()

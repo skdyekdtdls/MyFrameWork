@@ -7,7 +7,17 @@
 #include "ClintDash.h"
 #include "ClintShoot.h"
 #include "Animation.h"
-
+#include "ClintUltimate01Bullet.h"
+#include "PlayerLevel.h"
+#include "PlayerHP.h"
+#include "SkillUI.h"
+#include "CStone_Effect.h"
+#include "Alien_prawn.h"
+#include "SoundMgr.h"
+#include "BoomEffect.h"
+#include "ForceField.h"
+#include "PropelEffect.h"
+#include "SmokeParticle.h"
 _uint Clint::Clint_Id = 0;
 
 Clint::Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -19,7 +29,7 @@ Clint::Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 Clint::Clint(const Clint& rhs)
 	: CGameObject(rhs)
 {
-
+	m_pSKillUIs.resize(4);
 }
 
 HRESULT Clint::Initialize_Prototype()
@@ -35,57 +45,82 @@ HRESULT Clint::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	if (FAILED(Add_Components()))
-		return E_FAIL;
-
 	++Clint_Id;
 	m_tInfo.wstrName = TO_WSTR("Clint" + to_string(Clint_Id));
 	m_tInfo.wstrKey = ProtoTag();
 	m_tInfo.ID = Clint_Id;
 
+	if (FAILED(Add_Components()))
+		return E_FAIL;
+	
 	// 노티파이.
 	_double AttackInterval = { 12.0 };
 	_double Start = { 1.0 };
 	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"RShoot1", TIMELINE_EVENT(Start, [this]() {
 		m_pPistolaComL->Attack(GetLook());
+		CSoundMgr::Get_Instance()->StopSound(CHANNELID::PLAYER_BULLET);
+		CSoundMgr::Get_Instance()->PlaySound(L"pistol_shot1.ogg", CHANNELID::PLAYER_BULLET, 1.f);
+
 		}), UPPER);
 	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"LShoot1", TIMELINE_EVENT(Start += AttackInterval, [this]() {
 		m_pPistolaComR->Attack(GetLook());
+		CSoundMgr::Get_Instance()->StopSound(CHANNELID::PLAYER_BULLET);
+		CSoundMgr::Get_Instance()->PlaySound(L"pistol_shot2.ogg", CHANNELID::PLAYER_BULLET, 1.f);
 		}), UPPER);
 	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"RShoot2", TIMELINE_EVENT(Start += AttackInterval, [this]() {
 		m_pPistolaComL->Attack(GetLook());
+		CSoundMgr::Get_Instance()->StopSound(CHANNELID::PLAYER_BULLET);
+		CSoundMgr::Get_Instance()->PlaySound(L"pistol_shot1.ogg", CHANNELID::PLAYER_BULLET, 1.f);
 		}), UPPER);
 	m_pModelCom->Add_TimeLineEvent("Clint_basic_shoot", L"LShoot2", TIMELINE_EVENT(Start += AttackInterval, [this]() {
 		m_pPistolaComR->Attack(GetLook());
+		CSoundMgr::Get_Instance()->StopSound(CHANNELID::PLAYER_BULLET);
+		CSoundMgr::Get_Instance()->PlaySound(L"pistol_shot2.ogg", CHANNELID::PLAYER_BULLET, 1.f);
 		}), UPPER);
 
+	m_pModelCom->Add_TimeLineEvent("clint_skill01", L"Skill1", TIMELINE_EVENT(54.f, [this]() {
+		m_pPistolaComR->Attack(GetLook());
+		}), UPPER);
+
+	// 상태 초기화
 	if(nullptr != m_pStateContextCom)
 		m_pStateContextCom->TransitionTo(L"ClintIdle");
 
+	// 모델 재생속도 조정
+	m_pModelCom->SetAnimationPlaySpeedByIndex(1.5, CLINT_ULTIMATE01, LOWER);
+	m_pModelCom->SetAnimationPlaySpeedByIndex(1.5, CLINT_ULTIMATE01, UPPER);
+
 	// 총쏘기 지속시간을 조정.
-	CAnimation* pAnimation = m_pModelCom->GetAnimationByName("Clint_basic_shoot", UPPER);
+	CAnimation* pAnimation;
+	pAnimation  = m_pModelCom->GetAnimationByName("Clint_basic_shoot", UPPER);
 	pAnimation->SetDuration(25.0);
 
+	// 초기정보 세팅(위치)
 	CGAMEOBJECT_DESC tCloneDesc;
 	if (nullptr != pArg)
 		tCloneDesc = *(CGAMEOBJECT_DESC*)pArg;
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tCloneDesc.vPosition));
 
-	return S_OK;
+	m_pUltBulletCom->Disable();
+
+	return S_OK; 
 }
 
 void Clint::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
-
 	if(nullptr != m_pStateContextCom)
 		m_pStateContextCom->Tick(TimeDelta);
+
+	// Enable을 상태에서 해주기 때문에 상태 이후에 Tick이 불려야함
+	if (nullptr != m_pUltBulletCom)
+		m_pUltBulletCom->Tick(TimeDelta);
 
 	// TransfomationMatirx의 값을 갱신하고 CombinedTransformationMatrix를 순차적으로 갱신
 	m_pModelCom->Play_Animation(TimeDelta, LOWER);
 	m_pModelCom->Play_Animation(TimeDelta, UPPER);
 
-	if(nullptr != m_pColliderCom)
+	if (nullptr != m_pColliderCom)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
 
 	if (nullptr != m_pPistolaComL && nullptr != m_pPistolaComR)
@@ -99,20 +134,73 @@ void Clint::Tick(_double TimeDelta)
 		m_pRaycastCom->Tick(m_pTransformCom->Get_State(CTransform::STATE_POSITION),
 			m_pTransformCom->Get_State(CTransform::STATE_LOOK));
 	}
+
+	for (auto SkillUIs : m_pSKillUIs)
+		SkillUIs->Tick(TimeDelta);
+
+	if (nullptr != m_pPlayerHP)
+		m_pPlayerHP->Tick(TimeDelta);
+
+	if(nullptr != m_pForceField)
+		m_pForceField->Tick(TimeDelta);
+	if (nullptr != m_pPropelEffect)
+		m_pPropelEffect->Tick(TimeDelta);
+
+	// 스톤이펙트 실험
+	//m_pStoneEffect->Tick(TimeDelta);
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	if (pGameInstance->Key_Down(DIK_W))
+	{
+		m_pSKillUIs[1]->UseSkill();
+		//m_pPropelEffect->Reset_Effects();
+		m_pForceField->Use();
+	}
+		
+	Safe_Release(pGameInstance);
+
+	// @@@@@@@@@@@@@@@@ 임시이속이므로 지우기 @@@@@@@@@@@@@@@@
+	//m_pTransformCom->Set_Speed(40.f);
 }
 
 void Clint::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
+	//m_pStoneEffect->Late_Tick(TimeDelta);
 
 	// 렌더러 그룹에 추가
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
+	m_pColliderCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BODY);
+	m_pUltBulletCom->Late_Tick(TimeDelta);
+	m_pPlayerLevelCom->Late_Tick(TimeDelta);
+	for (auto SkillUIs : m_pSKillUIs)
+		SkillUIs->Late_Tick(TimeDelta);
 
+#ifdef _DEBUG
+	//m_pNavigationCom->Render();
+	if (nullptr != m_pColliderCom)
+		m_pRendererCom->Add_DebugGroup(m_pColliderCom);
+
+	if(nullptr != m_pRaycastCom)
+		m_pRendererCom->Add_DebugGroup(m_pRaycastCom);
+#endif
 	if (nullptr != m_pPistolaComL && nullptr != m_pPistolaComR)
 	{
 		m_pPistolaComL->Late_Tick(TimeDelta);
 		m_pPistolaComR->Late_Tick(TimeDelta);
 	}
+
+	if (nullptr != m_pForceField)
+		m_pForceField->Late_Tick(TimeDelta);
+
+	if (nullptr != m_pPlayerHP)
+		m_pPlayerHP->Late_Tick(TimeDelta);
+	
+	if (nullptr != m_pPropelEffect)
+	{
+		//m_pPropelEffect->Late_Tick(TimeDelta);
+	}
+
 }
 
 HRESULT Clint::Render()
@@ -130,20 +218,12 @@ HRESULT Clint::Render()
 		m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
 
 		m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
-		// m_pModelCom->Bind_Material(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS);
 
 		m_pShaderCom->Begin(0);
 
 		m_pModelCom->Render(i);
 	}
-	
-#ifdef _DEBUG
-	//m_pNavigationCom->Render_Navigation();
-	 if(nullptr != m_pColliderCom)
-		m_pColliderCom->Render();
-	 if (nullptr != m_pRaycastCom)
-		 m_pRaycastCom->Render();
-#endif
+
 	 return S_OK;
 }
 
@@ -166,6 +246,7 @@ void Clint::Save(HANDLE hFile, DWORD& dwByte)
 void Clint::Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex)
 {
 	m_pTransformCom->Load(hFile, dwByte, iLevelIndex);
+	m_pNavigationCom->SetCellCurIndex(m_pNavigationCom->FindIndex(m_pTransformCom->Get_State(CTransform::STATE_POSITION)));
 }
 
 HRESULT Clint::Add_Components()
@@ -177,9 +258,8 @@ HRESULT Clint::Add_Components()
 	/* For.Com_Renderer */
 	CRenderer::CRENDERER_DESC tRendererDesc; tRendererDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom, &tRendererDesc), E_FAIL);
-	// no texture now, you have to add texture later
 
-	CTransform::CTRANSFORM_DESC TransformDesc{ 7.0, XMConvertToRadians(720.f) }; TransformDesc.pOwner = this;
+	CTransform::CTRANSFORM_DESC TransformDesc{ 7.0, XMConvertToRadians(360.f * 3.f) }; TransformDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
 
@@ -203,20 +283,87 @@ HRESULT Clint::Add_Components()
 	CColliderAABB::CCOLLIDER_AABB_DESC tColliderAABBDesc;
 	tColliderAABBDesc.pOwner = this;
 	tColliderAABBDesc.Extents = _float3(0.3f, 1.f, 0.3f);
-	tColliderAABBDesc.vCenter = _float3(-0.15f, tColliderAABBDesc.Extents.y, 0.f);
+	tColliderAABBDesc.vCenter = _float3(0.0f, tColliderAABBDesc.Extents.y, 0.f);
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CColliderAABB::ProtoTag(), L"Com_BodyColl", (CComponent**)&m_pColliderCom, &tColliderAABBDesc), E_FAIL);
 
 	Raycast::RAYCAST_DESC tRaycastDesc;
 	tRaycastDesc.pOwner = this;
 	tRaycastDesc.vCenter = _float3(0.15f, 1.f, 0.f);
 	tRaycastDesc.fLength = { 1.f };
-	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, Raycast::ProtoTag(), L"Com_RaycastTest", (CComponent**)&m_pRaycastCom, &tRaycastDesc), E_FAIL);
-	Safe_Release(pGameInstance);
+	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, Raycast::ProtoTag(), L"Com_Raycast", (CComponent**)&m_pRaycastCom, &tRaycastDesc), E_FAIL);
 	
+	ClintUltimate01Bullet::tagBulletDesc tUltBulletDesc;
+	tUltBulletDesc.pOwner = this;
+	tUltBulletDesc.fDamage = 300.f;
+	XMStoreFloat4(&tUltBulletDesc.vPosition, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	FAILED_CHECK_RETURN(__super::Add_Composite(ClintUltimate01Bullet::ProtoTag(), L"Com_UltBullet", (CComponent**)&m_pUltBulletCom, &tUltBulletDesc), E_FAIL);
+
 	ClintState::STATE_CONTEXT_DESC tStateContextDesc;
 	tStateContextDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, TEXT("Prototype_Component_ClintState"), L"Com_ClintState", (CComponent**)&m_pStateContextCom, &tStateContextDesc), E_FAIL);
 	
+	PlayerHP::tagPlayerHPDesc tHealthDesc;
+	tHealthDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Composite(PlayerHP::ProtoTag(), L"Com_HP", (CComponent**)&m_pPlayerHP, &tHealthDesc), E_FAIL);
+
+	PlayerLevel::tagPlayerLevelDesc tLevelDesc;
+	tLevelDesc.pOwner = this;
+	tLevelDesc.vPosition = _float4(438.f, g_iWinSizeY - 635.f, 0.f, 1.f);
+	tLevelDesc.fScale = 0.6f;
+	FAILED_CHECK_RETURN(__super::Add_Composite(PlayerLevel::ProtoTag(), L"Com_PlayerLevel", (CComponent**)&m_pPlayerLevelCom, &tLevelDesc), E_FAIL);
+	
+	SkillUI::tagSkillUIDesc tSkillUIDesc;
+	tSkillUIDesc.pOwner = this;
+	tSkillUIDesc.fSize = _float2(70, 70);
+	tSkillUIDesc.SkillTextureTag = L"Prototype_Component_Texture_QSkill";
+	tSkillUIDesc.vPosition = _float4(532, 96, 0.f, 1.f);
+	tSkillUIDesc.fMaxCoolTime = 10.f;
+	FAILED_CHECK_RETURN(__super::Add_Composite(SkillUI::ProtoTag(), L"Com_SkillQ_UI", (CComponent**)&m_pSKillUIs[0], &tSkillUIDesc), E_FAIL);
+
+	tSkillUIDesc.pOwner = this;
+	tSkillUIDesc.fSize = _float2(70, 70);
+	tSkillUIDesc.SkillTextureTag = L"Prototype_Component_Texture_WSkill";
+	tSkillUIDesc.vPosition = _float4(532 + 80, 96, 0.f, 1.f);
+	tSkillUIDesc.fMaxCoolTime = 20.f;
+	FAILED_CHECK_RETURN(__super::Add_Composite(SkillUI::ProtoTag(), L"Com_SkillW_UI", (CComponent**)&m_pSKillUIs[1], &tSkillUIDesc), E_FAIL);
+
+	tSkillUIDesc.pOwner = this;
+	tSkillUIDesc.fSize = _float2(70, 70);
+	tSkillUIDesc.SkillTextureTag = L"Prototype_Component_Texture_ESkill";
+	tSkillUIDesc.vPosition = _float4(532 + 160, 96, 0.f, 1.f);
+	tSkillUIDesc.fMaxCoolTime = 15.f;
+	FAILED_CHECK_RETURN(__super::Add_Composite(SkillUI::ProtoTag(), L"Com_SkillE_UI", (CComponent**)&m_pSKillUIs[2], &tSkillUIDesc), E_FAIL);
+
+	tSkillUIDesc.pOwner = this;
+	tSkillUIDesc.fSize = _float2(70, 70);
+	tSkillUIDesc.SkillTextureTag = L"Prototype_Component_Texture_RSkill";
+	tSkillUIDesc.vPosition = _float4(532 + 240, 96, 0.f, 1.f);
+	tSkillUIDesc.fMaxCoolTime = 30.f;
+	FAILED_CHECK_RETURN(__super::Add_Composite(SkillUI::ProtoTag(), L"Com_SkillR_UI", (CComponent**)&m_pSKillUIs[3], &tSkillUIDesc), E_FAIL);
+
+	CStone_Effect::STONE_EFFECT_DESC tStoneDesc;
+	tStoneDesc.pOwner = this;
+	tStoneDesc.iNumParticles = 30;
+	FAILED_CHECK_RETURN(__super::Add_Composite(CStone_Effect::ProtoTag(), L"Com_Test", (CComponent**)&m_pStoneEffect, &tStoneDesc), E_FAIL);
+	
+	BoomEffect::BOOM_EFFECT_DESC tBoomEffectDesc;
+	tBoomEffectDesc.pOwner = this;
+	tBoomEffectDesc.iNumParticles = 30;
+	tBoomEffectDesc.pTextureProtoTag = L"Prototype_Component_Texture_UltBullet";
+	FAILED_CHECK_RETURN(__super::Add_Composite(BoomEffect::ProtoTag(), L"Com_BoomEffect", (CComponent**)&m_pBoomEffect, &tBoomEffectDesc), E_FAIL);
+
+	ForceField::tagForceFieldDesc tForceFieldDesc;
+	tForceFieldDesc.fRadius = 1.5f;
+	tForceFieldDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Composite(ForceField::ProtoTag(), L"Com_ForceField", (CComponent**)&m_pForceField, &tForceFieldDesc), E_FAIL);
+
+	PropelEffect::tagPropelEffectDesc tPropelEffectDesc;
+	tPropelEffectDesc.iNumParticles = 20;
+	tPropelEffectDesc.pOwner = this;
+	tPropelEffectDesc.pTextureProtoTag = L"Prototype_Component_Texture_Snow";
+	FAILED_CHECK_RETURN(__super::Add_Composite(PropelEffect::ProtoTag(), L"Com_PropelEffect", (CComponent**)&m_pPropelEffect, &tPropelEffectDesc), E_FAIL);
+
+	Safe_Release(pGameInstance);
 	return S_OK;
 }
 
@@ -233,10 +380,30 @@ HRESULT Clint::SetUp_ShaderResources()
 
 	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &MyMatrix), E_FAIL);
+	
+	if (1)
+	{
+		_float4 vCamLook = pGameInstance->GetCamLookFloat4(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamLook", &vCamLook, sizeof(_float4)), E_FAIL);
+		
+		_float4 vCamPos = pGameInstance->Get_CamPositionFloat4();
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPos", &vCamPos, sizeof(_float4)), E_FAIL);
 
+		_float fRimPower = 3.f;
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_fRimPower", &fRimPower, sizeof(_float)), E_FAIL);
+
+		_float3 vRimColor = { 1.f, 0.f, 0.f };
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vRimColor", &vRimColor, sizeof(_float3)), E_FAIL);
+	}
+	
 	Safe_Release(pGameInstance);
 
 	return S_OK;
+}
+
+void Clint::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
+{
+	m_pStateContextCom->OnCollision(tCollisionInfo, TimeDelta);
 }
 
 Clint* Clint::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -277,6 +444,14 @@ void Clint::Free(void)
 	Safe_Release(m_pPistolaComL);
 	Safe_Release(m_pPistolaComR);
 	Safe_Release(m_pRaycastCom);
+	Safe_Release(m_pUltBulletCom);
 	Safe_Release(m_pStateContextCom);
+	Safe_Release(m_pPlayerLevelCom);
+	Safe_Release(m_pPlayerHP);
+	for (auto SkillUI : m_pSKillUIs)
+		Safe_Release(SkillUI);
+	Safe_Release(m_pStoneEffect);
+	Safe_Release(m_pBoomEffect);
+	Safe_Release(m_pForceField);
+	Safe_Release(m_pPropelEffect);
 }
-

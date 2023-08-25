@@ -62,7 +62,7 @@ public:
 	_float4x4 GetPivotMatrix() {
 		return m_PivotMatrix;
 	}
-
+	
 public: /* Setter */
 	virtual void Set_AnimByIndex(_uint iAnimIndex, BODY eBody = LOWER);
 	void Set_AnimByName(const char* pName, BODY eBody = LOWER);
@@ -73,6 +73,8 @@ public: /* Setter */
 	void Set_PivotMatrix(_fmatrix PivotMatrix) {
 		XMStoreFloat4x4(&m_PivotMatrix, PivotMatrix);
 	}
+
+	void SetAnimationPlaySpeedByIndex(_double PlaySpeed, _uint iAnimIndex, BODY eBody = LOWER);
 
 public: /* For.Assimp*/
 	void SaveAssimp(HANDLE hFile, DWORD & dwByte);
@@ -93,21 +95,24 @@ public:
 	// 인자로 아무것도 들어오지 않거나 음수가 들어오면 현재 애니메이션 리셋
 	virtual void ResetAnimation(_int iIndex = -1, BODY eBody = LOWER);
 	void RootMotion(_double TimeDelta, CTransform::DIRECTION eDir);
+	void RootMotion(_double TimeDelta, _fvector vDir);
+	_matrix GetBoneOCPMatrix(_uint iBoneIndex);
 
 public:
 	HRESULT Bind_Material(class CShader* pShader, const char* pConstantName, _uint iMeshIndex, TextureType MaterialType);
 	HRESULT Bind_BoneMatrices(class CShader* pShader, const char* pConstantName, _uint iMeshIndex);
-
+	void SetGolem();
 public:
 	virtual HRESULT Add_TimeLineEvent(string strAnimName, const _tchar* pTag, TIMELINE_EVENT tTimeLineEvent, BODY eBody = LOWER);
 	void Delete_TimeLineEvent(string strAnimName, const _tchar* pTag, BODY eBody = LOWER);
 	const TIMELINE_EVENT* Get_TimeLineEvent(string strAnimName, const _tchar* pTag, BODY eBody = LOWER);
-
+	_bool IsCurAnimTimeAccGreaterThan(_double Duration, BODY eBody = LOWER);
+	_bool IsCurAnimTimeAccLessThan(_double Duration, BODY eBody = LOWER);
 protected: /* For.Bones*/
 	_uint						m_iNumBones = { 0 };
 	vector<class CBone*>		m_Bones;
-
 	_int						m_RootIndex = { -1 };
+
 	// Play_Animation의 순서가 애매하기 때문에 변수 선언했음.
 	_float						m_RootMoveDistance = { 0.f };
 	_float						m_PrevMoveDistance = { 0.f };

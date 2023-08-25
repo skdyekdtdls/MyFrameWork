@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Client_Defines.h"
+#include "ISerializable.h"
 #include "Camera.h"
 
 BEGIN(Client)
-class CCamera_Free final : public CCamera
+class CCamera_Free final : public CCamera, public ISerializable
 {
 public:
 	typedef struct tagFreeCameraDesc
@@ -24,6 +25,10 @@ public:
 	virtual void Tick(_double TimeDelta) override;
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
+
+	// ISerializable을(를) 통해 상속됨
+	virtual void Save(HANDLE hFile, DWORD& dwByte) override;
+	virtual void Load(HANDLE hFile, DWORD& dwByte, _uint iLevelIndex) override;
 
 private:
 	_uint	m_iData = { 0 };

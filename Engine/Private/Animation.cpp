@@ -23,6 +23,16 @@ CAnimation::CAnimation(const CAnimation& rhs)
 		Safe_AddRef(pChannel);
 }
 
+_bool CAnimation::IsFinishedCompletly()
+{
+	_bool bResult = IsFinished();
+
+	if (true == bResult)
+		bResult = (-1 == m_iNextIndex) ? true : false;
+
+	return bResult;
+}
+
 CChannel* CAnimation::Get_ChannelByName(string strName)
 {
 	for (auto& Channel : m_Channels)
@@ -109,27 +119,36 @@ void CAnimation::Reset()
 	m_isFinished = false;
 	m_iCurKeyFrame = { 0 };
 	m_TimeAcc = { 0.0 };
+
 	for (auto& pChannelIndex : m_ChannelCurrentKeyFrames)
 		pChannelIndex = { 0 };
 }
 
 void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double TimeDelta, BODY eBody)
 {
-	m_TimeAcc += m_TickPerSecond * TimeDelta;
+	m_TimeAcc += m_TickPerSecond * m_PlaySpeed * TimeDelta;
 
 	if (m_TimeAcc >= m_Duration)
 	{
-		if (true == m_isLoop)
+		if (false == m_isLoop)
 		{
-			m_TimeAcc = 0.f;
+			m_isFinished = true;
+			if (m_bGolem)
+				m_TimeAcc = 0.0;
 		}
 		else
-			m_isFinished = true;
-
+		{
+			m_TimeAcc = 0.0;
+		}
+		
 		m_iCurKeyFrame = 0;
+		for (auto& Pair : m_TimeLineEvents)
+		{
+			Pair.second.CanPlay = true;
+		}
 	}
 
-	/* 현재 재생된 시간에 맞도록 모든 뼈의 상태를 키프레임정보를 기반으로하여 갱신한다. */
+	// 현재 재생된 시간에 맞도록 모든 뼈의 상태를 키프레임정보를 기반으로하여 갱신한다.
 	_uint		iChannelIndex = 0;
 	for (auto& pChannel : m_Channels)
 	{
@@ -139,12 +158,18 @@ void CAnimation::Invalidate_TransformationMatrix(CModel::BONES& Bones, _double T
 		pChannel->Invalidate_TransformationMatrix(Bones, m_TimeAcc, &m_ChannelCurrentKeyFrames[iChannelIndex++], eBody);
 	}
 
-	// 나중에는 상체만 실행하던지, 하체만 실행하던지, 아니면 상속을하던지 고쳐야함.
+	// 위에다 넣으면 보간이 고장나고 안넣자니 타임라인이 고장나서 여기다 둘 수 밖에없었음.
+	if (m_TimeAcc >= m_Duration && false == m_isLoop )
+		 m_TimeAcc = 0.0;
+	
 	for (auto& Pair : m_TimeLineEvents)
 	{
 		// 시간값이 일치하면 실행한다.
-		if (FloatEqual(Pair.second.first, m_TimeAcc, TimeDelta * 1.5))
-			Pair.second.second();
+		if (true == Pair.second.CanPlay && Pair.second.Time <= m_TimeAcc)
+		{
+			Pair.second.CanPlay = false;
+			Pair.second.Lamda();
+		}
 	}
 }
 
@@ -158,7 +183,7 @@ void CAnimation::InterAnimation_TransfomationMatrix(CModel::BONES& Bones, _doubl
 
 HRESULT CAnimation::Add_TimeLineEvent(const _tchar* pTag, TIMELINE_EVENT timeLineEvent)
 {
-	if (timeLineEvent.first > m_Duration)
+	if (timeLineEvent.Time > m_Duration)
 		return E_FAIL;
 
 	m_TimeLineEvents.emplace(pTag, timeLineEvent);
@@ -188,6 +213,7 @@ TIMELINE_EVENT* CAnimation::Find_TimeLine(const _tchar* pTag)
 
 void CAnimation::SaveData(HANDLE hFile, DWORD& dwByte)
 {
+	WriteVoid(&m_Duration, sizeof(m_Duration));
 	WriteVoid(&m_TickPerSecond, sizeof(m_TickPerSecond));
 	WriteVoid(&m_isLoop, sizeof(m_isLoop));
 	WriteVoid(&m_iNextIndex, sizeof(m_iNextIndex));
@@ -195,6 +221,7 @@ void CAnimation::SaveData(HANDLE hFile, DWORD& dwByte)
 
 void CAnimation::LoadData(HANDLE hFile, DWORD& dwByte)
 {
+	ReadVoid(&m_Duration, sizeof(m_Duration));
 	ReadVoid(&m_TickPerSecond, sizeof(m_TickPerSecond));
 	ReadVoid(&m_isLoop, sizeof(m_isLoop));
 	ReadVoid(&m_iNextIndex, sizeof(m_iNextIndex));

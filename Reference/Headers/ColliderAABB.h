@@ -21,12 +21,16 @@ public: // Getter
 		return m_pBoundingBox;
 	}
 
+	BoundingBox* GetBoundingBox() {
+		return m_pBoundingBox;
+	}
+
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual void Tick(_fmatrix TransformMatrix) override;
 
-	virtual _bool Intersect(CCollider* pOtherCollider) override;
+	virtual _bool Intersect(CCollider* pOtherCollider, COLLISION_INFO& CollisionInfo) override;
 
 #ifdef _DEBUG
 	virtual HRESULT Render() override;
@@ -36,6 +40,10 @@ private:
 	_float3 m_vExtents;
 	BoundingBox* m_pBoundingBox_Origin = { nullptr };
 	BoundingBox* m_pBoundingBox = { nullptr };
+
+private:
+	_bool CheckAABBCollision(CColliderAABB* pOtherCollider, COLLISION_INFO& CollisionInfo);
+	_matrix Remove_Rotation(_fmatrix TransformMatrix);
 
 public:
 	static const _tchar* ProtoTag() { return L"Prototype_Component_CColliderAABB"; }
