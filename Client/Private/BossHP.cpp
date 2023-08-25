@@ -39,12 +39,14 @@ HRESULT BossHP::Initialize(void* pArg)
 	m_pDynamicImage->ImageDepth(0.001f);
 	m_pHealthCom->SetMaxHP(1000);
 	m_pFontUI->SetColor(XMVectorSet(1.0f, 0.84f, 0.0f, 1.0f));
-
+	m_pFontUI->SetPosition(_float2(150.f, g_iWinSizeY - 70.f));
 	return S_OK;
 }
 
 void BossHP::Tick(_double TimeDelta)
 {
+	if (false == m_bEnable)
+		return;
 	__super::Tick(TimeDelta);
 	m_pDynamicImage->Tick(TimeDelta);
 	m_pImage->Tick(TimeDelta);
@@ -53,6 +55,9 @@ void BossHP::Tick(_double TimeDelta)
 
 void BossHP::Late_Tick(_double TimeDelta)
 {
+	if (false == m_bEnable)
+		return;
+
 	__super::Late_Tick(TimeDelta);
 	m_pDynamicImage->Late_Tick(TimeDelta);
 	m_pImage->Late_Tick(TimeDelta);
@@ -108,7 +113,7 @@ HRESULT BossHP::Add_Components()
 
 	Health::HEALTH_DESC tHealthDesc;
 	tHealthDesc.pOwner = this;
-	tHealthDesc.iMaxHp = 1000;
+	tHealthDesc.iMaxHp = 3000;
 	FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, Health::ProtoTag(), L"Com_Health", (CComponent**)&m_pHealthCom, &tHealthDesc), E_FAIL);
 
 	FontUI::tagFontUIDesc tFontDesc;

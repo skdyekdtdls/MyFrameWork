@@ -58,10 +58,10 @@ void ClintDash::SetDashDir(CModel* pModel, CTransform* pTransform)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 	
-	_byte W = pGameInstance->Get_DIKeyState(DIK_W);
-	_byte A = pGameInstance->Get_DIKeyState(DIK_A);
-	_byte S = pGameInstance->Get_DIKeyState(DIK_S);
-	_byte D = pGameInstance->Get_DIKeyState(DIK_D);
+	_byte W = pGameInstance->Get_DIKeyState(DIK_S);
+	_byte A = pGameInstance->Get_DIKeyState(DIK_Z);
+	_byte S = pGameInstance->Get_DIKeyState(DIK_X);
+	_byte D = pGameInstance->Get_DIKeyState(DIK_C);
 	if (W)
 	{
 		if (D)

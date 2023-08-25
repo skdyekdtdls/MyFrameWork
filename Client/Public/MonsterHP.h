@@ -28,7 +28,7 @@ public:
 	{
 		tagMonsterHPDesc() = default;
 		_float2 fSize;
-		_float fMaxHP = 1000.f;
+		_float fMaxHP = 250.f;
 		_float2 vOffset = _float2(0.f, 75.f);
 	};
 

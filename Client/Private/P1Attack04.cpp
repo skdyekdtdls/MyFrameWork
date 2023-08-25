@@ -1,5 +1,6 @@
 #include "P1Attack04.h"
 #include "GameInstance.h"
+#include "HitEffect.h"
 
 _uint P1Attack04::P1Attack04_Id = 0;
 
@@ -61,8 +62,8 @@ void P1Attack04::Tick(_double TimeDelta)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
 		m_pColliderCom->Add_ColliderGroup(COLL_GROUP::MONSTER_BULLET);
 	}
-
-	// 	m_pModelCom->Play_Animation(TimeDelta);
+	m_pHitEffectCom->Tick(TimeDelta, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	
 }
 
 void P1Attack04::Late_Tick(_double TimeDelta)
@@ -72,7 +73,7 @@ void P1Attack04::Late_Tick(_double TimeDelta)
 
 	__super::Late_Tick(TimeDelta);
 
-	
+	m_pHitEffectCom->Late_Tick(TimeDelta);
 #ifdef _DEBUG
 	m_pRendererCom->Add_DebugGroup(m_pColliderCom);
 #endif
@@ -84,30 +85,6 @@ HRESULT P1Attack04::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
-
-	if (FAILED(SetUp_ShaderResources()))
-		return E_FAIL;
-
-	//_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
-
-	//for (size_t i = 0; i < iNumMeshes; i++)
-	//{
-	//	m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
-
-	//	m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
-	//	
-
-	//	m_pShaderCom->Begin(0);
-
-	//	m_pModelCom->Render(i);
-	//}
-
-	// 만약에 모델 컴포넌트 안쓰면 이걸로 쓰면된다.
-	// m_pShaderCom->Begin(0);
-
-#ifdef _DEBUG
-
-#endif
 }
 
 void P1Attack04::ResetPool(void* pArg)
@@ -155,6 +132,14 @@ HRESULT P1Attack04::Add_Components()
 	TimeCounter::TIME_COUNTER_DESC tTimeCounterDesc;
 	tTimeCounterDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, TimeCounter::ProtoTag(), L"Com_TimeCounter", (CComponent**)&m_pTimeCounterCom, &tTimeCounterDesc), E_FAIL);
+
+	HitEffect::HitEffect_DESC tEffectDesc;
+	tEffectDesc.iCol = 8;
+	tEffectDesc.iRow = 8;
+	tEffectDesc.pOwner = this;
+	tEffectDesc.pTextureTag = L"Prototype_Component_Texture_Explodebase1_2k";
+	XMStoreFloat4(&tEffectDesc.vPosition, XMVectorSet(0.f, 0.f, 0.f ,1.f));
+	FAILED_CHECK_RETURN(__super::Add_Composite(HitEffect::ProtoTag(), L"Com_HitEffect", (CComponent**)&m_pHitEffectCom, &tEffectDesc), E_FAIL);
 
 	Safe_Release(pGameInstance);
 	return S_OK;
@@ -223,4 +208,5 @@ void P1Attack04::Free(void)
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTimeCounterCom);
+	Safe_Release(m_pHitEffectCom);
 }

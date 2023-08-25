@@ -1,7 +1,7 @@
 #include "..\Public\Queen_MoggothWalk.h"
 #include "GameInstance.h"
 #include "Queen_Moggoth.h"
-
+#include "SoundMgr.h"
 Queen_MoggothWalk::Queen_MoggothWalk(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: StateMachine<Queen_Moggoth, QUEEN_MOGGOTH_ANIM>(pDevice, pContext)
 {
@@ -17,7 +17,7 @@ void Queen_MoggothWalk::OnStateEnter()
 	__super::OnStateEnter();
 
 	SetAnimIndex(QUEEN_MOGGOTH_P1_IDLE, LOWER);
-
+	SoundMgr->PlaySound(L"AlienPrawnWalk.wav", CHANNELID::ALIEN_PRAWN, 0.2f);
 	m_ePattern = static_cast<PATTERN>(RandomIntFrom_A_To_B(0, PATTERN_END - 1));
 	SetAnimIndexByPattern();
 	m_pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
@@ -66,6 +66,7 @@ void Queen_MoggothWalk::OnStateTick(_double TimeDelta)
 
 void Queen_MoggothWalk::OnStateExit()
 {
+	SoundMgr->StopSound(CHANNELID::QUEENMOGGOTH);
 	__super::OnStateExit();
 }
 

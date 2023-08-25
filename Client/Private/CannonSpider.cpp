@@ -3,7 +3,7 @@
 #include "StateContext.h"
 #include "CannonSpiderBullet.h"
 #include "MonsterHP.h"
-
+#include "Dissolve.h"
 _uint CannonSpider::CannonSpider_Id = 0;
 
 CannonSpider::CannonSpider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -90,7 +90,7 @@ HRESULT CannonSpider::Initialize(void* pArg)
 void CannonSpider::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
-
+	m_TimeDelta = TimeDelta;
 	m_pModelCom->Play_Animation(TimeDelta);
 
 	if (nullptr != m_pStateContextCom)
@@ -144,7 +144,7 @@ HRESULT CannonSpider::Render()
 
 		m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
 
-		m_pShaderCom->Begin(0);
+		m_pShaderCom->Begin(m_iPass);
 
 		m_pModelCom->Render(i);
 	}
@@ -178,6 +178,8 @@ void CannonSpider::ResetPool(void* pArg)
 	m_pNavigationCom->SetCellCurIndex(tMonsterDesc.iStartIndex);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tMonsterDesc.vPosition));
 	m_pMonsterHP->Reset();
+	m_pDissolveCom->Reset();
+	m_iPass = 0;
 	m_pStateContextCom->TransitionTo(L"CannonSpiderIdle");
 	m_bDead = false;
 }
@@ -226,6 +228,10 @@ HRESULT CannonSpider::Add_Components()
 	tMonsterHPDesc.fSize = _float2(60, 15);
 	FAILED_CHECK_RETURN(__super::Add_Composite(MonsterHP::ProtoTag(), L"Com_HP", (CComponent**)&m_pMonsterHP, &tMonsterHPDesc), E_FAIL);
 
+	Dissolve::DISSOLVE_DESC tDissolveDesc;
+	tDissolveDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Composite(Dissolve::ProtoTag(), L"Com_Dissolve", (CComponent**)&m_pDissolveCom, &tDissolveDesc), E_FAIL);
+
 	Safe_Release(pGameInstance);
 	return S_OK;
 }
@@ -244,11 +250,16 @@ HRESULT CannonSpider::SetUp_ShaderResources()
 	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &MyMatrix), E_FAIL);
 
+	if (1 == m_iPass)
+	{
+		FAILED_CHECK_RETURN(m_pDissolveCom->Bind_Values(m_pShaderCom, -0.5f * m_TimeDelta, 0.1f), E_FAIL);
+	}
+
 	Safe_Release(pGameInstance);
 
 	return S_OK;
 }
-
+// ³»ÀûŸÀ
 CannonSpider* CannonSpider::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CannonSpider* pInstance = new CannonSpider(pDevice, pContext);
@@ -288,5 +299,6 @@ void CannonSpider::Free(void)
 	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pRaycastCom);
 	Safe_Release(m_pMonsterHP);
+	Safe_Release(m_pDissolveCom);
 	/* Don't Forget Release for the VIBuffer or Model Component*/
 }

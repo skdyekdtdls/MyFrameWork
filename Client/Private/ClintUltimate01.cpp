@@ -3,6 +3,8 @@
 #include "Clint.h"
 #include "ClintUltimate01Bullet.h"
 #include "SoundMgr.h"
+#include "BoomEffect.h"
+#include "SkillUI.h"
 ClintUltimate01::ClintUltimate01(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: StateMachine<Clint, CLINT_ANIM>(pDevice, pContext)
 {
@@ -21,9 +23,15 @@ void ClintUltimate01::OnStateEnter()
 
 	SetAnimIndex(CLINT_ULTIMATE01, LOWER);
 	SetAnimIndex(CLINT_ULTIMATE01, UPPER);
-
+	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
+	m_pBoomEffect = static_cast<BoomEffect*>(m_pOwner->Get_Component(L"Com_BoomEffect"));
+	m_pBoomEffect->SetPos(pTransform->Get_State(CTransform::STATE_POSITION));
 	m_TimeAcc = { 0.0 };
 	m_UltTimeAcc = { 0.0 };
+
+	SkillUI* pSkillUICom = static_cast<SkillUI*>(m_pOwner->Get_Component(L"Com_SkillQ_UI"));
+	pSkillUICom->UseSkill();
+
 }
 
 void ClintUltimate01::OnStateTick(_double TimeDelta)
@@ -36,13 +44,14 @@ void ClintUltimate01::OnStateTick(_double TimeDelta)
 	CModel* pModel = static_cast<CModel*>(m_pOwner->Get_Component(L"Com_Model"));
 	CTransform* pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
 	ClintUltimate01Bullet* pUltBullet = static_cast<ClintUltimate01Bullet*>(m_pOwner->Get_Component(L"Com_"));
-	_byte W = pGameInstance->Get_DIKeyState(DIK_W);
-	_byte A = pGameInstance->Get_DIKeyState(DIK_A);
-	_byte S = pGameInstance->Get_DIKeyState(DIK_S);
-	_byte D = pGameInstance->Get_DIKeyState(DIK_D);
+
+	_byte W = pGameInstance->Get_DIKeyState(DIK_S);
+	_byte A = pGameInstance->Get_DIKeyState(DIK_Z);
+	_byte S = pGameInstance->Get_DIKeyState(DIK_X);
+	_byte D = pGameInstance->Get_DIKeyState(DIK_C);
 
 	Safe_Release(pGameInstance);
-
+	
 	m_TimeAcc += TimeDelta;
 	if (m_TimeAcc >= m_Duration)
 	{
@@ -125,18 +134,26 @@ void ClintUltimate01::OnStateTick(_double TimeDelta)
 
 	m_UltTimeAcc += TimeDelta;
 
+	m_pBoomEffect->Tick(TimeDelta);
+	m_pBoomEffect->Late_Tick(TimeDelta);
+
 	if (m_UltTimeAcc > 0.25)
 	{
+		m_pBoomEffect->Reset_Effects();
+		m_pBoomEffect->SetPos(pTransform->Get_State(CTransform::STATE_POSITION));
 		m_UltTimeAcc = 0.0;
 		ClintUltimate01Bullet* pUltBullet = static_cast<ClintUltimate01Bullet*>(m_pOwner->Get_Component(L"Com_UltBullet"));
 		pUltBullet->Enable();
 		SoundMgr->StopSound(CHANNELID::PLAYER_BULLET);
 		SoundMgr->PlaySound(L"pistol_shot2.ogg", CHANNELID::PLAYER_BULLET, 1.f);
 	}
+
+
 }
 
 void ClintUltimate01::OnStateExit()
 {
+	
 	__super::OnStateExit();
 }
 

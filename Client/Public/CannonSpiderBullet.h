@@ -18,6 +18,7 @@ class TimeCounter;
 END
 
 BEGIN(Client)
+class EnergyBallEffect2;
 class CannonSpiderBullet final : public Bullet
 {
 public:
@@ -52,7 +53,7 @@ private: /* For. Component */
 	CTransform* m_pTransformCom = { nullptr };
 	CCollider* m_pColliderCom = { nullptr };
 	TimeCounter* m_pTimeCounterCom = { nullptr };
-
+	EnergyBallEffect2* m_pEnergyBallEffect2Com = { nullptr };
 private:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();

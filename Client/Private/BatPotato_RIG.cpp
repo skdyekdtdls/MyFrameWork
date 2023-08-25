@@ -3,6 +3,7 @@
 #include "StateContext.h"
 #include "BatPotato_RIGBullet.h"
 #include "MonsterHP.h"
+#include "Dissolve.h"
 _uint BatPotato_RIG::BatPotato_RIG_Id = 0;
 
 BatPotato_RIG::BatPotato_RIG(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -67,7 +68,7 @@ HRESULT BatPotato_RIG::Initialize(void* pArg)
 void BatPotato_RIG::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
-
+	m_TimeDelta = TimeDelta;
 	m_pModelCom->Play_Animation(TimeDelta);
 	if (nullptr != m_pStateContextCom)
 		m_pStateContextCom->Tick(TimeDelta);
@@ -122,7 +123,7 @@ HRESULT BatPotato_RIG::Render()
 
 		m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
 
-		m_pShaderCom->Begin(0);
+		m_pShaderCom->Begin(m_iPass);
 
 		m_pModelCom->Render(i);
 	}
@@ -156,6 +157,8 @@ void BatPotato_RIG::ResetPool(void* pArg)
 	m_pNavigationCom->SetCellCurIndex(tMonsterDesc.iStartIndex);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tMonsterDesc.vPosition));
 	m_pMonsterHP->Reset();
+	m_pDissolveCom->Reset();
+	m_iPass = 0;
 	m_pStateContextCom->TransitionTo(L"BatPotato_RIGIdle");
 	m_bDead = false;
 }
@@ -216,6 +219,11 @@ HRESULT BatPotato_RIG::Add_Components()
 	tBulletDesc.pOwner = this;
 	tBulletDesc.vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
 	FAILED_CHECK_RETURN(__super::Add_Composite(BatPotato_RIGBullet::ProtoTag(), L"Com_Bullet", (CComponent**)&m_pBullet, &tBulletDesc), E_FAIL);
+	
+	Dissolve::DISSOLVE_DESC tDissolveDesc;
+	tDissolveDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Composite(Dissolve::ProtoTag(), L"Com_Dissolve", (CComponent**)&m_pDissolveCom, &tDissolveDesc), E_FAIL);
+
 	Safe_Release(pGameInstance);
 	return S_OK;
 }
@@ -233,6 +241,11 @@ HRESULT BatPotato_RIG::SetUp_ShaderResources()
 
 	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &MyMatrix), E_FAIL);
+
+	if (1 == m_iPass)
+	{
+		FAILED_CHECK_RETURN(m_pDissolveCom->Bind_Values(m_pShaderCom, -1.2f * m_TimeDelta, 0.1f), E_FAIL);
+	}
 
 	Safe_Release(pGameInstance);
 
@@ -279,7 +292,7 @@ void BatPotato_RIG::Free(void)
 	Safe_Release(m_pMonsterHP);
 	Safe_Release(m_pRaycastCom);
 	Safe_Release(m_pBullet);
-
+	Safe_Release(m_pDissolveCom);
 	/* Don't Forget Release for the VIBuffer or Model Component*/
 }
 

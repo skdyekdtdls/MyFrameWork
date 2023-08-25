@@ -1,6 +1,6 @@
 #include "P1Attack01.h"
 #include "GameInstance.h"
-
+#include "Effect_Atlas.h"
 _uint P1Attack01::P1Attack01_Id = 0;
 
 /* Don't Forget Release for the VIBuffer or Model Component*/
@@ -43,6 +43,7 @@ HRESULT P1Attack01::Initialize(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tP1Attack01Desc.vPosition));
 
 	m_pTimeCounterCom->Enable();
+	m_pEffectAtlas->Play_Loop(0, 8);
 
 	return S_OK;
 }
@@ -63,7 +64,7 @@ void P1Attack01::Tick(_double TimeDelta)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
 		m_pColliderCom->Add_ColliderGroup(COLL_GROUP::MONSTER_BULLET);
 	}
-
+	m_pEffectAtlas->Tick(TimeDelta, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 	// 	m_pModelCom->Play_Animation(TimeDelta);
 }
 
@@ -71,7 +72,7 @@ void P1Attack01::Late_Tick(_double TimeDelta)
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
-
+	m_pEffectAtlas->Late_Tick(TimeDelta);
 	__super::Late_Tick(TimeDelta);
 #ifdef _DEBUG
 	m_pRendererCom->Add_DebugGroup(m_pColliderCom);
@@ -82,9 +83,6 @@ void P1Attack01::Late_Tick(_double TimeDelta)
 HRESULT P1Attack01::Render()
 {
 	if (FAILED(__super::Render()))
-		return E_FAIL;
-
-	if (FAILED(SetUp_ShaderResources()))
 		return E_FAIL;
 
 	//_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
@@ -114,10 +112,9 @@ void P1Attack01::ResetPool(void* pArg)
 	m_bDead = false;
 	_vector vPosition = XMLoadFloat4(&((tagP1Attack01Desc*)pArg)->vPosition);
 	_vector vTargetPos = ((tagP1Attack01Desc*)pArg)->vTargetPos;
-	_vector vDir = vTargetPos - vPosition;
-	
+
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPosition);
-	m_pTransformCom->LookAt(XMVector3Normalize(vDir));
+	m_pTransformCom->LookAt(vTargetPos);
 	m_pTimeCounterCom->Enable();
 }
 
@@ -143,12 +140,6 @@ HRESULT P1Attack01::Add_Components()
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
 
-	CShader::CSHADER_DESC tShaderDesc; tShaderDesc.pOwner = this;
-	//FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, L"Prototype_Component_Shader_VtxMesh*/", L"Com_Shader", (CComponent**)&m_pShaderCom, &tShaderDesc), E_FAIL);
-
-	CModel::CMODEL_DESC tModelDesc; tModelDesc.pOwner = this;
-	//FAILED_CHECK_RETURN(__super::Add_Component(eLevelID, L"Prototype_Component_Model_VtxAnimMesh", L"Com_Model", (CComponent**)&m_pModelCom, &tModelDesc), E_FAIL);
-
 	CColliderSphere::CCOLLIDER_SPHERE_DESC tColliderSphereDesc;
 	tColliderSphereDesc.pOwner = this;
 	tColliderSphereDesc.fRadius = { 1.f };
@@ -159,28 +150,19 @@ HRESULT P1Attack01::Add_Components()
 	tTimeCounterDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, TimeCounter::ProtoTag(), L"Com_TimeCounter", (CComponent**)&m_pTimeCounterCom, &tTimeCounterDesc), E_FAIL);
 
+	Effect_Atlas::EFFECT_ATLAS_DESC tEffectAtlasDesc;
+	tEffectAtlasDesc.iCol = 4;
+	tEffectAtlasDesc.iRow = 4;
+	tEffectAtlasDesc.pOwner = this;
+	tEffectAtlasDesc.pTextureTag = TEXT("Prototype_Component_Texture_T_ky_flare09_4x4");
+	FAILED_CHECK_RETURN(__super::Add_Composite(Effect_Atlas::ProtoTag()
+		, L"Com_Effect", (CComponent**)&m_pEffectAtlas, &tEffectAtlasDesc), E_FAIL);
+	
 	Safe_Release(pGameInstance);
 	return S_OK;
 }
 
-HRESULT P1Attack01::SetUp_ShaderResources()
-{
-	_float4x4 MyMatrix = m_pTransformCom->Get_WorldFloat4x4();
-	//FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_WorldMatrix", &MyMatrix), E_FAIL);
 
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
-
-	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_VIEW);
-	//FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &MyMatrix), E_FAIL);
-
-	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
-	//FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &MyMatrix), E_FAIL);
-
-	Safe_Release(pGameInstance);
-
-	return S_OK;
-}
 
 void P1Attack01::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
@@ -220,10 +202,9 @@ void P1Attack01::Free(void)
 	__super::Free();
 
 	--P1Attack01_Id;
-	//Safe_Release(m_pShaderCom);
-	//Safe_Release(m_pModelCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTimeCounterCom);
+	Safe_Release(m_pEffectAtlas);
 }

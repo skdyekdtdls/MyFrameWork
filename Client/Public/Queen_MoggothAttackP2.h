@@ -32,6 +32,7 @@ private:
 	CTransform* m_pTransform = { nullptr };
 	CNavigation* m_pNavigation = { nullptr };
 
+	
 private:
 	void Attack01(const _double& TimeDelta); // ²¿¸®Ç«Âï
 	void Attack02(const _double& TimeDelta); // ´ú´ú°Å¸®¸é¼­ ¶¥¿¡ ¹¹¿Ã¶ó¿È

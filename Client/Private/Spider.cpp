@@ -3,7 +3,7 @@
 #include "StateContext.h"
 #include "SpiderBullet.h"
 #include "MonsterHP.h"
-
+#include "Dissolve.h"
 _uint Spider::Spider_Id = 0;
 
 Spider::Spider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -65,7 +65,7 @@ HRESULT Spider::Initialize(void* pArg)
 void Spider::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
-
+	m_TimeDelta = TimeDelta;
 	m_pModelCom->Play_Animation(TimeDelta);
 
 	if (nullptr != m_pStateContextCom)
@@ -153,6 +153,8 @@ void Spider::ResetPool(void* pArg)
 	m_pNavigationCom->SetCellCurIndex(tMonsterDesc.iStartIndex);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tMonsterDesc.vPosition));
 	m_pMonsterHP->Reset();
+	m_pDissolveCom->Reset();
+	m_iPass = 0;
 	m_pStateContextCom->TransitionTo(L"SpiderIdle");
 	m_bDead = false;
 }
@@ -298,6 +300,10 @@ HRESULT Spider::Add_Components()
 	tMonsterHPDesc.fSize = _float2(60, 15);
 	FAILED_CHECK_RETURN(__super::Add_Composite(MonsterHP::ProtoTag(), L"Com_HP", (CComponent**)&m_pMonsterHP, &tMonsterHPDesc), E_FAIL);
 
+	Dissolve::DISSOLVE_DESC tDissolveDesc;
+	tDissolveDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Composite(Dissolve::ProtoTag(), L"Com_Dissolve", (CComponent**)&m_pDissolveCom, &tDissolveDesc), E_FAIL);
+
 	Safe_Release(pGameInstance);
 	return S_OK;
 }
@@ -315,6 +321,11 @@ HRESULT Spider::SetUp_ShaderResources()
 
 	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &MyMatrix), E_FAIL);
+
+	if (1 == m_iPass)
+	{
+		FAILED_CHECK_RETURN(m_pDissolveCom->Bind_Values(m_pShaderCom, -1.f * m_TimeDelta), E_FAIL);
+	}
 
 	Safe_Release(pGameInstance);
 
@@ -360,4 +371,5 @@ void Spider::Free(void)
 	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pRaycastCom);
 	Safe_Release(m_pMonsterHP);
+	Safe_Release(m_pDissolveCom);
 }

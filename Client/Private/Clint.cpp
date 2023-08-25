@@ -14,6 +14,10 @@
 #include "CStone_Effect.h"
 #include "Alien_prawn.h"
 #include "SoundMgr.h"
+#include "BoomEffect.h"
+#include "ForceField.h"
+#include "PropelEffect.h"
+#include "SmokeParticle.h"
 _uint Clint::Clint_Id = 0;
 
 Clint::Clint(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -134,23 +138,36 @@ void Clint::Tick(_double TimeDelta)
 	for (auto SkillUIs : m_pSKillUIs)
 		SkillUIs->Tick(TimeDelta);
 
-	m_pPlayerHP->Tick(TimeDelta);
+	if (nullptr != m_pPlayerHP)
+		m_pPlayerHP->Tick(TimeDelta);
+
+	if(nullptr != m_pForceField)
+		m_pForceField->Tick(TimeDelta);
+	if (nullptr != m_pPropelEffect)
+		m_pPropelEffect->Tick(TimeDelta);
 
 	// 스톤이펙트 실험
 	//m_pStoneEffect->Tick(TimeDelta);
-	//CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	//Safe_AddRef(pGameInstance);
-	//if (pGameInstance->Key_Down(DIK_U))
-	//	m_pStoneEffect->Reset_Effects();
-	//Safe_Release(pGameInstance);
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(pGameInstance);
+	if (pGameInstance->Key_Down(DIK_W))
+	{
+		m_pSKillUIs[1]->UseSkill();
+		//m_pPropelEffect->Reset_Effects();
+		m_pForceField->Use();
+	}
+		
+	Safe_Release(pGameInstance);
 
-	m_pTransformCom->Set_Speed(40.f);
+	// @@@@@@@@@@@@@@@@ 임시이속이므로 지우기 @@@@@@@@@@@@@@@@
+	//m_pTransformCom->Set_Speed(40.f);
 }
 
 void Clint::Late_Tick(_double TimeDelta)
 {
 	__super::Late_Tick(TimeDelta);
-	m_pStoneEffect->Late_Tick(TimeDelta);
+	//m_pStoneEffect->Late_Tick(TimeDelta);
+
 	// 렌더러 그룹에 추가
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
 	m_pColliderCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BODY);
@@ -173,7 +190,17 @@ void Clint::Late_Tick(_double TimeDelta)
 		m_pPistolaComR->Late_Tick(TimeDelta);
 	}
 
-	m_pPlayerHP->Late_Tick(TimeDelta);
+	if (nullptr != m_pForceField)
+		m_pForceField->Late_Tick(TimeDelta);
+
+	if (nullptr != m_pPlayerHP)
+		m_pPlayerHP->Late_Tick(TimeDelta);
+	
+	if (nullptr != m_pPropelEffect)
+	{
+		//m_pPropelEffect->Late_Tick(TimeDelta);
+	}
+
 }
 
 HRESULT Clint::Render()
@@ -318,6 +345,23 @@ HRESULT Clint::Add_Components()
 	tStoneDesc.pOwner = this;
 	tStoneDesc.iNumParticles = 30;
 	FAILED_CHECK_RETURN(__super::Add_Composite(CStone_Effect::ProtoTag(), L"Com_Test", (CComponent**)&m_pStoneEffect, &tStoneDesc), E_FAIL);
+	
+	BoomEffect::BOOM_EFFECT_DESC tBoomEffectDesc;
+	tBoomEffectDesc.pOwner = this;
+	tBoomEffectDesc.iNumParticles = 30;
+	tBoomEffectDesc.pTextureProtoTag = L"Prototype_Component_Texture_UltBullet";
+	FAILED_CHECK_RETURN(__super::Add_Composite(BoomEffect::ProtoTag(), L"Com_BoomEffect", (CComponent**)&m_pBoomEffect, &tBoomEffectDesc), E_FAIL);
+
+	ForceField::tagForceFieldDesc tForceFieldDesc;
+	tForceFieldDesc.fRadius = 1.5f;
+	tForceFieldDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Composite(ForceField::ProtoTag(), L"Com_ForceField", (CComponent**)&m_pForceField, &tForceFieldDesc), E_FAIL);
+
+	PropelEffect::tagPropelEffectDesc tPropelEffectDesc;
+	tPropelEffectDesc.iNumParticles = 20;
+	tPropelEffectDesc.pOwner = this;
+	tPropelEffectDesc.pTextureProtoTag = L"Prototype_Component_Texture_Snow";
+	FAILED_CHECK_RETURN(__super::Add_Composite(PropelEffect::ProtoTag(), L"Com_PropelEffect", (CComponent**)&m_pPropelEffect, &tPropelEffectDesc), E_FAIL);
 
 	Safe_Release(pGameInstance);
 	return S_OK;
@@ -336,7 +380,22 @@ HRESULT Clint::SetUp_ShaderResources()
 
 	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &MyMatrix), E_FAIL);
+	
+	if (1)
+	{
+		_float4 vCamLook = pGameInstance->GetCamLookFloat4(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamLook", &vCamLook, sizeof(_float4)), E_FAIL);
+		
+		_float4 vCamPos = pGameInstance->Get_CamPositionFloat4();
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPos", &vCamPos, sizeof(_float4)), E_FAIL);
 
+		_float fRimPower = 3.f;
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_fRimPower", &fRimPower, sizeof(_float)), E_FAIL);
+
+		_float3 vRimColor = { 1.f, 0.f, 0.f };
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vRimColor", &vRimColor, sizeof(_float3)), E_FAIL);
+	}
+	
 	Safe_Release(pGameInstance);
 
 	return S_OK;
@@ -392,5 +451,7 @@ void Clint::Free(void)
 	for (auto SkillUI : m_pSKillUIs)
 		Safe_Release(SkillUI);
 	Safe_Release(m_pStoneEffect);
+	Safe_Release(m_pBoomEffect);
+	Safe_Release(m_pForceField);
+	Safe_Release(m_pPropelEffect);
 }
-

@@ -19,6 +19,7 @@ END
 BEGIN(Client)
 class Effect_Atlas;
 class CStone_Effect;
+class PropelEffect;
 END
 
 BEGIN(Client)
@@ -58,7 +59,8 @@ private: /* For. Component */
 	CTexture* m_pTextureCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 	CVIBuffer_Point_Instance* m_pBufferCom = { nullptr };
-	//Effect_Atlas* m_pEffectAtlasCom = { nullptr };
+	Effect_Atlas* m_pEffectAtlasCom = { nullptr };
+	PropelEffect* m_pPropelEffect = { nullptr };
 	//CStone_Effect* m_test = { nullptr };
 
 	_float m_fRadian;

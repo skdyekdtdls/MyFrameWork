@@ -18,6 +18,7 @@ void BatPotato_RIGDeath::OnStateEnter()
 	SoundMgr->StopSound(BAT);
 	SoundMgr->PlaySound(L"BatDeath.ogg", CHANNELID::BAT, 0.4f);
 	SetAnimIndex(BATPOTATO_RIG_HIT_LAUNCH_LAND, LOWER);
+	m_pOwner->SetPass(1);
 }
 
 void BatPotato_RIGDeath::OnStateTick(_double TimeDelta)

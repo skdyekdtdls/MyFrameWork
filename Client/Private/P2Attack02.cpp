@@ -1,6 +1,6 @@
 #include "P2Attack02.h"
 #include "GameInstance.h"
-
+#include "HitEffect.h"
 _uint P2Attack02::P2Attack02_Id = 0;
 
 /* Don't Forget Release for the VIBuffer or Model Component*/
@@ -61,7 +61,7 @@ void P2Attack02::Tick(_double TimeDelta)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
 		m_pColliderCom->Add_ColliderGroup(COLL_GROUP::MONSTER_BULLET);
 	}
-
+	m_pHitEffectCom->Tick(TimeDelta, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 	// 	m_pModelCom->Play_Animation(TimeDelta);
 }
 
@@ -69,7 +69,7 @@ void P2Attack02::Late_Tick(_double TimeDelta)
 {
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
-
+	m_pHitEffectCom->Late_Tick(TimeDelta);
 	__super::Late_Tick(TimeDelta);
 
 	
@@ -157,6 +157,14 @@ HRESULT P2Attack02::Add_Components()
 	tTimeCounterDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, TimeCounter::ProtoTag(), L"Com_TimeCounter", (CComponent**)&m_pTimeCounterCom, &tTimeCounterDesc), E_FAIL);
 
+	HitEffect::HitEffect_DESC tEffectDesc;
+	tEffectDesc.iCol = 8;
+	tEffectDesc.iRow = 8;
+	tEffectDesc.pOwner = this;
+	tEffectDesc.pTextureTag = L"Prototype_Component_Texture_Explodebase1_2k";
+	XMStoreFloat4(&tEffectDesc.vPosition, XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	FAILED_CHECK_RETURN(__super::Add_Composite(HitEffect::ProtoTag(), L"Com_HitEffect", (CComponent**)&m_pHitEffectCom, &tEffectDesc), E_FAIL);
+
 	Safe_Release(pGameInstance);
 	return S_OK;
 }
@@ -224,4 +232,5 @@ void P2Attack02::Free(void)
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTimeCounterCom);
+	Safe_Release(m_pHitEffectCom);
 }

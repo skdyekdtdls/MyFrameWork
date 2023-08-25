@@ -1,7 +1,7 @@
 #include "..\Public\CrystalGolemDead.h"
 #include "GameInstance.h"
 #include "CrystalGolem.h"
-
+#include "SoundMgr.h"
 CrystalGolemDead::CrystalGolemDead(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: StateMachine<CrystalGolem, CRYSTAL_GOLEM_ANIM>(pDevice, pContext)
 {
@@ -17,6 +17,13 @@ void CrystalGolemDead::OnStateEnter()
 	__super::OnStateEnter();
 
 	SetAnimIndex(CRYSTAL_GOLEM_DEATH, LOWER);
+	if (m_bStart == true)
+	{
+		m_bStart = false;
+		SoundMgr->StopSound(CHANNELID::GOLEM);
+		SoundMgr->PlaySound(L"GolemDeath.mp3", CHANNELID::GOLEM, 0.5f);
+	}
+	m_pOwner->SetPass(1);
 }
 
 void CrystalGolemDead::OnStateTick(_double TimeDelta)

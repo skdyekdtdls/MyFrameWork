@@ -460,6 +460,21 @@ _float4x4 CGameInstance::Get_TransformFloat4x4_Inverse(CPipeLine::D3DTRANSFORMST
 	return m_pPipeLine->Get_TransformFloat4x4_Inverse(eTransformState);
 }
 
+_float4 CGameInstance::GetCamLookFloat4(_vector vTargetPos)
+{
+	return m_pPipeLine->GetCamLookFloat4(vTargetPos);
+}
+
+_float4 CGameInstance::GetCamLookFloat4()
+{
+	return m_pPipeLine->GetCamLookFloat4();
+}
+
+_vector CGameInstance::GetCamLookVector()
+{
+	return m_pPipeLine->GetCamLookVector();
+}
+
 _bool CGameInstance::isIn_WorldSpace(_fvector vWorldPos, _float fRange)
 {
 	if (nullptr == m_pFrustum)

@@ -19,6 +19,7 @@ void Alien_prawnDead::OnStateEnter()
 	SetAnimIndex(ALIEN_PRAWN_HIT_LAUNCH_FALLING, LOWER);
 	SoundMgr->StopSound(ALIEN_PRAWN);
 	SoundMgr->PlaySound(L"AlienPrawnDeath.ogg", CHANNELID::ALIEN_PRAWN, 0.4f);
+	m_pOwner->SetPass(1);
 }
 
 void Alien_prawnDead::OnStateTick(_double TimeDelta)

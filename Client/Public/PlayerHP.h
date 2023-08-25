@@ -43,6 +43,10 @@ public:
 	virtual void TakeDamage(_uint iAmount) override;
 	virtual void Heal(_uint iAmount) override;
 
+	void SetInvin(_bool Invin) {
+		m_pHealthCom->m_bInvin = Invin;
+	}
+
 private:
 	DynamicImage* m_pDynamicImage = { nullptr };
 	Image* m_pImage = { nullptr };
@@ -54,6 +58,7 @@ private:
 
 private:
 	_uint m_iAmount = { 0 };
+
 
 public:
 	HRESULT Add_Components();

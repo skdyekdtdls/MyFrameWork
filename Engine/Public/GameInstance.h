@@ -90,7 +90,9 @@ public: /* For PipeLine */
 	_float4x4 Get_TransformFloat4x4(CPipeLine::D3DTRANSFORMSTATE eTransformState);
 	_matrix Get_TransformMatrix_Inverse(CPipeLine::D3DTRANSFORMSTATE eTransformState);
 	_float4x4 Get_TransformFloat4x4_Inverse(CPipeLine::D3DTRANSFORMSTATE eTransformState);
-
+	_float4 GetCamLookFloat4(_vector vTargetPos);
+	_float4 GetCamLookFloat4();
+	_vector GetCamLookVector();
 public:
 	_bool isIn_WorldSpace(_fvector vWorldPos, _float fRange);
 

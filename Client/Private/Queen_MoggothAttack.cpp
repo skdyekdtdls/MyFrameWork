@@ -22,7 +22,13 @@ void Queen_MoggothAttack::OnStateEnter()
 	while (m_ePattern == m_ePrevPattern)
 		m_ePattern = static_cast<PATTERN>(RandomIntFrom_A_To_B(ATTACK01, PATTERN_END - 1));
 	m_ePrevPattern = m_ePattern;
-	m_ePattern = ATTACK04;
+
+	if (m_ePattern == ATTACK03)
+	{
+		m_ePattern = ATTACK04;
+		m_ePrevPattern = m_ePattern;
+	}
+
 	// 값들 초기화
 	SetAnimIndexByPattern();
 	m_iLogic = 0;

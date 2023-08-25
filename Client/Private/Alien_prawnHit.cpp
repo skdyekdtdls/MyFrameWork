@@ -21,6 +21,8 @@ void Alien_prawnHit::OnStateEnter()
 		SetAnimIndex(ALIEN_PRAWN_HIT, LOWER);
 	else
 		SetAnimIndex(ALIEN_PRAWN_HIT_02, LOWER);
+
+	m_pOwner->SetPass(2);
 }
 
 void Alien_prawnHit::OnStateTick(_double TimeDelta)
@@ -40,6 +42,7 @@ void Alien_prawnHit::OnStateTick(_double TimeDelta)
 
 void Alien_prawnHit::OnStateExit()
 {
+	m_pOwner->SetPass(0);
 	__super::OnStateExit();
 }
 

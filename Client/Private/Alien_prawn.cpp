@@ -4,7 +4,7 @@
 #include "StateContext.h"
 #include "Bullet.h"
 #include "MonsterHP.h"
-
+#include "Dissolve.h"
 _uint Alien_prawn::Alien_prawn_Id = 0;
 
 /* Don't Forget Release for the VIBuffer or Model Component*/
@@ -67,12 +67,12 @@ HRESULT Alien_prawn::Initialize(void* pArg)
 void Alien_prawn::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
-	
-	m_pModelCom->Play_Animation(TimeDelta);
+	m_TimeDelta = TimeDelta;
+	m_pModelCom->Play_Animation(m_TimeDelta);
 	if (nullptr != m_pStateContextCom)
-		m_pStateContextCom->Tick(TimeDelta);
+		m_pStateContextCom->Tick(m_TimeDelta);
 
-	m_pMonsterHP->Tick(TimeDelta);
+	m_pMonsterHP->Tick(m_TimeDelta);
 	
 	if (nullptr != m_pColliderCom)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
@@ -86,8 +86,8 @@ void Alien_prawn::Tick(_double TimeDelta)
 
 void Alien_prawn::Late_Tick(_double TimeDelta)
 {
-	__super::Late_Tick(TimeDelta);
-	m_pMonsterHP->Late_Tick(TimeDelta);
+	__super::Late_Tick(m_TimeDelta);
+	m_pMonsterHP->Late_Tick(m_TimeDelta);
 	if (Single->isRender(m_pRendererCom, m_pTransformCom))
 	{
 		m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this);
@@ -119,14 +119,13 @@ HRESULT Alien_prawn::Render()
 		m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
 
 		FAILED_CHECK_RETURN(m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE), E_FAIL);
-
-		m_pShaderCom->Begin(0);
+		m_pShaderCom->Begin(m_iPass);
 
 		m_pModelCom->Render(i);
 	}
 }
 
-void Alien_prawn::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
+void Alien_prawn::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double m_TimeDelta)
 {
 	// 총알은 피스톨라가 가지고 있어서 레이어가 없다..
 	if (dynamic_cast<Bullet*>(tCollisionInfo.pOtherGameObject) && false == m_pMonsterHP->isZeroHP())
@@ -140,11 +139,11 @@ void Alien_prawn::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double 
 		&& tCollisionInfo.OtherGameObjectLayerName == TEXT("Layer_Monster"))
 	{
 		tCollisionInfo.vOverLapVector.y = 0.f;
-		m_pTransformCom->Go_Direction(TimeDelta, -XMLoadFloat3(&tCollisionInfo.vOverLapVector)
+		m_pTransformCom->Go_Direction(m_TimeDelta, -XMLoadFloat3(&tCollisionInfo.vOverLapVector)
 			, XMVectorGetX(XMVector3Length(XMLoadFloat3(&tCollisionInfo.vOverLapVector))));
 	}
 
-	m_pStateContextCom->OnCollision(tCollisionInfo, TimeDelta);
+	m_pStateContextCom->OnCollision(tCollisionInfo, m_TimeDelta);
 }
 
 void Alien_prawn::ResetPool(void* pArg)
@@ -153,6 +152,8 @@ void Alien_prawn::ResetPool(void* pArg)
 	m_pNavigationCom->SetCellCurIndex(tAlienPrawnDesc.iStartIndex);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tAlienPrawnDesc.vPosition));
 	m_pMonsterHP->Reset();
+	m_pDissolveCom->Reset();
+	m_iPass = 0;
 	m_pStateContextCom->TransitionTo(L"Alien_prawnIdle");
 	m_bDead = false;
 }
@@ -213,6 +214,10 @@ HRESULT Alien_prawn::Add_Components()
 	tMonsterHPDesc.fSize = _float2(60, 15);
 	FAILED_CHECK_RETURN(__super::Add_Composite(MonsterHP::ProtoTag(), L"Com_HP", (CComponent**)&m_pMonsterHP, &tMonsterHPDesc), E_FAIL);
 
+	Dissolve::DISSOLVE_DESC tDissolveDesc;
+	tDissolveDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Composite(Dissolve::ProtoTag(), L"Com_Dissolve", (CComponent**)&m_pDissolveCom, &tDissolveDesc), E_FAIL);
+
 	Safe_Release(pGameInstance);
 	return S_OK;
 }
@@ -231,6 +236,21 @@ HRESULT Alien_prawn::SetUp_ShaderResources()
 	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &MyMatrix), E_FAIL);
 
+	if (1 == m_iPass)
+	{
+		FAILED_CHECK_RETURN(m_pDissolveCom->Bind_Values(m_pShaderCom, -1.5f * m_TimeDelta, 0.1f), E_FAIL);
+	}
+	else if (2 == m_iPass)
+	{
+		_float fRimPower = 1.f;
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_fRimPower", &fRimPower, sizeof(_float)), E_FAIL);
+
+		_float4 vCamLook = pGameInstance->GetCamLookFloat4(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamLook", &vCamLook, sizeof(_float4)), E_FAIL);
+
+		_float3 vRimColor = { 1.f, 0.f, 0.f };
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vRimColor", &vRimColor, sizeof(_float3)), E_FAIL);
+	}
 	Safe_Release(pGameInstance);
 
 	return S_OK;
@@ -274,4 +294,5 @@ void Alien_prawn::Free(void)
 	Safe_Release(m_pRaycastCom);
 	Safe_Release(m_pStateContextCom);
 	Safe_Release(m_pMonsterHP);
+	Safe_Release(m_pDissolveCom);
 }

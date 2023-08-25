@@ -169,6 +169,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Bin\ShaderFiles\Shader_Client_Defines.hpp" />
+    <ClInclude Include="..\Bin\ShaderFiles\Shader_Function.hpp" />
     <ClInclude Include="..\IMGUI\backends\imgui_impl_dx11.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
@@ -198,6 +199,7 @@
     <ClInclude Include="..\public\BatPotato_RIGHit.h" />
     <ClInclude Include="..\public\BatPotato_RIGIdle.h" />
     <ClInclude Include="..\public\BatPotato_RIGRun.h" />
+    <ClInclude Include="..\public\BoomEffect.h" />
     <ClInclude Include="..\public\BossHP.h" />
     <ClInclude Include="..\public\Bullet.h" />
     <ClInclude Include="..\public\Bullet01Effect.h" />
@@ -218,6 +220,7 @@
     <ClInclude Include="..\public\Cave.h" />
     <ClInclude Include="..\public\ClientInstance.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
+    <ClInclude Include="..\Public\Client_Struct.h" />
     <ClInclude Include="..\public\Clint.h" />
     <ClInclude Include="..\Public\ClintDash.h" />
     <ClInclude Include="..\public\ClintIdle.h" />
@@ -248,9 +251,16 @@
     <ClInclude Include="..\public\CrystalGolemRun.h" />
     <ClInclude Include="..\Public\CrystalGolemTurn180.h" />
     <ClInclude Include="..\Public\CStone_Effect.h" />
+    <ClInclude Include="..\public\Dissolve.h" />
     <ClInclude Include="..\Public\DynamicImage.h" />
     <ClInclude Include="..\public\Effect_Atlas.h" />
     <ClInclude Include="..\public\EnergyBall.h" />
+    <ClInclude Include="..\public\EnergyBallEffect.h" />
+    <ClInclude Include="..\public\EnergyBallEffect2.h" />
+    <ClInclude Include="..\public\ForceField.h" />
+    <ClInclude Include="..\public\HitEffect.h" />
+    <ClInclude Include="..\public\HitParticle.h" />
+    <ClInclude Include="..\Public\CustomMouse.h" />
     <ClInclude Include="..\public\ParticleStrategy.h" />
     <ClInclude Include="..\Public\FontUI.h" />
     <ClInclude Include="..\public\HP.h" />
@@ -340,6 +350,7 @@
     <ClInclude Include="..\public\ClintBasicBullet.h" />
     <ClInclude Include="..\public\PlayerHP.h" />
     <ClInclude Include="..\public\PlayerLevel.h" />
+    <ClInclude Include="..\public\PropelEffect.h" />
     <ClInclude Include="..\public\Queen_Moggoth.h" />
     <ClInclude Include="..\public\Queen_MoggothAppear.h" />
     <ClInclude Include="..\public\Queen_MoggothAttack.h" />
@@ -351,9 +362,11 @@
     <ClInclude Include="..\public\Queen_MoggothWalkP2.h" />
     <ClInclude Include="..\public\Queen_Moggoth_P1_TO_P2.h" />
     <ClInclude Include="..\public\Red_Snow.h" />
+    <ClInclude Include="..\public\RimLight.h" />
     <ClInclude Include="..\public\SkillUI.h" />
     <ClInclude Include="..\public\SkillQ.h" />
     <ClInclude Include="..\public\Sky.h" />
+    <ClInclude Include="..\Public\SmokeParticle.h" />
     <ClInclude Include="..\public\SM_Barriletes.h" />
     <ClInclude Include="..\public\SM_Cliff01.h" />
     <ClInclude Include="..\public\SM_Crystal.h" />
@@ -392,6 +405,7 @@
     <ClInclude Include="..\Public\StateContext.h" />
     <ClInclude Include="..\Public\StateMachine.h" />
     <ClInclude Include="..\public\Terrain.h" />
+    <ClInclude Include="..\public\ThunderEffect.h" />
     <ClInclude Include="..\public\TreeA.h" />
     <ClInclude Include="..\public\TreeB1.h" />
     <ClInclude Include="..\public\TreeB2.h" />
@@ -454,6 +468,7 @@
     <ClCompile Include="..\private\BatPotato_RIGHit.cpp" />
     <ClCompile Include="..\private\BatPotato_RIGIdle.cpp" />
     <ClCompile Include="..\private\BatPotato_RIGRun.cpp" />
+    <ClCompile Include="..\private\BoomEffect.cpp" />
     <ClCompile Include="..\private\BossHP.cpp" />
     <ClCompile Include="..\private\Bullet.cpp" />
     <ClCompile Include="..\private\Bullet01Effect.cpp" />
@@ -506,9 +521,16 @@
     <ClCompile Include="..\private\CrystalGolemRun.cpp" />
     <ClCompile Include="..\Private\CrystalGolemTurn180.cpp" />
     <ClCompile Include="..\Private\CStone_Effect.cpp" />
+    <ClCompile Include="..\private\Dissolve.cpp" />
     <ClCompile Include="..\Private\DynamicImage.cpp" />
     <ClCompile Include="..\private\Effect_Atlas.cpp" />
     <ClCompile Include="..\private\EnergyBall.cpp" />
+    <ClCompile Include="..\private\EnergyBallEffect.cpp" />
+    <ClCompile Include="..\private\EnergyBallEffect2.cpp" />
+    <ClCompile Include="..\private\ForceField.cpp" />
+    <ClCompile Include="..\private\HitEffect.cpp" />
+    <ClCompile Include="..\private\HitParticle.cpp" />
+    <ClCompile Include="..\Private\CustomMouse.cpp" />
     <ClCompile Include="..\private\ParticleStrategy.cpp" />
     <ClCompile Include="..\Private\FontUI.cpp" />
     <ClCompile Include="..\private\HP.cpp" />
@@ -610,6 +632,7 @@
     <ClCompile Include="..\private\ClintBasicBullet.cpp" />
     <ClCompile Include="..\private\PlayerHP.cpp" />
     <ClCompile Include="..\private\PlayerLevel.cpp" />
+    <ClCompile Include="..\private\PropelEffect.cpp" />
     <ClCompile Include="..\private\Queen_Moggoth.cpp" />
     <ClCompile Include="..\private\Queen_MoggothAppear.cpp" />
     <ClCompile Include="..\private\Queen_MoggothAttack.cpp" />
@@ -621,9 +644,11 @@
     <ClCompile Include="..\private\Queen_MoggothWalkP2.cpp" />
     <ClCompile Include="..\private\Queen_Moggoth_P1_TO_P2.cpp" />
     <ClCompile Include="..\private\Red_Snow.cpp" />
+    <ClCompile Include="..\private\RimLight.cpp" />
     <ClCompile Include="..\private\SkillUI.cpp" />
     <ClCompile Include="..\private\SkillQ.cpp" />
     <ClCompile Include="..\private\Sky.cpp" />
+    <ClCompile Include="..\Private\SmokeParticle.cpp" />
     <ClCompile Include="..\private\SM_Barriletes.cpp" />
     <ClCompile Include="..\private\SM_Cliff01.cpp" />
     <ClCompile Include="..\private\SM_Crystal.cpp" />
@@ -663,6 +688,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\private\ThunderEffect.cpp" />
     <ClCompile Include="..\private\TreeA.cpp" />
     <ClCompile Include="..\private\TreeB1.cpp" />
     <ClCompile Include="..\private\TreeB2.cpp" />

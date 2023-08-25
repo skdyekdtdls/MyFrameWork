@@ -40,6 +40,8 @@ HRESULT Effect_Atlas::Initialize(void* pArg)
 	m_tInfo.wstrKey = ProtoTag();
 	m_tInfo.ID = Effect4x4_Id;
 
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&m_tEffectDesc.vPosition));
+
 	Reset();
 	return S_OK;
 }
@@ -59,7 +61,7 @@ void Effect_Atlas::Tick(_double TimeDelta, _fvector vPos)
 	ParticleMatrices.push_back(WorldMatrix);
 	m_pBufferCom->Tick(ParticleMatrices, TimeDelta);
 
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, /*vPos*/XMVectorSet(0.f, 0.f, 0.f, 1.f));
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPos/*XMVectorSet(0.f, 0.f, 0.f, 1.f)*/);
 
 	switch (m_ePlayMode)
 	{
@@ -137,7 +139,7 @@ void Effect_Atlas::OnceMode(const _double& TimeDelta)
 	}
 
 	if (m_iCurrentIndex >= m_iLastIndex)
-		m_ePlayMode = PLAY_MODE_END;
+		m_bDead = true;
 }
 
 void Effect_Atlas::LoopMode(const _double& TimeDelta)
@@ -248,4 +250,3 @@ void Effect_Atlas::Free(void)
 	Safe_Release(m_pBufferCom);
 	/* Don't Forget Release for the VIBuffer or Model Component*/
 }
-

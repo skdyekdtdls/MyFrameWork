@@ -1,6 +1,6 @@
 #include "BatPotato_RIGBullet.h"
 #include "GameInstance.h"
-
+#include "EnergyBallEffect.h"
 _uint BatPotato_RIGBullet::BatPotato_RIGBullet_Id = 0;
 
 /* Don't Forget Release for the VIBuffer or Model Component*/
@@ -47,6 +47,7 @@ HRESULT BatPotato_RIGBullet::Initialize(void* pArg)
 
 	m_pTimeCounterCom->Disable();
 	m_bEnable = false;
+
 	return S_OK;
 }
 
@@ -59,7 +60,7 @@ void BatPotato_RIGBullet::Tick(_double TimeDelta)
 	
 	m_pTimeCounterCom->Tick(TimeDelta);
 
-	if (m_pTimeCounterCom->isEuqalWith(1.0))
+	if (m_pTimeCounterCom->isEuqalWith(3.0))
 		m_bEnable = false;
 
 	m_pTransformCom->Go_Straight(TimeDelta);
@@ -70,7 +71,9 @@ void BatPotato_RIGBullet::Tick(_double TimeDelta)
 		m_pColliderCom->Add_ColliderGroup(COLL_GROUP::MONSTER_BULLET);
 	}
 
-	// 	m_pModelCom->Play_Animation(TimeDelta);
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	if (nullptr != m_pEnergyBallEffectCom)
+		m_pEnergyBallEffectCom->Tick(TimeDelta, vPos);
 }
 
 void BatPotato_RIGBullet::Late_Tick(_double TimeDelta)
@@ -86,6 +89,9 @@ void BatPotato_RIGBullet::Late_Tick(_double TimeDelta)
 	m_pRendererCom->Add_DebugGroup(m_pColliderCom);
 #endif
 	Safe_Release(pGameInstance);
+
+	if(nullptr != m_pEnergyBallEffectCom)
+		m_pEnergyBallEffectCom->Late_Tick(TimeDelta);
 }
 
 HRESULT BatPotato_RIGBullet::Render()
@@ -95,27 +101,6 @@ HRESULT BatPotato_RIGBullet::Render()
 
 	if (FAILED(SetUp_ShaderResources()))
 		return E_FAIL;
-
-	//_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
-
-	//for (size_t i = 0; i < iNumMeshes; i++)
-	//{
-	//	m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
-
-	//	m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
-	//	
-
-	//	m_pShaderCom->Begin(0);
-
-	//	m_pModelCom->Render(i);
-	//}
-
-	// 만약에 모델 컴포넌트 안쓰면 이걸로 쓰면된다.
-	// m_pShaderCom->Begin(0);
-
-#ifdef _DEBUG
-
-#endif
 }
 
 HRESULT BatPotato_RIGBullet::Add_Components()
@@ -127,7 +112,7 @@ HRESULT BatPotato_RIGBullet::Add_Components()
 	CRenderer::CRENDERER_DESC tRendererDesc; tRendererDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CRenderer::ProtoTag(), L"Com_Renderer", (CComponent**)&m_pRendererCom, &tRendererDesc), E_FAIL);
 
-	CTransform::CTRANSFORM_DESC TransformDesc{ 20.0, XMConvertToRadians(720.f) }; TransformDesc.pOwner = this;
+	CTransform::CTRANSFORM_DESC TransformDesc{ 4.0, XMConvertToRadians(720.f) }; TransformDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, CTransform::ProtoTag(), L"Com_Transform", (CComponent**)&m_pTransformCom
 		, &TransformDesc), E_FAIL);
 
@@ -146,6 +131,14 @@ HRESULT BatPotato_RIGBullet::Add_Components()
 	TimeCounter::TIME_COUNTER_DESC tTimeCounterDesc;
 	tTimeCounterDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, TimeCounter::ProtoTag(), L"Com_TimeCounter", (CComponent**)&m_pTimeCounterCom, &tTimeCounterDesc), E_FAIL);
+
+	EnergyBallEffect::tagEnergyBallEffectDesc tEffectDesc;
+	tEffectDesc.iCol = 3;
+	tEffectDesc.iRow = 3;
+	tEffectDesc.pOwner = this;
+	tEffectDesc.pTextureTag = L"Prototype_Component_Texture_Energy_Ball";
+	FAILED_CHECK_RETURN(__super::Add_Composite(EnergyBallEffect::ProtoTag(), L"Com_Effect", (CComponent**)&m_pEnergyBallEffectCom, &tEffectDesc), E_FAIL);
+	m_pEnergyBallEffectCom->Scale(_float2(1.2f, 1.2f));
 
 	Safe_Release(pGameInstance);
 	return S_OK;
@@ -173,15 +166,20 @@ HRESULT BatPotato_RIGBullet::SetUp_ShaderResources()
 void BatPotato_RIGBullet::Ready(_fvector vLook, _fvector vPosition)
 {
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPosition);
+
+	_vector vPos = vPosition;
+	vPos.m128_f32[1] += 0.5f;
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPos);
 	m_pTimeCounterCom->Reset();
 	m_pTimeCounterCom->Enable();
+	m_bEnable = true;
 }
 
 void BatPotato_RIGBullet::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta)
 {
 	if (0 == strcmp(tCollisionInfo.OtherGameObejctName.c_str(), "Clint1"))
 	{
+		SetDead();
 		__super::Damage(tCollisionInfo.pOtherGameObject);
 	}
 }
@@ -215,10 +213,9 @@ void BatPotato_RIGBullet::Free(void)
 	__super::Free();
 
 	--BatPotato_RIGBullet_Id;
-	//Safe_Release(m_pShaderCom);
-	//Safe_Release(m_pModelCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTimeCounterCom);
+	Safe_Release(m_pEnergyBallEffectCom);
 }

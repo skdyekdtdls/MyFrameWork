@@ -18,6 +18,12 @@ class TimeCounter;
 END
 
 BEGIN(Client)
+
+class Effect_Atlas;
+
+END
+
+BEGIN(Client)
 class P1Attack01 final : public Bullet
 {
 public:
@@ -46,16 +52,14 @@ public:
 	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
 
 private: /* For. Component */
-	//CShader* m_pShaderCom = { nullptr };
-	//CModel* m_pModelCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CCollider* m_pColliderCom = { nullptr };
 	TimeCounter* m_pTimeCounterCom = { nullptr };
+	Effect_Atlas* m_pEffectAtlas = { nullptr };
 
 private:
 	HRESULT Add_Components();
-	HRESULT SetUp_ShaderResources();
 
 private:
 	static _uint P1Attack01_Id;

@@ -394,6 +394,42 @@
     <Filter Include="02. GameObjects\Effect\Bullet01Effect">
       <UniqueIdentifier>{8bda3088-09a1-42b3-a101-10116065473a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObjects\Effect\Instancing\BoomEffect">
+      <UniqueIdentifier>{d6b16c0b-1ee4-4593-aa1d-d27ac0c88c40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Dissolve">
+      <UniqueIdentifier>{0059e50b-8fcf-4a65-a8b4-6da09d841fe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\RimLight">
+      <UniqueIdentifier>{5d76afc6-73df-4461-9477-9b8177dc8667}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Skill\ForceField">
+      <UniqueIdentifier>{0c5f1e22-dbdd-4e5f-beac-6a9fbbf5f56f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\Instancing\PropelEffect">
+      <UniqueIdentifier>{1d4f10ed-b3d3-4d10-9010-2eaa4aa1cb15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\HitEffect">
+      <UniqueIdentifier>{dd132e92-1f16-4f7c-8b75-a685821ce3ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\HitParticle">
+      <UniqueIdentifier>{b656f19f-b807-492b-a5f1-a0040ce64695}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\EnergyBallEffect">
+      <UniqueIdentifier>{d06c5546-47e5-434c-9c1b-d5ffe79681da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\CustumMouse">
+      <UniqueIdentifier>{509796f8-64a6-4b9e-b739-355b6992910b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\EnergyBallEffect2">
+      <UniqueIdentifier>{4b3aa684-a4d6-4d1b-a921-0b806c553c7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\SmokeParticle">
+      <UniqueIdentifier>{8370dcf1-0687-42e7-84b2-16b8699619e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObjects\Effect\ThunderEffect">
+      <UniqueIdentifier>{7ea890f4-62eb-42d0-a8be-e28eb74c0984}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -937,6 +973,48 @@
     <ClInclude Include="..\public\Bullet01Effect.h">
       <Filter>02. GameObjects\Effect\Bullet01Effect</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\BoomEffect.h">
+      <Filter>02. GameObjects\Effect\Instancing\BoomEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Struct.h">
+      <Filter>99. Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Dissolve.h">
+      <Filter>02. GameObjects\Effect\Dissolve</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RimLight.h">
+      <Filter>02. GameObjects\Effect\RimLight</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ForceField.h">
+      <Filter>02. GameObjects\Skill\ForceField</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Bin\ShaderFiles\Shader_Function.hpp">
+      <Filter>97. ShaderFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PropelEffect.h">
+      <Filter>02. GameObjects\Effect\Instancing\PropelEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\HitEffect.h">
+      <Filter>02. GameObjects\Effect\HitEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\HitParticle.h">
+      <Filter>02. GameObjects\Effect\HitParticle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EnergyBallEffect.h">
+      <Filter>02. GameObjects\Effect\EnergyBallEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CustomMouse.h">
+      <Filter>02. GameObjects\CustumMouse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\EnergyBallEffect2.h">
+      <Filter>02. GameObjects\Effect\EnergyBallEffect2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SmokeParticle.h">
+      <Filter>02. GameObjects\Effect\SmokeParticle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ThunderEffect.h">
+      <Filter>02. GameObjects\Effect\ThunderEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -1460,6 +1538,42 @@
     </ClCompile>
     <ClCompile Include="..\private\Bullet01Effect.cpp">
       <Filter>02. GameObjects\Effect\Bullet01Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BoomEffect.cpp">
+      <Filter>02. GameObjects\Effect\Instancing\BoomEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Dissolve.cpp">
+      <Filter>02. GameObjects\Effect\Dissolve</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RimLight.cpp">
+      <Filter>02. GameObjects\Effect\RimLight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ForceField.cpp">
+      <Filter>02. GameObjects\Skill\ForceField</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PropelEffect.cpp">
+      <Filter>02. GameObjects\Effect\Instancing\PropelEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HitEffect.cpp">
+      <Filter>02. GameObjects\Effect\HitEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HitParticle.cpp">
+      <Filter>02. GameObjects\Effect\HitParticle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EnergyBallEffect.cpp">
+      <Filter>02. GameObjects\Effect\EnergyBallEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CustomMouse.cpp">
+      <Filter>02. GameObjects\CustumMouse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\EnergyBallEffect2.cpp">
+      <Filter>02. GameObjects\Effect\EnergyBallEffect2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SmokeParticle.cpp">
+      <Filter>02. GameObjects\Effect\SmokeParticle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ThunderEffect.cpp">
+      <Filter>02. GameObjects\Effect\ThunderEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

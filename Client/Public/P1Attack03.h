@@ -18,6 +18,7 @@ class TimeCounter;
 END
 
 BEGIN(Client)
+class HitEffect;
 class P1Attack03 final : public Bullet
 {
 public:
@@ -51,7 +52,7 @@ private: /* For. Component */
 	CTransform* m_pTransformCom = { nullptr };
 	CCollider* m_pColliderCom = { nullptr };
 	TimeCounter* m_pTimeCounterCom = { nullptr };
-
+	HitEffect* m_pHitEffectCom = { nullptr };
 private:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();

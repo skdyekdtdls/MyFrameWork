@@ -20,6 +20,8 @@ public:
 	virtual void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta) override;
 
 	virtual const _tchar* GetTag() override { return Tag(); }
+
+	_bool m_bStart = { true };
 public:
 	static const _tchar* Tag() { return L"CrystalGolemDead"; }
 	static CrystalGolemDead* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

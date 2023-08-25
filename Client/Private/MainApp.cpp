@@ -27,6 +27,7 @@
 #include "P2Attack03.h"
 #include "P2Attack04.h"
 #include "Image.h"
+#include "CustomMouse.h"
 
 #ifdef _DEBUG
 #include "ImWindow_Manager.h"
@@ -40,6 +41,8 @@ CMainApp::CMainApp()
 
 HRESULT CMainApp::Initialize()
 {
+	ShowCursor(false);
+
 	GRAPHICDESC GraphicDesc;
 	ZeroStruct(GraphicDesc);
 
@@ -74,6 +77,7 @@ HRESULT CMainApp::Initialize()
 
 	Ready_Pool();
 	
+
 	return S_OK;
 }
 
@@ -83,7 +87,6 @@ void CMainApp::Tick(_double TimeDelta)
 		return;
 
 	//Calc_FPS(TimeDelta);
-
 	m_pGameInstance->Tick_Engine(TimeDelta);
 }
 
@@ -99,14 +102,15 @@ HRESULT CMainApp::Render()
 	m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 1.f, 1.f));
 	m_pGameInstance->Clear_DepthStencil_View();
 
-	::POINT	ptMouse{};
-	GetCursorPos(&ptMouse);
-	ScreenToClient(g_hWnd, &ptMouse);
-	_uint2 WinSize = m_pGameInstance->GetViewPortSize(m_pContext);
-
 	m_pRenderer->Draw_RenderGroup();
-	wstring tmp = to_wstring(ptMouse.x) + L" " + to_wstring(WinSize.y - ptMouse.y);
-	m_pGameInstance->Render_Font(L"Font_135", tmp.c_str(), _float2(ptMouse.x, ptMouse.y), XMVectorSet(1.0, 0.4118, 0.7059, 1.f));
+
+	// 미우스 추적하는 폰트 띄우는 코드
+	//::POINT	ptMouse{};
+	//GetCursorPos(&ptMouse);
+	//ScreenToClient(g_hWnd, &ptMouse);
+	//_uint2 WinSize = m_pGameInstance->GetViewPortSize(m_pContext);
+	//wstring tmp = to_wstring(ptMouse.x) + L" " + to_wstring(WinSize.y - ptMouse.y);
+	//m_pGameInstance->Render_Font(L"Font_135", tmp.c_str(), _float2(ptMouse.x, ptMouse.y), XMVectorSet(1.0, 0.4118, 0.7059, 1.f));
 
 	//Render_FPS();
 #ifdef _DEBUG
@@ -168,6 +172,9 @@ HRESULT CMainApp::Ready_Prototype_Component_For_Static()
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, CVIBuffer_Cube::ProtoTag(),
 		CVIBuffer_Cube::Create(m_pDevice, m_pContext)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, CVIBuffer_Sphere::ProtoTag(),
+		CVIBuffer_Sphere::Create(m_pDevice, m_pContext, 48, 24, 1.f)), E_FAIL);
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(LEVEL_STATIC, CVIBuffer_DynamicRect::ProtoTag(),
 		CVIBuffer_DynamicRect::Create(m_pDevice, m_pContext)), E_FAIL);
@@ -338,7 +345,6 @@ void CMainApp::Free()
 	ObjectPool<class BatPotato_RIG>::DestroyInstance();
 	ObjectPool<class CannonSpider>::DestroyInstance();
 	ObjectPool<class Spider>::DestroyInstance();
-
 #ifdef _DEBUG
 	CImWindow_Manager::DestroyInstance();
 #endif // DEBUG

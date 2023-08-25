@@ -21,6 +21,7 @@
 #include "DynamicImage.h"
 #include "MiniMap.h"
 #include "SoundMgr.h"
+#include "CustomMouse.h"
 CLevel_Imgui::CLevel_Imgui(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -125,22 +126,29 @@ void CLevel_Imgui::Ready_Layer_Monster(const _tchar* pLayerTag)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 	
-	//tAlienPrawnDesc.vPosition = _float4(12.f, 0.f, 10.f, 1.f);
+	//Alien_prawn::tagAlien_prawnDesc tAlienPrawnDesc;
+	//tAlienPrawnDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	//tAlienPrawnDesc.iStartIndex = 5;
 	//pGameInstance->Add_GameObject(LEVEL_IMGUI, Alien_prawn::ProtoTag(), pLayerTag, &tAlienPrawnDesc);
 
 	//tAlienPrawnDesc.vPosition = _float4(11.f, 0.f, 10.f, 1.f);
 	//pGameInstance->Add_GameObject(LEVEL_IMGUI, Alien_prawn::ProtoTag(), pLayerTag, &tAlienPrawnDesc);
 
+	// 미니맵때문에 이렇게함.
 	BatPotato_RIG::BATPOTATO_RIG_DESC tBatPotatoRigDesc;
-	tBatPotatoRigDesc.vPosition = _float4(12.f, 0.f, 10.f, 1.f);
-  	CGameObject* pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, BatPotato_RIG::ProtoTag(), pLayerTag, &tBatPotatoRigDesc);
+	tBatPotatoRigDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	tBatPotatoRigDesc.iStartIndex = 5;
+	CGameObject* pGameObject = pGameInstance->Add_GameObject(LEVEL_IMGUI, BatPotato_RIG::ProtoTag(), pLayerTag, &tBatPotatoRigDesc);
 	pGameObject->SetDead();
+
 	//CannonSpider::tagCannonSpiderDesc tCannonSpiderDesc;
-	//tCannonSpiderDesc.vPosition = _float4(13.f, 0.f, 10.f, 1.f);
+	//tCannonSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	//tCannonSpiderDesc.iStartIndex = 5;
 	//pGameInstance->Add_GameObject(LEVEL_IMGUI, CannonSpider::ProtoTag(), pLayerTag, &tCannonSpiderDesc);
 	
 	//CrystalGolem::tagCrystalGolemDesc tCrystalGolemDesc;
 	//tCrystalGolemDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	//tCrystalGolemDesc.iStartIndex = 5;
 	//pGameInstance->Add_GameObject(LEVEL_IMGUI, CrystalGolem::ProtoTag(), pLayerTag, &tCrystalGolemDesc);
 	
 	/*Spider::tagSpiderDesc tSpiderDesc;
@@ -149,16 +157,17 @@ void CLevel_Imgui::Ready_Layer_Monster(const _tchar* pLayerTag)
 
 	//tSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
 	//pGameInstance->Add_GameObject(LEVEL_IMGUI, Spider::ProtoTag(), pLayerTag, &tSpiderDesc);
-	//
+	
 	//tSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
 	//pGameInstance->Add_GameObject(LEVEL_IMGUI, Spider::ProtoTag(), pLayerTag, &tSpiderDesc);
-	//
+	
 	//tSpiderDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
 	//pGameInstance->Add_GameObject(LEVEL_IMGUI, Spider::ProtoTag(), pLayerTag, &tSpiderDesc);*/
 
-	//Queen_Moggoth::tagQueen_MoggothDesc tQueenMoggothDesc;
-	//tQueenMoggothDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
-	//pGameInstance->Add_GameObject(LEVEL_IMGUI, Queen_Moggoth::ProtoTag(), pLayerTag, &tQueenMoggothDesc);
+	Queen_Moggoth::tagQueen_MoggothDesc tQueenMoggothDesc;
+	tQueenMoggothDesc.vPosition = _float4(10.f, 0.f, 10.f, 1.f);
+	tQueenMoggothDesc.iStartIndex = 5;
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, Queen_Moggoth::ProtoTag(), pLayerTag, &tQueenMoggothDesc);
 
 	Safe_Release(pGameInstance);
 }
@@ -253,6 +262,9 @@ void CLevel_Imgui::Ready_Layer_UI(const _tchar* pLayerTag)
 	tDynamicImageDesc.Size = _float2(70, 70);
 	tDynamicImageDesc.pTextureProtoTag = TEXT("Prototype_Component_Texture_RSkill");
 	NULL_CHECK(pGameInstance->Add_GameObject(LEVEL_IMGUI, DynamicImage::ProtoTag(), pLayerTag, &tDynamicImageDesc));*/
+
+
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, CustomMouse::ProtoTag(), pLayerTag);
 
 	Safe_Release(pGameInstance);
 }

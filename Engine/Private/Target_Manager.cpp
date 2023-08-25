@@ -46,7 +46,6 @@ HRESULT CTarget_Manager::Begin_MRT(ID3D11DeviceContext* pContext, const _tchar* 
 
 	NULL_CHECK_RETURN(pMRTList, E_FAIL);
 
-
 	pContext->OMGetRenderTargets(1, &m_pBackBufferView, &m_pDepthStencilView);
 
 	ID3D11RenderTargetView* pRenderTargets[8] = { nullptr };
@@ -66,6 +65,43 @@ HRESULT CTarget_Manager::Begin_MRT(ID3D11DeviceContext* pContext, const _tchar* 
 }
 
 HRESULT CTarget_Manager::End_MRT(ID3D11DeviceContext* pContext)
+{
+	ID3D11RenderTargetView* pRenderTargets[8] = { m_pBackBufferView };
+
+	pContext->OMSetRenderTargets(8, pRenderTargets, m_pDepthStencilView);
+
+	// 내부적으로 증가한 레퍼카운트를 강제로 감소시킴.
+	Safe_Release(m_pBackBufferView);
+	Safe_Release(m_pDepthStencilView);
+
+	return S_OK;
+}
+
+HRESULT CTarget_Manager::Begin_PreMRT(ID3D11DeviceContext* pContext, const _tchar* pMRTTag)
+{
+	list<CRenderTarget*>* pMRTList = Find_MRT(pMRTTag);
+
+	NULL_CHECK_RETURN(pMRTList, E_FAIL);
+
+	pContext->OMGetRenderTargets(1, &m_pBackBufferView, &m_pDepthStencilView);
+
+	ID3D11RenderTargetView* pRenderTargets[8] = { nullptr };
+
+	_uint iNumViews = 0;
+
+	for (auto& pRenderTarget : *pMRTList)
+	{
+		pRenderTarget->Clear();
+		pRenderTargets[iNumViews++] = pRenderTarget->Get_RTV();
+	}
+
+	// 내부적으로 AddRef가 호출된다.
+	pContext->OMSetRenderTargets(iNumViews, pRenderTargets, m_pDepthStencilView);
+
+	return S_OK;
+}
+
+HRESULT CTarget_Manager::End_PreMRT(ID3D11DeviceContext* pContext)
 {
 	ID3D11RenderTargetView* pRenderTargets[8] = { m_pBackBufferView };
 

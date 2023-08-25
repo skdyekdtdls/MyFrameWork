@@ -118,6 +118,37 @@ static float RandomFloat(float lowBound, float highBound)
 	return (f * (highBound - lowBound)) + lowBound;
 }
 
+static _float2 RandomFloat2(_float2 lowBound, _float2 highBound)
+{
+	return _float2(RandomFloat(lowBound.x, highBound.x), RandomFloat(lowBound.y, highBound.y));
+}
+
+static _float3 RandomFloat3(_float3 lowBound, _float3 highBound)
+{
+	return _float3(RandomFloat(lowBound.x, highBound.x)
+		, RandomFloat(lowBound.y, highBound.y)
+		, RandomFloat(lowBound.z, highBound.z));
+}
+
+static _float4 RandomFloat4(_float4 lowBound, _float4 highBound)
+{
+	return _float4(RandomFloat(lowBound.x, highBound.x)
+		, RandomFloat(lowBound.y, highBound.y)
+		, RandomFloat(lowBound.z, highBound.z)
+		, RandomFloat(lowBound.w, highBound.w));
+}
+
+static _vector RandomDirection()
+{
+	_vector vResult;
+	vResult.m128_f32[0] = RandomFloat(-1.f, 1.f);
+	vResult.m128_f32[1] = RandomFloat(-1.f, 1.f);
+	vResult.m128_f32[2] = RandomFloat(-1.f, 1.f);
+	vResult.m128_f32[3] = 0.f;
+
+	return XMVector3Normalize(vResult);
+}
+
 static float RandomUNormal()
 {
 	return RandomFloat(0.f, 1.f);

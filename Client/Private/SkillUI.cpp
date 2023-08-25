@@ -81,6 +81,10 @@ void SkillUI::UseSkill()
 {
 	if (true == m_bIsRunning)
 		return;
+
+	if (0.01f <= GetCoolTime())
+		return;
+
 	m_bIsRunning = true;
 	m_pTimeCounter->Reset();
 	m_pTimeCounter->Enable();

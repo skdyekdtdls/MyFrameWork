@@ -18,7 +18,7 @@ void Alien_prawnRun::OnStateEnter()
 	__super::OnStateEnter();
 
 	SetAnimIndex(ALIEN_PRAWN_RUN, LOWER);
-	SoundMgr->PlaySound(L"AlienPrawnWalk.wav", CHANNELID::ALIEN_PRAWN, 0.5f);
+	SoundMgr->PlaySound(L"AlienPrawnWalk.wav", CHANNELID::ALIEN_PRAWN, 0.2f);
 }
 // ¹ä¸Ô°í¿Í¼­ º¸½ºÇØ!
 void Alien_prawnRun::OnStateTick(_double TimeDelta)

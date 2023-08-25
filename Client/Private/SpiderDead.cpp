@@ -17,6 +17,7 @@ void SpiderDead::OnStateEnter()
 	__super::OnStateEnter();
 
 	SetAnimIndex(SPIDER_STUNNED, LOWER);
+	m_pOwner->SetPass(1);
 }
 
 void SpiderDead::OnStateTick(_double TimeDelta)

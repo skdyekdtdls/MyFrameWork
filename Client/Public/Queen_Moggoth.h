@@ -40,6 +40,7 @@ public:
 		tagQueen_MoggothDesc() : tagCGameObjectDesc() {}
 		_uint iStartIndex;
 	};
+
 private:
 	Queen_Moggoth(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	Queen_Moggoth(const Queen_Moggoth& rhs);
@@ -52,8 +53,12 @@ public:
 	virtual void Late_Tick(_double TimeDelta) override;
 	virtual HRESULT Render() override;
 
-	void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
+	void SetPass(_uint iPass) {
+		m_iPass = iPass;
+	}
 
+	void OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _double TimeDelta);
+	
 private: /* For. Component */
 	CShader* m_pShaderCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };
@@ -65,6 +70,11 @@ private: /* For. Component */
 	CNavigation* m_pNavigationCom = { nullptr };
 	Raycast* m_pRaycastCom = { nullptr };
 	BossHP* m_pHealthCom = { nullptr };
+	Dissolve* m_pDissolveCom = { nullptr };
+
+private:
+	_uint m_iPass = { 0 };
+	_double m_TimeDelta;
 
 private:
 	HRESULT Add_Components();

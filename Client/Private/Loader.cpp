@@ -29,10 +29,20 @@
 #include "FontUI.h"
 #include "SkillUI.h"
 #include "MiniMap.h"
+#include "CustomMouse.h"
 
 // Effect
 #include "CStone_Effect.h"
 #include "Effect_Atlas.h"
+#include "BoomEffect.h"
+#include "Dissolve.h"
+#include "ForceField.h"
+#include "PropelEffect.h"
+#include "HitEffect.h"
+#include "HitParticle.h"
+#include "EnergyBallEffect.h"
+#include "EnergyBallEffect2.h"
+#include "SmokeParticle.h"
 
 // Static Mesh
 #include "Bush01.h"
@@ -334,6 +344,45 @@ HRESULT CLoader::Loading_For_GamePlay()
 	// Effect_Atlas
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_T_ky_flare07_4x4"),
 		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/AdvancedMagicFX08/Textures/T_ky_flare07_4x4.dds"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_T_ky_flare03_4x4"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/AdvancedMagicFX08/Textures/T_ky_flare03_4x4.dds"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_T_ky_flare09_4x4"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/T_ky_flare09_4x4.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_T_ky_noise4"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/BeamAndLaserFX01/Textures/T_ky_noise4.dds"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Hex"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/Hex.jpg"), 1)), E_FAIL); // jpg주의
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Explodebase1_2k"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Explosions/Textures/Explodebase1_2k.dds"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_T_ky_flare_a"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/AdvancedMagicFX07/Textures/T_ky_flare_a.dds"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Energy_Ball"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/Energy_Ball.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Mouse"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/Mouse.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_T_SoftFallOff"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/SmokeGradient.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Energy_Ball2"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/Energy_Ball2.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Smoke"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Game/Actors/Vehicles/Tank/Effects/Textures/T_Smoke_Tiled_D.dds"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_OneGradient"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/OneGradient.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_UltBullet"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/UltBullet.png"), 1)), E_FAIL);
 
 	Set_LoadingText(L"버퍼 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Terrain::ProtoTag(),
@@ -1038,7 +1087,18 @@ HRESULT CLoader::Loading_For_GamePlay()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SkillUI::ProtoTag(), SkillUI::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(MiniMap::ProtoTag(), MiniMap::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CStone_Effect::ProtoTag(), CStone_Effect::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BoomEffect::ProtoTag(), BoomEffect::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Spawner::ProtoTag(), Spawner::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Effect_Atlas::ProtoTag(), Effect_Atlas::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Dissolve::ProtoTag(), Dissolve::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(ForceField::ProtoTag(), ForceField::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(PropelEffect::ProtoTag(), PropelEffect::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(HitEffect::ProtoTag(), HitEffect::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(HitParticle::ProtoTag(), HitParticle::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(EnergyBallEffect::ProtoTag(), EnergyBallEffect::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(EnergyBallEffect2::ProtoTag(), EnergyBallEffect2::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CustomMouse::ProtoTag(), CustomMouse::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SmokeParticle::ProtoTag(), SmokeParticle::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	return S_OK;
 }
@@ -1135,7 +1195,40 @@ HRESULT CLoader::Loading_For_IMGUI()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/AdvancedMagicFX08/Textures/T_ky_flare03_4x4.dds"), 1)), E_FAIL);
 
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_T_ky_flare09_4x4"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/AdvancedMagicFX09/Textures/T_ky_flare09_4x4.dds"), 1)), E_FAIL);
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/T_ky_flare09_4x4.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_T_ky_noise4"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/BeamAndLaserFX01/Textures/T_ky_noise4.dds"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Hex"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/Hex.jpg"), 1)), E_FAIL); // jpg주의
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Explodebase1_2k"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Explosions/Textures/Explodebase1_2k.dds"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_T_ky_flare_a"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/AdvancedMagicFX07/Textures/T_ky_flare_a.dds"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Energy_Ball"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/Energy_Ball.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Mouse"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/Mouse.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_T_SoftFallOff"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/SmokeGradient.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Energy_Ball2"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/Energy_Ball2.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_Smoke"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Game/Actors/Vehicles/Tank/Effects/Textures/T_Smoke_Tiled_D.dds"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_OneGradient"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/OneGradient.png"), 1)), E_FAIL);
+
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, TEXT("Prototype_Component_Texture_UltBullet"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("C:/KillSquad/Game/Custom/UltBullet.png"), 1)), E_FAIL);
 
 	Set_LoadingText(L"버퍼 로딩 중");
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(m_eNextLevel, CVIBuffer_Terrain::ProtoTag(),
@@ -1840,8 +1933,18 @@ HRESULT CLoader::Loading_For_IMGUI()
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SkillUI::ProtoTag(), SkillUI::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(MiniMap::ProtoTag(), MiniMap::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CStone_Effect::ProtoTag(), CStone_Effect::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(BoomEffect::ProtoTag(), BoomEffect::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Spawner::ProtoTag(), Spawner::Create(m_pDevice, m_pContext)), E_FAIL);
 	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Effect_Atlas::ProtoTag(), Effect_Atlas::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(Dissolve::ProtoTag(), Dissolve::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(ForceField::ProtoTag(), ForceField::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(PropelEffect::ProtoTag(), PropelEffect::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(HitEffect::ProtoTag(), HitEffect::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(HitParticle::ProtoTag(), HitParticle::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(EnergyBallEffect::ProtoTag(), EnergyBallEffect::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(EnergyBallEffect2::ProtoTag(), EnergyBallEffect2::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(CustomMouse::ProtoTag(), CustomMouse::Create(m_pDevice, m_pContext)), E_FAIL);
+	FAILED_CHECK_RETURN(m_pGameInstance->Add_Prototype(SmokeParticle::ProtoTag(), SmokeParticle::Create(m_pDevice, m_pContext)), E_FAIL);
 
 	return S_OK;
 }

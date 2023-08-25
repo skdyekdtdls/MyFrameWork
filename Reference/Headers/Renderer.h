@@ -43,9 +43,11 @@ private:
 	HRESULT Render_Deferred();
 	HRESULT Render_NonLight();
 	HRESULT Render_Blend();
+	HRESULT Render_PostProcessing();
 	HRESULT Render_UI_NB();
 	HRESULT Render_UI_B();
 	HRESULT Render_Font();
+
 
 private:
 	list<CGameObject*> m_RenderObjects[RENDER_END];
@@ -58,8 +60,12 @@ private:
 	class CLight_Manager* m_pLight_Manager = { nullptr };
 
 private:
-	class CVIBuffer_Rect*	m_pVIBuffer = { nullptr };
-	class CShader*			m_pShader = { nullptr };
+	class CVIBuffer_Rect* m_pVIBuffer = { nullptr };
+	class CShader* m_pShader = { nullptr };
+
+	CVIBuffer_Rect*		m_pPostVIBuffer = { nullptr };
+	CShader*			m_pPostShader = { nullptr };
+
 	_float4x4				m_WorldMatrix, m_ViewMatrix, m_ProjMatrix;
 
 public:

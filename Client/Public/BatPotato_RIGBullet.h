@@ -14,8 +14,17 @@ class CCollider;
 class CNavigation;
 class CModel;
 class TimeCounter;
+
 // Can declare VIBuffer or Model Com
 END
+
+BEGIN(Client)
+
+class EnergyBallEffect;
+
+END
+
+
 
 BEGIN(Client)
 class BatPotato_RIGBullet final : public Bullet
@@ -51,6 +60,7 @@ private: /* For. Component */
 	CTransform* m_pTransformCom = { nullptr };
 	CCollider* m_pColliderCom = { nullptr };
 	TimeCounter* m_pTimeCounterCom = { nullptr };
+	EnergyBallEffect* m_pEnergyBallEffectCom = { nullptr };
 
 private:
 	HRESULT Add_Components();

@@ -21,6 +21,7 @@ BEGIN(Client)
 class MonsterHP;
 template<typename OWNER, typename ANIM_ENUM>
 class StateContext;
+class Dissolve;
 END
 
 BEGIN(Client)
@@ -48,6 +49,10 @@ public:
 
 	virtual void OnCollision(CCollider::COLLISION_INFO pCollisionInfo, _double TimeDelta) override;
 	void ResetPool(void* pArg);
+	void SetPass(_uint iPass) {
+		m_iPass = iPass;
+	}
+
 private: /* For. Component */
 	CShader* m_pShaderCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };
@@ -58,7 +63,11 @@ private: /* For. Component */
 	Raycast* m_pRaycastCom = { nullptr };
 	AlienPrawnState* m_pStateContextCom = { nullptr };
 	MonsterHP* m_pMonsterHP = { nullptr };
+	Dissolve* m_pDissolveCom = { nullptr };
 
+private:
+	_uint m_iPass = { 0 };
+	_double m_TimeDelta;
 private:
 	HRESULT Add_Components();
 	HRESULT SetUp_ShaderResources();

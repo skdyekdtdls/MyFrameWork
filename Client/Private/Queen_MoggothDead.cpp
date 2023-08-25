@@ -1,7 +1,8 @@
 #include "..\Public\Queen_MoggothDead.h"
 #include "GameInstance.h"
 #include "Queen_Moggoth.h"
-
+#include "SoundMgr.h"
+#include "BossHP.h"
 Queen_MoggothDead::Queen_MoggothDead(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: StateMachine<Queen_Moggoth, QUEEN_MOGGOTH_ANIM>(pDevice, pContext)
 {
@@ -17,6 +18,12 @@ void Queen_MoggothDead::OnStateEnter()
 	__super::OnStateEnter();
 
 	SetAnimIndex(QUEEN_MOGGOTH_P3_DEATH, LOWER);
+	SoundMgr->StopSound(CHANNELID::QUEENMOGGOTH);
+	SoundMgr->PlaySound(L"QueenMoggothDeath.ogg", CHANNELID::QUEENMOGGOTH, 0.5f);
+	m_pOwner->SetPass(1);
+
+	BossHP* pBossHp = static_cast<BossHP*>(m_pOwner->Get_Component(L"Com_HP"));
+	pBossHp->SetEnable(false);
 }
 
 void Queen_MoggothDead::OnStateTick(_double TimeDelta)

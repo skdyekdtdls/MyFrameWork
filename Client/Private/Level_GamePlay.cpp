@@ -19,6 +19,7 @@
 #include "Image.h"
 #include "DynamicImage.h"
 #include "MiniMap.h"
+#include "CustomMouse.h"
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -70,6 +71,8 @@ void CLevel_GamePlay::Ready_Layer_UI(const _tchar* pLayerTag)
 	}
 
 	pGameInstance->Add_GameObject(LEVEL_IMGUI, MiniMap::ProtoTag(), pLayerTag);
+	pGameInstance->Add_GameObject(LEVEL_IMGUI, CustomMouse::ProtoTag(), pLayerTag);
+
 	Safe_Release(pGameInstance);
 }
 

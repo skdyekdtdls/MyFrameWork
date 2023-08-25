@@ -10,6 +10,9 @@
 #include "P2Attack03.h"
 #include "P2Attack04.h"
 #include "BossHP.h"
+#include "Dissolve.h"
+#include "HitEffect.h"
+#include "SoundMgr.h"
 _uint Queen_Moggoth::Queen_Moggoth_Id = 0;
 
 Queen_Moggoth::Queen_Moggoth(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -82,16 +85,7 @@ HRESULT Queen_Moggoth::Initialize(void* pArg)
 void Queen_Moggoth::Tick(_double TimeDelta)
 {
 	__super::Tick(TimeDelta);
-
-	CGameInstance* pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(pGameInstance);
-	static int asdf = 0;
-	if (pGameInstance->Key_Down(DIK_P))
-	{
-		asdf++;
-		m_pModelCom->Set_AnimByIndex(asdf);
-	}
-	Safe_Release(pGameInstance);
+	m_TimeDelta = TimeDelta;
 
 	m_pModelCom->Play_Animation(TimeDelta);
 	m_pHealthCom->Tick(TimeDelta);
@@ -143,8 +137,9 @@ HRESULT Queen_Moggoth::Render()
 		m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
 
 		m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
+		FAILED_CHECK_RETURN(m_pModelCom->Bind_Material(m_pShaderCom, "g_NormalTexture", i, TextureType_NORMALS), E_FAIL);
 
-		m_pShaderCom->Begin(0);
+		m_pShaderCom->Begin(m_iPass);
 
 		m_pModelCom->Render(i);
 	}
@@ -202,6 +197,10 @@ HRESULT Queen_Moggoth::Add_Components()
 	BossHP::tagBossHPDesc tHealthDesc;
 	tHealthDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Composite(BossHP::ProtoTag(), L"Com_HP", (CComponent**)&m_pHealthCom, &tHealthDesc), E_FAIL);
+
+	Dissolve::DISSOLVE_DESC tDissolveDesc;
+	tDissolveDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Composite(Dissolve::ProtoTag(), L"Com_Dissolve", (CComponent**)&m_pDissolveCom, &tDissolveDesc), E_FAIL);
 
 	Safe_Release(pGameInstance);
 	return S_OK;
@@ -294,7 +293,6 @@ HRESULT Queen_Moggoth::SetUp_Notify()
 			tResetDesc.fDamage = 10.f;
 			tResetDesc.pOwner = this;
 			_vector vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-
 			
 			DirectX::XMStoreFloat4(&tResetDesc.vPosition, vPosition);
 			_int iRadiusX = RandomIntFrom_A_To_B(-10, 10);
@@ -303,9 +301,26 @@ HRESULT Queen_Moggoth::SetUp_Notify()
 			tResetDesc.vPosition.z = tResetDesc.vPosition.z + iRadiusZ;
 			pBullet = ObjectPool<P1Attack04>::GetInstance()->PopPool(P1Attack04::ProtoTag(), &tResetDesc);
 			pGameInstance->AddToLayer(pGameInstance->Get_CurLevelIndex(), L"Layer_Bullet", pBullet);
-			
+
 
 			Safe_Release(pGameInstance);
+
+			}));
+	}
+
+
+	const _tchar* pSoundTag[31] = { L"Sound_0", L"Sound_1", L"Sound_2", L"Sound_3", L"Sound_4", L"Sound_5",
+L"Sound_6", L"Sound_7", L"Sound_8", L"Sound_9",
+L"Sound_10", L"Sound_11", L"Sound_12", L"Sound_13", L"Sound_14", L"Sound_15",
+L"Sound_16", L"Sound_17", L"Sound_18", L"Sound_19",
+L"Sound_20", L"Sound_21", L"Sound_22", L"Sound_23", L"Sound_24", L"Sound_25",
+L"Sound_26", L"Sound_27", L"Sound_28", L"Sound_29", L"Sound_30" };
+	for (_uint i = 1; i <= 9; ++i)
+	{
+		m_pModelCom->Add_TimeLineEvent("Queen_Moggoth_P1_Attack04_loop", pSoundTag[i], TIMELINE_EVENT(5.f * i, [this]() {
+
+				SoundMgr->StopSound(CHANNELID::EXPLOSION);
+				SoundMgr->PlaySound(L"Explosion.mp3", CHANNELID::EXPLOSION, 0.5f);
 
 			}));
 	}
@@ -365,6 +380,23 @@ HRESULT Queen_Moggoth::SetUp_Notify()
 			}));
 	}
 
+
+	const _tchar* pSoundTag2[31] = { L"Sound2_0", L"Sound2_1", L"Sound2_2", L"Sound2_3", L"Sound2_4", L"Sound2_5",
+L"Sound2_6", L"Sound2_7", L"Sound2_8", L"Sound2_9",
+L"Sound2_10", L"Sound2_11", L"Sound2_12", L"Sound2_13", L"Sound2_14", L"Sound2_15",
+L"Sound2_16", L"Sound2_17", L"Sound2_18", L"Sound2_19",
+L"Sound2_20", L"Sound2_21", L"Sound2_22", L"Sound2_23", L"Sound2_24", L"Sound2_25",
+L"Sound2_26", L"Sound2_27", L"Sound2_28", L"Sound2_29", L"Sound2_30" };
+	for (_uint i = 1; i <= 9; ++i)
+	{
+		m_pModelCom->Add_TimeLineEvent("Queen_Moggoth_P2_Attack02_loop", pSoundTag2[i], TIMELINE_EVENT(5.f * i, [this]() {
+
+			SoundMgr->StopSound(CHANNELID::EXPLOSION);
+			SoundMgr->PlaySound(L"Explosion.mp3", CHANNELID::EXPLOSION, 0.5f);
+
+			}));
+	}
+
 	// ²¿¸® ÈÖµÎ¸£±â
 	m_pModelCom->Add_TimeLineEvent("Queen_Moggoth_P2_Attack03", L"P2_Attack03", TIMELINE_EVENT(30.0, [this]() {
 		CGameInstance* pGameInstance = CGameInstance::GetInstance();
@@ -411,8 +443,6 @@ HRESULT Queen_Moggoth::SetUp_Notify()
 
 	//	}));
 
-	
-
 	return S_OK;
 }
 
@@ -429,6 +459,25 @@ HRESULT Queen_Moggoth::SetUp_ShaderResources()
 
 	MyMatrix = pGameInstance->Get_TransformFloat4x4(CPipeLine::D3DTS_PROJ);
 	FAILED_CHECK_RETURN(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &MyMatrix), E_FAIL);
+	
+	if (1 == m_iPass)
+	{
+		FAILED_CHECK_RETURN(m_pDissolveCom->Bind_Values(m_pShaderCom, -0.25f * m_TimeDelta), E_FAIL);
+	}
+	else if (2 == m_iPass)
+	{
+		_float fRimPower = 1.f;
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_fRimPower", &fRimPower, sizeof(_float)), E_FAIL);
+
+		_float4 vCamLook = pGameInstance->GetCamLookFloat4(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamLook", &vCamLook, sizeof(_float4)), E_FAIL);
+
+		_float4 vCamPos = pGameInstance->Get_CamPositionFloat4();
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vCamPos", &vCamPos, sizeof(_float4)), E_FAIL);
+
+		_float3 vRimColor = { 1.f, 0.f, 0.f };
+		FAILED_CHECK_RETURN(m_pShaderCom->Bind_RawValue("g_vRimColor", &vRimColor, sizeof(_float3)), E_FAIL);
+	}
 
 	Safe_Release(pGameInstance);
 
@@ -475,5 +524,7 @@ void Queen_Moggoth::Free(void)
 	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pRaycastCom);
 	Safe_Release(m_pHealthCom);
+	Safe_Release(m_pDissolveCom);
+
 	/* Don't Forget Release for the VIBuffer or Model Component*/
 }

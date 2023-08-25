@@ -17,6 +17,7 @@ void CannonSpiderDead::OnStateEnter()
 	__super::OnStateEnter();
 
 	SetAnimIndex(CANNON_SPIDER_STUNNED, LOWER);
+	m_pOwner->SetPass(1);
 }
 
 void CannonSpiderDead::OnStateTick(_double TimeDelta)

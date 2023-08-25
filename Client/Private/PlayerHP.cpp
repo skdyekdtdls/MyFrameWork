@@ -24,6 +24,7 @@ HRESULT PlayerHP::Initialize_Prototype()
 
 HRESULT PlayerHP::Initialize(void* pArg)
 {
+
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
@@ -49,6 +50,7 @@ void PlayerHP::Tick(_double TimeDelta)
 
 void PlayerHP::Late_Tick(_double TimeDelta)
 {
+	
 	__super::Late_Tick(TimeDelta);
 	m_pDynamicImage->Late_Tick(TimeDelta);
 	m_pImage->Late_Tick(TimeDelta);

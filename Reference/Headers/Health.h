@@ -43,7 +43,9 @@ public:
 private:
 	_int m_iMaxHp;
 	_int m_iCurrentHp;
-	
+
+public:
+	_bool m_bInvin = { false };
 public:
 	// If this component is the VIBuffer Com or the Shader Com, Delete ProtoTag().
 	static const _tchar* ProtoTag() { return L"Prototype_Component_Health"; }

@@ -26,21 +26,27 @@ public:
 	_float4x4 Get_TransformFloat4x4_Inverse(D3DTRANSFORMSTATE eTransformState);
 	_float4	Get_CamPositionFloat4() const
 	{
-		return m_vCameraPos;
+		_float4 vCamPos;
+		memcpy(&vCamPos, &m_CameraWorldMatrix.m[3][0], sizeof _float4);
+		return vCamPos;
 	}
 	_vector Get_CamPositionVector() 
 	{
-		return XMLoadFloat4(&m_vCameraPos);
+		_float4 vCamPos;
+		memcpy(&vCamPos, &m_CameraWorldMatrix.m[3][0], sizeof _float4);
+		return XMLoadFloat4(&vCamPos);
 	}
 
+	_float4 GetCamLookFloat4(_vector vTargetPos);
+	_float4 GetCamLookFloat4();
+	_vector GetCamLookVector();
 public:
 	void Tick();
 
 private:
 	_float4x4	m_TransformState[D3DTS_END];
 	_float4x4	m_TransformState_Inverse[D3DTS_END];
-	_float4		m_vCameraPos;
-
+	_float4x4	m_CameraWorldMatrix;
 public:
 	virtual void Free(void) override;
 };

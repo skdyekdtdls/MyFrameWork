@@ -1,6 +1,6 @@
 #include "CannonSpiderBullet.h"
 #include "GameInstance.h"
-
+#include "EnergyBallEffect2.h"
 _uint CannonSpiderBullet::CannonSpiderBullet_Id = 0;
 
 CannonSpiderBullet::CannonSpiderBullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -65,7 +65,9 @@ void CannonSpiderBullet::Tick(_double TimeDelta)
 		m_pColliderCom->Add_ColliderGroup(COLL_GROUP::MONSTER_BULLET);
 	}
 
-	// 	m_pModelCom->Play_Animation(TimeDelta);
+	if (nullptr != m_pEnergyBallEffect2Com)
+		m_pEnergyBallEffect2Com->Tick(TimeDelta, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+
 }
 
 void CannonSpiderBullet::Late_Tick(_double TimeDelta)
@@ -75,7 +77,9 @@ void CannonSpiderBullet::Late_Tick(_double TimeDelta)
 
 	__super::Late_Tick(TimeDelta);
 
-	
+	if (nullptr != m_pEnergyBallEffect2Com)
+		m_pEnergyBallEffect2Com->Late_Tick(TimeDelta);
+
 #ifdef _DEBUG
 	m_pRendererCom->Add_DebugGroup(m_pColliderCom);
 #endif
@@ -85,39 +89,21 @@ void CannonSpiderBullet::Late_Tick(_double TimeDelta)
 
 HRESULT CannonSpiderBullet::Render()
 {
-	if (FAILED(__super::Render()))
-		return E_FAIL;
-
-	if (FAILED(SetUp_ShaderResources()))
-		return E_FAIL;
-
-	//_uint		iNumMeshes = m_pModelCom->Get_NumMeshes();
-
-	//for (size_t i = 0; i < iNumMeshes; i++)
-	//{
-	//	m_pModelCom->Bind_BoneMatrices(m_pShaderCom, "g_BoneMatrices", i);
-
-	//	m_pModelCom->Bind_Material(m_pShaderCom, "g_DiffuseTexture", i, TextureType_DIFFUSE);
-	//	
-
-	//	m_pShaderCom->Begin(0);
-
-	//	m_pModelCom->Render(i);
-	//}
-
-	// 만약에 모델 컴포넌트 안쓰면 이걸로 쓰면된다.
-	// m_pShaderCom->Begin(0);
 
 #ifdef _DEBUG
 
 #endif
+	return S_OK;
 }
 
 void CannonSpiderBullet::ResetPool(void* pArg)
 {
 	m_bDead = false;
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, ((tagCannonSpiderBulletDesc*)(pArg))->vLook);
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&((tagCannonSpiderBulletDesc*)pArg)->vPosition));
+
+	_vector vPos = XMLoadFloat4(&((tagCannonSpiderBulletDesc*)pArg)->vPosition);
+	vPos.m128_f32[1] += 0.5f;
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPos);
 	m_pTimeCounterCom->Enable();
 }
 
@@ -157,6 +143,12 @@ HRESULT CannonSpiderBullet::Add_Components()
 	TimeCounter::TIME_COUNTER_DESC tTimeCounterDesc;
 	tTimeCounterDesc.pOwner = this;
 	FAILED_CHECK_RETURN(__super::Add_Component(LEVEL_STATIC, TimeCounter::ProtoTag(), L"Com_TimeCounter", (CComponent**)&m_pTimeCounterCom, &tTimeCounterDesc), E_FAIL);
+
+	EnergyBallEffect2::tagEnergyBallEffectDesc tEffectDesc;
+	tEffectDesc.iRow = 3;
+	tEffectDesc.iCol = 3;
+	tEffectDesc.pOwner = this;
+	FAILED_CHECK_RETURN(__super::Add_Composite(EnergyBallEffect2::ProtoTag(), L"Com_Effect", (CComponent**)&m_pEnergyBallEffect2Com, &tEffectDesc), E_FAIL);
 
 	Safe_Release(pGameInstance);
 	return S_OK;
@@ -225,4 +217,5 @@ void CannonSpiderBullet::Free(void)
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTimeCounterCom);
+	Safe_Release(m_pEnergyBallEffect2Com);
 }

@@ -14,6 +14,7 @@
 #include <wincodec.h>
 #endif
 
+
 namespace Client
 {
 	const unsigned int g_iWinSizeX = 1280;
@@ -24,7 +25,7 @@ extern HINSTANCE g_hInst;
 extern HWND g_hWnd;
 
 using namespace Client;
-enum CHANNELID { BGM, PLAYER, PLAYER_BULLET, ALIEN_PRAWN, BAT, MAXCHANNEL };
+enum CHANNELID { BGM, EXPLOSION, PLAYER, PLAYER_BULLET, ALIEN_PRAWN, BAT, QUEENMOGGOTH, BULLET_HIT, GOLEM, MAXCHANNEL  };
 #ifdef _DEBUG
 enum IMWIN_MODE {
 	OBJ_TOOL_MODE,
@@ -38,3 +39,4 @@ enum IMWIN_MODE {
 };
 #endif // DEBUG
 
+#include "Client_Struct.h"

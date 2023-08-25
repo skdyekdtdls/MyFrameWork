@@ -1,7 +1,7 @@
 #include "..\Public\Queen_MoggothWalkP2.h"
 #include "GameInstance.h"
 #include "Queen_Moggoth.h"
-
+#include "SoundMgr.h"
 Queen_MoggothWalkP2::Queen_MoggothWalkP2(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: StateMachine<Queen_Moggoth, QUEEN_MOGGOTH_ANIM>(pDevice, pContext)
 {
@@ -24,6 +24,8 @@ void Queen_MoggothWalkP2::OnStateEnter()
 	m_pTransform = static_cast<CTransform*>(m_pOwner->Get_Component(L"Com_Transform"));
 	m_pNavigation = static_cast<CNavigation*>(m_pOwner->Get_Component(L"Com_Navigation"));
 	m_TimeAcc = { 0.0 };
+	SoundMgr->StopSound(CHANNELID::QUEENMOGGOTH);
+	SoundMgr->PlaySound(L"QueenMoggothRunP2.ogg", CHANNELID::QUEENMOGGOTH, 0.4f);
 }
 
 void Queen_MoggothWalkP2::OnStateTick(_double TimeDelta)
@@ -82,6 +84,7 @@ void Queen_MoggothWalkP2::OnStateTick(_double TimeDelta)
 
 void Queen_MoggothWalkP2::OnStateExit()
 {
+	SoundMgr->StopSound(CHANNELID::QUEENMOGGOTH);
 	__super::OnStateExit();
 }
 

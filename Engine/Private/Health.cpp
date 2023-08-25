@@ -33,6 +33,8 @@ HRESULT Health::Initialize(void* pArg)
 
 void Health::TakeDamage(_uint iAmount)
 {
+	if (true == m_bInvin)
+		return;
 	Saturate(m_iCurrentHp -= iAmount, 0, m_iMaxHp);
 }
 

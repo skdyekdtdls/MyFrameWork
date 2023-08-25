@@ -2,6 +2,10 @@
 #include "GameInstance.h"
 #include "Effect_Atlas.h"
 #include "CStone_Effect.h"
+#include "PropelEffect.h"
+#include "HitEffect.h"
+#include "HitParticle.h"
+#include "SoundMgr.h"
 _uint ClintBasicBullet::ClintBasicBullet_Id = 0;
 
 /* Don't Forget Release for the VIBuffer or Model Component*/
@@ -44,8 +48,7 @@ HRESULT ClintBasicBullet::Initialize(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&tClintBasicBulletDesc.vPosition));
 	
 	m_pTimeCounterCom->Enable();
-	//m_test->Reset_Effects();
-	//m_pEffectAtlasCom->Reset();
+	m_pEffectAtlasCom->Reset();
 
 	m_fRadian = DegreeBetweenVectors(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTransformCom->Get_State(CTransform::STATE_LOOK));
 	m_fRadian = XMConvertToRadians(m_fRadian);
@@ -70,10 +73,13 @@ void ClintBasicBullet::Tick(_double TimeDelta)
 		m_pColliderCom->Tick(m_pTransformCom->Get_WorldMatrix());
 		m_pColliderCom->Add_ColliderGroup(COLL_GROUP::PLAYER_BULLET);
 	}
+
 	m_fRadian = DegreeBetweenVectors(XMVectorSet(0.f, 0.f, 1.f, 0.f), m_pTransformCom->Get_State(CTransform::STATE_LOOK));
 	m_fRadian = XMConvertToRadians(m_fRadian);
-	//m_pEffectAtlasCom->Tick(TimeDelta, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-	//m_test->Tick(TimeDelta);
+	m_pEffectAtlasCom->Tick(TimeDelta, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+
+	if (nullptr != m_pPropelEffect)
+		m_pPropelEffect->Tick(TimeDelta);
 }
 
 void ClintBasicBullet::Late_Tick(_double TimeDelta)
@@ -81,7 +87,7 @@ void ClintBasicBullet::Late_Tick(_double TimeDelta)
 	CGameInstance* pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(pGameInstance);
 
-	//m_pEffectAtlasCom->Late_Tick(TimeDelta);
+	m_pEffectAtlasCom->Late_Tick(TimeDelta);
 	__super::Late_Tick(TimeDelta);
 	//m_test->Late_Tick(TimeDelta);
 	m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this);
@@ -89,6 +95,9 @@ void ClintBasicBullet::Late_Tick(_double TimeDelta)
 	m_pRendererCom->Add_DebugGroup(m_pColliderCom);
 #endif
 	
+	if (nullptr != m_pPropelEffect)
+		m_pPropelEffect->Late_Tick(TimeDelta);
+
 	Safe_Release(pGameInstance);
 }
 
@@ -101,7 +110,7 @@ HRESULT ClintBasicBullet::Render()
 		return E_FAIL;
 
 	m_pShaderCom->Begin(0);
-	m_pBufferCom->Render();
+	//m_pBufferCom->Render();
 }
 
 void ClintBasicBullet::ResetPool(void* pArg)
@@ -110,8 +119,8 @@ void ClintBasicBullet::ResetPool(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE_LOOK, ((CLINT_BASIC_BULLET_DESC*)pArg)->vLook);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, XMLoadFloat4(&((CLINT_BASIC_BULLET_DESC*)pArg)->vPosition));
 	m_pTimeCounterCom->Enable();
-
-	//m_pEffectAtlasCom->Reset();
+	m_pPropelEffect->Reset_Effects();
+	m_pEffectAtlasCom->Reset();
 	//m_test->Reset_Effects();
 }
 
@@ -160,17 +169,24 @@ HRESULT ClintBasicBullet::Add_Components()
 	tBufferDesc.iNumInstance = 1;
 	FAILED_CHECK_RETURN(Add_Component(eLevelID, CVIBuffer_Point_Instance::ProtoTag(), L"Com_Buffer"
 		, (CComponent**)&m_pBufferCom, &tBufferDesc), E_FAIL);
-	//Effect_Atlas::EFFECT_ATLAS_DESC tEffectDesc;
-	//tEffectDesc.pOwner = this;
-	//tEffectDesc.iRow = 4;
-	//tEffectDesc.iCol = 4;
-	//tEffectDesc.pTextureTag = TEXT("Prototype_Component_Texture_T_ky_flare09_4x4");
-	//FAILED_CHECK_RETURN(__super::Add_Composite(Effect_Atlas::ProtoTag(), L"Com_Effect4x4", (CComponent**)&m_pEffectAtlasCom, &tEffectDesc), E_FAIL)
+	Effect_Atlas::EFFECT_ATLAS_DESC tEffectDesc;
+	tEffectDesc.pOwner = this;
+	tEffectDesc.iRow = 4;
+	tEffectDesc.iCol = 4;
+	tEffectDesc.pTextureTag = TEXT("Prototype_Component_Texture_T_ky_flare09_4x4");
+	FAILED_CHECK_RETURN(__super::Add_Composite(Effect_Atlas::ProtoTag(), L"Com_Effect4x4", (CComponent**)&m_pEffectAtlasCom, &tEffectDesc), E_FAIL)
 	//
 	//CStone_Effect::STONE_EFFECT_DESC tStoneDesc;
 	//tStoneDesc.pOwner = this;
 	//tStoneDesc.iNumParticles = 30;
 	//FAILED_CHECK_RETURN(__super::Add_Composite(CStone_Effect::ProtoTag(), L"Com_Test", (CComponent**)&m_test, &tStoneDesc), E_FAIL);
+	
+	PropelEffect::tagPropelEffectDesc tPropelEffectDesc;
+	tPropelEffectDesc.iNumParticles = 20;
+	tPropelEffectDesc.pOwner = this;
+	tPropelEffectDesc.pTextureProtoTag = L"Prototype_Component_Texture_Snow";
+	FAILED_CHECK_RETURN(__super::Add_Composite(PropelEffect::ProtoTag(), L"Com_PropelEffect", (CComponent**)&m_pPropelEffect, &tPropelEffectDesc), E_FAIL);
+		
 	Safe_Release(pGameInstance);
 	return S_OK;
 }
@@ -205,6 +221,31 @@ void ClintBasicBullet::OnCollision(CCollider::COLLISION_INFO tCollisionInfo, _do
 	if (__super::isMonsterLayer(tCollisionInfo.OtherGameObjectLayerName))
 	{
 		__super::Damage(tCollisionInfo.pOtherGameObject);
+
+		CGameInstance* pGameInstance = CGameInstance::GetInstance();
+		Safe_AddRef(pGameInstance);
+
+		//HitEffect::tagHitEffectDesc Desc;
+		//Desc.iCol = 8;
+		//Desc.iRow = 8;
+		//Desc.pTextureTag = L"Prototype_Component_Texture_Explodebase1_2k";
+		//XMStoreFloat4(&Desc.vPosition, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		//HitEffect* pEffectAtlas = nullptr;
+		//pEffectAtlas = static_cast<HitEffect*>(pGameInstance->Add_GameObject(pGameInstance->Get_CurLevelIndex(), HitEffect::ProtoTag()
+		//	, L"Layer_Effect", &Desc));
+		//NULL_CHECK(pEffectAtlas);
+		//pEffectAtlas->Reset();
+
+		HitParticle::tagHitParticleDesc tParticleDesc;
+		tParticleDesc.iNumParticles = 20;
+		XMStoreFloat4(&tParticleDesc.vPosition, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		NULL_CHECK(pGameInstance->Add_GameObject(pGameInstance->Get_CurLevelIndex(), HitParticle::ProtoTag()
+			, L"Layer_Effect", &tParticleDesc));
+
+		SoundMgr->StopSound(CHANNELID::BULLET_HIT);
+		SoundMgr->PlaySound(L"BulletHit.mp3", CHANNELID::BULLET_HIT, 0.7f);
+
+		Safe_Release(pGameInstance);
 		SetDead();
 	}
 }
@@ -245,6 +286,7 @@ void ClintBasicBullet::Free(void)
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pBufferCom);
-	//Safe_Release(m_pEffectAtlasCom);
+	Safe_Release(m_pEffectAtlasCom);
+	Safe_Release(m_pPropelEffect);
 	//Safe_Release(m_test);
 }

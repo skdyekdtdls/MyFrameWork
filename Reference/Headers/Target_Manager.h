@@ -22,9 +22,11 @@ public:
 
 	/* pMRTTag에 추가되어있는 렌더타겟들을 장치에 바인딩한다. */
 	HRESULT Begin_MRT(ID3D11DeviceContext* pContext, const _tchar* pMRTTag);
+	HRESULT End_MRT(ID3D11DeviceContext* pContext);
 
 	/* 원래상태로 복구한다. (0번째에 백버퍼가 바인딩 된 상태로 돌려준다. */
-	HRESULT End_MRT(ID3D11DeviceContext* pContext);
+	HRESULT Begin_PreMRT(ID3D11DeviceContext* pContext, const _tchar* pMRTTag);
+	HRESULT End_PreMRT(ID3D11DeviceContext* pContext);
 
 	// 렌더타겟을 검색 후 인자로 들어온 셰이더의 변수에 바인딩한다.
 	HRESULT Bind_ShaderResourceView(const _tchar* pTargetTag, class CShader* pShader, const char* pConstantName);
@@ -48,6 +50,7 @@ private:
 private:
 	// 백업용 백버퍼 멤버 변수
 	ID3D11RenderTargetView* m_pBackBufferView = { nullptr };
+	ID3D11RenderTargetView* m_pPreBackBufferView = { nullptr };
 
 	// 깊이버퍼는 1개만 사용하는데 그냥 같은거 장치에 계속 바인딩한다.
 	ID3D11DepthStencilView* m_pDepthStencilView = { nullptr };

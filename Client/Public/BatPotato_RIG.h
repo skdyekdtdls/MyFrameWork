@@ -23,7 +23,7 @@ class Bullet;
 class MonsterHP;
 template<typename OWNER, typename ANIM_ENUM>
 class StateContext;
-
+class Dissolve;
 END
 
 BEGIN(Client)
@@ -50,6 +50,9 @@ public:
 
 	virtual void OnCollision(CCollider::COLLISION_INFO pCollisionInfo, _double TimeDelta) override;	
 	void ResetPool(void* pArg);
+	void SetPass(_uint iPass) {
+		m_iPass = iPass;
+	}
 private: /* For. Component */
 	CShader* m_pShaderCom = { nullptr };
 	CRenderer* m_pRendererCom = { nullptr };
@@ -61,6 +64,11 @@ private: /* For. Component */
 	BatPotatoRIGState* m_pStateContextCom = { nullptr };
 	MonsterHP* m_pMonsterHP = { nullptr };
 	Bullet* m_pBullet = { nullptr };
+	Dissolve* m_pDissolveCom = { nullptr };
+
+private:
+	_uint m_iPass = { 0 };
+	_double m_TimeDelta;
 	// Can declare VIBuffer or Model Com
 
 private:

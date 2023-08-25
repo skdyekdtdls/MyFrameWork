@@ -24,9 +24,13 @@ class PlayerLevel;
 class PlayerHP;
 class Pistola;
 class CStone_Effect;
+class BoomEffect;
 class ClintUltimate01Bullet;
 template <typename OWNER, typename ANIM_ENUM>
 class StateContext;
+class ForceField;
+class PropelEffect;
+class SmokeParticle;
 END
 
 BEGIN(Client)
@@ -76,6 +80,10 @@ private: /* For. Component */
 	PlayerHP* m_pPlayerHP = { nullptr };
 	vector<SkillUI*> m_pSKillUIs = { nullptr };
 	CStone_Effect* m_pStoneEffect = { nullptr };
+	BoomEffect* m_pBoomEffect = { nullptr };
+	ForceField* m_pForceField = { nullptr };
+	PropelEffect* m_pPropelEffect = { nullptr };
+
 private:
 	static _uint Clint_Id;
 

@@ -19,7 +19,7 @@ void Alien_prawnIdle::OnStateEnter()
 	m_TimeAcc = { 0.0 };
 	SetAnimIndex(ALIEN_PRAWN_IDLE, LOWER);
 	SetAnimIndex(ALIEN_PRAWN_RUN, LOWER);
-	SoundMgr->PlaySound(L"AlienPrawnWalk.wav", CHANNELID::ALIEN_PRAWN, 0.5f);
+	SoundMgr->PlaySound(L"AlienPrawnWalk.wav", CHANNELID::ALIEN_PRAWN, 0.2f);
 }
 
 void Alien_prawnIdle::OnStateTick(_double TimeDelta)

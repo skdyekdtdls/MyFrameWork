@@ -1,7 +1,7 @@
 #include "..\Public\Queen_Moggoth_P1_TO_P2.h"
 #include "GameInstance.h"
 #include "Queen_Moggoth.h"
-
+#include "SoundMgr.h"
 Queen_Moggoth_P1_TO_P2::Queen_Moggoth_P1_TO_P2(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: StateMachine<Queen_Moggoth, QUEEN_MOGGOTH_ANIM>(pDevice, pContext)
 {
@@ -17,6 +17,9 @@ void Queen_Moggoth_P1_TO_P2::OnStateEnter()
 	__super::OnStateEnter();
 
 	SetAnimIndex(QUEEN_MOGGOTH_P1_TO_P2, LOWER);
+	SoundMgr->StopSound(CHANNELID::QUEENMOGGOTH);
+	m_pOwner->SetPass(2);
+	SoundMgr->PlaySound(L"QueenMoggothP2TOP1.ogg", CHANNELID::QUEENMOGGOTH, 0.5f);
 }
 
 void Queen_Moggoth_P1_TO_P2::OnStateTick(_double TimeDelta)
